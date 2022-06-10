@@ -1,0 +1,56 @@
+\documentclass[aps,superscriptaddress,tightenlines,nofootinbib,floatfix,longbibliography,notitlepage]{revtex4-1}
+\usepackage[left=18mm,right=19mm,top=23mm,bottom=16mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{slashed}
+\usepackage[
+    colorlinks=true,
+    allcolors=blue
+]{hyperref}
+
+
+
+%%%
+%%%     Incorporate Repository Information
+%%%
+
+\providecommand{\repositoryInformationSetup}{} % Fallback definition if compiled with `make FINAL=1`.
+\repositoryInformationSetup
+
+%%%
+%%%     Include latex-base macros
+%%%
+
+\input{macros} % input rather than include so we don't create macros.aux
+
+%%%%
+%%%%    Document preparation
+%%%%
+
+
+\begin{document}
+
+\title{Example \LaTeX + \texttt{git} }
+
+\author{Evan Berkowitz}
+
+\date{\today}
+
+\begin{abstract}
+Here's a bare-bones example where I set up a \git repo with all the \LaTeX-related things that I like.
+\end{abstract}
+
+\maketitle
+
+\input{section/introduction}
+\input{section/version-control}
+\input{section/make}
+\input{section/github-action}
+\input{section/protected-branches}
+
+\bibliography{master}
+
+\end{document}
