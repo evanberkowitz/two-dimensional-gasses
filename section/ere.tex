@@ -1,0 +1,77 @@
+\section{Effective Range Expansion and L\"{u}scher in 2D}
+
+To understand what we mean by this theory we'll need to take some sort of continuum / infinite volume limit.
+As in 3D this means tuning some scattering amplitude to match the target scattering data.
+
+For partial wave labeled by angular momentum $\ell$ In 2D the effective range expansion reads
+\begin{align}
+	\cot \delta_\ell(p)
+	&=
+			\frac{2}{\pi} \log(p R_\ell)
+		-	\frac{1}{a_\ell} p^{-2\ell}
+		+	\frac{1}{2} r_\ell p^{2-2\ell}
+		+	\cdots.
+	\\
+	\cot \delta(p)
+	&=
+			\frac{2}{\pi} \log(p R_0)
+		-	\frac{1}{a_0}
+		+	\frac{1}{2} r_0 p^2
+\end{align}
+where $R$ is an arbitrary dimensionful scale and (in the second line) the `scattering length' $a_0$ is actually dimensionless (note the units on the RHS) and $r_0$ has dimension +2.
+All even-spatial-dimension effective range expansions get this log, and every non-log term gets an additional factor of $p^{2-D}$ which happens to vanish when $D=2$.
+As a ressult, what's strange/magical about $D=2$ is that we can absorb $a_0$ into the first time by changing the scale in the log,
+\begin{align}
+	\tilde{a} &= R_0 e^{-\pi/2a_0}
+	&
+	\cot \delta(p)
+	&=
+			\frac{2}{\pi} \log(p \tilde{a})
+		+	\frac{1}{2} r_0 p^2
+		+	\cdots
+		\label{eq:ere}
+\end{align}
+but we cannot further absorb the higher terms because they have a real, meaningful momentum dependence.
+So, could we even mean by something like `unitary gas' in 2D?
+It is not possible, for example, to have a momentum-independent phase shift.
+The issue is that even if $r$ and all higher shape parameters vanish, the $\log(p\tilde{a})$ vanishes when its argument is $1$ and any momentum is allowed.
+So if $\tilde{a}$ is fixed by the Hamiltonian then there is unavoidable momentum dependence.\footnote{
+	2D is very special; could it be that the log gets handled when you try to transform $\delta$ into a scattering \emph{cross section}?
+	One way to say when we have unitarity in 3D is to say that the scattering cross section saturates $\sigma_\ell = 4\pi k^{-2} (2\ell+1) \sin^2 \delta_l$.
+	But certainly the $k^2$ downstairs is dependent on 3D; perhaps when we look at the crosss section in 2D there's a weird log?
+	I think that would ALSO be bad, but I should admit that I'm confused.
+	}
+
+Is $\tilde{a}$ what is meant by the 2D scattering length?  Or something else?
+At the cold-atoms/nuclear matter ECT* program we saw experimental results always described as a function of $\log k_F a$ (I don't mean to suggest this $a$ is the above $\tilde{a}$ necessarily; I have no idea).
+If we take our cue from this, maybe we'll see that we actually have to retune at each desired $k_F$, which would be a disaster.
+
+But before we fall too deep into despaire, perhaps looking at the L\"{u}scher formula in 2D may shed light?
+Then we might know how to tune?
+
+In 2D we have
+\begin{align}
+	\cot \delta(p) - \frac{2}{\pi} \log \frac{pL}{2\pi} &= \frac{1}{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
+	&	
+	S_2(x) &= \lim_{N\goesto\infty} \sum_{\abs{\vec{n}} \leq \frac{N}{2}} \oneover{n^2-x} - 2\pi \log \frac{N}{2}
+	\label{eq:quantization condition}
+\end{align}
+So, let's take the ERE \eqref{ere} and try to apply the quantization condition \eqref{quantization condition} to learn how to tune,
+\begin{align}
+	\frac{2}{\pi} \log(p \tilde{a}) + \cdots
+	&=
+	\frac{2}{\pi} \log \frac{pL}{2\pi} + \frac{1}{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
+	\\
+	\frac{2}{\pi} \log \frac{2\pi \tilde{a}}{L} &= \oneover{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
+\end{align}
+where we dropped all non-log dependence from the ERE.
+
+In 3D to get unitarity we tune until we hit the zeros of $S_3(x)$ for some energies (one level per Lego Sphere operator we want to use).
+In our case this suggests we would find
+\begin{align}
+	\frac{\tilde{a}}{L} = \frac{1}{2\pi},
+\end{align}
+meaning that if we set $R_0=L/2\pi$ (so that it's the radius of the compactified spatial directions, or equivalently one over the lowest nonzero allowed box momentum) then we would need the dimensionless $1/a_0 = 0$.
+That seems promising?
+But of course you can change $R_0$ and need a finite $a_0$.
+So who knows.

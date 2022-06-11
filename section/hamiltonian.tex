@@ -11,9 +11,53 @@ if the interaction is $V(x,y) = g \delta(x-y)$.
 
 Let us agree to rescale all energies by multiplying by $M$ so that we only need to track dimensions of length,
 \begin{align}
-	MH 
+	HM
 	&= \int d^2x\; \grad \psi\adjoint \cdot \grad \psi - gM \left[\psi\adjoint_1(x) \psi(x)\right] \left[\psi\adjoint_2(y) \psi(y)\right]
 \end{align}
 So, `energies' have just dimensions of $[p^2] = -2$, so that from the first term $[\psi\adjoint\psi] = -2$ dimensions of length.
 Then, looking at the right term we find that $[gM] = 0$, the coupling is dimensionless.
 This is VERY different from 3 dimensions!
+
+Let's take a square of side $L$ with periodic boundary conditions and divide it into $N_x$ sites on a side separated by $\Delta x = L/N_x$ so that the number of sites, the dimensionless volume $V=N_x^2$.
+If we pick $N_x$ odd then the sites take an integer label from $-(N_x-1)/2$ to $+(N_x-1)/2$ and the dimensionless momenta $p$ are $2\pi / N_x$ times that same span.
+
+The Hamiltonian (meaning $HM$) is
+\begin{align}
+	MH &= \sum_{xy} \psi\adjoint_x \kappa_{xy} \psi_y - \frac{gM}{\Delta x^2} \sum_{x} n^1_x n^2_x
+	&
+	\kappa_{xy} &= \sum_{p} \frac{p^2}{2\Delta x^2} e^{-i p \cdot (x-y)}
+	&
+	n_x &= \psi\adjoint_x \psi_x
+\end{align}
+for spin species 1 and 2 and dimensionless lattice $p$ and $x$.
+
+But \emph{now comes the magic}.
+Both terms have $\Delta x^2$ downstairs.
+In 3D the kinetic piece has $\Delta x^2$ and the potential $\Delta x^3$.
+So now we can go `truly dimensionless', and clear the $\Delta x^{-2}$ from the right,
+\begin{align}
+	HM \Delta x^2
+	&=
+	\sum_{xy} \psi\adjoint_x k_{xy} \psi_y - gM \sum_x n^1_x n^2_x
+	&
+	k_{xy} &= \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
+\end{align}
+The right-hand side now depends \emph{only} on the number of sites $N_x$; no dimensionful scale remains.
+If we increase $L$ and $\Delta x$ holding $N_x$ fixed we get the same right-hand side.
+
+Suppose we find the spectrum for a particular $gM$ and $N_x$.
+We can interpret it in two ways:
+\begin{enumerate}
+	\item First, we can think of fixing $L$, which determines $\Delta x$.
+	\item Or, we can think of fixing $\Delta x$, which determines $L$.
+\end{enumerate}
+In other words, you can use the same exact data and use it to think about the infinite-volume or continuumn limits.
+
+Is that really true?  I suppose it depends on the tuning of $gM$.
+According to K\"{o}rber, Berkowitz, and Luu the tuning is
+\begin{align}
+	gM = - \frac{2\pi}{\log(\tilde{a} \Lambda)}
+\end{align}
+where $\tilde{a}$ is explained below.
+The conclusion there is that $\tilde{a}$ is naturally of size $\sim L$; since $\Lambda\sim \Delta x^{-1}$ the log will be of something like $N_x^{-1}$.
+I'll work this out below after explaining wtf $\tilde{a}$ is.
