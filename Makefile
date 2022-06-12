@@ -42,7 +42,7 @@ else
 endif
 endif
 
-mma/S2.pdf:
+mma/S2.pdf: ./mma/S2.wls
 	./mma/S2.wls
 
 .PHONY: tidy
