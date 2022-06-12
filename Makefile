@@ -22,6 +22,8 @@ endif
 
 all: $(TARGET).pdf
 
+master.pdf: mma/S2.pdf
+
 ifndef DIFF
 %.pdf: .git/HEAD .git/index $(SECTIONS) $(BIBS) macros.tex %.tex
 	DIFF=1 SHORTCIRCUIT=1 $(MAKE) $*.pdf
@@ -39,6 +41,9 @@ else
 	SHORTCIRCUIT=1 OPTIONS="$(OPTIONS)" git latexdiff --whole-tree --main $(TARGET).tex --prepare "rm -rf repo; ln -s $(ROOT)/repo; ln -s $(ROOT)/.git" -o $(TARGET).pdf $(OLD) $(NEW)
 endif
 endif
+
+mma/S2.pdf:
+	./mma/S2.wls
 
 .PHONY: tidy
 tidy:

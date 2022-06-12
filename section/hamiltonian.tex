@@ -41,6 +41,7 @@ So now we can go `truly dimensionless', and clear the $\Delta x^{-2}$ from the r
 	\sum_{xy} \psi\adjoint_x k_{xy} \psi_y - gM \sum_x n^1_x n^2_x
 	&
 	k_{xy} &= \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
+	\label{eq:hamiltonian}
 \end{align}
 The right-hand side now depends \emph{only} on the number of sites $N_x$; no dimensionful scale remains.
 If we increase $L$ and $\Delta x$ holding $N_x$ fixed we get the same right-hand side.
@@ -56,8 +57,11 @@ In other words, you can use the same exact data and use it to think about the in
 Is that really true?  I suppose it depends on the tuning of $gM$.
 According to K\"{o}rber, Berkowitz, and Luu the tuning is
 \begin{align}
-	gM = - \frac{2\pi}{\log(\tilde{a} \Lambda)}
+	gM &= - \frac{2\pi}{\log(\tilde{a} \Lambda)}
+	\label{eq:tuning}
 \end{align}
 where $\tilde{a}$ is explained below.
-The conclusion there is that $\tilde{a}$ is naturally of size $\sim L$; since $\Lambda\sim \Delta x^{-1}$ the log will be of something like $N_x^{-1}$.
+The conclusion there is that $\tilde{a}$ is naturally of size $\sim L$; since $\Lambda\sim \Delta x^{-1}$ the log will be of something like $N_x$.
 I'll work this out below after explaining wtf $\tilde{a}$ is.
+But the punchline is that indeed the tuning \emph{also} only depends on dimensionless things.
+So it's really true; our simulations can be entirely described in terms of the dimensionless $gM$ and $N_x$ and that is all.

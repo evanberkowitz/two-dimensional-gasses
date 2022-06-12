@@ -56,6 +56,13 @@ In 2D we have
 	S_2(x) &= \lim_{N\goesto\infty} \sum_{\abs{\vec{n}} \leq \frac{N}{2}} \oneover{n^2-x} - 2\pi \log \frac{N}{2}
 	\label{eq:quantization condition}
 \end{align}
+In \Figref{S2} we show the zeta function $S_2$ which appears in the finite-volume quantization condition \eqref{quantization condition}.
+\begin{figure}
+	\includegraphics[width=0.5\textwidth]{mma/S2.pdf}
+	\caption{The 2D L\"{u}scher zeta function $S_2$.}
+	\label{fig:S2}
+\end{figure}
+
 So, let's take the ERE \eqref{ere} and try to apply the quantization condition \eqref{quantization condition} to learn how to tune,
 \begin{align}
 	\frac{2}{\pi} \log(p \tilde{a}) + \cdots
@@ -75,3 +82,11 @@ meaning that if we set $R_0=L/2\pi$ (so that it's the radius of the compactified
 That seems promising?
 But of course you can change $R_0$ and need a finite $a_0$.
 So who knows.
+
+If we come back to the tuning \eqref{tuning} and set $\Lambda=2\pi/\Delta x$ then we find
+\begin{align}
+	gM &= - \frac{2\pi}{\log\left(\frac{L}{2\pi} \frac{2\pi}{\Delta x}\right)} = \frac{2\pi}{\log N_x}
+\end{align}
+to tune to the zeros of $S_2$.
+
+Is any of this right for getting strong interactions?  I do not know.
