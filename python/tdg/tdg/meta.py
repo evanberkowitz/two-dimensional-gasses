@@ -1,0 +1,7 @@
+name = "tdg"
+version = "0.0.0"
+author = "Evan Berkowitz"
+author_email = "tdg@evanberkowitz.com"
+description = "Auxiliary field quantum monte carlo for 2D gasses"
+url = "https://github.com/evanberkowitz/two-dimensional-gasses/"
+license = "GPL-3"
