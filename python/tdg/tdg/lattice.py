@@ -38,6 +38,9 @@ class Lattice:
         self.X = np.tile( self.x, (len(self.y), 1)).T
         self.Y = np.tile( self.y, (len(self.x), 1))
 
+        # To get the dimensionless wavenumber^2 in the fourier basis we can simply
+        self.nsq = self.X**2 + self.Y**2
+
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
         self.coordinates = np.array([[x,y] for x,y in zip(self.X.flat, self.Y.flat)])
@@ -75,6 +78,9 @@ class Lattice:
         return np.zeros([self.nx, self.ny], dtype=dtype)
 
     def matrix(self, dtype=complex):
+        # can do matrix-vector via
+        #   np.einsum('ijab,ab',matrix,vector)
+        # to get a new vector (with indices ij).
         return np.zeros([self.nx, self.ny, self.nx, self.ny], dtype=dtype)
 
     def fft(self, vector, axes=(-2,-1), norm='ortho'):
@@ -86,4 +92,22 @@ class Lattice:
     # Private, call-once functions to set some properties in the constructor
     def _dx(self):
         pass
+
+    def _adjacency_matrix(self):
+        # Creates an (nx, ny, nx, ny) adjacency matrix, where the
+        # first two indices form the "row" and the
+        # second two indices form the "column"
+        A = self.matrix()
+        for i,x in enumerate(self.x):
+            for k,z in enumerate(self.x):
+                if np.abs(self.mod_x(x-z)) not in [0,1]:
+                    continue
+                for j,y in enumerate(self.y):
+                    for l,w in enumerate(self.y):
+                        if np.abs(self.mod_y(y-w)) not in [0,1]:
+                            continue
+                        if self.distance_squared([x,y],[z,w]) == 1:
+                            A[i,j,k,l] = 1
+                            
+        return A
 
