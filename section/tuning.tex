@@ -1,0 +1,75 @@
+\section{Tuning}\label{sec:tuning}
+
+To tune our Hamiltonian we go to the two-body sector.
+Let $\ket{x,y} = \psi\adjoint_\up(x) \psi\adjoint_\down(y) \ket{0}$.
+Then
+\begin{equation}
+	(HM\Delta x^2) \ket{x,y} = \sum_{x'} k_{x,x'}\ket{x',y} + \sum_{y'} k_{y,y'}\ket{x,y'} + V_{xy} \ket{x,y}
+\end{equation}
+where we use a dimensionless potential $V_{xy}$ to generalize the contact interaction;
+the obvious contact interaction in the Hamiltonian \eqref{hamiltonian} is
+\begin{equation}
+	V_{xy} = - gM \delta_{xy}
+\end{equation}
+and $V_{xy}=V_{yx}$ by Newton's 3rd law.
+
+Let's apply the non-interacting Hamiltonian $H_0$ to two-body momentum states
+\begin{equation}
+	\ket{p,q} = \oneover{N_x}\sum_{xy} e^{i(p\cdot x + q \cdot y)} \ket{x,y}
+\end{equation}
+to find
+\begin{align}
+	(H_0 M\Delta x^2) \ket{p,q}
+	&=
+			\oneover{N_x} \sum_{xx'} e^{i(p\cdot x + q \cdot y)} k_{xx'}\ket{x',y}
+		+	\oneover{N_x} \sum_{yy'} e^{i(p\cdot x + q \cdot y)} k_{yy'}\ket{x,y'}
+	\\
+	&=
+			\oneover{N_x} \sum_{xx'p'} e^{i(p\cdot x + q \cdot y)} \frac{p'^2}{2} e^{-i p'\cdot(x-x')}\ket{x',y}
+		+	\oneover{N_x} \sum_{yy'q'} e^{i(p\cdot x + q \cdot y)} \frac{q'^2}{2} e^{-i q'\cdot(y-y')}\ket{x,y'}
+	\\
+	&=
+			\oneover{N_x} \sum_{x'p'} \frac{p'^2}{2} e^{i(p'x+qy)} \ket{x',y} \sum_{x} e^{i(p-p')x}
+		+	\oneover{N_x} \sum_{y'q'} \frac{q'^2}{2} e^{i(px+q'y)} \ket{x,y'} \sum_{y} e^{i(q-q')y}
+	\\
+	&=
+			\oneover{N_x} \sum_{x'p'} \frac{p'^2}{2} e^{i(p'x'+qy)} \ket{x',y} N_x \delta_{pp'}
+		+	\oneover{N_x} \sum_{y'q'} \frac{q'^2}{2} e^{i(px+q'y')} \ket{x,y'} N_x \delta_{qq'}
+	\\
+	&=
+			\frac{p^2}{2}\sum_{x'} e^{i(px'+qy)} \ket{x',y}
+		+	\frac{q^2}{2}\sum_{y'} e^{i(px+qy')} \ket{x,y'}
+	\\
+	&=
+		\left(\frac{p^2}{2} + \frac{q^2}{2}\right) {\color{red} N_x} \ket{pq}
+\end{align}
+though \todo{I seem to have lost a factor of $1/N_x$; could it be that the hopping matrix is missing a normalization?  Andrei's scattering notes has $k$ down by a power of the volume compared to \eqref{hamiltonian}.}
+
+Now consider the states with total momentum $P$ and a relative coordinate $r$,
+\begin{align}
+	\ket{P,r} = \oneover{N_x} \sum_x e^{iPx} \ket{x,x+r}
+\end{align}
+The applying the (interacting) Hamiltonian gives
+\begin{align}
+	(H M\Delta x^2) \ket{P,r}
+	&=
+			\sum_{r'} k_{rr'} \left( e^{iP(r'-r)}+1\right)\ket{P,r'}
+		+	V_{0,r} \ket{P,r}
+\end{align}
+If we focus on $P=0$ we get
+\begin{align}
+	(H M\Delta x^2) \ket{0,r}
+	&=
+			\sum_{r'} 2k_{rr'} \ket{0,r'}
+		+	V_{0,r} \ket{0,r};
+\end{align}
+the $2$ on the kinetic piece is the fact that the reduced mass is half the single-particle mass.
+So, we can solve the Schr\"{o}dinger equation in the $P=0$ sector,
+\begin{align}
+	(H M\Delta x^2) \sum_r \ket{P=0,r}\braket{P=0,r}{\psi} &= (EM\Delta x^2)\ket{\psi}
+	\\
+	\sum_r \bra{P=0, r'} (H M \Delta x^2) \ket{P=0,r}\braket{P=0,r}{\psi} &= (E M\Delta x^2)\braket{P=0,r'}{\psi}
+	\\
+	h_{r'r} \psi(r) &= e \psi(r').
+\end{align}
+Since this is in the two-body sector we can use the L\"{u}scher finite-volume quantization condition \eqref{quantization condition} to determine the desired continuum-limit energy levels and adjust $V$ until we reproduce them correctly.
