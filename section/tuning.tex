@@ -41,7 +41,7 @@ to find
 		+	\frac{q^2}{2}\sum_{y'} e^{i(px+qy')} \ket{x,y'}
 	\\
 	&=
-		\left(\frac{p^2}{2} + \frac{q^2}{2}\right) {\color{red} N_x} \ket{pq}
+		\left(\frac{p^2}{2} + \frac{q^2}{2}\right) {\color{red} N_x} \ket{p,q}
 \end{align}
 though \todo{I seem to have lost a factor of $1/N_x$; could it be that the hopping matrix is missing a normalization?  Andrei's scattering notes has $k$ down by a power of the volume compared to \eqref{hamiltonian}.}
 
@@ -70,6 +70,6 @@ So, we can solve the Schr\"{o}dinger equation in the $P=0$ sector,
 	\\
 	\sum_r \bra{P=0, r'} (H M \Delta x^2) \ket{P=0,r}\braket{P=0,r}{\psi} &= (E M\Delta x^2)\braket{P=0,r'}{\psi}
 	\\
-	h_{r'r} \psi(r) &= e \psi(r').
+	h_{r'r} \psi_r &= e \psi_{r'}
 \end{align}
 Since this is in the two-body sector we can use the L\"{u}scher finite-volume quantization condition \eqref{quantization condition} to determine the desired continuum-limit energy levels and adjust $V$ until we reproduce them correctly.
