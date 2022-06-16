@@ -25,7 +25,7 @@ The Hamiltonian (meaning $HM$) is
 \begin{align}
 	MH &= \sum_{xy} \psi\adjoint_x \kappa_{xy} \psi_y - \frac{gM}{\Delta x^2} \sum_{x} n^1_x n^2_x
 	&
-	\kappa_{xy} &= \sum_{p} \frac{p^2}{2\Delta x^2} e^{-i p \cdot (x-y)}
+	\kappa_{xy} &= \oneover{V} \sum_{p} \frac{p^2}{2\Delta x^2} e^{-i p \cdot (x-y)}
 	&
 	n_x &= \psi\adjoint_x \psi_x
 \end{align}
@@ -40,7 +40,7 @@ So now we can go `truly dimensionless', and clear the $\Delta x^{-2}$ from the r
 	&=
 	\sum_{xy} \psi\adjoint_x k_{xy} \psi_y - gM \sum_x n^1_x n^2_x
 	&
-	k_{xy} &= \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
+	k_{xy} &= \oneover{V} \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
 	\label{eq:hamiltonian}
 \end{align}
 The right-hand side now depends \emph{only} on the number of sites $N_x$; no dimensionful scale remains.

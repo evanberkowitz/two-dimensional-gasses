@@ -15,35 +15,38 @@ and $V_{xy}=V_{yx}$ by Newton's 3rd law.
 
 Let's apply the non-interacting Hamiltonian $H_0$ to two-body momentum states
 \begin{equation}
-	\ket{p,q} = \oneover{N_x}\sum_{xy} e^{i(p\cdot x + q \cdot y)} \ket{x,y}
+	\ket{p,q} 
+	=
+	\oneover{\sqrt{V}^2}\sum_{xy} e^{i(p\cdot x + q \cdot y)} \ket{x,y}
+	=
+	\oneover{N_x^2}\sum_{xy} e^{i(p\cdot x + q \cdot y)} \ket{x,y}
 \end{equation}
 to find
 \begin{align}
 	(H_0 M\Delta x^2) \ket{p,q}
 	&=
-			\oneover{N_x} \sum_{xx'} e^{i(p\cdot x + q \cdot y)} k_{xx'}\ket{x',y}
-		+	\oneover{N_x} \sum_{yy'} e^{i(p\cdot x + q \cdot y)} k_{yy'}\ket{x,y'}
+			\oneover{N_x^2} \sum_{xx'y} e^{i(p\cdot x + q \cdot y)} k_{xx'}\ket{x',y}
+		+	\oneover{N_x^2} \sum_{xyy'} e^{i(p\cdot x + q \cdot y)} k_{yy'}\ket{x,y'}
 	\\
 	&=
-			\oneover{N_x} \sum_{xx'p'} e^{i(p\cdot x + q \cdot y)} \frac{p'^2}{2} e^{-i p'\cdot(x-x')}\ket{x',y}
-		+	\oneover{N_x} \sum_{yy'q'} e^{i(p\cdot x + q \cdot y)} \frac{q'^2}{2} e^{-i q'\cdot(y-y')}\ket{x,y'}
+			\oneover{N_x^2} \sum_{xx'p'y} e^{i(p\cdot x + q \cdot y)} \frac{p'^2}{2V} e^{-i p'\cdot(x-x')}\ket{x',y}
+		+	\oneover{N_x^2} \sum_{xyy'q'} e^{i(p\cdot x + q \cdot y)} \frac{q'^2}{2V} e^{-i q'\cdot(y-y')}\ket{x,y'}
 	\\
 	&=
-			\oneover{N_x} \sum_{x'p'} \frac{p'^2}{2} e^{i(p'x+qy)} \ket{x',y} \sum_{x} e^{i(p-p')x}
-		+	\oneover{N_x} \sum_{y'q'} \frac{q'^2}{2} e^{i(px+q'y)} \ket{x,y'} \sum_{y} e^{i(q-q')y}
+			\oneover{N_x^4} \sum_{x'p'y} \frac{p'^2}{2} e^{i(p'x+qy)} \ket{x',y} \sum_{x} e^{i(p-p')x}
+		+	\oneover{N_x^4} \sum_{xy'q'} \frac{q'^2}{2} e^{i(px+q'y)} \ket{x,y'} \sum_{y} e^{i(q-q')y}
 	\\
 	&=
-			\oneover{N_x} \sum_{x'p'} \frac{p'^2}{2} e^{i(p'x'+qy)} \ket{x',y} N_x \delta_{pp'}
-		+	\oneover{N_x} \sum_{y'q'} \frac{q'^2}{2} e^{i(px+q'y')} \ket{x,y'} N_x \delta_{qq'}
+			\oneover{N_x^4} \sum_{x'p'y} \frac{p'^2}{2} e^{i(p'x'+qy)} \ket{x',y} V \delta_{pp'}
+		+	\oneover{N_x^4} \sum_{xy'q'} \frac{q'^2}{2} e^{i(px+q'y')} \ket{x,y'} V \delta_{qq'}
 	\\
 	&=
-			\frac{p^2}{2}\sum_{x'} e^{i(px'+qy)} \ket{x',y}
-		+	\frac{q^2}{2}\sum_{y'} e^{i(px+qy')} \ket{x,y'}
+			\frac{p^2}{2} \oneover{N_x^2}\sum_{x'y} e^{i(px'+qy)} \ket{x',y}
+		+	\frac{q^2}{2} \oneover{N_x^2}\sum_{xy'} e^{i(px+qy')} \ket{x,y'}
 	\\
 	&=
-		\left(\frac{p^2}{2} + \frac{q^2}{2}\right) {\color{red} N_x} \ket{p,q}
+		\left(\frac{p^2}{2} + \frac{q^2}{2}\right) \ket{p,q}.
 \end{align}
-though \todo{I seem to have lost a factor of $1/N_x$; could it be that the hopping matrix is missing a normalization?  Andrei's scattering notes has $k$ down by a power of the volume compared to \eqref{hamiltonian}.}
 
 Now consider the states with total momentum $P$ and a relative coordinate $r$,
 \begin{align}
