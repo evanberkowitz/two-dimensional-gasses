@@ -110,4 +110,30 @@ So, continuing our examples,
     \ket{A_1, (1,2)} =& \frac{1}{\sqrt{8}}\big(\ket{(+1,+2)} + \ket{(+1,-2)} + \ket{(-1,+2)} + \ket{(-1,-2)} \nonumber\\
                      &\phantom{\frac{1}{\sqrt{8}}}+ \ket{(+2,+1)} + \ket{(+2,-1)} + \ket{(-2,+1)} + \ket{(-2,-1)} \big).
 \end{align}
+The normalization $\shell{p}^{-\half}$ is picked so that $\ket{A_1, p}$ is normalized.
+They form an orthonormal basis for the $A_1$-projected sector.
 
+Since $\vec{n}$ is the relative momentum, one might consider labeling states by $n^2$, especially in the non-interacting case.
+However, this leads to an ambiguity in the labeling.
+Consider, for example, that
+\begin{align}
+    \braket{A_1, (3,4)}{A_1, (0,5)} = 0
+\end{align}
+but both states have $\vec{n}^2=25$.
+
+One perk of picking these shells is that the kinetic energy acts very simply,
+\begin{align}
+    k \ket{A_1, p} = \frac{p^2}{2} \ket{A_1, p},
+\end{align}
+just as it acts for the simple momentum eigenstates.
+
+\subsection{Lego Spheres in 2D}
+
+The `Lego spheres' in 2D are potentials $V_{0,r}$ which also exhibit $D_4$ symmetry.
+We can construct them in a very similar way, given a `radius' $R$ given by an ordered pair (not of momentum components, but of coordinates),
+\begin{align}
+    \LegoSphere{R}_{0,r} = \oneover{\shell{R}}\sum_{g \in D_4} \delta_{r, gR}
+\end{align}
+where the normalization $\shell{R}$ is the $\sqrt{\textrm{the number of sites in the sphere}}$.
+{\bf In our 3D convention we left out the normalization} but I think it's beneficial to put it in.
+We have to track the whole vector radius rather than just its magnitude, since different sites the same distance from the origin can never be mapped into one another under a $D_4$ operation.
