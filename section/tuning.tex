@@ -74,6 +74,7 @@ So, we can solve the Schr\"{o}dinger equation in the $P=0$ sector,
     \sum_r \bra{P=0, r'} \tilde{H} \ket{P=0,r}\braket{P=0,r}{\psi} &= \tilde{E}\braket{P=0,r'}{\psi}
     \\
     h_{r'r} \psi_r &= \tilde{E} \psi_{r'}
+    \label{eq:two-body schrodinger equation}
 \end{align}
 Since this is in the two-body sector we can use the L\"{u}scher finite-volume quantization condition \eqref{quantization condition} to determine the desired continuum-limit energy levels and adjust $V_{0,r}$ until we reproduce them correctly.
 
@@ -81,5 +82,32 @@ Since this is in the two-body sector we can use the L\"{u}scher finite-volume qu
 \subsection{$D_4$ Symmetry; the $A_1$ representation}
 
 The finite volume / Brillouin zone has the symmetry of a square, $D_4$, the group of 8 elements (the identity, 3 nontrivial rotations, 2 vertex and 2 edge reflections).  The `$S$-wave' is the $A_1$ representation.
+It's the $A_1$ representation that satisfies the L\"{u}scher finite-volume quantization condition \eqref{quantization condition} (of course there are quantization conditions for the other irreps, and for $P\neq 0$, but we only have 1 parameter to tune, so let's tune it as simply as possible).
 
 We can project $h_{r'r}$ into the $A_1$ sector for a computational advantage while tuning.
+Consider transforming $\psi_{r'}$ into relative-momentum space,
+\begin{align}
+    \ket{p} = \oneover{\sqrt{V}}\sum_{r'} e^{ipr'} \psi_{r'}
+\end{align}
+In the free case the relative momentum $p$ is conserved and we can organize the energy eigenstates into momentum shells.
+The momentum is given by an ordered pair of integers, and the size of the momentum shell is the number of unique ordered pairs in a single momentum vector's image under $D_4$.
+For example, $(0,0)$ is a shell, $(0,\pm 1)$ and $(\pm 1, 0)$ form a shell of size 4, $(\pm 1, \pm 1)$ is a shell of size 4, $(\pm 1, \pm 2)$ and $(\pm 2, \pm 1)$ form a shell of size 8.
+If we pick $N_x$ odd there's no funny business about double-counting the boundary.
+
+The $A_1$-projected state is the equally-weighted sum of all the states in the shell with no funny phases,
+\begin{align}
+    \ket{A_1, \vec{p}} = \oneover{\shell{p}} \sum_{g\in D_4} \ket{g\vec{p}}
+\end{align}
+where $\shell{p}$ is the required normalization, given by $\sqrt{\textrm{the number of states in the shell}}$.
+So, continuing our examples,
+\begin{align}
+    \ket{A_1, (0,0)} =& \ket{(0,0)}
+    \\
+    \ket{A_1, (0,1)} =& \frac{1}{2}\left(\ket{(0,+1)} + \ket{(0,-1)} + \ket{(+1,0)} + \ket{(-1,0)} \right)
+    \\
+    \ket{A_1, (1,1)} =& \frac{1}{2}\left(\ket{(+1,+1)} + \ket{(+1,-1)} + \ket{(-1,+1)} + \ket{(-1,-1)} \right)
+    \\
+    \ket{A_1, (1,2)} =& \frac{1}{\sqrt{8}}\big(\ket{(+1,+2)} + \ket{(+1,-2)} + \ket{(-1,+2)} + \ket{(-1,-2)} \nonumber\\
+                     &\phantom{\frac{1}{\sqrt{8}}}+ \ket{(+2,+1)} + \ket{(+2,-1)} + \ket{(-2,+1)} + \ket{(-2,-1)} \big).
+\end{align}
+
