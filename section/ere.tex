@@ -29,7 +29,7 @@ As a ressult, what's strange/magical about $D=2$ is that we can absorb $a_0$ int
 			\frac{2}{\pi} \log(p \tilde{a})
 		+	\frac{1}{2} r_0 p^2
 		+	\cdots
-		\label{eq:ere}
+	\label{eq:no-constant}
 \end{align}
 but we cannot further absorb the higher terms because they have a real, meaningful momentum dependence.
 So, could we even mean by something like `unitary gas' in 2D?
@@ -46,9 +46,20 @@ Is $\tilde{a}$ what is meant by the 2D scattering length?  Or something else?
 At the cold-atoms/nuclear matter ECT* program we saw experimental results always described as a function of $\log k_F a$ (I don't mean to suggest this $a$ is the above $\tilde{a}$ necessarily; I have no idea).
 If we take our cue from this, maybe we'll see that we actually have to retune at each desired $k_F$, which would be a disaster.
 
-But before we fall too deep into despair, perhaps looking at the L\"{u}scher formula in 2D may shed light?
-Then we might know how to tune?
+Let's not forget that there is a \emph{geometric meaning} to the scattering length: where, with linear extrapolation, the wavefunction hits $0$.
+According to \Refs{Adhikari:1986a,Adhikari:1986b,Khuri:2008ib,Galea:2017jhe}, we recover this geometric meaning when we pick
+\begin{align}
+	\cot \delta(p) = \frac{2}{\pi}\left[\log \frac{pa}{2} + \gamma\right] + \oneover{4} r_e^2 p^2 + \cdots
+	\label{eq:ere}
+\end{align}
+where $\gamma = 0.577\ldots$ is the Euler–Mascheroni constant and $r_e$ has a similar geometric meaning (see \Ref{Galea:2017jhe} (18)).
+We will call this expression \eqref{ere} `the' effective range expansion.
+We can match this form to the form \eqref{no-constant} where we totally absorb the constant into $\tilde{a}$ if we pick
+\begin{equation}
+	\tilde{a} = \frac{e^{\gamma}}{2} a.
+\end{equation}
 
+Let us try to use the L\"{u}scher formula in 2D to tune.
 In 2D we have
 \begin{align}
 	\cot \delta(p) - \frac{2}{\pi} \log \frac{pL}{2\pi} &= \frac{1}{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
@@ -57,6 +68,7 @@ In 2D we have
 	\label{eq:quantization condition}
 \end{align}
 In \Figref{S2} we show the zeta function $S_2$ which appears in the finite-volume quantization condition \eqref{quantization condition}.
+Unlike in 3D we can evaluate this with good precision in the obvious way: just pick a high cutoff.
 \begin{figure}
 	\includegraphics[width=0.5\textwidth]{mma/S2.pdf}
 	\caption{The 2D L\"{u}scher zeta function $S_2$.  We typically evaluate thinking of $x = (pL/2\pi)^2$; the non-interacting energies are shown as vertical asymptotes.}
@@ -65,28 +77,40 @@ In \Figref{S2} we show the zeta function $S_2$ which appears in the finite-volum
 
 So, let's take the ERE \eqref{ere} and try to apply the quantization condition \eqref{quantization condition} to learn how to tune,
 \begin{align}
-	\frac{2}{\pi} \log(p \tilde{a}) + \cdots
+	\frac{2}{\pi} \left[\log\frac{pa}{2} + \gamma \right] + \cdots
 	&=
 	\frac{2}{\pi} \log \frac{pL}{2\pi} + \frac{1}{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
 	\\
-	\frac{2}{\pi} \log \frac{2\pi \tilde{a}}{L} &= \oneover{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
+	\log \frac{\pi a}{L} &= \oneover{2\pi} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right) - \gamma
+	\label{eq:renormalization condition}
 \end{align}
-where we dropped all non-log dependence from the ERE.
-
-In 3D to get unitarity we tune until we hit the zeros of $S_3(x)$ for some energies (one level per Lego Sphere operator we want to use).
-In our case this suggests we would find
-\begin{align}
-	\frac{\tilde{a}}{L} = \frac{1}{2\pi},
-\end{align}
-meaning that if we set $R_0=L/2\pi$ (so that it's the radius of the compactified spatial directions, or equivalently one over the lowest nonzero allowed box momentum) then we would need the dimensionless $1/a_0 = 0$.
-That seems promising?
-But of course you can change $R_0$ and need a finite $a_0$.
-So who knows.
+where we dropped all further momentum dependence from the ERE.
 
 If we come back to the tuning \eqref{tuning} and set $\Lambda=2\pi/\Delta x$ then we find
 \begin{align}
-	gM &= - \frac{2\pi}{\log\left(\frac{L}{2\pi} \frac{2\pi}{\Delta x}\right)} = -\frac{2\pi}{\log N_x}
+	gM
+	&= - \frac{2\pi}{\log\left(\frac{e^\gamma}{2} a \frac{2\pi}{\Delta x}\right)}
+	= -\frac{2\pi}{\gamma + \log \pi a / \Delta x}.
 \end{align}
-to tune to the zeros of $S_2$.
+where $a/\Delta x$ is the scattering length in units of the lattice spacing.
+If we assume that we want a very large scattering length (on the scale of $L$) then we see that the log's argument $\sim N_x$.
 
-Is any of this right for getting strong interactions?  I do not know.
+Since `weak coupling' leads to energy levels given by the asymptotes in \Figref{S2}, the strong coupling region means trying to tune via \eqref{renormalization condition} to a constant where we get something between the asymptotes.
+Which constant is somewhat a tricky question.
+In 3D we tune to the zeroes of the zeta function; in 3D the best we can do is tune $a \sim L/\pi$.
+
+The quantization condition \eqref{quantization condition} is phrased in terms of dimensionful variables $p$ and $L$,
+\begin{align}
+	\Delta x^2 p^2 &= 2 M E \Delta x^2
+	&
+	L &= N_x \Delta x
+\end{align}
+Let's translate these into dimensionless quantities.
+\begin{align}
+	\frac{p^2 L^2}{(2\pi)^2}
+	=
+	\frac{ \frac{(2 M E \Delta x^2)}{\Delta x^2} (N_x \Delta x)^2}{(2\pi^2)}
+	=
+	\frac{ 2 \tilde{E} N_x^2 }{(2\pi)^2}
+\end{align}
+where $\tilde{E}$ is the dimensionless energy eigenvalue of the dimensionless $\tilde{H}$ \eqref{hamiltonian}.
