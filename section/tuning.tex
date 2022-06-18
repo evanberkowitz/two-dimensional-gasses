@@ -132,8 +132,41 @@ just as it acts for the simple momentum eigenstates.
 The `Lego spheres' in 2D are potentials $V_{0,r}$ which also exhibit $D_4$ symmetry.
 We can construct them in a very similar way, given a `radius' $R$ given by an ordered pair (not of momentum components, but of coordinates),
 \begin{align}
-    \LegoSphere{R}_{0,r} = \oneover{\shell{R}}\sum_{g \in D_4} \delta_{r, gR}
+    \LegoSphere{R}_{0,r} = \oneover{\shell{R}^2}\sum_{g \in D_4} \delta_{r, gR}
 \end{align}
 where the normalization $\shell{R}$ is given by $\sqrt{\textrm{the number of sites in the sphere}}$.
-{\bf In our 3D convention we left out the normalization} but I think it's beneficial to put it in.
+{\bf In our 3D convention we left out the normalization} but I think it's beneficial to put it in, because it's as though we split the $R=\vec{0}$ contact operator into $\shell{R}^2$ pieces, the `surface area' of the Lego sphere.
 We have to track the whole vector radius rather than just its magnitude, since some sites the same distance from the origin can never be mapped into one another under a $D_4$ operation.
+
+Now we evaluate matrix elements of a Lego sphere in the $A_1$ momentum basis.
+Starting with the plane-wave with momentum $n$ we have
+\begin{align}
+    \matrixElement{n'}{\LegoSphere{R}}{n}
+    &=
+    \oneover{V} \sum_{r'rg} \bra{r'} e^{-2\pi i n'r' / N_x} \oneover{\shell{R}^2} \delta_{r,gR} e^{+2\pi i nr / N_x} \ket{r}
+    =
+    \oneover{V} \oneover{\shell{R}^2} \sum_{r'rg} e^{2\pi i (n gR - n'r') / N_x} \braket{r'}{gR}
+    \\
+    &=
+    \oneover{V} \oneover{\shell{R}^2} \sum_{r'rg} e^{2\pi i (n gR - n'r') / N_x} \delta_{r',gR}
+    \\
+    &=
+    \oneover{V} \oneover{\shell{R}^2} \sum_{g} e^{2\pi i (n-n') gR / N_x}
+\end{align}
+We can now take superpositions to evaluate
+\begin{align}
+    \matrixElement{A_1, n'}{\LegoSphere{R}}{A_1, n}
+    &=
+    \oneover{\shell{n'}\shell{n}} \sum_{g'g} \matrixElement{g'n'}{\LegoSphere{R}}{gn}
+    \\
+    &=
+    \oneover{\shell{n'}\shell{n}} \oneover{V}\oneover{\shell{R}^2} \sum_{g'gh} e^{2\pi i (gn-g'n') hR / N_x}
+\end{align}
+Note that we don't \emph{actually} need to execute the sum over $h$ since $hR$ is dotted into all possible combinations of differences (from the sums over $g'g$).
+The number of terms will be $\shell{R}^2$, the size of the image of $R$ under $D_4$, 
+\begin{align}
+    \matrixElement{A_1, n'}{\LegoSphere{R}}{A_1, n}
+    &=
+    \oneover{\shell{n'}\shell{n}} \oneover{V} \sum_{g'g} e^{2\pi i (gn-g'n') R / N_x}
+\end{align}
+This closely matches what I have in the 3D $A_{1g}$ case, except for (1) the normalization and (2) I regroup the $V\inverse$ term into the coefficient.
