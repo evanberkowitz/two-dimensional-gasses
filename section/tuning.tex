@@ -1,23 +1,23 @@
-\section{Tuning}\label{sec:tuning}
+\section{Tuning in the Two-Body Sector}\label{sec:tuning}
 
-To tune our Hamiltonian we go to the two-body sector.
+To tune our Hamiltonian we go to the two-body sector and aim to reproduce a particular effective range expansion \eqref{ere} by matching to finite-volume energy levels predicted by the L\"{u}scher finite-volume quantization condition \eqref{quantization condition}.
 Let $\ket{x,y} = \psi\adjoint_\up(x) \psi\adjoint_\down(y) \ket{0}$.
 Then
 \begin{equation}
-    \tilde{H} \ket{x,y} = \sum_{x'} k_{x,x'}\ket{x',y} + \sum_{y'} k_{y,y'}\ket{x,y'} + V_{xy} \ket{x,y}
+    \tilde{H} \ket{x,y} = \sum_{x'} k_{x,x'}\ket{x',y} + \sum_{y'} k_{y,y'}\ket{x,y'} + \tilde{V}_{xy} \ket{x,y}
 \end{equation}
-where we use a dimensionless potential $V_{xy}$ to generalize the contact interaction;
+where we use a dimensionless potential $\tilde{V}_{xy}$ to generalize the contact interaction;
 the obvious contact interaction in the Hamiltonian \eqref{hamiltonian} is
 \begin{equation}
-    V_{xy} = - gM \delta_{xy}
+    \tilde{V}_{xy} = - gM \delta_{xy}
 \end{equation}
-and $V_{xy}=V_{yx}$ by Newton's 3rd law.
+and $\tilde{V}_{xy}=\tilde{V}_{yx}$ by Newton's 3rd law.
 
 Let's apply the non-interacting Hamiltonian $H_0$ to two-body momentum states
 \begin{equation}
     \ket{p,q} 
     =
-    \oneover{\sqrt{V}^2}\sum_{xy} e^{i(p\cdot x + q \cdot y)} \ket{x,y}
+    \oneover{\sqrt{\Volume}^2}\sum_{xy} e^{i(p\cdot x + q \cdot y)} \ket{x,y}
     =
     \oneover{N_x^2}\sum_{xy} e^{i(p\cdot x + q \cdot y)} \ket{x,y}
 \end{equation}
@@ -29,16 +29,16 @@ to find
         +   \oneover{N_x^2} \sum_{xyy'} e^{i(p\cdot x + q \cdot y)} k_{yy'}\ket{x,y'}
     \\
     &=
-            \oneover{N_x^2} \sum_{xx'p'y} e^{i(p\cdot x + q \cdot y)} \frac{p'^2}{2V} e^{-i p'\cdot(x-x')}\ket{x',y}
-        +   \oneover{N_x^2} \sum_{xyy'q'} e^{i(p\cdot x + q \cdot y)} \frac{q'^2}{2V} e^{-i q'\cdot(y-y')}\ket{x,y'}
+            \oneover{N_x^2} \sum_{xx'p'y} e^{i(p\cdot x + q \cdot y)} \frac{p'^2}{2\Volume} e^{-i p'\cdot(x-x')}\ket{x',y}
+        +   \oneover{N_x^2} \sum_{xyy'q'} e^{i(p\cdot x + q \cdot y)} \frac{q'^2}{2\Volume} e^{-i q'\cdot(y-y')}\ket{x,y'}
     \\
     &=
             \oneover{N_x^4} \sum_{x'p'y} \frac{p'^2}{2} e^{i(p'x+qy)} \ket{x',y} \sum_{x} e^{i(p-p')x}
         +   \oneover{N_x^4} \sum_{xy'q'} \frac{q'^2}{2} e^{i(px+q'y)} \ket{x,y'} \sum_{y} e^{i(q-q')y}
     \\
     &=
-            \oneover{N_x^4} \sum_{x'p'y} \frac{p'^2}{2} e^{i(p'x'+qy)} \ket{x',y} V \delta_{pp'}
-        +   \oneover{N_x^4} \sum_{xy'q'} \frac{q'^2}{2} e^{i(px+q'y')} \ket{x,y'} V \delta_{qq'}
+            \oneover{N_x^4} \sum_{x'p'y} \frac{p'^2}{2} e^{i(p'x'+qy)} \ket{x',y} \Volume \delta_{pp'}
+        +   \oneover{N_x^4} \sum_{xy'q'} \frac{q'^2}{2} e^{i(px+q'y')} \ket{x,y'} \Volume \delta_{qq'}
     \\
     &=
             \frac{p^2}{2} \oneover{N_x^2}\sum_{x'y} e^{i(px'+qy)} \ket{x',y}
@@ -52,42 +52,142 @@ Now consider the states with total momentum $P$ and a relative coordinate $r$,
 \begin{align}
     \ket{P,r} = \oneover{N_x} \sum_x e^{iPx} \ket{x,x+r}
 \end{align}
-The applying the (interacting) Hamiltonian gives
+Then applying the (interacting) Hamiltonian gives
 \begin{align}
     \tilde{H} \ket{P,r}
     &=
             \sum_{r'} k_{rr'} \left( e^{iP(r'-r)}+1\right)\ket{P,r'}
-        +   V_{0,r} \ket{P,r}
+        +   \tilde{V}_{0,r} \ket{P,r}
 \end{align}
 If we focus on $P=0$ we get
 \begin{align}
     \tilde{H} \ket{0,r}
     &=
             \sum_{r'} 2k_{rr'} \ket{0,r'}
-        +   V_{0,r} \ket{0,r};
+        +   \tilde{V}_{0,r} \ket{0,r};
 \end{align}
 the $2$ on the kinetic piece is the fact that the reduced mass is half the single-particle mass.
 So, we can solve the Schr\"{o}dinger equation in the $P=0$ sector,
 \begin{align}
     \tilde{H} \sum_r \ket{P=0,r}\braket{P=0,r}{\psi} &= \tilde{E}\ket{\psi}
     \\
-    \sum_r \bra{P=0, r'} \tilde{H} \ket{P=0,r}\braket{P=0,r}{\psi} &= \tilde{E}\braket{P=0,r'}{\psi}
+    \sum_{r'r} \ket{P=0, r'} \bra{P=0, r'} \tilde{H} \ket{P=0,r}\braket{P=0,r}{\psi} &= \tilde{E} \sum_{r'} \ket{P=0, r'}\braket{P=0,r'}{\psi}
     \\
-    h_{r'r} \psi_r &= \tilde{E} \psi_{r'}
+    \sum_{r'r} (h_{r'r} \psi_r) \ket{P=0, r'} &= \tilde{E} \sum_{r'} \psi_{r'} \ket{P=0, r'}
     \label{eq:two-body schrodinger equation}
 \end{align}
-Since this is in the two-body sector we can use the L\"{u}scher finite-volume quantization condition \eqref{quantization condition} to determine the desired continuum-limit energy levels and adjust $V_{0,r}$ until we reproduce them correctly.
+Since this is in the two-body sector we can use the L\"{u}scher finite-volume quantization condition \eqref{quantization condition} to determine the desired continuum-limit energy levels and adjust $\tilde{V}_{0,r}$ until we reproduce them correctly.
 
+\subsection{L\"{u}scher's Finite-Volume Quantization Condition}
 
-\subsection{$D_4$ Symmetry; the $A_1$ representation}
+Let us try to use the L\"{u}scher formula in 2D to tune.
+In 2D we have, for two-body energy levels in vanishing total momentum sector in the $A_1$ representation,
+\begin{align}
+	\cot \delta(p) - \frac{2}{\pi} \log \frac{pL}{2\pi} &= \frac{1}{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
+	&	
+	S_2(x) &= \lim_{N\goesto\infty} \sum_{\abs{\vec{n}} \leq \frac{N}{2}} \oneover{n^2-x} - 2\pi \log \frac{N}{2}
+	\label{eq:quantization condition}
+\end{align}
+where $p^2=2\mu E$ (dimensionful) and $L$ is dimensionful.
+In \Figref{S2} we show the zeta function $S_2$ which appears in the finite-volume quantization condition \eqref{quantization condition}.
+Unlike in 3D we can evaluate this with good precision in the obvious way: just pick a high cutoff.
+\begin{figure}
+	\includegraphics[width=0.5\textwidth]{mma/S2.pdf}
+	\caption{The 2D L\"{u}scher zeta function $S_2$.  We typically evaluate thinking of $x = (pL/2\pi)^2$; the non-interacting energies are shown as vertical asymptotes.}
+	\label{fig:S2}
+\end{figure}
 
-The finite volume / Brillouin zone has the symmetry of a square, $D_4$, the group of 8 elements (the identity, 3 nontrivial rotations, 2 vertex and 2 edge reflections).  The `$S$-wave' is the $A_1$ representation.
+So, let's take the ERE \eqref{ere} and try to apply the quantization condition \eqref{quantization condition} to learn how to tune a scattering length $a$,
+\begin{align}
+	\frac{2}{\pi} \left[\log\frac{pa}{2} + \gamma \right] + \cdots
+	&=
+	\frac{2}{\pi} \log \frac{pL}{2\pi} + \frac{1}{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
+	\\
+	\log \frac{\pi a}{L} &= \oneover{2\pi} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right) - \gamma
+	\label{eq:renormalization condition}
+\end{align}
+where we dropped all further momentum dependence from the ERE.
+
+If we come back to the tuning \eqref{tuning} and set $\Lambda=2\pi/\Delta x$ then we find
+\begin{align}
+	gM
+	&= - \frac{2\pi}{\log\left(\frac{e^\gamma}{2} a \frac{2\pi}{\Delta x}\right)}
+	= -\frac{2\pi}{\gamma + \log \pi a / \Delta x}.
+\end{align}
+where $a/\Delta x$ is the scattering length in units of the lattice spacing.
+If we assume that we want a very large scattering length (on the scale of $L$) then we see that the log's argument $\sim N_x$.
+
+Since `weak coupling' leads to energy levels given by the asymptotes in \Figref{S2}, the strong coupling region means trying to tune via \eqref{renormalization condition} to a constant where we get something between the asymptotes.
+Which constant is somewhat a tricky question.
+In 3D we tune to the zeroes of the zeta function; in 3D the best we can do is tune $a \sim L/\pi$.
+
+The quantization condition \eqref{quantization condition} is phrased in terms of dimensionful variables $p=\sqrt{2ME}$ and $L$.
+Let's translate these into dimensionless quantities via
+\begin{align}
+    p^2 &= 2 M E \Delta x^2 / \Delta x^2 = 2 \tilde{E} / \Delta x^2
+	&
+	L &= N_x \Delta x
+    &
+    \frac{pL}{2\pi} = \frac{\sqrt{2\tilde{E}} N_x}{2\pi}
+\end{align}
+where $\tilde{E}$ is the dimensionless energy eigenvalue of the dimensionless two-body Schr\"{o}dinger equation \eqref{two-body schrodinger equation}.
+
+To actually do the tuning we need to evaluate things as a function of $x=(pL/2\pi)^2=2\tilde{E}N_x^2 / (2\pi)^2$.
+The ERE \eqref{ere} should be rewritten
+\begin{align}
+    \cot \delta(p)
+    &=
+    \frac{2}{\pi}\left[ \log\left(\frac{\pi a}{L} \sqrt{x}\right)+ \gamma\right]
+    +
+    \frac{1}{4} \left(\frac{2\pi r_e }{L}\right)^2 x
+    +
+    \cdots
+    \label{eq:ere dimensionless}
+\end{align}
+which is written in entirely dimensionless variables and parameters.
+The L\"{u}scher quantization condition \eqref{quantization condition} can be written in terms of $x$,
+\begin{align}
+    \cot \delta(p) = \frac{2}{\pi} \log \sqrt{x} + \oneover{\pi^2} S_2(x)
+\end{align}
+and to tune we need to adjust the potential to set $\pi a/L$.
+
+So, it is convenient to define dimensionless ERE parameters,
+\begin{align}
+    \tilde{a} &= \frac{2 \pi a}{L}
+    &
+    \tilde{r}_e^2 &= \left(\frac{2 \pi r_e}{L}\right)^2
+\end{align}
+and so on to get the dimensionless ERE
+\begin{align}
+    \cot \delta(p)
+    &=
+	\frac{2}{\pi}\left[ \log\left(\half \tilde{a} \sqrt{x}\right)+ \gamma\right]
+    +
+	\frac{1}{4} \tilde{r}_e^2 x
+    +
+    \cdots
+    \label{eq:ere dimensionless}
+\end{align}
+Two examples are shown in \Figref{ere tuning}.
+
+\begin{figure}
+	\includegraphics[width=0.6\textwidth]{mathematica/figure/ere}
+	\caption{
+		Two example dimensionless EREs with $\tilde{a}=1$; green circles have $\tilde{r}_e^2=1/8$, purple triangles have $\tilde{r}_e^2=0$.
+		The solid blue curves are given by the zeta function.
+		The points give the finite-volume $x = 2 \tilde{E} N_x^2 / (2\pi)^2$ that dictate the targeted energy levels when tuning with a given $N_x$.
+	}
+	\label{fig:ere tuning}
+\end{figure}
+
+\subsection{$A_1$ Projection}
+
 It's the $A_1$ representation that satisfies the L\"{u}scher finite-volume quantization condition \eqref{quantization condition} (of course there are quantization conditions for the other irreps, and for $P\neq 0$, but we only have 1 parameter to tune, so let's tune it as simply as possible).
 
 We can project $h_{r'r}$ into the $A_1$ sector for a computational advantage while tuning.
 Consider transforming $\psi_{r'}$ into relative-momentum space,
 \begin{align}
-    \ket{p} = \oneover{\sqrt{V}}\sum_{r'} e^{ipr'} \psi_{r'}
+    \ket{p} = \oneover{\sqrt{\Volume}}\sum_{r'} e^{ipr'} \ket{P=0, r}
 \end{align}
 In the free case the relative momentum $p$ is conserved and we can organize the energy eigenstates into momentum shells.
 The momentum is given by an ordered pair of integers, and the size of the momentum shell is the number of unique ordered pairs in a single momentum vector's image under $D_4$.
@@ -110,7 +210,7 @@ So, continuing our examples,
     \ket{A_1, (1,2)} =& \frac{1}{\sqrt{8}}\big(\ket{(+1,+2)} + \ket{(+1,-2)} + \ket{(-1,+2)} + \ket{(-1,-2)} \nonumber\\
                      &\phantom{\frac{1}{\sqrt{8}}}+ \ket{(+2,+1)} + \ket{(+2,-1)} + \ket{(-2,+1)} + \ket{(-2,-1)} \big).
 \end{align}
-The normalization $\shell{p}^{-\half}$ is picked so that $\ket{A_1, p}$ is normalized.
+The normalization $\shell{p}$ is picked so that $\ket{A_1, p}$ is normalized.
 They form an orthonormal basis for the $A_1$-projected sector.
 
 Since $\vec{n}$ is the relative momentum, one might consider labeling states by $n^2$, especially in the non-interacting case.
@@ -129,29 +229,20 @@ just as it acts for the simple momentum eigenstates.
 
 \subsection{Lego Spheres in 2D}
 
-The `Lego spheres' in 2D are potentials $V_{0,r}$ which also exhibit $D_4$ symmetry.
-We can construct them in a very similar way, given a `radius' $R$ given by an ordered pair (not of momentum components, but of coordinates),
-\begin{align}
-    \LegoSphere{R}_{0,r} = \oneover{\shell{R}^2}\sum_{g \in D_4} \delta_{r, gR}
-\end{align}
-where the normalization $\shell{R}$ is given by $\sqrt{\textrm{the number of sites in the sphere}}$.
-{\bf In our 3D convention we left out the normalization} but I think it's beneficial to put it in, because it's as though we split the $R=\vec{0}$ contact operator into $\shell{R}^2$ pieces, the `surface area' of the Lego sphere.
-We have to track the whole vector radius rather than just its magnitude, since some sites the same distance from the origin can never be mapped into one another under a $D_4$ operation.
-
-Now we evaluate matrix elements of a Lego sphere in the $A_1$ momentum basis.
+The `Lego spheres' \eqref{Lego sphere} have nice matrix elements in the $A_1$-projected momentum basis.
 Starting with the plane-wave with momentum $n$ we have
 \begin{align}
     \matrixElement{n'}{\LegoSphere{R}}{n}
     &=
-    \oneover{V} \sum_{r'rg} \bra{r'} e^{-2\pi i n'r' / N_x} \oneover{\shell{R}^2} \delta_{r,gR} e^{+2\pi i nr / N_x} \ket{r}
+    \oneover{\Volume} \sum_{r'rg} \bra{r'} e^{-2\pi i n'r' / N_x} \oneover{\shell{R}^2} \delta_{r,gR} e^{+2\pi i nr / N_x} \ket{r}
     =
-    \oneover{V} \oneover{\shell{R}^2} \sum_{r'rg} e^{2\pi i (n gR - n'r') / N_x} \braket{r'}{gR}
+    \oneover{\Volume} \oneover{\shell{R}^2} \sum_{r'g} e^{2\pi i (n gR - n'r') / N_x} \braket{r'}{gR}
     \\
     &=
-    \oneover{V} \oneover{\shell{R}^2} \sum_{r'rg} e^{2\pi i (n gR - n'r') / N_x} \delta_{r',gR}
+    \oneover{\Volume} \oneover{\shell{R}^2} \sum_{r'g} e^{2\pi i (n gR - n'r') / N_x} \delta_{r',gR}
     \\
     &=
-    \oneover{V} \oneover{\shell{R}^2} \sum_{g} e^{2\pi i (n-n') gR / N_x}
+    \oneover{\Volume} \oneover{\shell{R}^2} \sum_{g} e^{2\pi i (n-n') gR / N_x}
 \end{align}
 We can now take superpositions to evaluate
 \begin{align}
@@ -160,13 +251,15 @@ We can now take superpositions to evaluate
     \oneover{\shell{n'}\shell{n}} \sum_{g'g} \matrixElement{g'n'}{\LegoSphere{R}}{gn}
     \\
     &=
-    \oneover{\shell{n'}\shell{n}} \oneover{V}\oneover{\shell{R}^2} \sum_{g'gh} e^{2\pi i (gn-g'n') hR / N_x}
+    \oneover{\shell{n'}\shell{n}} \oneover{\Volume}\oneover{\shell{R}^2} \sum_{g'gh} e^{2\pi i (gn-g'n') hR / N_x}
 \end{align}
 Note that we don't \emph{actually} need to execute the sum over $h$ since $hR$ is dotted into all possible combinations of differences (from the sums over $g'g$).
 The number of terms will be $\shell{R}^2$, the size of the image of $R$ under $D_4$, 
 \begin{align}
     \matrixElement{A_1, n'}{\LegoSphere{R}}{A_1, n}
     &=
-    \oneover{\shell{n'}\shell{n}} \oneover{V} \sum_{g'g} e^{2\pi i (gn-g'n') R / N_x}
+    \oneover{\shell{n'}\shell{n}} \oneover{\Volume} \sum_{g'g} e^{2\pi i (gn-g'n') R / N_x}
 \end{align}
-This closely matches what I have in the 3D $A_{1g}$ case, except for (1) the normalization and (2) I regroup the $V\inverse$ term into the coefficient.
+This closely matches what I have in the 3D $A_{1g}$ case, except for (1) the normalization and (2) I regroup the $\Volume\inverse$ term into the coefficient.
+
+

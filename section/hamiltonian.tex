@@ -3,33 +3,38 @@
 Consider in two spatial dimensions the Hamiltonian
 \begin{align}
 	H
-	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{M} - \int d^2x\; d^2y\; \left[\psi\adjoint_1(x) \psi_1(x)\right] V(x,y) \left[\psi\adjoint_2(y) \psi_2(y)\right]
+	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{M} + \int d^2x\; d^2y\; \left[\psi\adjoint_1(x) \psi_1(x)\right] V(x,y) \left[\psi\adjoint_2(y) \psi_2(y)\right]
 	\\
-	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{M} - g \left[\psi\adjoint_1(x) \psi_1(x)\right] \left[\psi\adjoint_2(y) \psi_2(y)\right]
+	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{M} - g \left[\psi\adjoint_1(x) \psi_1(x)\right] \left[\psi\adjoint_2(x) \psi_2(x)\right]
 \end{align}
-if the interaction is $V(x,y) = g \delta(x-y)$.
+if the interaction is $V(x,y) = -g \delta(x-y)$.
 
 Let us agree to rescale all energies by multiplying by $M$ so that we only need to track dimensions of length,
 \begin{align}
 	HM
-	&= \int d^2x\; \grad \psi\adjoint \cdot \grad \psi - gM \left[\psi\adjoint_1(x) \psi_1(x)\right] \left[\psi\adjoint_2(y) \psi_2(y)\right]
+	&= \int d^2x\; \grad \psi\adjoint \cdot \grad \psi + \int d^2x\; d^2y\; \left[\psi\adjoint_1(x) \psi_1(x)\right] (MV(x,y)) \left[\psi\adjoint_2(y) \psi_2(y)\right]
+	\\
+	&= \int d^2x\; \grad \psi\adjoint \cdot \grad \psi - gM \left[\psi\adjoint_1(x) \psi_1(x)\right] \left[\psi\adjoint_2(x) \psi_2(x)\right]
 \end{align}
 So, `energies' have just dimensions of $[p^2] = -2$, so that from the first term $[\psi\adjoint\psi] = -2$ dimensions of length.
 Then, looking at the right term we find that $[gM] = 0$, the coupling is dimensionless.
 This is VERY different from 3 dimensions!
 
-Let's take a square of side $L$ with periodic boundary conditions and divide it into $N_x$ sites on a side separated by $\Delta x = L/N_x$ so that the number of sites, the dimensionless volume $V=N_x^2$.
-If we pick $N_x$ odd then the sites take an integer label from $-(N_x-1)/2$ to $+(N_x-1)/2$ and the dimensionless momenta $p$ are $2\pi / N_x$ times that same span.
+Let's take a square of side $L$ with periodic boundary conditions and divide it into $N_x$ sites on a side separated by $\Delta x = L/N_x$ so that the number of sites, the dimensionless volume $\Volume=N_x^2$.
+If we pick $N_x$ odd then the sites take two integer coordinates from $-(N_x-1)/2$ to $+(N_x-1)/2$ and the dimensionless momenta $p$ are $2\pi / N_x$ times that same span.
+Sometimes we label momenta by $\vec{n}$, the integers that determine $p$ (or $n$ when the meaning is clear).
 
 The Hamiltonian (meaning $HM$) is
 \begin{align}
-	MH &= \sum_{xy} \psi\adjoint_x \kappa_{xy} \psi_y - \frac{gM}{\Delta x^2} \sum_{x} n^1_x n^2_x
+	MH &= \sum_{xy} \psi\adjoint_x \kappa_{xy} \psi_y + M \sum_{xy} n^1_x V_{xy} n^2_y
 	&
-	\kappa_{xy} &= \oneover{V} \sum_{p} \frac{p^2}{2\Delta x^2} e^{-i p \cdot (x-y)}
+    \kappa_{xy} &= \oneover{\Volume} \sum_{p} \frac{p^2}{2\Delta x^2} e^{-i p \cdot (x-y)}
 	&
 	n_x &= \psi\adjoint_x \psi_x
+	\\
+	&= \sum_{xy} \psi\adjoint_x \kappa_{xy} \psi_y - \frac{gM}{\Delta x^2} \sum_{x} n^1_x n^2_x
 \end{align}
-for spin species 1 and 2 and dimensionless lattice $p$ and $x$.
+for spin species 1 and 2 and dimensionless lattice $p$ and $x$, since $g\delta(x-y) \goesto g \Delta x^{-2} \delta_{xy}$.
 
 But \emph{now comes the magic}.
 Both terms have $\Delta x^2$ downstairs.
@@ -38,9 +43,13 @@ So now we can go `truly dimensionless', and clear the $\Delta x^{-2}$ from the r
 \begin{align}
 	\tilde{H} = HM \Delta x^2
 	&=
-	\sum_{xy} \psi\adjoint_x k_{xy} \psi_y - gM \sum_x n^1_x n^2_x
+    \sum_{xy} \psi\adjoint_x k_{xy} \psi_y + \sum_{xy} n^1_x (M \Delta x^2 V_{xy}) n^2_y
 	&
-	k_{xy} &= \oneover{V} \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
+    k_{xy} &= \oneover{\Volume} \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
+    \nonumber\\
+    &= \sum_{xy} \psi\adjoint_x k_{xy} \psi_y + \sum_{xy} n^1_x \tilde{V}_{xy} n^2_x
+    \nonumber\\
+    &= \sum_{xy} \psi\adjoint_x k_{xy} \psi_y - gM \sum_x n^1_x n^2_x
 	\label{eq:hamiltonian}
 \end{align}
 The right-hand side now depends \emph{only} on the number of sites $N_x$; no dimensionful scale remains.
@@ -57,11 +66,64 @@ In other words, you can use the same exact data and use it to think about the in
 Is that really true?  I suppose it depends on the tuning of $gM$.
 According to K\"{o}rber, Berkowitz, and Luu the tuning is
 \begin{align}
-	gM &= - \frac{2\pi}{\log(\tilde{a} \Lambda)}
+	gM &= - \frac{2\pi}{\log(A \Lambda)}
 	\label{eq:tuning}
 \end{align}
-where $\tilde{a}$ is explained below.
-The conclusion there is that $\tilde{a}$ is naturally of size $\sim L$; since $\Lambda\sim \Delta x^{-1}$ the log will be of something like $N_x$.
-I'll work this out below after explaining wtf $\tilde{a}$ is.
+where $A$ is explained below \eqref{no-constant}.
+The conclusion there is that $A$ is naturally of size $\sim L$; since $\Lambda\sim \Delta x^{-1}$ the log will be of something like $N_x$.
+I'll work this out below after explaining wtf $A$ is.
 But the punchline is that indeed the tuning \emph{also} only depends on dimensionless things.
 So it's really true; our simulations can be entirely described in terms of the dimensionless $gM$ and $N_x$ and that is all.
+
+\subsection{$D_4$ Symmetry and Lego Spheres}
+
+The finite volume / Brillouin zone has the symmetry of a square, $D_4$, the group of 8 elements (the identity $E$, 3 nontrivial rotations $2C_4(z)$ and $C_2(z)$, 2 edge $2C'_2$ and 2 vertex $2C''_2$ reflections).
+Some details are shown in \Tabref{D4}.
+The `$S$-wave' is the $A_1$ representation.
+
+\begin{table}
+    \begin{tabular}{C|RRRRR}
+        D_4   &   E   &   2C_4(z)   &   C_2(z)    &   2C'_2 &   2C''_2    \\\hline
+        A_1   &   1   &   1         &   1         &   1     &   1         \\
+        A_2   &   1   &   1         &   1         &   -1    &   -1        \\
+        B_1   &   1   &   -1        &   1         &   1     &   -1        \\
+        B_2   &   1   &   -1        &   1         &   -1    &   1         \\
+        E     &   2   &   0         &   -2        &   0     &   0
+    \end{tabular}
+    \hspace{3em}
+    \begin{tabular}{C|CCCCC}
+        \otimes &   A_1   &   A_2 &   B_1 & B_2   &   E   \\\hline
+        A_1     &   A_1   &   A_2 &   B_1 & B_2   &   E   \\
+        A_2     &   A_2   &   A_1 &   B_2 & B_1   &   E   \\
+        B_1     &   B_1   &   B_2 &   A_1 & A_2   &   E   \\
+        B_2     &   B_2   &   B_1 &   A_2 & A_1   &   E   \\
+        E       &   E     &   E   &   E   & E     &   A_1 \oplus A_2 \oplus B_1 \oplus B_2   \\
+    \end{tabular}
+    \caption{
+        Left: the character table of $D_4$.
+        Right: the product table for representations.
+    }
+    \label{tab:D4}
+\end{table}
+
+Translationally invariant potentials $\tilde{V}_{x,y}$ can be expressed as $\tilde{V}_{x,x+r} = \tilde{V}_{0,r}$  in terms of the relative coordinate $r$.
+We can construct `rotationally'-invariant (meaning: transforms like the $A_1$ representation of $D_4$) interaction potentials $V^R_{0,r}$ out of `Lego spheres' \LegoSphere{R} that are obviously $A_1$ interactions that depend on a `radius' $R$,
+\begin{align}
+    \tilde{V}_{0,r} &= \sum_{R} C_R \LegoSphere{R}_{0,r}
+    &
+    \LegoSphere{R}_{0,r} &= \oneover{\shell{R}^2}\sum_{g \in D_4} \delta_{r, gR}
+    \label{eq:Lego sphere}
+\end{align}
+where the normalization $\shell{R}$ is given by $\sqrt{\textrm{the number of sites in the sphere}}$ and $C_R$ is the Wilson coefficient / strength of the interaction for that shell.
+{\bf In our 3D convention we left out the normalization} but I think it's beneficial to put it in, because it's as though we split the $R=\vec{0}$ contact operator into $\shell{R}^2$ pieces, the `surface area' of the Lego sphere.
+We have to track the whole vector radius rather than just its magnitude, since some sites the same distance from the origin can never be mapped into one another under a $D_4$ operation, such as $(3,4)$ and $(0,5)$; even though these radii have the same magnitude, they belong to different operators which need not talk to one another or have similar coefficients.
+However, the Lego spheres built from vectors which appear in the same orbit of $D_4$, such as $(3,4)$ and $(4,-3)$, generate the same Lego sphere.
+So, we can conventionally pick one representative radius vector with non-negative components.
+
+We can therefore write a fully general translationally-invariant $A_1$ potential as
+\begin{align}
+    \tilde{V}_{x,y} &= \sum_{R} C_R \LegoSphere{R}_{0,x-y}.
+\end{align}
+The simplest choice is $C_{\vec{0}} = -gM$ and all other $C_R=0$.
+In 3D we observe that this choice gets linear discretization errors (presumably in this case that means linear in $N_x\inverse$).
+With additional supported Lego spheres presumably this improves.
