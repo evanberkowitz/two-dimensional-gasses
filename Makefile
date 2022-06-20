@@ -22,7 +22,7 @@ endif
 
 all: $(TARGET).pdf
 
-master.pdf: mma/S2.pdf
+master.pdf: mathematica/figure/S2.pdf mathematica/figure/ere.pdf
 
 ifndef DIFF
 %.pdf: .git/HEAD .git/index $(SECTIONS) $(BIBS) macros.tex %.tex
@@ -42,8 +42,12 @@ else
 endif
 endif
 
-mma/S2.pdf: ./mma/S2.wls
-	./mma/S2.wls
+mathematica/figure/S2.pdf: ./mathematica/figure/S2.wls
+	./mathematica/figure/S2.wls
+
+mathematica/figure/ere.pdf: ./mathematica/figure/ere.wls
+	./mathematica/figure/ere.wls
+
 
 .PHONY: tidy
 tidy:
@@ -55,6 +59,7 @@ tidy:
 clean: tidy
 	$(RM) $(TARGET).bbl
 	$(RM) $(TARGET).pdf
+	$(RM) mathematica/figure/*.pdf
 
 .PHONY: watch
 watch: $(TARGET).pdf
