@@ -735,7 +735,7 @@ LuescherPlot[{min_,max_},OptionsPattern[]]:=Block[{x},Plot[
 
 
 LuescherTuningTargetEnergy[nx_,ere_][level_]:=Block[{x},
-	(2\[Pi])^2 x /(2 nx^2)/.Chop@FindRoot[
+	(2\[Pi])^2 x /(nx^2)/.Chop@FindRoot[
 		ere[x]-2/\[Pi] Log[Sqrt[x]]==1/\[Pi]^2 LuescherZeta[x],
 		{x}~Join~LuescherZetaDomainBound[level],
 		MaxIterations->10000

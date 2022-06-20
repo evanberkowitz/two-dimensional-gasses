@@ -11,6 +11,8 @@ TARGET?=$(MASTER)
 SECTIONS = $(shell find section -type f)
 BIBS = $(find . -name '*.bib')
 
+FIGURES=mathematica/figure/S2.pdf mathematica/figure/ere.pdf mathematica/figure/convergence-coupling.pdf mathematica/figure/convergence-amplitude.pdf
+
 
 ifndef VERBOSE
 	REDIRECT=1>/dev/null 2>/dev/null
@@ -22,7 +24,7 @@ endif
 
 all: $(TARGET).pdf
 
-master.pdf: mathematica/figure/S2.pdf mathematica/figure/ere.pdf
+master.pdf: $(FIGURES)
 
 ifndef DIFF
 %.pdf: .git/HEAD .git/index $(SECTIONS) $(BIBS) macros.tex %.tex
@@ -48,6 +50,10 @@ mathematica/figure/S2.pdf: ./mathematica/figure/S2.wls
 mathematica/figure/ere.pdf: ./mathematica/figure/ere.wls
 	./mathematica/figure/ere.wls
 
+mathematica/figure/convergence-coupling.pdf: ./mathematica/figure/convergence.wls
+	./mathematica/figure/convergence.wls
+mathematica/figure/convergence-amplitude.pdf: ./mathematica/figure/convergence.wls
+	./mathematica/figure/convergence.wls
 
 .PHONY: tidy
 tidy:
