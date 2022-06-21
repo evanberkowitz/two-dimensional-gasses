@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* ::Title:: *)
+(* ::Title::Closed:: *)
 (*First*)
 
 
@@ -589,7 +589,7 @@ VisualizeA1[nx_][\[Psi]A1_]:=Graphics[
 ]
 
 
-(* ::Title:: *)
+(* ::Title::Closed:: *)
 (*Kinetic*)
 
 
