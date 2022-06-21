@@ -35,12 +35,17 @@ exact={#,-((2\[Pi])/Log[1/2 a Exp[EulerGamma]#])}&/@NX;
 
 plotCoupling=GraphicsColumn[{
 	Show[
-		Plot[-((2\[Pi])/Log[1/2 a Exp[EulerGamma]Nx]),{Nx,min,max}],
-		ListPlot[data],
+		Plot[-((2\[Pi])/Log[1/2 a Exp[EulerGamma]/oneOverNx]),{oneOverNx,0,1/min}],
+		ListPlot[List/@({1/data[[All,1]],data[[All,2]]}\[Transpose]),PlotStyle->colors],
 		FrameLabel->{None,"\!\(\*SubscriptBox[\(C\), \(0\)]\)"},
-		PlotRange->All
+		PlotRange->{{-0.01,1/min+0.01},All}
 	],
-	ListPlot[{data[[All,1]],(data/exact)[[All,2]]}\[Transpose],FrameLabel->{"\!\(\*SubscriptBox[\(N\), \(x\)]\)","-\!\(\*FractionBox[SubscriptBox[\(C\), \(0\)], \(2  \[Pi]\)]\) log \!\(\*FractionBox[SuperscriptBox[\(e\), \(\[Gamma]\)], \(2\)]\)\!\(\*SubscriptBox[\(N\), \(x\)]\)\!\(\*OverscriptBox[\(a\), \(~\)]\)"}]
+	ListPlot[
+		List/@({1/data[[All,1]],(data/exact)[[All,2]]}\[Transpose]),
+		PlotStyle->colors,
+		PlotRange->{{-0.01,1/min+0.01},All},
+		FrameLabel->{"1/\!\(\*SubscriptBox[\(N\), \(x\)]\)","-\!\(\*FractionBox[SubscriptBox[\(C\), \(0\)], \(2  \[Pi]\)]\) log \!\(\*FractionBox[SuperscriptBox[\(e\), \(\[Gamma]\)], \(2\)]\)\!\(\*SubscriptBox[\(N\), \(x\)]\)\!\(\*OverscriptBox[\(a\), \(~\)]\)"}
+		]
 	}]
 
 

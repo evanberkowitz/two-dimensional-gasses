@@ -39,18 +39,20 @@ data={#,Splice[tune[#,ere]]}&/@NX
 
 plotCoupling=GraphicsColumn[
 {ListPlot[
-	data[[All,{2,3}]],
+	List/@data[[All,{2,3}]],
 	GridLines->{{0},{0}},
 	PlotRange->{{Floor[Min[data[[All,2]]]-0.5],0.5},{-0.2,Ceiling[Max[data[[All,3]]]]}},
+	PlotStyle->colors,
 	Epilog->{
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[min],Large],data[[+1,{2,3}]],Left],
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[max],Large],data[[-1,{2,3}]],Left]
 		},
 	FrameLabel->{None,"\!\(\*SubscriptBox[\(C\), \((0, 1)\)]\)"}],
 ListPlot[
-	data[[All,{2,4}]],
+	List/@data[[All,{2,4}]],
 	GridLines->{{0},{0}},
 	PlotRange->{{Floor[Min[data[[All,2]]]-0.5],0.5},{Floor[Min[data[[All,4]]]],Ceiling[Max[data[[All,4]]]]}},
+	PlotStyle->colors,
 	Epilog->{
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[min],Large],data[[+1,{2,4}]],Left],
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[max],Large],data[[-1,{2,4}]],Left]
