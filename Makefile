@@ -17,7 +17,8 @@ FIGURES=mathematica/figure/S2.pdf \
 		mathematica/figure/convergence-amplitude.pdf \
 		mathematica/figure/improved-coupling.pdf \
 		mathematica/figure/improved-amplitude.pdf \
-
+		mathematica/figure/further-coupling.pdf \
+		mathematica/figure/further-amplitude.pdf \
 
 ifndef VERBOSE
 	REDIRECT=1>/dev/null 2>/dev/null
@@ -61,6 +62,9 @@ mathematica/figure/convergence-amplitude.pdf: ./mathematica/figure/convergence.w
 mathematica/figure/improved-coupling.pdf:  ./mathematica/figure/improved-amplitude.pdf
 mathematica/figure/improved-amplitude.pdf: ./mathematica/figure/improved.wls
 	./mathematica/figure/improved.wls
+mathematica/figure/further-coupling.pdf:  ./mathematica/figure/further-amplitude.pdf
+mathematica/figure/further-amplitude.pdf: ./mathematica/figure/further.wls
+	./mathematica/figure/further.wls
 
 
 .PHONY: tidy

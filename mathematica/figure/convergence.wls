@@ -25,8 +25,8 @@ X[nx_,ere_:ere]:=Energies[nx,ere] nx^2/(2\[Pi])^2
 Z[nx_,ere_:ere]:=(LuescherZeta/@X[nx,ere])/\[Pi]^2
 
 
-min=5;
-max=45;
+min=7;
+max=23;
 NX=Range[min,max,2];
 colors=Hue[(#-min)/(max-min)]&/@NX;
 data={#,C0@#}&/@NX;
@@ -37,7 +37,8 @@ plotCoupling=GraphicsColumn[{
 	Show[
 		Plot[-((2\[Pi])/Log[1/2 a Exp[EulerGamma]Nx]),{Nx,min,max}],
 		ListPlot[data],
-		FrameLabel->{None,"\!\(\*SubscriptBox[\(C\), \(0\)]\)"}
+		FrameLabel->{None,"\!\(\*SubscriptBox[\(C\), \(0\)]\)"},
+		PlotRange->All
 	],
 	ListPlot[{data[[All,1]],(data/exact)[[All,2]]}\[Transpose],FrameLabel->{"\!\(\*SubscriptBox[\(N\), \(x\)]\)","-\!\(\*FractionBox[SubscriptBox[\(C\), \(0\)], \(2  \[Pi]\)]\) log \!\(\*FractionBox[SuperscriptBox[\(e\), \(\[Gamma]\)], \(2\)]\)\!\(\*SubscriptBox[\(N\), \(x\)]\)\!\(\*OverscriptBox[\(a\), \(~\)]\)"}]
 	}]

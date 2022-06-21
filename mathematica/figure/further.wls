@@ -13,17 +13,19 @@ x[nx_,ere_,levels_:10]:=e[nx,ere,levels] nx^2/(2\[Pi])^2;
 \[Zeta][nx_,ere_,levels_:10]:=1/\[Pi]^2 (LuescherZeta/@x[nx,ere,levels]);
 
 
-zero[nx_,ere_][c0_?NumericQ,c1_?NumericQ]:=Sort[Eigenvalues[H[nx,<|{0,0}->c0,{0,1}->c1|>]]][[;;2]]-e[nx,ere,2]
+zero[nx_,ere_][c0_?NumericQ,c1_?NumericQ,c2_?NumericQ]:=Sort[Eigenvalues[H[nx,<|{0,0}->c0,{0,1}->c1,{1,1}->c2|>]]][[;;3]]-e[nx,ere,3]
 
-tune[nx_,ere_]:=tune[nx,ere]=Block[{c0,c1},{c0,c1}/.FindRoot[
-	zero[nx,ere][c0,c1],
+tune[nx_,ere_]:=tune[nx,ere]=Block[{c0,c1,c2},{c0,c1,c2}/.FindRoot[
+	zero[nx,ere][c0,c1,c2],
 	{c0,-3},
-	{c1,+1}
+	{c1,+1},
+	{c2,-0.5}
 ]]
 
 C0[nx_,ere_:ere]:=tune[nx,ere][[1]]
 C1[nx_,ere_:ere]:=tune[nx,ere][[2]]
-Energies[nx_,ere_:ere]:=Sort[Eigenvalues[H[nx,<|{0,0}->C0[nx,ere],{0,1}->C1[nx,ere]|>]]]
+C2[nx_,ere_:ere]:=tune[nx,ere][[3]]
+Energies[nx_,ere_:ere]:=Sort[Eigenvalues[H[nx,<|{0,0}->C0[nx,ere],{0,1}->C1[nx,ere],{1,1}->C2[nx,ere]|>]]]
 X[nx_,ere_:ere]:=Energies[nx,ere] nx^2/(2\[Pi])^2
 Z[nx_,ere_:ere]:=(LuescherZeta/@X[nx,ere])/\[Pi]^2
 
@@ -35,7 +37,8 @@ colors=Hue[(#-min)/(max-min)]&/@NX;
 data={#,Splice[tune[#,ere]]}&/@NX
 
 
-plotCoupling=ListPlot[
+plotCoupling=GraphicsColumn[
+{ListPlot[
 	data[[All,{2,3}]],
 	GridLines->{{0},{0}},
 	PlotRange->{{Floor[Min[data[[All,2]]]-0.5],0.5},{-0.2,Ceiling[Max[data[[All,3]]]]}},
@@ -43,7 +46,17 @@ plotCoupling=ListPlot[
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[min],Large],data[[+1,{2,3}]],Left],
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[max],Large],data[[-1,{2,3}]],Left]
 		},
-	FrameLabel->{"\!\(\*SubscriptBox[\(C\), \(0\)]\)","\!\(\*SubscriptBox[\(C\), \((0, 1)\)]\)"}]
+	FrameLabel->{None,"\!\(\*SubscriptBox[\(C\), \((0, 1)\)]\)"}],
+ListPlot[
+	data[[All,{2,4}]],
+	GridLines->{{0},{0}},
+	PlotRange->{{Floor[Min[data[[All,2]]]-0.5],0.5},{Floor[Min[data[[All,4]]]],Ceiling[Max[data[[All,4]]]]}},
+	Epilog->{
+		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[min],Large],data[[+1,{2,4}]],Left],
+		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[max],Large],data[[-1,{2,4}]],Left]
+		},
+	FrameLabel->{"\!\(\*SubscriptBox[\(C\), \(0\)]\)","\!\(\*SubscriptBox[\(C\), \((1, 1)\)]\)"}]
+}]
 
 
 viewMinx=-3;
@@ -59,7 +72,7 @@ plotAmplitude=Show[
 ] 
 
 
-convergenceCoupling=FileNameJoin[{DirectoryName@AbsoluteFileName[$InputFileName],"improved-coupling.pdf"}]
-convergenceAmplitude=FileNameJoin[{DirectoryName@AbsoluteFileName[$InputFileName],"improved-amplitude.pdf"}]
+convergenceCoupling=FileNameJoin[{DirectoryName@AbsoluteFileName[$InputFileName],"further-coupling.pdf"}]
+convergenceAmplitude=FileNameJoin[{DirectoryName@AbsoluteFileName[$InputFileName],"further-amplitude.pdf"}]
 Export[convergenceCoupling,plotCoupling]
 Export[convergenceAmplitude,plotAmplitude]
