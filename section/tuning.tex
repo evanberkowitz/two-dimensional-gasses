@@ -279,8 +279,8 @@ We also show the convergence of the data to the effective range expansion.
 We see that at any finite $N_x$ we do not reproduce the desired ERE perfectly, though it is attained in the continuum (large-$N_x$) limit.
 
 \begin{figure}
-	\includegraphics[width=0.3\textwidth]{mathematica/figure/convergence-coupling}
-	\includegraphics[width=0.55\textwidth]{mathematica/figure/convergence-amplitude}
+	\includegraphics[width=0.33\textwidth]{mathematica/figure/convergence-coupling}
+	\includegraphics[width=0.475\textwidth]{mathematica/figure/convergence-amplitude}
 	\caption{
 		Left:
 			(top) the solid curve is the analytic result \eqref{coupling analytically} while the points are the required coupling for tuning the finite-volume energy;
@@ -289,4 +289,21 @@ We see that at any finite $N_x$ we do not reproduce the desired ERE perfectly, t
 			With the tunings shown at left, the finite-volume energies processsed through the quantization condtion \eqref{quantization condition dimensionless}; red circles correspond to $N_x=5$, orange triangles to $N_x=7$, and so on until $N_x=45$.
 	}
 	\label{fig:convergence contact}
+\end{figure}
+
+\subsection{Demonstration: Potential with Two Spheres}
+
+Let us again focus on $\tilde{a} = 1$ but tune $C_{\vec{0}}$ and $C_{(0,1)}$.
+Then, we must use the L\"{u}scher method to compute two $x$s which can be turned into dimensionless energies.
+
+By eye it's not clear there's actually an improvement.
+More careful study is required.
+
+\begin{figure}
+	\includegraphics[width=0.475\textwidth]{mathematica/figure/improved-coupling}
+	\includegraphics[width=0.475\textwidth]{mathematica/figure/improved-amplitude}
+	\caption{
+		Left: the two dimensionless couplings required to hold $\tilde{a}=1$ for different (odd) discretizations $N_x$.
+		Right: the phase shift as a function of dimensionless $x$.
+	}
 \end{figure}
