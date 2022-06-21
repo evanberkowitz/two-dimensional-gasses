@@ -58,8 +58,8 @@ mathematica/figure/ere.pdf: ./mathematica/figure/ere.wls
 mathematica/figure/convergence-coupling.pdf:  ./mathematica/figure/convergence-amplitude.pdf
 mathematica/figure/convergence-amplitude.pdf: ./mathematica/figure/convergence.wls
 	./mathematica/figure/convergence.wls
-mathematica/figure/improved-coupling.pdf:  ./mathematica/figure/convergence-amplitude.pdf
-mathematica/figure/improved-amplitude.pdf: ./mathematica/figure/convergence.wls
+mathematica/figure/improved-coupling.pdf:  ./mathematica/figure/improved-amplitude.pdf
+mathematica/figure/improved-amplitude.pdf: ./mathematica/figure/improved.wls
 	./mathematica/figure/improved.wls
 
 
