@@ -20,7 +20,26 @@ For partial wave labeled by angular momentum $\ell$ in 2D the effective range ex
 \end{align}
 where $R$ is an arbitrary dimensionful scale and (in the second line) the `scattering length' $a_0$ is actually dimensionless (note the units on the LHS) and $r_0$ has dimension +2.
 All even-spatial-dimension effective range expansions get this log, and every non-log term gets an additional factor of $p^{2-D}$ which happens to vanish when $D=2$.
-As a result, what's strange/magical about $D=2$ is that we can absorb $a_0$ into the first time by changing the scale in the log,
+
+In 2D the cross section (cross-length?) carries dimension of length and is given by
+\begin{align}
+	\lambda &= \frac{4}{k}\left(\sin^2 \delta_0 + 2\sum_{\ell=1}^{\infty} \sin^2 \delta_\ell \right);
+\end{align}
+see, for example, (2.14) of \Ref{Adhikari:1986a}.
+Since $\sin^2 \delta = 1/(1+\cot^2\delta)$ we can express the cross section as
+\begin{align}
+	\lambda
+	=
+	\frac{4}{k}\left(\frac{1}{1+\cot^2 \delta_0} + 2\sum_{\ell=1}^{\infty} \frac{1}{1+\cot^2 \delta_\ell} \right)
+	&=
+	\frac{4}{k}\left(\frac{1}{1+\cot^2 \delta_0}\right) \left(1+ 2\sum_{\ell=1}^{\infty} \frac{1+\cot^2 \delta_0}{1+\cot^2 \delta_\ell} \right)
+	\\
+	&\approx
+	\frac{4}{k}\left(\frac{1}{1+\cot^2 \delta_0}\right) \left(1+ 2\sum_{\ell=1}^{\infty} \order{p^{4\ell}} \right)
+\end{align}
+so at low momentum the $\ell=0$ scattering dominates the cross section.
+
+What's strange/magical about $D=2$ is that we can absorb $a_0$ into the first time by changing the scale in the log,
 \begin{align}
 	A &= R_0 e^{-\pi/2a_0}
 	&
@@ -34,7 +53,7 @@ As a result, what's strange/magical about $D=2$ is that we can absorb $a_0$ into
 but we cannot further absorb the higher terms because they have a real, meaningful momentum dependence.
 So, could we even mean by something like `unitary gas' in 2D?
 It is not possible, for example, to have a momentum-independent phase shift.
-The issue is that even if $r$ and all higher shape parameters vanish, the $\log(pA)$ vanishes when its argument is $1$ and any momentum is allowed.
+The issue is that even if $r_0$ and all higher shape parameters vanish, the $\log(pA)$ vanishes when its argument is $1$ and any momentum is allowed.
 So if $A$ is fixed by the Hamiltonian then there is unavoidable momentum dependence.
 
 Is $A$ what is meant by the 2D scattering length?  Or something else?
@@ -42,7 +61,7 @@ At the cold-atoms/nuclear matter ECT* program we saw experimental results always
 Let's not forget that there is a \emph{geometric meaning} to the scattering length: where, with linear extrapolation, the wavefunction hits $0$.
 According to \Refs{Adhikari:1986a,Adhikari:1986b,Khuri:2008ib,Galea:2017jhe}, we recover this geometric meaning when we pick
 \begin{align}
-	\cot \delta(p) = \frac{2}{\pi}\left[\log \frac{pa}{2} + \gamma\right] + \oneover{4} r_e^2 p^2 + \cdots
+	\cot \delta_0(p) = \frac{2}{\pi}\left[\log \frac{pa}{2} + \gamma\right] + \oneover{4} r_e^2 p^2 + \cdots
 	\label{eq:ere}
 \end{align}
 where $\gamma = 0.577\ldots$ is the Euler–Mascheroni constant and $r_e$ has a similar geometric meaning (see \Ref{Galea:2017jhe} (18)).
