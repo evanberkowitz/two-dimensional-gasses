@@ -3,18 +3,20 @@
 Consider in two spatial dimensions the Hamiltonian
 \begin{align}
 	H
-	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{2M} + \int d^2x\; d^2y\; \left[\psi\adjoint_1(x) \psi_1(x)\right] V(x,y) \left[\psi\adjoint_2(y) \psi_2(y)\right]
+	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{2M} + \int d^2x\; d^2y\; n_1(x) V(x,y) n_2(y)
+	&
+	n_i(x) &= \psi\adjoint_i(x) \psi_i(x)
 	\\
-	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{2M} - g \left[\psi\adjoint_1(x) \psi_1(x)\right] \left[\psi\adjoint_2(x) \psi_2(x)\right]
+	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{2M} - g n_1(x) n_2(x)
 \end{align}
 if the interaction is $V(x,y) = -g \delta(x-y)$.
 
 Let us agree to rescale all energies by multiplying by $M$ so that we only need to track dimensions of length,
 \begin{align}
 	HM
-	&= \int d^2x\; \half \grad \psi\adjoint \cdot \grad \psi + \int d^2x\; d^2y\; \left[\psi\adjoint_1(x) \psi_1(x)\right] (MV(x,y)) \left[\psi\adjoint_2(y) \psi_2(y)\right]
+	&= \int d^2x\; \half \grad \psi\adjoint \cdot \grad \psi + \int d^2x\; d^2y\; n_1(x) (MV(x,y)) n_2(x)
 	\\
-	&= \int d^2x\; \half \grad \psi\adjoint \cdot \grad \psi - gM \left[\psi\adjoint_1(x) \psi_1(x)\right] \left[\psi\adjoint_2(x) \psi_2(x)\right]
+	&= \int d^2x\; \half \grad \psi\adjoint \cdot \grad \psi - gM n_1(x) n_2(x)
 \end{align}
 So, `energies' have just dimensions of $[p^2] = -2$, so that from the first term $[\psi\adjoint\psi] = -2$ dimensions of length.
 Then, looking at the right term we find that $[gM] = 0$, the coupling is dimensionless.
@@ -22,36 +24,28 @@ This is VERY different from 3 dimensions!
 
 Let's take a square of side $L$ with periodic boundary conditions and divide it into $N_x$ sites on a side separated by $\Delta x = L/N_x$ so that the number of sites, the dimensionless volume $\Volume=N_x^2$.
 If we pick $N_x$ odd then the sites take two integer coordinates from $-(N_x-1)/2$ to $+(N_x-1)/2$ and the dimensionless momenta $p$ are $2\pi / N_x$ times that same span.
+The dimensionful coordinates get a $\Delta x$ upstairs, the dimensionful momenta a $\Delta x$ downstairs.
 Sometimes we label momenta by $\vec{n}$, the integers that determine $p$ (or $n$ when the meaning is clear).
 
-The Hamiltonian (meaning $HM$) is
+In dimensionful coordinates the Hamiltonian (meaning $HM$) is
 \begin{align}
-	MH &= \sum_{xy} \psi\adjoint_x \kappa_{xy} \psi_y + M \sum_{xy} n^1_x V_{xy} n^2_y
+	MH &= \sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} - \frac{M\mu_0}{2} \delta_{xy} \right)\psi_y + \frac{M}{2} \sum_{xy} \Delta x^4 n_x V_{xy} n_y
 	&
-    \kappa_{xy} &= \oneover{\Volume} \sum_{p} \frac{p^2}{2\Delta x^2} e^{-i p \cdot (x-y)}
+    \kappa_{xy} &= \oneover{\Volume \Delta x^2} \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
 	&
 	n_x &= \psi\adjoint_x \psi_x
 	\\
-	&= \sum_{xy} \psi\adjoint_x \kappa_{xy} \psi_y - \frac{gM}{\Delta x^2} \sum_{x} n^1_x n^2_x
+	&= \sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} - \frac{M\mu_0}{2} \delta_{xy}\right) \psi_y - \frac{gM}{2\Delta x^2} \sum_{x} \Delta x^4 n^2_x
+	&
+	\{\psi_{x,\sigma}, \psi\adjoint_{y,\tau} \} &= \frac{\delta_{xy}}{\Delta x^2} \delta_{\sigma\tau}
 \end{align}
-for spin species 1 and 2 and dimensionless lattice $p$ and $x$, since $g\delta(x-y) \goesto g \Delta x^{-2} \delta_{xy}$.
+where $\mu_0 = V_{0,0}$ and for spin species 1 and 2 and dimensionless lattice $p$ and $x$, since $g\delta(x-y) \goesto g \Delta x^{-2} \delta_{xy}$.
 
 But \emph{now comes the magic}.
-Both terms have $\Delta x^2$ downstairs.
 In 3D the kinetic piece has $\Delta x^2$ and the potential $\Delta x^3$.
-So now we can go `truly dimensionless', and clear the $\Delta x^{-2}$ from the right,
-\begin{align}
-	\tilde{H} = HM \Delta x^2
-	&=
-    \sum_{xy} \psi\adjoint_x k_{xy} \psi_y + \sum_{xy} n^1_x (M \Delta x^2 V_{xy}) n^2_y
-	&
-    k_{xy} &= \oneover{\Volume} \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
-    \nonumber\\
-    &= \sum_{xy} \psi\adjoint_x k_{xy} \psi_y + \sum_{xy} n^1_x \tilde{V}_{xy} n^2_x
-    \nonumber\\
-    &= \sum_{xy} \psi\adjoint_x k_{xy} \psi_y - gM \sum_x n^1_x n^2_x
-	\label{eq:hamiltonian}
-\end{align}
+Both terms have $\Delta x^2$ downstairs.
+We should be able to clear all the dimensions from the RHS.
+\todo{Construct the truly dimensionless equations.}
 The right-hand side now depends \emph{only} on the number of sites $N_x$; no dimensionful scale remains.
 If we increase $L$ and $\Delta x$ holding $N_x$ fixed we get the same right-hand side.
 
