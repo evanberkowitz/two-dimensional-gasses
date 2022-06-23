@@ -1,4 +1,4 @@
-\section{Fourier Transform Conventions}\label{sec:ft-conv}
+\section{Fourier Transform $\&$ Field Operator Conventions}\label{sec:ft-conv}
 In this section we list our Fourier transform conventions. \\
 
 \noindent{ \textbf{Continuum and Infinite Volume} }
@@ -31,4 +31,23 @@ In this section we list our Fourier transform conventions. \\
 \psi(p) & = \sum_x \Delta x^d ~ e^{-i p\cdot x} ~ \psi(x) \\
 \frac{1}{(N_x \Delta x)^d}\sum_x ~ e^{i p \cdot (x -x')} & = \frac{ \delta_{x x'}}{\Delta x^d} \\
 \sum_x \Delta x^d ~ e^{-i (p-p')\cdot x} & = (N_x \Delta x)^d \delta_{p p'} 
+\end{align}
+
+Next, here are our normalizations for field operators on the lattice and in finite volume:
+\begin{align}
+\{ \psi_{\sigma}(x) , \psi^{\dagger}_{\sigma'}(x') \} & = \frac{\delta_{x x'}}{\Delta x^d} \delta_{\sigma \sigma'} \\
+\{ \psi_{\sigma}(p) , \psi^{\dagger}_{\sigma'}(p') \} & = (N_x \Delta x)^d \delta_{p p'}\delta_{\sigma \sigma'} ~.
+\end{align} 
+Now, for comaring with continuum calculations it helps to have dimensionful objects; however, for the code we must input
+dimensionless objects. To that end, we define the following dimensionless fields:
+\begin{align}
+\tilde{\psi}_{\sigma}(x) & = \Delta x^{d/2} \psi_{\sigma}(x) \\
+\tilde{\psi}_{\sigma}(p) & = \Delta x^{-d/2} \psi_{\sigma}(p) \\
+\end{align}
+The commutation relations and Fourier transforms of these dimensionless fields follow from those of their dimensionful counterparts; they are given by
+\begin{align}
+\{\tilde{\psi}_{\sigma}(x),\tilde{\psi}_{\sigma'}(x')\} & = \delta_{x x'} \delta_{\sigma \sigma'} \\
+\{\tilde{\psi}_{\sigma}(p),\tilde{\psi}_{\sigma'}(p')\} & = N_x^d \delta_{p p'} \delta_{\sigma \sigma'} \\
+\tilde{\psi}_{\sigma}(x) & = \frac{1}{N^d} \sum_p e^{i p \cdot x} \tilde{\psi}_{\sigma}(p) \\
+\tilde{\psi}_{\sigma}(p) & =  \sum_x e^{-i p \cdot x} \tilde{\psi}_{\sigma}(p) 
 \end{align}
