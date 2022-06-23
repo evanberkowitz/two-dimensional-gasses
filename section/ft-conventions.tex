@@ -1,0 +1,34 @@
+\section{Fourier Transform Conventions}\label{sec:ft-conv}
+In this section we list our Fourier transform conventions. \\
+
+\noindent{ \textbf{Continuum and Infinite Volume} }
+\begin{align}
+\psi(x) & = \int \frac{d^d p}{(2 \pi)^d} ~ e^{i p\cdot x} ~ \psi(p) \\
+\psi(p) & = \int d^d x ~ e^{-i p\cdot x} ~ \psi(x) \\
+\int \frac{d^d p}{(2 \pi)^d} ~ e^{i p\cdot (x-x')} & = \delta^d(x-x') \\
+\int d^d x ~ e^{-i (p - p') \cdot x} & = (2\pi)^d\delta^d(p-p') 
+\end{align}
+
+\noindent{ \textbf{Continuum and Finite Volume} }
+\begin{align}
+\psi(x) & = \frac{1}{V} \sum_p e^{i p\cdot x} ~ \psi(p) \\
+\psi(p) & = \int_V d^d x ~ e^{-i p\cdot x} ~ \psi(x) \\
+\sum_p ~ e^{i p\cdot (x-x')} & = \delta^d(x-x') \\
+\int_V d^d x ~ e^{-i (p - p') \cdot x} & = V \delta_{p p'} 
+\end{align}
+
+\noindent{ \textbf{Lattice and Infinite Volume} }
+\begin{align}
+\psi(x) & =  \int_{-\pi/\Delta x}^{\pi/\Delta x} \frac{d^d p}{(2\pi)^d} ~ e^{i p\cdot x} ~ \psi(p) \\
+\psi(p) & = \sum_x \Delta x^d ~ e^{-i p\cdot x} ~ \psi(x) \\
+\int_{-\pi/\Delta x}^{\pi/\Delta x} \frac{d^d p}{(2\pi)^d} ~ e^{i p\cdot (x-x')} & = \frac{\delta_{x x'}}{\Delta x^d} \\
+\sum_x \Delta x^d ~ e^{-i (p - p') \cdot x} & = (2\pi)^3 \delta(p - p') 
+\end{align}
+
+\noindent{ \textbf{Lattice and Finite Volume} }
+\begin{align}
+\psi(x) & = \frac{1}{(N_x \Delta x)^d} ~ \sum_p e^{i p\cdot x} ~ \psi(p) \\
+\psi(p) & = \sum_x \Delta x^d ~ e^{-i p\cdot x} ~ \psi(x) \\
+\frac{1}{(N_x \Delta x)^d}\sum_x ~ e^{i p \cdot (x -x')} & = \frac{ \delta_{x x'}}{\Delta x^d} \\
+\sum_x \Delta x^d ~ e^{-i (p-p')\cdot x} & = (N_x \Delta x)^d \delta_{p p'} 
+\end{align}
