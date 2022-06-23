@@ -51,3 +51,15 @@ The commutation relations and Fourier transforms of these dimensionless fields f
 \tilde{\psi}_{\sigma}(x) & = \frac{1}{N^d} \sum_p e^{i p \cdot x} \tilde{\psi}_{\sigma}(p) \\
 \tilde{\psi}_{\sigma}(p) & =  \sum_x e^{-i p \cdot x} \tilde{\psi}_{\sigma}(p) 
 \end{align}
+
+Finally, we'll migrate this to the appropriate place, but here's what I get for the dimensionless Hamiltonian:
+\begin{equation}
+M H \Delta x^2 = \frac{1}{N_x^2} \sum_p \Bigg[ \frac{(p \Delta x)^2}{2} - \frac{\mu_0 M \Delta x^2}{2} \Bigg] \tilde{\psi}^{\dagger}_{\sigma}(p) \tilde{\psi}_{\sigma}(p) + \frac{M}{2} \sum_x \Bigg[g_0 \tilde{n}(x)^2 + g_2 \sum_i \tilde{n}(x) \tilde{n}(x+\delta x_i) \Bigg]
+\end{equation}
+This equation assumes the interaction
+\begin{equation}
+V_{x y} = g_0 \frac{\delta_{xy}}{\Delta x^2} + g_2 \frac{\sum_i \delta_{x+\delta x_i y}}{\Delta x^2}
+\end{equation}
+
+
+
