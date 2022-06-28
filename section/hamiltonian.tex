@@ -29,17 +29,65 @@ Sometimes we label momenta by $\vec{n}$, the integers that determine $p$ (or $n$
 
 In dimensionful coordinates the Hamiltonian (meaning $HM$) is
 \begin{align}
-	MH &= \sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} - \frac{M\mu_0}{2} \delta_{xy} \right)\psi_y + \frac{M}{2} \sum_{xy} \Delta x^4 n_x V_{xy} n_y
-	&
-    \kappa_{xy} &= \oneover{\Volume \Delta x^2} \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
-	&
-	n_x &= \psi\adjoint_x \psi_x
-	\\
-	&= \sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} - \frac{M\mu_0}{2} \delta_{xy}\right) \psi_y - \frac{gM}{2\Delta x^2} \sum_{x} \Delta x^4 n^2_x
-	&
-	\{\psi_{x,\sigma}, \psi\adjoint_{y,\tau} \} &= \frac{\delta_{xy}}{\Delta x^2} \delta_{\sigma\tau}
+	MH &= \sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} - \frac{M\mu_0}{2} \frac{\delta_{xy}}{\Delta x^2} \right)\psi_y + \frac{M}{2} \sum_{xy} \Delta x^4 n_x V_{xy} n_y
+	\nonumber\\
+	&= 
+	\sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} + \frac{M g}{2 \Delta x^2} \frac{\delta_{xy}}{\Delta x^2}\right) \psi_y
+	+ \frac{M}{2} \sum_{xy} \Delta x^4 n_x \left( -\frac{g}{\Delta x^2} \LegoSphere{0}_{xy} + \frac{C_{\vec{R}}}{\Delta x^2} \LegoSphere{\vec{R}}_{xy} \right) n_y
 \end{align}
-where $\mu_0 = V_{0,0}$ and for spin species 1 and 2 and dimensionless lattice $p$ and $x$, since $g\delta(x-y) \goesto g \Delta x^{-2} \delta_{xy}$.
+where $\LegoSphere{\vec{r}}$ is a lego sphere, described below, we pick $\mu_0 = -g \Delta x^{-2}$ to ensure we recover the correct Hamiltonian in the continuum limit, we take the dimensions out of the potential, since $g\delta(x-y) \goesto g \Delta x^{-2} \delta_{xy}$.
+We use the perfect dispersion relation for $\kappa$, the number operator $n$, with dimensionful field operators,
+\begin{align}
+    \kappa_{xy} =& \oneover{\Volume \Delta x^2} \sum_{p} \frac{p^2}{2} e^{-i p \cdot (x-y)}
+	&
+	n_x =& \psi\adjoint_x \psi_x
+	&
+	\{\psi_{x,\sigma}, \psi\adjoint_{y,\tau} \} =& \frac{\delta_{xy}}{\Delta x^2} \delta_{\sigma\tau},
+\end{align}
+where $n$ contains an implicit sum over spins.
+
+Passing to dimensionless variables,
+\begin{align}
+	x & \goesto a \Delta x
+	&
+	p &\goesto \frac{2\pi k}{N_x \Delta x}
+	&
+	\psi_x & \goesto \tilde{\psi}_a / \Delta x
+	&
+	n &\goesto \tilde{n} / \Delta x^2
+\end{align}
+where $a$ and $k$ are triplets of integers that span from $-(N_x-1)/2$ to $+(N_x-1)/2$, we find
+\begin{align}
+	MH &= 
+		\sum_{ab}\Delta x^4 \frac{\tilde{\psi}\adjoint_a}{\Delta x} \left(
+				\oneover{\Volume \Delta x^2} \sum_{k} \frac{(2\pi k)^2}{2 \Volume \Delta x^2} e^{-2\pi i k \cdot(a-b)/N_x} 
+				- \frac{Mg}{2\Delta x^2} \frac{\delta_{ab}}{\Delta x^2}
+			\right) \frac{\tilde{\psi}_b}{\Delta x}
+		+ \frac{M}{2} \sum_{a} \Delta x^4 \frac{\tilde{n}_a}{\Delta x^2} \left(
+				-\frac{g}{\Delta x^2} \LegoSphere{0}_{xy}
+				+ \frac{C_{\vec{R}}}{\Delta x^2} \LegoSphere{\vec{R}}_{xy}
+			\right) \frac{\tilde{n}_b}{\Delta x^2}
+	\\
+	MH &=
+		\sum_{ab}\frac{\tilde{\psi}\adjoint_a}{\Delta x} \left(
+			\oneover{\Volume} \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
+			- \frac{Mg}{2} \delta_{ab}
+			\right) \frac{\tilde{\psi}_b}{\Delta x}
+		+ \frac{M}{2} \sum_{ab} \tilde{n}_a \left(
+				-\frac{g}{\Delta x^2} \LegoSphere{0}_{xy}
+				+ \frac{C_{\vec{R}}}{\Delta x^2} \LegoSphere{\vec{R}}_{xy}
+			\right) \tilde{n}_b
+	\\
+	MH \Delta x^2 &=
+		\sum_{ab} \tilde{\psi}\adjoint_a \left(
+			\oneover{\Volume} \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
+			- \frac{Mg}{2} \delta_{ab}
+			\right) \tilde{\psi}_b
+		+ \frac{1}{2} \sum_{ab} \tilde{n}_a \left(
+				-gM \LegoSphere{0}_{xy}
+				+ C_{\vec{R}} M \LegoSphere{\vec{R}}_{xy}
+			\right) \tilde{n}_b
+\end{align}
 
 But \emph{now comes the magic}.
 In 3D the kinetic piece has $\Delta x^2$ and the potential $\Delta x^3$.
