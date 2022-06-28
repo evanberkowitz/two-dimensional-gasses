@@ -1,6 +1,6 @@
 
 \begin{table}
-\Large
+\large
 \begin{tabular}{R|L|L}
 \text{Infinite Volume}								&	\text{Continuum}
 													&	\text{Lattice}
@@ -31,12 +31,25 @@
 \\[0.5em]
 \delta_{pp'}										=& \frac{1}{V} \int_V d^d x ~ e^{-i (p - p') \cdot x}
 													 & \frac{1}{(N_x \Delta x)^d} \sum_x \Delta x^d e^{-i (p-p')\cdot x}
+\\[0.5em]\hline
+\text{Dimensionless}								&
+													&	\text{Lattice}
+\\[0.5em]\hline
+\psi_a												=&& \oneover{N_x^d} \sum_{k} e^{+2\pi i k\cdot a/N_x} \psi_k
+\\[0.5em]
+\psi_k												=&& \sum_a e^{-2\pi i k \cdot a / N_x} \psi_a
+\\[0.5em]
+\sum_{k} e^{+2\pi i k\cdot(a-a') / N_x}				=&& N_x^d \delta_{aa'}
+\\[0.5em]
+\delta_{kk'}										=&& \oneover{N_x^d} \sum_a e^{-2\pi i (k-k')\cdot a /N_x}
 \end{tabular}
 \caption{
 	A complete summary of consistent Fourier conventions with dimensionful variables.
 	The infinite continuum volume is $\Reals^d$ while the periodic finite volume is given by a $d$-dimensional cube with length $L$ and volume $V=L^d$.
 	The lattice has spacing $\Delta x$; in finite-volume there are $N_x$ sites to a side, $L=N_x \Delta x$.
 	In a finite volume momenta are integer multiples of $2\pi/L$.
+	In these conventions the dimensionless coordinates can be found from the finite-volume lattice language by sending $\Delta x\goesto 1$ and rewriting momenta as multiples of $2\pi/N_x (\Delta x=1)$.
+	(You can use dimensionless operators independently of the choice to use dimensionless coordinates).
 }
 \label{tab:ft}
 \end{table}
