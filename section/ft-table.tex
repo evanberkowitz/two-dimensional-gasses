@@ -1,0 +1,42 @@
+
+\begin{table}
+\Large
+\begin{tabular}{R|L|L}
+\text{Infinite Volume}								&	\text{Continuum}
+													&	\text{Lattice}
+\\[0.5em]\hline
+\psi(x) 											=& \int \frac{d^d p}{(2 \pi)^d} ~ e^{i p\cdot x} ~ \psi(p)
+													 & \int_{-\pi/\Delta x}^{\pi/\Delta x} \frac{d^d p}{(2\pi)^d} ~ e^{i p\cdot x} ~ \psi(p)
+\\[0.5em]
+\psi(p) 											=& \int d^d x ~ e^{-i p\cdot x} ~ \psi(x)
+													 & \sum_x \Delta x^d ~ e^{-i p\cdot x} ~ \psi(x) 
+\\[0.5em]
+\int \frac{d^d p}{(2 \pi)^d} ~ e^{i p\cdot (x-x')}	=& \delta^d(x-x')
+													 & \frac{\delta_{x x'}}{\Delta x^d} 
+\\[0.5em]
+(2\pi)^d\delta^d(p-p') 								=& \int d^d x ~ e^{-i (p - p') \cdot x}
+													 & \sum_x \Delta x^d ~ e^{-i (p - p') \cdot x}
+\\[0.5em]\hline
+\text{Finite Volume}								&	\text{Continuum}
+													&	\text{Lattice}
+\\[0.5em]\hline
+\psi(x)												=& \frac{1}{V} \sum_p e^{i p\cdot x} ~ \psi(p)
+													 & \frac{1}{(N_x \Delta x)^d} ~ \sum_p e^{i p\cdot x} ~ \psi(p)
+\\[0.5em]
+\psi(p)												=& \int_V d^d x ~ e^{-i p\cdot x} ~ \psi(x)
+													 & \sum_x \Delta x^d ~ e^{-i p\cdot x} ~ \psi(x)
+\\[0.5em]
+\sum_p ~ e^{i p\cdot (x-x')}						=& V \delta^d(x-x')
+													 & (N_x \Delta x)^d \frac{\delta_{x x'}}{\Delta x^d}
+\\[0.5em]
+\delta_{pp'}										=& \frac{1}{V} \int_V d^d x ~ e^{-i (p - p') \cdot x}
+													 & \frac{1}{(N_x \Delta x)^d} \sum_x \Delta x^d e^{-i (p-p')\cdot x}
+\end{tabular}
+\caption{
+	A complete summary of consistent Fourier conventions with dimensionful variables.
+	The infinite continuum volume is $\Reals^d$ while the periodic finite volume is given by a $d$-dimensional cube with length $L$ and volume $V=L^d$.
+	The lattice has spacing $\Delta x$; in finite-volume there are $N_x$ sites to a side, $L=N_x \Delta x$.
+	In a finite volume momenta are integer multiples of $2\pi/L$.
+}
+\label{tab:ft}
+\end{table}

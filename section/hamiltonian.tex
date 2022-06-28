@@ -7,7 +7,7 @@ Consider in two spatial dimensions the Hamiltonian
 	&
 	n_i(x) &= \psi\adjoint_i(x) \psi_i(x)
 	\\
-	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{2M} - g n_1(x) n_2(x)
+	&= \int d^2x\; \frac{\grad \psi\adjoint \cdot \grad \psi}{2M} + g n_1(x) n_2(x)
 \end{align}
 if the interaction is $V(x,y) = -g \delta(x-y)$.
 
@@ -16,7 +16,7 @@ Let us agree to rescale all energies by multiplying by $M$ so that we only need 
 	HM
 	&= \int d^2x\; \half \grad \psi\adjoint \cdot \grad \psi + \int d^2x\; d^2y\; n_1(x) (MV(x,y)) n_2(x)
 	\\
-	&= \int d^2x\; \half \grad \psi\adjoint \cdot \grad \psi - gM n_1(x) n_2(x)
+	&= \int d^2x\; \half \grad \psi\adjoint \cdot \grad \psi + gM n_1(x) n_2(x)
 \end{align}
 So, `energies' have just dimensions of $[p^2] = -2$, so that from the first term $[\psi\adjoint\psi] = -2$ dimensions of length.
 Then, looking at the right term we find that $[gM] = 0$, the coupling is dimensionless.
@@ -32,8 +32,8 @@ In dimensionful coordinates the Hamiltonian (meaning $HM$) is
 	MH &= \sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} - \frac{M\mu_0}{2} \frac{\delta_{xy}}{\Delta x^2} \right)\psi_y + \frac{M}{2} \sum_{xy} \Delta x^4 n_x V_{xy} n_y
 	\nonumber\\
 	&= 
-	\sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} + \frac{M g}{2 \Delta x^2} \frac{\delta_{xy}}{\Delta x^2}\right) \psi_y
-	+ \frac{M}{2} \sum_{xy} \Delta x^4 n_x \left( -\frac{g}{\Delta x^2} \LegoSphere{0}_{xy} + \frac{C_{\vec{R}}}{\Delta x^2} \LegoSphere{\vec{R}}_{xy} \right) n_y
+	\sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} - \frac{M g}{2 \Delta x^2} \frac{\delta_{xy}}{\Delta x^2}\right) \psi_y
+	+ \frac{M}{2} \sum_{xy} \Delta x^4 n_x \left( \frac{g}{\Delta x^2} \LegoSphere{0}_{xy} + \frac{C_{\vec{R}}}{\Delta x^2} \LegoSphere{\vec{R}}_{xy} \right) n_y
 \end{align}
 where $\LegoSphere{\vec{r}}$ is a lego sphere, described below, we pick $\mu_0 = -g \Delta x^{-2}$ to ensure we recover the correct Hamiltonian in the continuum limit, we take the dimensions out of the potential, since $g\delta(x-y) \goesto g \Delta x^{-2} \delta_{xy}$.
 We use the perfect dispersion relation for $\kappa$, the number operator $n$, with dimensionful field operators,
@@ -45,6 +45,8 @@ We use the perfect dispersion relation for $\kappa$, the number operator $n$, wi
 	\{\psi_{x,\sigma}, \psi\adjoint_{y,\tau} \} =& \frac{\delta_{xy}}{\Delta x^2} \delta_{\sigma\tau},
 \end{align}
 where $n$ contains an implicit sum over spins.
+\Tabref{ft} contains a summary of our Fourier transformation conventions.
+\input{section/ft-table}
 
 Passing to dimensionless variables,
 \begin{align}
@@ -64,49 +66,40 @@ where $a$ and $k$ are triplets of integers that span from $-(N_x-1)/2$ to $+(N_x
 				- \frac{Mg}{2\Delta x^2} \frac{\delta_{ab}}{\Delta x^2}
 			\right) \frac{\tilde{\psi}_b}{\Delta x}
 		+ \frac{M}{2} \sum_{a} \Delta x^4 \frac{\tilde{n}_a}{\Delta x^2} \left(
-				-\frac{g}{\Delta x^2} \LegoSphere{0}_{xy}
-				+ \frac{C_{\vec{R}}}{\Delta x^2} \LegoSphere{\vec{R}}_{xy}
+				\frac{g}{\Delta x^2} \LegoSphere{0}_{ab}
+				+ \frac{C_{\vec{R}}}{\Delta x^2} \LegoSphere{\vec{R}}_{ab}
 			\right) \frac{\tilde{n}_b}{\Delta x^2}
 	\\
 	MH &=
 		\sum_{ab}\frac{\tilde{\psi}\adjoint_a}{\Delta x} \left(
 			\oneover{\Volume} \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
-			- \frac{Mg}{2} \delta_{ab}
+			- \frac{gM}{2} \delta_{ab}
 			\right) \frac{\tilde{\psi}_b}{\Delta x}
 		+ \frac{M}{2} \sum_{ab} \tilde{n}_a \left(
-				-\frac{g}{\Delta x^2} \LegoSphere{0}_{xy}
-				+ \frac{C_{\vec{R}}}{\Delta x^2} \LegoSphere{\vec{R}}_{xy}
+				\frac{g}{\Delta x^2} \LegoSphere{0}_{ab}
+				+ \frac{C_{\vec{R}}}{\Delta x^2} \LegoSphere{\vec{R}}_{ab}
 			\right) \tilde{n}_b
 	\\
 	MH \Delta x^2 &=
 		\sum_{ab} \tilde{\psi}\adjoint_a \left(
 			\oneover{\Volume} \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
-			- \frac{Mg}{2} \delta_{ab}
+			- \frac{gM}{2} \delta_{ab}
 			\right) \tilde{\psi}_b
 		+ \frac{1}{2} \sum_{ab} \tilde{n}_a \left(
-				-gM \LegoSphere{0}_{xy}
-				+ C_{\vec{R}} M \LegoSphere{\vec{R}}_{xy}
-			\right) \tilde{n}_b
+				gM \LegoSphere{0}_{ab}
+				+ C_{\vec{R}} M \LegoSphere{\vec{R}}_{ab}
+			\right) \tilde{n}_b,
 \end{align}
+so that we can define $\tilde{V}_{ab} = C_{\vec{R}} \LegoSphere{\vec{R}}_{ab}$ with an implied sum over the Lego sphere radii $\vec{R}$ we support; $C_0 = g$.
 
-But \emph{now comes the magic}.
-In 3D the kinetic piece has $\Delta x^2$ and the potential $\Delta x^3$.
-Both terms have $\Delta x^2$ downstairs.
-We should be able to clear all the dimensions from the RHS.
-\todo{Construct the truly dimensionless equations.}
-The right-hand side now depends \emph{only} on the number of sites $N_x$; no dimensionful scale remains.
-If we increase $L$ and $\Delta x$ holding $N_x$ fixed we get the same right-hand side.
+The right-hand side is now completely dimensionless, depending only on the coefficients $C$ and the number of sites $N_x$; no dimensionful scale remains.
+This leads to some magic.
+If we fix $C$ and $N_x$, it does not matter what actual, physical $\Delta x$ is---the spectra for all $\Delta x$s are related simply by a rescaling.
+\emph{This is really different from \Refs{Alexandru:2019gmp,Alexandru:2020zti}, where the kinetic and potential terms scale differently with $\Delta x$!}
+In those cases, if you change $\Delta x$ while holding $g$ and $N_x$ fixed the spectra do not just perfectly scale.
+The difference is that in $d$ dimensions a contact interaction is like $\Delta x^{-d}$; in 3D this is \emph{more} divergent than the kinetic term, while in 2D it's a perfect match.
 
-Suppose we find the spectrum for a particular $gM$ and $N_x$.
-We can interpret it in two ways:
-\begin{enumerate}
-	\item First, we can think of fixing $L$, which determines $\Delta x$.
-	\item Or, we can think of fixing $\Delta x$, which determines $L$.
-\end{enumerate}
-In other words, you can use the same exact data and use it to think about the infinite-volume or continuumn limits.
-
-Is that really true?  I suppose it depends on the tuning of $gM$.
-According to K\"{o}rber, Berkowitz, and Luu the tuning is
+According to \Ref{Korber:2019cuq} the continuum tuning is given by
 \begin{align}
 	gM &= - \frac{2\pi}{\log(A \Lambda)}
 	\label{eq:tuning}
