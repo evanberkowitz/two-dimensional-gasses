@@ -5,13 +5,13 @@
 \text{Infinite Volume}								&	\text{Continuum}
 													&	\text{Lattice}
 \\[0.5em]\hline
-\psi(x) 											=& \int \frac{d^d p}{(2 \pi)^d} ~ e^{i p\cdot x} ~ \psi(p)
+\psi(x) 											=& \int \frac{d^d p}{(2 \pi)^d} ~ e^{+i p\cdot x} ~ \psi(p)
 													 & \int_{-\pi/\Delta x}^{\pi/\Delta x} \frac{d^d p}{(2\pi)^d} ~ e^{i p\cdot x} ~ \psi(p)
 \\[0.5em]
 \psi(p) 											=& \int d^d x ~ e^{-i p\cdot x} ~ \psi(x)
 													 & \sum_x \Delta x^d ~ e^{-i p\cdot x} ~ \psi(x) 
 \\[0.5em]
-\int \frac{d^d p}{(2 \pi)^d} ~ e^{i p\cdot (x-x')}	=& \delta^d(x-x')
+\int \frac{d^d p}{(2 \pi)^d} ~ e^{+i p\cdot (x-x')}	=& \delta^d(x-x')
 													 & \frac{\delta_{x x'}}{\Delta x^d} 
 \\[0.5em]
 (2\pi)^d\delta^d(p-p') 								=& \int d^d x ~ e^{-i (p - p') \cdot x}
@@ -20,13 +20,13 @@
 \text{Finite Volume}								&	\text{Continuum}
 													&	\text{Lattice}
 \\[0.5em]\hline
-\psi(x)												=& \frac{1}{V} \sum_p e^{i p\cdot x} ~ \psi(p)
-													 & \frac{1}{(N_x \Delta x)^d} ~ \sum_p e^{i p\cdot x} ~ \psi(p)
+\psi(x)												=& \frac{1}{V} \sum_p e^{+i p\cdot x} ~ \psi(p)
+													 & \frac{1}{(N_x \Delta x)^d} ~ \sum_p e^{+i p\cdot x} ~ \psi(p)
 \\[0.5em]
 \psi(p)												=& \int_V d^d x ~ e^{-i p\cdot x} ~ \psi(x)
 													 & \sum_x \Delta x^d ~ e^{-i p\cdot x} ~ \psi(x)
 \\[0.5em]
-\sum_p ~ e^{i p\cdot (x-x')}						=& V \delta^d(x-x')
+\sum_p ~ e^{+i p\cdot (x-x')}						=& V \delta^d(x-x')
 													 & (N_x \Delta x)^d \frac{\delta_{x x'}}{\Delta x^d}
 \\[0.5em]
 \delta_{pp'}										=& \frac{1}{V} \int_V d^d x ~ e^{-i (p - p') \cdot x}
