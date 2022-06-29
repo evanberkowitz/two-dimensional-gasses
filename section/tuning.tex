@@ -1,69 +1,77 @@
 \section{Tuning in the Two-Body Sector}\label{sec:tuning}
 
 To tune our Hamiltonian we go to the two-body sector and aim to reproduce a particular effective range expansion \eqref{ere} by matching to finite-volume energy levels predicted by the L\"{u}scher finite-volume quantization condition \eqref{quantization condition}.
-Let $\ket{x,y} = \psi\adjoint_\up(x) \psi\adjoint_\down(y) \ket{0}$.
+We will work with the dimensionless Hamiltonian with dimensionless coordinates and fields.
+
+Let
+\begin{align}
+	\ket{a,b} &= \tilde{\psi}\adjoint_\up(a) \tilde{\psi}\adjoint_\down(b) \ket{0}
+	&
+	\ket{p,q} &= \oneover{\sqrt{\Volume}^2}\sum_{ab} e^{-2\pi i (p\cdot a + q \cdot b)/N_x} \ket{a,b}.
+	\\
+	\braket{a',b'}{a,b} &= \delta_{a'a} \delta_{b'b}
+	&
+	\braket{p',q'}{p,q} &= \delta_{p'p} \delta_{q'q}
+\end{align}
 Then
 \begin{equation}
-    \tilde{H} \ket{x,y} = \sum_{x'} k_{x,x'}\ket{x',y} + \sum_{y'} k_{y,y'}\ket{x,y'} + \tilde{V}_{xy} \ket{x,y}
+	\tilde{H} \ket{a,b} = \sum_{c} \tilde{\kappa}_{ca}\ket{c,b} + \sum_{c} k_{cb}\ket{ac} + \tilde{V}_{ab} \ket{a,b}
 \end{equation}
-where we use a dimensionless potential $\tilde{V}_{xy}$ to generalize the contact interaction;
-the obvious contact interaction in the Hamiltonian \eqref{hamiltonian} is
-\begin{equation}
-    \tilde{V}_{xy} = - gM \delta_{xy}
-\end{equation}
-and $\tilde{V}_{xy}=\tilde{V}_{yx}$ by Newton's 3rd law.
+where we use the generic dimensionless potential $\tilde{V}$ \eqref{dimensionless potential}.
 
 Let's apply the non-interacting Hamiltonian $H_0$ to two-body momentum states
 \begin{equation}
     \ket{p,q} 
     =
-    \oneover{\sqrt{\Volume}^2}\sum_{xy} e^{i(p\cdot x + q \cdot y)} \ket{x,y}
+    \oneover{\sqrt{\Volume}^2}\sum_{ab} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \ket{a,b}
     =
-    \oneover{N_x^2}\sum_{xy} e^{i(p\cdot x + q \cdot y)} \ket{x,y}
+    \oneover{N_x^2}\sum_{ab} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \ket{a,b}
 \end{equation}
 to find
 \begin{align}
     \tilde{H}_0 \ket{p,q}
-    &=
-            \oneover{N_x^2} \sum_{xx'y} e^{i(p\cdot x + q \cdot y)} k_{xx'}\ket{x',y}
-        +   \oneover{N_x^2} \sum_{xyy'} e^{i(p\cdot x + q \cdot y)} k_{yy'}\ket{x,y'}
+    =&
+			\oneover{N_x^2} \sum_{aa'b} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \tilde{\kappa}_{a'a}\ket{a',b}
+		+   \oneover{N_x^2} \sum_{abb'} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \tilde{\kappa}_{b'b}\ket{a,b'}
+    \nonumber\\
+    =&
+			\oneover{N_x^2} \sum_{aa'p'b} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \frac{(2\pi p')^2}{2\Volume^2} e^{-2\pi i p'\cdot(a'-a)/N_x}\ket{a',b}
+			\nonumber\\&
+		+   \oneover{N_x^2} \sum_{abb'q'} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \frac{(2\pi q')^2}{2\Volume^2} e^{-2\pi i q'\cdot(b'-b)/N_x}\ket{a,b'}
     \\
-    &=
-            \oneover{N_x^2} \sum_{xx'p'y} e^{i(p\cdot x + q \cdot y)} \frac{p'^2}{2\Volume} e^{-i p'\cdot(x-x')}\ket{x',y}
-        +   \oneover{N_x^2} \sum_{xyy'q'} e^{i(p\cdot x + q \cdot y)} \frac{q'^2}{2\Volume} e^{-i q'\cdot(y-y')}\ket{x,y'}
+    =&
+			\oneover{N_x^6} \sum_{a'p'b} \frac{(2\pi p')^2}{2} e^{-2\pi i(p'a+qb)/N_x} \ket{a',b} \sum_{a} e^{-2\pi i(p-p')a/N_x}
+			\nonumber\\&
+		+   \oneover{N_x^6} \sum_{ab'q'} \frac{(2\pi q')^2}{2} e^{-2\pi i(pa+q'b)/N_x} \ket{a,b'} \sum_{b} e^{-2\pi i(q-q')b/N_x}
     \\
-    &=
-            \oneover{N_x^4} \sum_{x'p'y} \frac{p'^2}{2} e^{i(p'x+qy)} \ket{x',y} \sum_{x} e^{i(p-p')x}
-        +   \oneover{N_x^4} \sum_{xy'q'} \frac{q'^2}{2} e^{i(px+q'y)} \ket{x,y'} \sum_{y} e^{i(q-q')y}
+    =&
+			\oneover{N_x^6} \sum_{a'p'b} \frac{(2\pi p')^2}{2} e^{-2\pi i(p'a'+qb)/N_x} \ket{a',b} \Volume \delta_{pp'}
+		+   \oneover{N_x^6} \sum_{ab'q'} \frac{(2\pi q')^2}{2} e^{-2\pi i(pa+q'b')/N_x} \ket{a,b'} \Volume \delta_{qq'}
     \\
-    &=
-            \oneover{N_x^4} \sum_{x'p'y} \frac{p'^2}{2} e^{i(p'x'+qy)} \ket{x',y} \Volume \delta_{pp'}
-        +   \oneover{N_x^4} \sum_{xy'q'} \frac{q'^2}{2} e^{i(px+q'y')} \ket{x,y'} \Volume \delta_{qq'}
+    =&
+			\frac{(2\pi p/N_x)^2}{2} \oneover{N_x^2}\sum_{a'b} e^{-2\pi i(pa'+qb)/N_x} \ket{a',b}
+		+   \frac{(2\pi q/N_x)^2}{2} \oneover{N_x^2}\sum_{ab'} e^{-2\pi i(pa+qb')/N_x} \ket{a,b'}
     \\
-    &=
-            \frac{p^2}{2} \oneover{N_x^2}\sum_{x'y} e^{i(px'+qy)} \ket{x',y}
-        +   \frac{q^2}{2} \oneover{N_x^2}\sum_{xy'} e^{i(px+qy')} \ket{x,y'}
-    \\
-    &=
-        \left(\frac{p^2}{2} + \frac{q^2}{2}\right) \ket{p,q}.
+    =&
+		\left(\frac{(2\pi p/N_x)^2}{2} + \frac{(2\pi q/N_x)^2}{2}\right) \ket{p,q}.
 \end{align}
 
 Now consider the states with total momentum $P$ and a relative coordinate $r$,
 \begin{align}
-    \ket{P,r} = \oneover{N_x} \sum_x e^{iPx} \ket{x,x+r}
+    \ket{P,r} = \oneover{N_x} \sum_a e^{iPa} \ket{a,a+r}
 \end{align}
 Then applying the (interacting) Hamiltonian gives
 \begin{align}
     \tilde{H} \ket{P,r}
     &=
-            \sum_{r'} k_{rr'} \left( e^{iP(r'-r)}+1\right)\ket{P,r'}
+            \sum_{r'} \tilde{\kappa}_{rr'} \left( e^{iP(r'-r)}+1\right)\ket{P,r'}
         +   \tilde{V}_{0,r} \ket{P,r}
 \end{align}
 If we focus on $P=0$ we get
 \begin{align}
     \tilde{H} \ket{0,r}
     &=
-            \sum_{r'} 2k_{rr'} \ket{0,r'}
+			\sum_{r'} 2\tilde{\kappa}_{rr'} \ket{0,r'}
         +   \tilde{V}_{0,r} \ket{0,r};
 \end{align}
 the $2$ on the kinetic piece is the fact that the reduced mass is half the single-particle mass.
