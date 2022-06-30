@@ -44,7 +44,7 @@ plotCoupling=ListPlot[
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[min],Large],data[[+1,{2,3}]],Left],
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[max],Large],data[[-1,{2,3}]],Left]
 		},
-	FrameLabel->{"\!\(\*SubscriptBox[\(C\), \(0\)]\)","\!\(\*SubscriptBox[\(C\), \((0, 1)\)]\)"}]
+	FrameLabel->{"\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(C\), \(~\)]\)\), \(0\)]\)","\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(C\), \(~\)]\)\), \((0, 1)\)]\)"}]
 
 
 viewMinx=-3;

@@ -47,7 +47,7 @@ plotCoupling=GraphicsColumn[
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[min],Large],data[[+1,{2,3}]],Left],
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[max],Large],data[[-1,{2,3}]],Left]
 		},
-	FrameLabel->{None,"\!\(\*SubscriptBox[\(C\), \((0, 1)\)]\)"}],
+	FrameLabel->{None,"\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(C\), \(~\)]\)\), \((0, 1)\)]\)"}],
 ListPlot[
 	List/@data[[All,{2,4}]],
 	GridLines->{{0},{0}},
@@ -57,7 +57,7 @@ ListPlot[
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[min],Large],data[[+1,{2,4}]],Left],
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[max],Large],data[[-1,{2,4}]],Left]
 		},
-	FrameLabel->{"\!\(\*SubscriptBox[\(C\), \(0\)]\)","\!\(\*SubscriptBox[\(C\), \((1, 1)\)]\)"}]
+	FrameLabel->{"\!\(\*SubscriptBox[\(\!\(\*SuperscriptBox[\(C\), \(~\)]\)\), \(0\)]\)","\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(C\), \(~\)]\)\), \((1, 1)\)]\)"}]
 }]
 
 
