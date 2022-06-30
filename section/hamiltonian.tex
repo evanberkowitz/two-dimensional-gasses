@@ -107,6 +107,7 @@ So, we can work with the dimensionless
 			- \frac{\tilde{C}_0}{2} \delta_{ab}
 			\right) \tilde{\psi}_b
 		+ \frac{1}{2} \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b
+\label{eq:dimensionless hamiltonian}
 \\
 	\tilde{\kappa}_{ab} &=
 				\oneover{\Volume} \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
@@ -166,7 +167,7 @@ The `$S$-wave' is the $A_1$ representation.
 Translationally invariant potentials $\tilde{V}_{ab}$ can be expressed as $\tilde{V}_{a,a+r} = \tilde{V}_{0,r}$  in terms of the relative lattice coordinate $r$.
 We can construct `rotationally'-invariant (meaning: transforms like the $A_1$ representation of $D_4$) interaction potentials $V^R_{0,r}$ out of `Lego spheres' \LegoSphere{R} that are obviously $A_1$ interactions that depend on a `radius' $R$,
 \begin{align}
-    \tilde{V}_{0,r} &= \sum_{R} C_R \LegoSphere{R}_{0,r}
+	\tilde{V}_{0,r} &= \sum_{R} \tilde{C}_R \LegoSphere{R}_{0,r}
     &
     \LegoSphere{R}_{0,r} &= \oneover{\shell{R}^2}\sum_{g \in D_4} \delta_{r, gR}
     &

@@ -9,7 +9,17 @@ We wish to compute observables with the partition function
 	N = \int d^2x\; \psi\adjoint(x)\psi(x)
 \end{align}
 where $N$ is the total number operator.
-In the latticized language $\tilde{N}=N=\sum_x \psi\adjoint_x \psi_x$, \emph{with no powers of $\Delta x$}.
+In the latticized language 
+\begin{align}
+	N
+	\goesto
+	\sum_x \Delta x^2 \psi\adjoint_x \psi_x
+	=
+	\sum_a \tilde{\psi}_a \tilde{\psi}_a
+	=
+	\sum_a \tilde{n}_a,
+\end{align}
+\emph{with no powers of $\Delta x$ required}.
 We can try to isolate the dimensionful quantities
 \begin{align}
 	Z
@@ -23,7 +33,7 @@ We can try to isolate the dimensionful quantities
 	&
 	\tilde{\mu}   &= \mu M \Delta x^2
 \end{align}
-where $\tilde{\beta}$ and $\tilde{\mu}$ are dimensionless, and $\tilde{K}$ and $\tilde{V}$ are the dimensionless kinetic and potential operators in the Hamiltonian \eqref{hamiltonian}.
+where $\tilde{\beta}$ and $\tilde{\mu}$ are dimensionless, and $\tilde{K}$ and $\tilde{V}$ are the dimensionless kinetic and potential operators in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
 
 Now Trotterizing,
 \begin{align}
