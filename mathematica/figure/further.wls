@@ -57,7 +57,7 @@ ListPlot[
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[min],Large],data[[+1,{2,4}]],Left],
 		Text[Style["  \!\(\*SubscriptBox[\(N\), \(x\)]\)="<>ToString[max],Large],data[[-1,{2,4}]],Left]
 		},
-	FrameLabel->{"\!\(\*SubscriptBox[\(\!\(\*SuperscriptBox[\(C\), \(~\)]\)\), \(0\)]\)","\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(C\), \(~\)]\)\), \((1, 1)\)]\)"}]
+	FrameLabel->{"\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(C\), \(~\)]\)\), \(0\)]\)","\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(C\), \(~\)]\)\), \((1, 1)\)]\)"}]
 }]
 
 
