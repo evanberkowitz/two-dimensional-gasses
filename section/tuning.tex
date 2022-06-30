@@ -19,7 +19,7 @@ Then
 \end{equation}
 where we use the generic dimensionless potential $\tilde{V}$ \eqref{dimensionless potential}.
 
-Let's apply the non-interacting Hamiltonian $H_0$ to two-body momentum states
+Let's apply the dimensionless non-interacting Hamiltonian $\tilde{H}_0$ to two-body momentum states
 \begin{equation}
     \ket{p,q} 
     =
@@ -138,7 +138,7 @@ So, let's take the ERE \eqref{ere} and try to apply the quantization condition \
 	&=
 	\frac{2}{\pi} \log \frac{pL}{2\pi} + \frac{1}{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
 	\\
-	\log \frac{\pi a}{L} &= \oneover{2\pi} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right) - \gamma
+	\log \half \frac{2\pi a}{L} &= \oneover{2\pi} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right) - \gamma
 	\label{eq:renormalization condition}
 \end{align}
 where we dropped all further momentum dependence from the ERE.
@@ -163,7 +163,7 @@ The ERE \eqref{ere} should be rewritten
 \begin{align}
     \cot \delta(p)
     &=
-    \frac{2}{\pi}\left[ \log\left(\frac{\pi a}{L} \sqrt{x}\right)+ \gamma\right]
+    \frac{2}{\pi}\left[ \log\left(\half \frac{2\pi a}{L} \sqrt{x}\right)+ \gamma\right]
     +
     \frac{1}{4} \left(\frac{2\pi r_e }{L}\right)^2 x
     +
@@ -178,12 +178,13 @@ The L\"{u}scher quantization condition \eqref{quantization condition} can be wri
     \cot \delta(p) = \frac{2}{\pi} \log \sqrt{x} + \oneover{\pi^2} S_2(x)
 	\label{eq:quantization condition dimensionless}
 \end{align}
-and to tune we need to adjust the potential to set $\pi a/L$.
+and to tune we need to adjust the potential to set $2\pi a/L$.
 So, it is convenient to define dimensionless ERE parameters,
 \begin{align}
     \tilde{a} &= \frac{2 \pi a}{L}
     &
     \tilde{r}_e^2 &= \left(\frac{2 \pi r_e}{L}\right)^2
+	\label{eq:dimensionless ere parameters}
 \end{align}
 and so on to get the dimensionless ERE
 \begin{align}
@@ -305,7 +306,7 @@ This closely matches what I have in the 3D $A_{1g}$ case, except for (1) the nor
 
 Suppose we wish to tune to a dimensionless ERE \eqref{ere dimensionless} with only log momentum dependence (so that we expect to be able to tune just one parameter in an $A_1$ potential).
 We can pick a nonperturbative $\tilde{a} \sim 1$.
-This fixes, via the quantization condition \eqref{quantization condition dimensionless} a set of dimensionlless $x$s, which can be turned into dimensionless energies via $x=\tilde{E}N_x^2/(2\pi)^2$.
+This fixes, via the quantization condition \eqref{quantization condition dimensionless} a set of dimensionless $x$s, which can be turned into dimensionless energies via $x=\tilde{E}N_x^2/(2\pi)^2$.
 
 We take a potential with only the zero-radius Lego Sphere $\LegoSphere{0}$.
 We know then the value of the coupling analytically \eqref{coupling analytically}.
@@ -360,3 +361,15 @@ By eye it does not seem like we get further parametric improvement, though it do
     \label{fig:tune three spheres}
 \end{figure}
 
+\subsection{The Magic}
+
+The L\"{u}scher $x=\tilde{E} N_x^2 /(2\pi)^2$ is \emph{only} a function of $N_x$ and the set of dimensionless $C$s.
+Through the quantization condition \eqref{quantization condition dimensionless} and the ere \eqref{ere dimensionless} a fixed set of those parameters fixes the dimensionless ere parameters \eqref{dimensionless ere parameters}.
+\emph{This is magic.}
+Tuning to a fixed $\tilde{a}$ with a fixed $N_x$ requires the \textbf{same} $C$s, no matter $L$ (note that the dimensionless $\tilde{a}$ is normalized by $L$).
+
+Indeed, in the above examples I \emph{never had to specify $L$ or $\Delta x$}---only their ratio $N_x$---and the desired $\tilde{a}$.
+Since I was aiming for `strong coupling' in the sense of non-interacting energies \emph{all I could specify was $\tilde{a}$ itself}.
+Fixing $a$ in absolute physical units is neither strong coupling or weak coupling---it depends on what size box it's in.
+Make the box very big and $\tilde{a}$ becomes very small, and the energies go to the asymptotes from the right side (downward).
+Make the box very small and $\tilde{a}$ becomes very big, and the energies go to the asymptotes from the left  side (upward).
