@@ -15,7 +15,7 @@ Let
 \end{align}
 Then
 \begin{equation}
-	\tilde{H} \ket{a,b} = \sum_{c} \tilde{\kappa}_{ca}\ket{c,b} + \sum_{c} k_{cb}\ket{ac} + \tilde{V}_{ab} \ket{a,b}
+	\tilde{H} \ket{a,b} = \sum_{c} \tilde{\kappa}_{ca}\ket{c,b} + \sum_{c} \tilde{\kappa}_{cb}\ket{ac} + \tilde{V}_{ab} \ket{a,b}
 \end{equation}
 where we use the generic dimensionless potential $\tilde{V}$ \eqref{dimensionless potential}.
 
@@ -58,16 +58,41 @@ to find
 
 Now consider the states with total momentum $P$ and a relative coordinate $r$,
 \begin{align}
-    \ket{P,r} = \oneover{N_x} \sum_a e^{iPa} \ket{a,a+r}
+	\ket{P,r} 
+	= \oneover{N_x} \sum_a e^{-2\pi iPa/N_x} \ket{a,a+r}
+	= \oneover{N_x^3} \sum_{akj} e^{2\pi i (-P a+ka+j(a+r))/N_x} \ket{k,j}
+	= \oneover{N_x} \sum_k e^{+2\pi i (P-k) r /N_x} \ket{k, P-k}
 \end{align}
-Then applying the (interacting) Hamiltonian gives
+The first form is useful for evaluating the potential term,
 \begin{align}
-    \tilde{H} \ket{P,r}
-    &=
-            \sum_{r'} \tilde{\kappa}_{rr'} \left( e^{iP(r'-r)}+1\right)\ket{P,r'}
-        +   \tilde{V}_{0,r} \ket{P,r}
+	(\tilde{H}-\tilde{H}_0)\ket{P,r} 
+	&= \oneover{N_x} \sum_a e^{-2\pi iPa/Nx} (\tilde{H}-\tilde{H}_0)\ket{a,a+r} 
+	= \oneover{N_x} \sum_a e^{-2\pi iPa/Nx} \tilde{V}_{a,a+r} \ket{a,a+r}
+	\nonumber\\
+	&= \oneover{N_x} \sum_a e^{-2\pi iPa/Nx} \tilde{V}_{0,r} \ket{a,a+r}
+	= \tilde{V}_{0,r}  \oneover{N_x} \sum_a e^{-2\pi iPa/Nx} \ket{a,a+r}
+	= \tilde{V}_{0,r} \ket{P,r}
 \end{align}
-If we focus on $P=0$ we get
+leveraging translational invariance.
+The last form is useful for evaluating for the kinetic term,
+\begin{align}
+    \tilde{H}_0 \ket{P,r}
+    &=
+		\oneover{N_x} \sum_k e^{+2\pi i(P-k) r/N_x} \left(\frac{(2\pi k)^2 + (2\pi (P-k))^2}{2 \Volume}\right) \ket{k,P-k}
+	\nonumber\\
+	&=
+		\oneover{N_x} \sum_k e^{+2\pi i(P-k) r/N_x} \left(\frac{(2\pi k)^2 + (2\pi (P-k))^2}{2 \Volume}\right) \oneover{N_x^2} \sum_{ar'} e^{-2\pi i (ka + (P-k)(a+r'))/N_x} \ket{a,a+r'}
+	\nonumber\\
+	&=
+		\oneover{N_x^2} \sum_{kr'} \left(\frac{(2\pi k)^2 + (2\pi (P-k))^2}{2 \Volume}\right) e^{+2\pi i(P-k) (r-r')/N_x} \oneover{N_x} \sum_{a} e^{-2\pi i Pa /N_x} \ket{a,a+r'}
+	\nonumber\\
+	&=
+		\oneover{\Volume} \sum_{kr'} \left(\frac{(2\pi k)^2 + (2\pi (P-k))^2}{2 \Volume}\right) e^{+2\pi i(P-k) (r-r')/N_x} \ket{P,r'}
+	\nonumber\\
+	&=
+	\sum_{r'} \tilde{\kappa}_{rr'} \left[ e^{+2\pi i P(r-r')} + 1 \right] \ket{P,r'}.
+\end{align}
+If we focus on the whole $\tilde{H}$ in the $P=0$ sector we get
 \begin{align}
     \tilde{H} \ket{0,r}
     &=
@@ -77,7 +102,7 @@ If we focus on $P=0$ we get
 the $2$ on the kinetic piece is the fact that the reduced mass is half the single-particle mass.
 So, we can solve the Schr\"{o}dinger equation in the $P=0$ sector,
 \begin{align}
-    \tilde{H} \sum_r \ket{P=0,r}\braket{P=0,r}{\psi} &= \tilde{E}\ket{\psi}
+    \tilde{H} \sum_r \ket{P=0,r}\braket{P=0,r}{\psi} &= \tilde{E}\sum_r \ket{P=0,r'}\braket{P=0,r'}{\psi}
     \\
     \sum_{r'r} \ket{P=0, r'} \bra{P=0, r'} \tilde{H} \ket{P=0,r}\braket{P=0,r}{\psi} &= \tilde{E} \sum_{r'} \ket{P=0, r'}\braket{P=0,r'}{\psi}
     \\
