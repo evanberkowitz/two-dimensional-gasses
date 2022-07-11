@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from functools import cached_property
 import numpy as np
 
 class Lattice:
@@ -48,6 +49,9 @@ class Lattice:
     def __str__(self):
         return f'Lattice({self.nx},{self.ny})'
 
+    def __repr__(self):
+        return str(self)
+
     def mod_x(self, x):
         # Mods into the x coordinate.
         # Assumes periodic boundary conditions.
@@ -75,13 +79,13 @@ class Lattice:
         return np.dot(d,d)
 
     def vector(self, dtype=complex):
-        return np.zeros([self.nx, self.ny], dtype=dtype)
+        return np.zeros(self.dims, dtype=dtype)
 
     def matrix(self, dtype=complex):
         # can do matrix-vector via
         #   np.einsum('ijab,ab',matrix,vector)
         # to get a new vector (with indices ij).
-        return np.zeros([self.nx, self.ny, self.nx, self.ny], dtype=dtype)
+        return np.zeros(np.concatenate((self.dims, self.dims)), dtype=dtype)
 
     def fft(self, vector, axes=(-2,-1), norm='ortho'):
         return np.fft.fft2(vector, axes=axes, norm=norm)
@@ -89,11 +93,8 @@ class Lattice:
     def ifft(self, vector, axes=(-2,-1), norm='ortho'):
         return np.fft.ifft2(vector, axes=axes, norm=norm)
 
-    # Private, call-once functions to set some properties in the constructor
-    def _dx(self):
-        pass
-
-    def _adjacency_matrix(self):
+    @cached_property
+    def adjacency_matrix(self):
         # Creates an (nx, ny, nx, ny) adjacency matrix, where the
         # first two indices form the "row" and the
         # second two indices form the "column"
