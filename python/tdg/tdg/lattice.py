@@ -21,6 +21,7 @@ class Lattice:
         # (up to even/odd issues)
         if self.nx % 2 == 0:
             self.x = self.x[1:]
+        if self.ny % 2 == 0:
             self.y = self.y[1:]
 
         # However, we want to match the FFT convention of numpy
