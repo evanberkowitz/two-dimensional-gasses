@@ -21,8 +21,9 @@ class Spacetime:
         #print( (self.X[0] == self.Lattice.X).all() and (self.Y[0] == self.Lattice.Y).all() )
 
         # A linearized list of coordinates.
-        self.coordinates = np.array([[t,x,y] for t,x,y in zip(self.T.flat, self.X.flat, self.Y.flat)])
+        self.coordinates = [(t,x,y) for t,x,y in zip(self.T.flat, self.X.flat, self.Y.flat)]
         # Each timeslice matches lattice.coordinates,
+        #self.coordinates = np.array(self.coordinates)
         #print((self.coordinates[:(self.dims[1]*self.dims[2])][:,[1,2]] == self.Lattice.coordinates).all())
 
     def __str__(self):
