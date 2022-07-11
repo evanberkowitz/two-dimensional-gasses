@@ -45,7 +45,8 @@ class Lattice:
 
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
-        self.coordinates = np.array([[x,y] for x,y in zip(self.X.flat, self.Y.flat)])
+        self.coordinates = [tuple((x,y)) for x,y in zip(self.X.flat, self.Y.flat)]
+        self.coordinate_lookup= {tuple(x):i for i,x in enumerate(self.coordinates)}
 
     def __str__(self):
         return f'Lattice({self.nx},{self.ny})'
