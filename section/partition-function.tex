@@ -52,3 +52,124 @@ Comparing with Alexandru, Bedaque, Berkowitz, and Warrington $\Delta\tilde{t}$ i
 
 Now do Hubbard-Stratanovich to eliminate the explicit fermions, get an action purely in terms of auxiliary fields (gauge+fermion determinant).
 Presumably we still want to take the Hamiltonian $\Delta\tilde{t}\goesto0$ limit first?
+
+\subsection{Deriving Path Integral}
+In this subsection we derive a path integral expression for the partition function
+\begin{align}
+	Z
+	&=
+	\tr{e^{-\beta(H-\mu N)}}~.
+\end{align}
+We begin with the identity
+\begin{equation}
+e^{-\Delta t(H - \mu N)} = e^{-\Delta t/2(K - \mu N)}  e^{-\Delta t V}  e^{-\Delta t/2(K - \mu N)} + \mathcal{O}(\Delta t^3) 
+\end{equation}
+where $H = K + V$ has been decomposed into the kinetic energy $K$ and the interaction term $V$. Therefore,
+\begin{align}
+\tr{\prod_{t=1}^{N_t} e^{-\Delta t/2(K - \mu N)}  e^{-\Delta t V}  e^{-\Delta t/2(K - \mu N)}} & =
+\tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{-\Delta t V}  } \\
+& =  \tr{e^{-\beta(H-\mu N)}} + \mathcal{O}(\Delta t^2)
+\end{align}
+We now begin a sequence of exact manipulations of the object 
+\begin{equation}
+\tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{-\Delta t V}  }~,
+\end{equation}
+which converges to the desired partition function as $\Delta t \rightarrow 0$ . To continue, note that
+\begin{equation}
+V =  \frac{1}{2} \sum_{xy} \Delta x^4 n_x V_{xy} n_y = \frac{1}{2} \sum_{xy} \tilde{n}_x V_{xy} \tilde{n}_y 
+\end{equation}
+where 
+\begin{equation}
+V_{xy} = \frac{g}{\Delta x^2} \mathcal{S}^0_{x y} + \frac{C_{ \vec{R} }}{\Delta x^2} \mathcal{S}^{ \vec{R} }_{xy}
+\end{equation}
+is a symmetric matrix. If V has purely real eigenvalues (which imposes conditions on the bare coupling constants), then the following Hubbard-Stratanovich transformation holds:
+\begin{equation}
+\text{exp}\Bigg( \frac{1}{2} \sum_{x y}\tilde{n}(x) (M^{-1})_{xy} \tilde{n}(y) \Bigg) 
+= 
+\frac{\int d {A} e^{-\frac{1}{2} {A}^T M A + \tilde{n} \cdot {A} } }{ \int d {A} e^{-\frac{1}{2} {A}^T M A  } }
+\end{equation}
+where $A$ is a vector with $N_x^2$ number of components. Choosing $(M^{-1})_{xy} = (-\Delta t V)_{xy}$, one then has the following
+\begin{equation}
+\tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{-\Delta t V}  } = 
+\frac{  
+\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t} ~ \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{ \tilde{n}\cdot A_t} } 
+}{ 
+\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t}  
+}
+\end{equation}
+where $DA = \prod_{t=1}^{N_t} d A_t $ . Notice that this is an \emph{exact} rewriting of the trotterized partition function.
+
+
+Using fermion coherent states, we will now convert the trace over fermion degrees of freedom into a determinant . One has (using the conventions of Munster Ch. 4)
+\begin{align*}
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{ \tilde{n}\cdot A_t} }  = \int{} \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times \\
+& \langle -\eta_1 | e^{-\Delta t(K - \mu N)} | \eta_{2 N_t} \rangle \, \langle \eta_{2 N_t} | e^{ \tilde{n} \cdot A_{N_t}} | \eta_{2 N_t -1} \rangle ....
+\langle \eta_5 | e^{-\Delta t(K - \mu N)} | \eta_4 \rangle \, \langle \eta_4 | e^{ \tilde{n} \cdot A_2} | \eta_3 \rangle
+\langle \eta_3 | e^{-\Delta t(K - \mu N)} | \eta_2 \rangle \, \langle \eta_2 | e^{ \tilde{n} \cdot A_1} | \eta_1 \rangle
+\end{align*}
+This expression is admittedly horrific. To proceed we use Eq. 4.33 of Munster, which states
+\begin{equation}
+\langle \eta | e^{\sum_{ij} a^{\dagger}_j A_{ji} a_i} | \eta' \rangle = \text{exp}\Bigg[ \sum_{i j} \eta^{\dagger}_j (e^A)_{ji} \eta'_i \Bigg]~.
+\end{equation}
+One therefore has
+\begin{align*}
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{ \tilde{n}\cdot A_t} }  = \int{} \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times \\
+& \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_{2 N_t +1}(x) \big(e^{-\Delta t(k-\mu \mathbf{1})}\big)_{xy} \eta_{2 N_t}(y)\Bigg] ~ \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_{2 N_t}(x) \big(e^{A_{N_t} }\big)_{xy} \eta_{2 N_t -1}(y) \Bigg] \\
+& ... \\
+& \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_5(x) \big(e^{-\Delta t(k-\mu \mathbf{1})}\big)_{xy} \eta_4(y)\Bigg] ~ \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_4(x) \big(e^{A_2}\big)_{xy} \eta_3(y) \Bigg] \\
+& \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_3(x) \big(e^{-\Delta t(k-\mu \mathbf{1})}\big)_{xy} \eta_2(y)\Bigg] ~ \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_2(x) \big(e^{A_1}\big)_{xy} \eta_1(y) \Bigg] 
+\end{align*}
+where $\eta_{2 N_t + 1} \equiv - \eta_1$, $\mathbf{1}$ is the $N_x^2 \times N_x^2$ unit matrix, and  
+\begin{equation}
+\Big( e^{A_t} \Big)_{xy} = \delta_{xy} e^{A_t(x)}~~~~\big(k\big)_{xy} = \frac{1}{N_x^2} \sum_{\tilde{p}} \frac{\tilde{p}^2}{2 M \Delta x^2} e^{-i \tilde{p} (\tilde{x}-\tilde{y})}~.
+\end{equation}
+We finally have that 
+\begin{align*}
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{ \tilde{n}\cdot A_t} }  = \int{} \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \eta^{\dagger} D \eta} = \text{det} \, D
+\end{align*}
+where 
+\begin{equation}
+D = \begin{bmatrix} 
+\mathbf{1} & 0 & 0 & 0 & 0 & ... & 0 & 0 & e^{\Delta t \mu} B^{-1} \\
+-e^{A_1} & \mathbf{1} & 0 & 0 & 0 & ... & 0 & 0 & 0 \\
+0 & e^{\Delta t \mu} B^{-1} & \mathbf{1} & 0 & 0 & ... & 0 & 0 & 0 \\
+0 & 0 & -e^{A_2} & \mathbf{1} & 0 & ... & 0 & 0 & 0 \\
+0 & 0 & 0 & e^{\Delta t \mu} B^{-1} & \mathbf{1} & ... & 0 & 0 & 0 \\
+. & . & . & . & . & ... & . & . & . \\
+. & . & . & . & . & ... & . & . & . \\
+. & . & . & . & . & ... & . & . & . \\
+0 & 0 & 0 & 0 & 0 & ... & e^{\Delta t \mu} B^{-1} & \mathbf{1} & 0 \\
+0 & 0 & 0 & 0 & 0 & ... & 0 & -e^{A_{N_t}} & \mathbf{1} \\
+\end{bmatrix}
+\end{equation}
+Notice that $D$ is a block matrix with $2N_t$ blocks per side. Here is another block matrix, but with only $N_t$ blocks per side,
+\begin{equation}
+D' = \begin{bmatrix}
+B & 0 & 0 & 0 & ... & 0 & e^{A_{N_t}+ \Delta t \mu} \\
+-e^{A_1+ \Delta t \mu} & B & 0 & 0 & ... & 0 & 0 \\
+0 & -e^{A_2+ \Delta t \mu} & B & 0 & ... & 0 & 0 \\
+0 & 0 & -e^{A_3+ \Delta t \mu} & B & ... & 0 & 0 \\
+. & . & . & . & ... & . & . \\
+. & . & . & . & ... & . & . \\
+. & . & . & . & ... & . & . \\
+0 & 0 & 0 & 0 & ... & B & 0 \\
+0 & 0 & 0 & 0 & ... & -e^{A_{N_t-1}+ \Delta t \mu} & B \\
+\end{bmatrix}
+\end{equation} 
+which satisfies
+\begin{equation}
+\text{det}\, D = \frac{ \text{det}\, D' }{ \text{det}\, B^{N_t} }
+\end{equation}
+Since the two matrices differ by a constant factor, either may be used in simulations; we use the latter. Therefore, one finally has
+\begin{align*}
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{-\Delta t V}  } = \\
+& {\text{det} B}^{-N_t} \frac{  
+\int DA D\eta^{\dagger} D \eta ~ \text{exp}\Bigg[-\Big( \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t}\eta^{\dagger}(x,t) B_{x y} \eta(y,t) - \sum_{x t}\eta^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta(x,t) \Bigg] 
+}{ 
+\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t}  
+}~.
+\end{align*}
+Therefore, the action for this theory is 
+\begin{equation}
+S =  \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t}\eta^{\dagger}(x,t) B_{x y} \eta(y,t) - \sum_{x t}\eta^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta(x,t)
+\end{equation}
