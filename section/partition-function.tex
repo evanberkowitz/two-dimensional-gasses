@@ -4,34 +4,48 @@ We wish to compute observables with the partition function
 \begin{align}
 	Z
 	&=
-	\tr{e^{-\beta(H-\mu N)}}
+	\tr{e^{-\beta(H-\mu N - \vec{h}\cdot\vec{S})}}
 	&
-	N = \int d^2x\; \psi\adjoint(x)\psi(x)
+	N &= \int d^2x\; \psi\adjoint(x)\psi(x)
+	&
+	\vec{S} = \half \int d^2x\; \psi\adjoint(x) ~ \vec{\sigma} ~ \psi(x)
 \end{align}
-where $N$ is the total number operator.
+where $N$ is the total number operator and $\vec{S}$ are spin operators which obey $[S^i, S^j] = i\epsilon^{ijk} S^k$.
 In the latticized language 
 \begin{align}
 	N
-	\goesto
+	&\goesto
 	\sum_x \Delta x^2 \psi\adjoint_x \psi_x
 	=
 	\sum_a \tilde{\psi}_a \tilde{\psi}_a
 	=
-	\sum_a \tilde{n}_a,
+	\sum_a \tilde{n}_a
+	=
+	\tilde{N}
+	\\
+	\vec{S}
+	&\goesto
+	\half \sum_x \Delta x^2 \psi\adjoint_x \vec{\sigma} \psi_x
+	=
+	\half \sum_a \tilde{\psi}\adjoint_a ~ \vec{\sigma} ~ \tilde{\psi}_a
+	=
+	\tilde{\vec{S}}
 \end{align}
 \emph{with no powers of $\Delta x$ required}.
 We can try to isolate the dimensionful quantities
 \begin{align}
 	Z
 	&=
-	\tr{e^{-\left(\frac{\beta}{M\Delta x^2}\right)(HM\Delta x^2 -\mu M \Delta x^2 N)}}
+	\tr{e^{-\left(\frac{\beta}{M\Delta x^2}\right)(HM\Delta x^2 -M \Delta x^2 \mu N - M \Delta x^2 \vec{h} \cdot \vec{S})}}
 \\
 	&=
 	\tr{e^{-\tilde{\beta}(\tilde{K}+\tilde{V}-\tilde{\mu} \tilde{N})}}
 	&
 	\tilde{\beta} &= \frac{\beta}{M \Delta x^2}
 	&
-	\tilde{\mu}   &= \mu M \Delta x^2
+	\tilde{\mu}   &= M \Delta x^2 \mu
+	&
+	\tilde{\vec{h}} &= M \Delta x^2 \vec{h}
 \end{align}
 where $\tilde{\beta}$ and $\tilde{\mu}$ are dimensionless, and $\tilde{K}$ and $\tilde{V}$ are the dimensionless kinetic and potential operators in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
 
