@@ -32,14 +32,22 @@ In the latticized language
 	\tilde{\vec{S}}
 \end{align}
 \emph{with no powers of $\Delta x$ required}.
-We can try to isolate the dimensionful quantities
+Explicitly, the local spin operators are
+\begin{align}
+	\tilde{S}^1 &= \half \left(\tilde{\psi}\adjoint_\uparrow \tilde{\psi}_\downarrow + \tilde{\psi}\adjoint_\downarrow \tilde{\psi}_\uparrow\right)
+	&
+	\tilde{S}^2 &= \frac{i}{2} \left( \tilde{\psi}\adjoint_\downarrow \tilde{\psi}_\uparrow - \tilde{\psi}\adjoint_\uparrow \tilde{\psi}_\downarrow\right)
+	&
+	\tilde{S}^3 &= \half \left(\tilde{\psi}\adjoint_\uparrow \tilde{\psi}_\uparrow - \tilde{\psi}\adjoint_\downarrow \tilde{\psi}_\downarrow\right).
+\end{align}
+We can isolate the dimensionful quantities
 \begin{align}
 	Z
 	&=
 	\tr{e^{-\left(\frac{\beta}{M\Delta x^2}\right)(HM\Delta x^2 -M \Delta x^2 \mu N - M \Delta x^2 \vec{h} \cdot \vec{S})}}
 \\
 	&=
-	\tr{e^{-\tilde{\beta}(\tilde{K}+\tilde{V}-\tilde{\mu} \tilde{N})}}
+	\tr{e^{-\tilde{\beta}(\tilde{K}+\tilde{V}-\tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}}
 	&
 	\tilde{\beta} &= \frac{\beta}{M \Delta x^2}
 	&
@@ -47,7 +55,7 @@ We can try to isolate the dimensionful quantities
 	&
 	\tilde{\vec{h}} &= M \Delta x^2 \vec{h}
 \end{align}
-where $\tilde{\beta}$ and $\tilde{\mu}$ are dimensionless, and $\tilde{K}$ and $\tilde{V}$ are the dimensionless kinetic and potential operators in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
+where $\tilde{\beta}$, $\tilde{\mu}$, and $\tilde{\vec{h}}$ are dimensionless, and $\tilde{K}$ and $\tilde{V}$ are the dimensionless kinetic and potential operators in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
 
 Now Trotterizing,
 \begin{align}
