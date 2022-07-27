@@ -57,23 +57,208 @@ We can isolate the dimensionful quantities
 \end{align}
 where $\tilde{\beta}$, $\tilde{\mu}$, and $\tilde{\vec{h}}$ are dimensionless, and $\tilde{K}$ and $\tilde{V}$ are the dimensionless kinetic and potential operators in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
 
-Now Trotterizing,
+\subsection{Dimensionless Path Integral}
+
+In this subsection we derive a path integral expression for the partition function
 \begin{align}
 	Z
-	=
-	\tr{e^{-\tilde{\beta}(\tilde{K}+\tilde{V}-\tilde{\mu} \tilde{N})}}
-	&\approx
-	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t} \tilde{K}} e^{-\Delta\tilde{t}(\tilde{V}-\tilde{\mu}\tilde{N})}} + \order{\Delta\tilde{t}^2}
-	\\
 	&=
-	\textrm{path integral to importance sample here.}
+	\tr{e^{-\tilde{\beta}(\tilde{H}-\tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}}~.
 \end{align}
-where $\Delta\tilde{t} = \tilde{\beta}/N_t$ is the division of the dimensionless temperature into $N_t$ timeslices.
-\emph{Everything is already dimensionless.}
-Comparing with Alexandru, Bedaque, Berkowitz, and Warrington $\Delta\tilde{t}$ is exactly equivalent to $\hat{\gamma}$.
+by Trotterizing  $\tilde{\beta}$ into $N_t$ time slices so that $\Delta \tilde{t} = \tilde{\beta}/N_t = \beta/M \Delta x^2 N_t$, which exactly matches $\hat{\gamma}$ in our prior work.
+We begin with the identity
+\begin{equation}
+	e^{-\Delta \tilde{t}(\tilde{H} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}
+	=
+	e^{-\Delta \tilde{t}/2(\tilde{K} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}
+	e^{-\Delta \tilde{t} \tilde{V}}
+	e^{-\Delta \tilde{t}/2(\tilde{K} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}
+	+
+	\mathcal{O}(\Delta \tilde{t}^3) 
+\end{equation}
+where $\tilde{H} = \tilde{K} + \tilde{V}$ has been decomposed into the kinetic energy $\tilde{K}$ and the interaction term $\tilde{V}$ as in \eqref{dimensionless hamiltonian}.
+Therefore,
+\begin{align}
+	\tr{e^{-\tilde{\beta}(\tilde{H}-\tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}}
+	=
+	\tr{
+		\prod_{t=1}^{N_t}
+		e^{-\Delta \tilde{t} (\tilde{H}-\tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}
+	}
+	&=
+	\tr{
+		\prod_{t=1}^{N_t}
+		e^{-\Delta \tilde{t}/2(\tilde{K} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}
+		e^{-\Delta \tilde{t} \tilde{V}}
+		e^{-\Delta \tilde{t}/2(\tilde{K} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}
+	}
+	+ \order{\Delta \tilde{t}^2}
+	\nonumber\\
+	&=
+	\tr{
+		\prod_{t=1}^{N_t}
+		e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}
+		e^{-\Delta \tilde{t} \tilde{V}}  
+	}
+	+ \order{\Delta \tilde{t}^2}.
+	\label{eq:trotterization}
+\end{align}
+which converges to the desired partition function as $\Delta \tilde{t} \goesto 0$.
 
-Now do Hubbard-Stratanovich to eliminate the explicit fermions, get an action purely in terms of auxiliary fields (gauge+fermion determinant).
-Presumably we still want to take the Hamiltonian $\Delta\tilde{t}\goesto0$ limit first?
+We now begin a sequence of exact manipulations of the Trotterization \eqref{trotterization}.
+Recall that the potential operator can be expressed as a sum of Lego spheres \eqref{dimensionless hamiltonian},
+\begin{align}
+	\tilde{V}
+	&= \frac{1}{2} \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b
+	&
+	\tilde{V}_{ab}
+	&=
+	\sum_{\vec{R}} \tilde{C}_{\vec{R}} \LegoSphere{\vec{R}}_{ab}
+\end{align}
+where $\tilde{V}_{ab}$ is a symmetric matrix and the radii $\vec{R}$ can be chosen however we like.
+If $\tilde{V}$ has purely real eigenvalues (which imposes conditions on the bare coupling constants), then the following Hubbard-Stratanovich transformation holds:
+\begin{equation}
+	\exp\left( \frac{1}{2} \sum_{x y}\tilde{n}(x) (M^{-1})_{xy} \tilde{n}(y) \right)
+	=
+	\frac{
+		\int dA\; e^{-\frac{1}{2} A\transpose M A + \tilde{n} \cdot {A} }
+	}{
+		\int dA\; e^{-\frac{1}{2} A\transpose M A  }
+	}
+\end{equation}
+where $A$ is a vector with $\Volume$ components.
+Choosing $(M^{-1})_{ab} = (-\Delta \tilde{t} \tilde{V})_{ab}$, one then has the following \emph{exact} rewriting of the Trotterized partition function \eqref{trotterization}
+\begin{equation}
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}  e^{-\Delta \tilde{t}\tilde{V}} }
+	= 
+	\frac{  
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t M A_t}
+	~	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}  e^{ \tilde{n}\cdot A_t} } 
+	}{ 
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t M A_t}
+	}
+\end{equation}
+where $DA = \prod_{t=1}^{N_t} d A_t $.
+
+Using fermion coherent states, we will now convert the trace over fermion degrees of freedom into a determinant.
+Using the conventions of Munster Ch. 4,
+\begin{align}
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}  e^{ \tilde{n}\cdot A_t} }
+	=& \int \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times
+	\nonumber\\
+	&
+		\matrixElement{ -\eta_1 }{ e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}}) }}{\eta_{2 N_t}}
+		\matrixElement{ \eta_{2 N_t} }{ e^{ \tilde{n} \cdot A_{N_t} } }{\eta_{2 N_t-1}} ~ \times
+	\nonumber\\
+	&
+		\cdots
+	\nonumber\\
+	&
+		\matrixElement{ \eta_5 }{ e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}}) }}{\eta_{4}}
+		\matrixElement{ \eta_4 }{ e^{ \tilde{n} \cdot A_2} }{\eta_3} ~ \times
+	\nonumber\\
+	&
+		\matrixElement{ \eta_3 }{ e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}}) }}{\eta_{2}}
+		\matrixElement{ \eta_2 }{ e^{ \tilde{n} \cdot A_1} }{\eta_1}
+\end{align}
+where each $\eta$ is a spatial vector and a spin doublet (we suppress the spin label).
+To proceed we leverage the exponential identity (4.33) of Munster,
+\begin{equation}
+	\matrixElement{ \eta }{ e^{\sum_{ij} \psi^{\dagger}_j A_{ji} \psi_i} }{ \eta' }
+	=
+	\exp\left[ \sum_{i j} \eta^{\dagger}_j (e^A)_{ji} \eta'_i \right]
+\end{equation}
+to evaluate the Grassman matrix elements,
+\begin{align}
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu} \tilde{N} - \half\tilde{\vec{h}}\cdot\tilde{\vec{S}})}  e^{ \tilde{n}\cdot A_t} }
+	=& \int \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times
+	\nonumber\\
+	&
+		\exp\left[ \sum_{ab} (-\eta_{1,a})\adjoint \left(e^{-\Delta \tilde{t}( \tilde{\kappa} - \half \tilde{C}_0 - \tilde{\mu} - \half\tilde{\vec{h}}\cdot \vec{\sigma} )}\right)_{ab} \eta_{2N_t,b} \right]
+		\exp\left[ \sum_{ab} \eta\adjoint_{2N_t,a} \left(e^{A_{N_t}}\right)_{ab} \eta_{2N_t-1,b}\right] ~ \times
+	\nonumber\\
+	&
+		\cdots
+	\nonumber\\
+	&
+		\exp\left[ \sum_{ab} \eta\adjoint_{5,a} \left(e^{-\Delta \tilde{t}( \tilde{\kappa} -\half \tilde{C}_0 - \tilde{\mu} - \half\tilde{\vec{h}}\cdot \vec{\sigma} )}\right)_{ab} \eta_{4,b} \right]
+		\exp\left[ \sum_{ab} \eta\adjoint_{4,a} \left(e^{A_{2}}\right)_{ab} \eta_{3,b}\right]
+	\nonumber\\
+	&
+		\exp\left[ \sum_{ab} \eta\adjoint_{3,a} \left(e^{-\Delta \tilde{t}( \tilde{\kappa} -\half \tilde{C}_0 - \tilde{\mu} - \half\tilde{\vec{h}}\cdot \vec{\sigma} )}\right)_{ab} \eta_{2,b} \right]
+		\exp\left[ \sum_{ab} \eta\adjoint_{2,a} \left(e^{A_{1}}\right)_{ab} \eta_{1,b}\right]
+\end{align}
+where the $\tilde{C}_0$, $\tilde{\mu}$ are implicitly multiplied by $\one$, the $\Volume \times \Volume$ unit matrix and $\sigma_0$, the $2\times2$ unit matrix, the $\tilde{h}$ term by $\one$, and
+\begin{align}
+	\left( e^{A_t} \right)_{ab} &= \delta_{ab} e^{A_{t,a}}
+	&
+	\tilde{\kappa}_{ab} &= \oneover{\Volume} \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
+\end{align}
+where $\tilde{\kappa}$ is the kinetic piece of the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
+Performing the Grassmannian integration yields a fermion determinant,
+\begin{align}
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})} e^{ \tilde{n}\cdot A_t} }
+	=
+	\int \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \eta^{\dagger} ~ \mathbb{D} ~ \eta} = \det \mathbb{D}
+\end{align}
+where each $\eta_t$ is a spatial vector and spin doublet, and \todo{I got up to here before stopping, because I want to switch conventions to $\mu$-with-$V$ and maybe? we should consider $\vec{h}$ not only in the $z$ direction (since the 2D plane distinguishes $z$ from $x$ and $y$).}
+\begin{equation}
+	\mathbb{D}
+	=
+	\begin{bmatrix} 
+		\one     & 0                                        & 0        & 0                                        & 0      & \cdots & 0                                        & 0            & e^{\Delta \tilde{t} \tilde{\mu}} B^{-1}
+	\\	-e^{A_1} & \one                                     & 0        & 0                                        & 0      & \cdots & 0                                        & 0            & 0
+	\\	0        & -e^{\Delta \tilde{t} \tilde{\mu}} B^{-1} & \one     & 0                                        & 0      & \cdots & 0                                        & 0            & 0
+	\\	0        & 0                                        & -e^{A_2} & \one                                     & 0      & \cdots & 0                                        & 0            & 0
+	\\	0        & 0                                        & 0        & -e^{\Delta \tilde{t} \tilde{\mu}} B^{-1} & \one   & \cdots & 0                                        & 0            & 0
+	\\	\vdots   & \vdots                                   & \vdots   & \vdots                                   & \vdots & \ddots & \vdots                                   & \vdots       & \vdots
+	\\	0        & 0                                        & 0        & 0                                        & 0      & \cdots & -e^{\Delta \tilde{t} \tilde{\mu}} B^{-1} & \one         & 0
+	\\	0        & 0                                        & 0        & 0                                        & 0      & \cdots & 0                                        & -e^{A_{N_t}} & \one
+	\end{bmatrix}.
+\end{equation}
+Notice that $D$ is a block matrix with $2N_t$ blocks per side.
+The block matrix
+\begin{equation}
+	D'
+	=
+	\begin{bmatrix}
+		B                                      & 0                                      & 0                                      & 0      & \cdots & 0                                            & e^{A_{N_t}+ \Delta \tilde{t} \tilde{\mu}}
+	\\	-e^{A_1+ \Delta \tilde{t} \tilde{\mu}} & B                                      & 0                                      & 0      & \cdots & 0                                            & 0
+	\\	0                                      & -e^{A_2+ \Delta \tilde{t} \tilde{\mu}} & B                                      & 0      & \cdots & 0                                            & 0
+	\\	0                                      & 0                                      & -e^{A_3+ \Delta \tilde{t} \tilde{\mu}} & B      & \cdots & 0                                            & 0
+	\\	\vdots                                 & \vdots                                 & \vdots                                 & \vdots & \ddots & \vdots                                       & \vdots
+	\\	0                                      & 0                                      & 0                                      & 0      & \cdots & B                                            & 0
+	\\	0                                      & 0                                      & 0                                      & 0      & \cdots & -e^{A_{N_t-1}+ \Delta \tilde{t} \tilde{\mu}} & B
+	\end{bmatrix}
+\end{equation} 
+has only $N_t$ blocks per side and its determinant is equal up to a constant factor
+\begin{equation}
+	\det D = \frac{ \det D' }{ \det B^{N_t} }.
+\end{equation}
+Either may be used in simulations; we use the latter.
+Therefore, one finally has
+\begin{align}
+	& \tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu} \tilde{N})}  e^{-\Delta \tilde{t} \tilde{V}}  } = \\
+& {\text{det} B}^{-N_t} \frac{  
+\int DA D\eta^{\dagger} D \eta ~ \text{exp}\Bigg[-\Big( \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t}\eta^{\dagger}(x,t) B_{x y} \eta(y,t) - \sum_{x t}\eta^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta(x,t) \Bigg] 
+}{ 
+\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t}  
+}~.
+\end{align}
+\begin{align*}
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{-\Delta t V}  } = \\
+& {\text{det} B}^{-N_t} \frac{  
+\int DA D\eta^{\dagger} D \eta ~ \text{exp}\Bigg[-\Big( \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t}\eta^{\dagger}(x,t) B_{x y} \eta(y,t) - \sum_{x t}\eta^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta(x,t) \Bigg] 
+}{ 
+\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t}  
+}~.
+\end{align*}
+Therefore, the action for this theory is 
+\begin{equation}
+S =  \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t}\eta^{\dagger}(x,t) B_{x y} \eta(y,t) - \sum_{x t}\eta^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta(x,t)
+\end{equation}
+
+
 
 \subsection{Deriving Path Integral}
 In this subsection we derive a path integral expression for the partition function
