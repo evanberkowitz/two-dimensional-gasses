@@ -41,8 +41,13 @@ class Lattice:
         self.X = np.tile( self.x, (len(self.y), 1)).T
         self.Y = np.tile( self.y, (len(self.x), 1))
 
+        # Wavenumbers are the same
+        self.kx = self.x
+        self.ky = self.y
+        self.KX = self.X
+        self.KY = self.Y
         # To get the dimensionless wavenumber^2 in the fourier basis we can simply
-        self.nsq = self.X**2 + self.Y**2
+        self.ksq = self.KX**2 + self.KY**2
 
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
