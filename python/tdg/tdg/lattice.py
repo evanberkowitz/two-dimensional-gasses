@@ -14,6 +14,7 @@ class Lattice:
             self.ny = ny
 
         self.dims = np.array([self.nx, self.ny])
+        self.sites = self.nx * self.ny
 
         # We want to go from -n/2 to +n/2
         self.x = np.arange( - (self.nx // 2), self.nx // 2 + 1)
@@ -80,14 +81,24 @@ class Lattice:
         d = self.mod(np.array(a)-np.array(b))
         return np.dot(d,d)
 
-    def vector(self, dtype=complex):
-        return np.zeros(self.dims, dtype=dtype)
-
-    def matrix(self, dtype=complex):
+    def tensor(self, n=2, dtype=complex):
         # can do matrix-vector via
         #   np.einsum('ijab,ab',matrix,vector)
         # to get a new vector (with indices ij).
-        return np.zeros(np.concatenate((self.dims, self.dims)), dtype=dtype)
+        return np.zeros(np.tile(self.dims, n), dtype=dtype)
+
+    def tensor_linearized(self, tensor):
+        repeats = len(tensor.shape)
+        return tensor.reshape(*np.tile(self.sites, int(repeats / len(self.dims))))
+
+    def linearized_tensor(self, linearized):
+        return linearized.reshape(*np.tile(self.dims, len(linearized.shape)))
+
+    def vector(self, dtype=complex):
+        return self.tensor(1, dtype)
+
+    def matrix(self, dtype=complex):
+        return self.tensor_linearized(self.tensor(2, dtype))
 
     def fft(self, vector, axes=(-2,-1), norm='ortho'):
         return np.fft.fft2(vector, axes=axes, norm=norm)
@@ -96,11 +107,11 @@ class Lattice:
         return np.fft.ifft2(vector, axes=axes, norm=norm)
 
     @cached_property
-    def adjacency_matrix(self):
+    def adjacency_tensor(self):
         # Creates an (nx, ny, nx, ny) adjacency matrix, where the
         # first two indices form the "row" and the
         # second two indices form the "column"
-        A = self.matrix()
+        A = self.tensor(2, dtype=np.int64)
         for i,x in enumerate(self.x):
             for k,z in enumerate(self.x):
                 if np.abs(self.mod_x(x-z)) not in [0,1]:
@@ -114,3 +125,6 @@ class Lattice:
                             
         return A
 
+    @cached_property
+    def adjacency_matrix(self):
+        return self.tensor_linearized(self.adjacency_tensor)
