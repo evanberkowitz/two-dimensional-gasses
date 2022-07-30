@@ -8,11 +8,29 @@ def section(s):
 
 section("spatial lattice")
 
-lattice = tdg.Lattice(5)
+lattice = tdg.Lattice(5, 3)
 x = lattice.vector()
 print(f"The spatial lattice is {lattice}.")
 print(f"Spatial vectors have shape {x.shape}.")
 print(f"The adjacency tensor has shape {lattice.adjacency_tensor.shape}; as a matrix it has shape {lattice.tensor_linearized(lattice.adjacency_tensor).shape}")
+if( (lattice.adjacency_matrix == lattice.adjacency_matrix.T).all() ):
+    print("The adjacency matrix is symmetric.")
+else:
+    print("The adjacency matrix is not symmetric.")
+print(f"The sites have {np.sum(lattice.adjacency_matrix, axis=0)} neighbors.")
+
+print(f"The integer x coordinates of this lattice are {lattice.x}")
+print(f"The integer y coordinates of this lattice are {lattice.y}")
+print(f"We also provide a broadcastable set of coordinates:")
+print(f" lattice.X\n{lattice.X}")
+print(f" lattice.Y\n{lattice.Y}")
+x[0,0] = 1
+k = lattice.fft(x)
+print(f"The fourier transform of\n{x}\nis\n{k};\ninverting the fourier transform gives\n{lattice.ifft(k)}.")
+if( np.abs( np.sum(np.conj(k) * k) - np.sum(np.conj(x) * x) ) < 1e-14):
+    print(f"The fourier transform is unitary.")
+else:
+    print(f"You should think hard about the normalization of the fourier transform.")
 
 
 
