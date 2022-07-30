@@ -52,19 +52,19 @@ print(f"A linearized list of coordinates has length {len(spacetime.coordinates)}
 section("Lego Spheres")
 
 print("A LegoSphere just requires a radius and a Wilson coefficient.")
-S = tdg.LegoSphere([0,0], 2)
-print(f"This sphere {S} has radius {S.r} and coefficient {S.c}.")
+contact = tdg.LegoSphere([0,0], 2)
+print(f"This sphere {contact} has radius {contact.r} and coefficient {contact.c}.")
 print("The default coefficient is 1, and LegoSpheres may be multiplied by coefficients.")
-T = 3 * tdg.LegoSphere([0,1])
-print(f"This sphere {T} has radius {T.r} and coefficient {T.c}.")
-print(f"The points on this LegoSphere are {T.points} from the center.")
+sphere = 3 * tdg.LegoSphere([0,1])
+print(f"This sphere {sphere} has radius {sphere.r} and coefficient {sphere.c}.")
+print(f"The points on this LegoSphere are {sphere.points} from the center.")
 
 
 
 section("Potentials")
 
 print("A potential requires a lattice and a list of LegoSpheres.")
-V = tdg.Potential(lattice, S, T)
+V = tdg.Potential(lattice, contact, sphere)
 print(f"For example, {V=}.")
 print(f"It has a spatial representation with shape {V.spatial.shape}.")
 print(f"The inverse of the spatial representation has shape {V.inverse.shape}.")
