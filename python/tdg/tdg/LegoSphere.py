@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+
+import numpy as np
+
+class LegoSphere:
+
+    def __init__(self, r, c=1):
+        self.r = r
+
+        x = r[0]
+        y = r[1]
+
+        # Precompute the D4-symmetric set of points.
+        # Use the set built-in to eliminate duplicates.
+        self.points= set({
+                (+x, +y),   (+y, +x),
+                (+x, -y),   (+y, -x),
+                (-x, +y),   (-y, +x),
+                (-x, -y),   (-y, -x),
+                })
+
+        # The canonical normalization is 1/(the number of points)
+        self.norm = 1./len(self.points)
+        self.c = c
+
+    def __str__(self):
+        return f'LegoSphere({self.r}, {self.c})'
+
+    def __repr__(self):
+        return str(self)
+
+    def spatial(self, Lattice):
+        S = Lattice.tensor(2, dtype=np.float64)
+
+        for i,x in enumerate(Lattice.x):
+            for j,y in enumerate(Lattice.y):
+                for k,z in enumerate(Lattice.x):
+                    for l,w in enumerate(Lattice.y):
+                        for p in self.points:
+                            if Lattice.distance_squared([x-z,y-w], p) == 0:
+                                S[i,j,k,l] += self.c * self.norm
+
+        return S
+
+    def __mul__(self, c):
+        return LegoSphere(self.r, self.c * c)
+
+    __rmul__ = __mul__
