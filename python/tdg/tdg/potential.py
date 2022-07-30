@@ -27,3 +27,10 @@ class Potential:
     def eigvals(self):
         return np.linalg.eigvals(self.Lattice.tensor_linearized(self.spatial))
 
+    @cached_property
+    def C0(self):
+        c0 = 0
+        for s in self.spheres:
+            if( (np.array([0,0]) == s.r).all() ):
+                c0 += s.c
+        return c0

@@ -50,6 +50,7 @@ print(f"A linearized list of coordinates has length {len(spacetime.coordinates)}
 
 
 section("Lego Spheres")
+
 print("A LegoSphere just requires a radius and a Wilson coefficient.")
 S = tdg.LegoSphere([0,0], 2)
 print(f"This sphere {S} has radius {S.r} and coefficient {S.c}.")
@@ -61,6 +62,7 @@ print(f"The points on this LegoSphere are {T.points} from the center.")
 
 
 section("Potentials")
+
 print("A potential requires a lattice and a list of LegoSpheres.")
 V = tdg.Potential(lattice, S, T)
 print(f"For example, {V=}.")
@@ -80,3 +82,5 @@ if( (V.eigvals >= 0).all() ):
     print("All the eigenvalues of V are positive, so this potential is amenable to our Hubbard-Stratonovich transformation.")
 else:
     print("Not all the eigenvalues of V are positive, so the formal Hubbard-Stratonovich transformation is invalid for this potential.")
+print(f"Since the contact potential needs to be treated specially, the potential provides a way to get the C0 coefficient {V.C0=}")
+
