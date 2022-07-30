@@ -4,14 +4,13 @@ import numpy as np
 
 class Spacetime:
 
-    def __init__(self, beta, nt, lattice):
-        self.beta = beta
+    def __init__(self, nt, lattice):
         self.nt   = nt
-        self.dt   = beta / nt
         self.Lattice = lattice
 
         self.dims = np.concatenate(([self.nt], self.Lattice.dims))
         self.t    = np.arange(0, nt)
+        self.sites= nt * lattice.sites
 
         # These are chosen so that they have shape (nt, nx, ny)
         self.T = np.tile( self.t, (len(self.Lattice.x), len(self.Lattice.y), 1)).transpose([2,0,1])
@@ -27,7 +26,7 @@ class Spacetime:
         #print((self.coordinates[:(self.dims[1]*self.dims[2])][:,[1,2]] == self.Lattice.coordinates).all())
 
     def __str__(self):
-        return f'Spacetime(β={self.beta}, nt={self.nt}, {str(self.Lattice)})'
+        return f'Spacetime(nt={self.nt}, {str(self.Lattice)})'
 
     def __repr__(self):
         return str(self)

@@ -36,13 +36,16 @@ else:
 
 
 section("spacetime")
-beta = 10
+
 nt   = 32
-spacetime = tdg.Spacetime(beta, nt, lattice)
+spacetime = tdg.Spacetime(nt, lattice)
 v = spacetime.vector()
 
 print(f"The spacetime lattice is {spacetime}.")
 print(f"Spacetime vectors have shape {v.shape}.")
+print(f"The time coordinate takes values {spacetime.t}")
+print(f"Broadcastable coordinates are provided .T, .X, and .Y")
+print(f"A linearized list of coordinates has length {len(spacetime.coordinates)} which equals the number of sites {spacetime.sites}.")
 
 
 
