@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import numpy as np
 import tdg
 
 def section(s):
@@ -55,3 +56,24 @@ print(f"This sphere {T} has radius {T.r} and coefficient {T.c}.")
 print(f"The points on this LegoSphere are {T.points} from the center.")
 
 
+
+section("Potentials")
+print("A potential requires a lattice and a list of LegoSpheres.")
+V = tdg.Potential(lattice, S, T)
+print(f"For example, {V=}.")
+print(f"It has a spatial representation with shape {V.spatial.shape}.")
+print(f"The inverse of the spatial representation has shape {V.inverse.shape}.")
+
+one = lattice.tensor_linearized(np.einsum("abcd,cdef->abef", V.spatial, V.inverse))
+zero = one - np.eye(lattice.sites)
+if( (np.abs(zero) < 1e-14).all() ):
+    print("We can check that V.spatial and V.inverse are floating-point inverses.")
+else:
+    print("However, V.spatial and V.inverse fail to be inverses of one another.")
+
+print(f"The eigenvalues of V are\n{V.eigvals}.")
+print(f"The spatial representation, inverse, and eigenvalues are cached, so it's cheap to reuse them.")
+if( (V.eigvals >= 0).all() ):
+    print("All the eigenvalues of V are positive, so this potential is amenable to our Hubbard-Stratonovich transformation.")
+else:
+    print("Not all the eigenvalues of V are positive, so the formal Hubbard-Stratonovich transformation is invalid for this potential.")
