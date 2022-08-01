@@ -269,19 +269,19 @@ In this subsection we derive a path integral expression for the partition functi
 \end{align}
 We begin with the identity
 \begin{equation}
-e^{-\Delta t(H - \mu N)} = e^{-\Delta t/2(K - \mu N)}  e^{-\Delta t V}  e^{-\Delta t/2(K - \mu N)} + \mathcal{O}(\Delta t^3) 
+e^{-\Delta t(H - \mu N)} = e^{-\Delta t/2(V - \mu N)}  e^{-\Delta t K}  e^{-\Delta t/2(V - \mu N)} + \mathcal{O}(\Delta t^3) 
 \end{equation}
 where $H = K + V$ has been decomposed into the kinetic energy $K$ and the interaction term $V$. Therefore,
 \begin{align}
-\tr{\prod_{t=1}^{N_t} e^{-\Delta t/2(K - \mu N)}  e^{-\Delta t V}  e^{-\Delta t/2(K - \mu N)}} & =
-\tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{-\Delta t V}  } \\
+\tr{\prod_{t=1}^{N_t} e^{-\Delta t/2(V - \mu N)}  e^{-\Delta t K}  e^{-\Delta t/2(V - \mu N)}} & =
+\tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N)}  } \\
 & =  \tr{e^{-\beta(H-\mu N)}} + \mathcal{O}(\Delta t^2)
 \end{align}
 We now begin a sequence of exact manipulations of the object 
 \begin{equation}
-\tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{-\Delta t V}  }~,
+\tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N)}  }~,
 \end{equation}
-which converges to the desired partition function as $\Delta t \rightarrow 0$ . To continue, note that
+which converges to the desired partition function as $\Delta t \rightarrow 0$ . First note that
 \begin{equation}
 V =  \frac{1}{2} \sum_{xy} \Delta x^4 n_x V_{xy} n_y = \frac{1}{2} \sum_{xy} \tilde{n}_x V_{xy} \tilde{n}_y 
 \end{equation}
@@ -289,67 +289,174 @@ where
 \begin{equation}
 V_{xy} = \frac{g}{\Delta x^2} \mathcal{S}^0_{x y} + \frac{C_{ \vec{R} }}{\Delta x^2} \mathcal{S}^{ \vec{R} }_{xy}
 \end{equation}
-is a symmetric matrix. If V has purely real eigenvalues (which imposes conditions on the bare coupling constants), then the following Hubbard-Stratanovich transformation holds:
+is a symmetric matrix. If V has purely real $\&$ positive eigenvalues (which imposes conditions on the bare coupling constants), then the following Hubbard-Stratanovich transformation holds:
 \begin{equation}
-\text{exp}\Bigg( \frac{1}{2} \sum_{x y}\tilde{n}(x) (M^{-1})_{xy} \tilde{n}(y) \Bigg) 
-= 
-\frac{\int d {A} e^{-\frac{1}{2} {A}^T M A + \tilde{n} \cdot {A} } }{ \int d {A} e^{-\frac{1}{2} {A}^T M A  } }
+\frac{\int d {A} e^{-\frac{1}{2} {A}^T M A + \tilde{n} \cdot (A+\Delta t \mu) } }{ \int d {A} e^{-\frac{1}{2} {A}^T M A  } }
+=
+\text{exp}\Bigg( \frac{1}{2} \sum_{x y}\tilde{n}(x) (M^{-1})_{xy} \tilde{n}(y) + \Delta t \mu \sum_x \tilde{n}(x) \Bigg) 
 \end{equation}
-where $A$ is a vector with $N_x^2$ number of components. Choosing $(M^{-1})_{xy} = (-\Delta t V)_{xy}$, one then has the following
+where $A$ is a vector with $N_x^2$ number of components and where
 \begin{equation}
-\tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{-\Delta t V}  } = 
+\tilde{n}\cdot (A + \Delta t \mu) \equiv \sum_x \tilde{n}(x) ( A(x) +\Delta t \mu)~.
+\end{equation}
+Choosing $(M^{-1})_{xy} = (-\Delta t V)_{xy}$, one then has the following
+\begin{equation}
+\tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{-\Delta t (V - \mu N)}  } = 
 \frac{  
-\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t} ~ \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{ \tilde{n}\cdot A_t} } 
+\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t} ~ \tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{ \tilde{n}\cdot (A_t + \Delta t \mu )} } 
 }{ 
 \int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t}  
 }
 \end{equation}
-where $DA = \prod_{t=1}^{N_t} d A_t $ . Notice that this is an \emph{exact} rewriting of the trotterized partition function.
+where $DA = \prod_{t=1}^{N_t} d A_t $ . Notice that this is an \emph{exact} rewriting of the trotterized partition function. \\
 
-
-Using fermion coherent states, we will now convert the trace over fermion degrees of freedom into a determinant . One has (using the conventions of Munster Ch. 4)
+\begin{center} 
+\textcolor{red}{Begin aside...} \\
+\end{center}
+Before moving on, let us discuss why we choose to group the chemical potential term with $V$ rather than $K$. The main reason is that both $N$ and $V$ are formed from products of local densities which satisfy
+\begin{equation*}
+[\tilde{n}_{\sigma}(x),\tilde{n}_{\sigma'}(x')] = 0~,
+\end{equation*}
+and therefore functional derivatives are simple:
 \begin{align*}
-& \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{ \tilde{n}\cdot A_t} }  = \int{} \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times \\
-& \langle -\eta_1 | e^{-\Delta t(K - \mu N)} | \eta_{2 N_t} \rangle \, \langle \eta_{2 N_t} | e^{ \tilde{n} \cdot A_{N_t}} | \eta_{2 N_t -1} \rangle ....
-\langle \eta_5 | e^{-\Delta t(K - \mu N)} | \eta_4 \rangle \, \langle \eta_4 | e^{ \tilde{n} \cdot A_2} | \eta_3 \rangle
-\langle \eta_3 | e^{-\Delta t(K - \mu N)} | \eta_2 \rangle \, \langle \eta_2 | e^{ \tilde{n} \cdot A_1} | \eta_1 \rangle
+-\frac{1}{\Delta t} \frac{\partial}{\partial \mu_{\sigma '}(x')}\text{exp}\Big( V - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big) & =  n_{\sigma ' }(x') \text{exp}\Big( V - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big) \\
+& =  \text{exp}\Big( V - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big) n_{\sigma ' }(x')~.
+\end{align*} 
+This property allows us to compute density correlation functions with ease. However, the simple ``pulling down" of operators by derivatives occurs \textbf{only if the argument of the exponential and its derivative commute} \cite{10.2307/4146900}. If we were to instead group the chemical potential terms with $K$, functional derivatives cease to be simple because $[K,n_{\sigma}(x)] \neq 0$: 
+\begin{align*}
+-\frac{1}{\Delta t} \frac{\partial}{\partial \mu_{\sigma '}(x')}\text{exp}\Big( K - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big) & \neq n_{\sigma'}(x') \text{exp}\Big( K - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big)~.
 \end{align*}
-This expression is admittedly horrific. To proceed we use Eq. 4.33 of Munster, which states
+\begin{center}
+\textcolor{red}{...end aside.} \\
+\end{center} 
+
+Let us continue our quest. Using fermion coherent states, we will now convert the Hilbert space trace into a determinant . One has (using the conventions of Munster Ch. 4)
+\begin{align*}
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{ \tilde{n}\cdot (A_t + \Delta t \mu) } }  
+= 
+\int{} \prod_{t=1}^{2N_t} \Bigg\{ \prod_{x, \sigma} d \eta^{\dagger}_{\sigma}(x,t) d\eta_{\sigma}(x,t) \Bigg\} ~ \text{exp}\Big(- \sum_{t=1}^{2N_t}\sum_{x \sigma} \eta^{\dagger}_{\sigma}(x,t) \eta_{\sigma}(x,t)\Big)~ \times \\
+& \langle -\eta_1 | e^{-\Delta t K} | \eta_{2 N_t} \rangle \, \langle \eta_{2 N_t} | e^{ \tilde{n} \cdot (A_{N_t} + \Delta t \mu)} | \eta_{2 N_t -1} \rangle ....
+\langle \eta_5 | e^{-\Delta t K} | \eta_4 \rangle \, \langle \eta_4 | e^{ \tilde{n} \cdot (A_2 +\Delta t \mu)} | \eta_3 \rangle
+\langle \eta_3 | e^{-\Delta t K } | \eta_2 \rangle \, \langle \eta_2 | e^{ \tilde{n} \cdot (A_1 + \Delta t \mu)} | \eta_1 \rangle~,
+\end{align*}
+where 
+\begin{equation*}
+| \eta_t \rangle = \text{exp}\Big( \sum_{x \sigma} \tilde{\psi}^{\dagger}_{\sigma}(x) \eta_{\sigma}(x,t) \Big) | 0 \rangle
+\end{equation*}
+is a coherent state on a single timeslice. This expression above is admittedly horrific; to proceed we use Eq. 4.33 of Munster, which states
 \begin{equation}
 \langle \eta | e^{\sum_{ij} a^{\dagger}_j A_{ji} a_i} | \eta' \rangle = \text{exp}\Bigg[ \sum_{i j} \eta^{\dagger}_j (e^A)_{ji} \eta'_i \Bigg]~.
 \end{equation}
+Let us very carefully evaluate $\langle \eta | e^{-\Delta t K} | \eta' \rangle$ and $\langle \eta | e^{\tilde{n} \cdot(A_t + \Delta t \mu)} | \eta' \rangle$, keeping careful track of the spin degree of freedom. 
+\begin{align*}
+\langle \eta | e^{-\Delta t K} | \eta' \rangle 
+= 
+\langle \eta | \text{exp}\Bigg(-\Delta t \sum_{x y \sigma} \tilde{\psi}^{\dagger}_{\sigma}(x) k_{x y} \tilde{\psi}_{\sigma}(y) \Bigg) | \eta' \rangle
+& =
+\langle \eta | \text{exp}\Bigg( 
+\begin{bmatrix} \tilde{\Psi}^{\dagger}_{1} &  \tilde{\Psi}^{\dagger}_{2}  \end{bmatrix} 
+\begin{bmatrix}
+-\Delta t k & 0 \\
+0 & -\Delta t k 
+\end{bmatrix} 
+\begin{bmatrix} \tilde{\Psi}_{1} \\  \tilde{\Psi}_{2}  \end{bmatrix} \Bigg)
+| \eta' \rangle \\
+& = 
+\text{exp}\Bigg( 
+\begin{bmatrix} {\eta}^{\dagger}_{1} &  {\eta}^{\dagger}_{2}  \end{bmatrix} 
+\begin{bmatrix}
+e^{-\Delta t k} & 0 \\
+0 & e^{-\Delta t k}
+\end{bmatrix} 
+\begin{bmatrix} {\eta}_{1}' \\  {\eta}_{2}'  \end{bmatrix}  \Bigg) \\
+& = 
+\text{exp}\Bigg( 
+\sum_{xy}\eta^{\dagger}_1(x) e^{-\Delta t k}_{xy} \eta_1'(y) + \sum_{xy}\eta^{\dagger}_2(x) e^{-\Delta t k}_{xy} \eta_2'(y) \Bigg)
+\end{align*}
+where we defined $\tilde{\Psi}_{\sigma}$, which is a vector with $N_x^2$ components containing all fermion fields of spin $\sigma$ on a single timeslice and where
+\begin{equation}
+\big(k\big)_{xy} = \frac{1}{N_x^2} \sum_{\tilde{p}} \frac{\tilde{p}^2}{2 M \Delta x^2} e^{-i \tilde{p} (\tilde{x}-\tilde{y})}
+\end{equation}
+is the matrix exponentiated in $e^{-\Delta t k}$. By an analogous sequence of manipulations, one also finds
+\begin{align*}
+\langle \eta | e^{ \tilde{n} \cdot (A_t + \Delta t \mu)} | \eta' \rangle 
+& = 
+\text{exp}\Bigg( 
+\sum_{xy}\eta^{\dagger}_1(x) e^{A_t + \Delta t \mu}_{xy} \eta_1'(y) + \sum_{xy}\eta^{\dagger}_2(x) e^{A_t + \Delta t \mu}_{xy} \eta_2'(y) \Bigg)
+\end{align*}
+where
+\begin{equation}
+e^{A_t+ \Delta t \mu}_{xy} = \delta_{xy} e^{A(x,t) + \Delta t \mu}~.
+\end{equation}
+
+
 One therefore has
 \begin{align*}
-& \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{ \tilde{n}\cdot A_t} }  = \int{} \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times \\
-& \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_{2 N_t +1}(x) \big(e^{-\Delta t(k-\mu \mathbf{1})}\big)_{xy} \eta_{2 N_t}(y)\Bigg] ~ \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_{2 N_t}(x) \big(e^{A_{N_t} }\big)_{xy} \eta_{2 N_t -1}(y) \Bigg] \\
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{ \tilde{n}\cdot (A_t + \Delta t \mu)} }  
+=
+\int{} D\eta^{\dagger} D\eta ~ \text{exp}\Big(- \sum_{t=1}^{2N_t}\sum_{x \sigma} \eta^{\dagger}_{\sigma}(x,t) \eta_{\sigma}(x,t)\Big)~ \times \\
+&
+\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,2N_t + 1) e^{-\Delta t k }_{xy} \eta_{\sigma}(y,2 N_t)\Bigg] 
+~ 
+\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,2N_t) e^{A_{N_t} + \Delta t \mu}_{xy} \eta_{\sigma}(y,2N_t - 1) \Bigg]  \\
 & ... \\
-& \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_5(x) \big(e^{-\Delta t(k-\mu \mathbf{1})}\big)_{xy} \eta_4(y)\Bigg] ~ \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_4(x) \big(e^{A_2}\big)_{xy} \eta_3(y) \Bigg] \\
-& \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_3(x) \big(e^{-\Delta t(k-\mu \mathbf{1})}\big)_{xy} \eta_2(y)\Bigg] ~ \text{exp}\Bigg[ \sum_{xy} \eta^{\dagger}_2(x) \big(e^{A_1}\big)_{xy} \eta_1(y) \Bigg] 
+& 
+\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,5) e^{-\Delta t k }_{xy} \eta_{\sigma}(y,4)\Bigg] 
+~ 
+\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,4) e^{A_2 + \Delta t \mu}_{xy} \eta_{\sigma}(y,3) \Bigg]  \\
+& 
+\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,3) e^{-\Delta t k }_{xy} \eta_{\sigma}(y,2)\Bigg] 
+~ 
+\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,2) e^{A_1 + \Delta t \mu}_{xy} \eta_{\sigma}(y,1) \Bigg] 
 \end{align*}
-where $\eta_{2 N_t + 1} \equiv - \eta_1$, $\mathbf{1}$ is the $N_x^2 \times N_x^2$ unit matrix, and  
+where $\eta_{2 N_t + 1} \equiv - \eta_1$ and where we use the shorthand
 \begin{equation}
-\Big( e^{A_t} \Big)_{xy} = \delta_{xy} e^{A_t(x)}~~~~\big(k\big)_{xy} = \frac{1}{N_x^2} \sum_{\tilde{p}} \frac{\tilde{p}^2}{2 M \Delta x^2} e^{-i \tilde{p} (\tilde{x}-\tilde{y})}~.
+D\eta^{\dagger} D\eta \equiv \prod_{t=1}^{2N_t} \Bigg\{ \prod_{x, \sigma} d \eta^{\dagger}_{\sigma}(x,t) d\eta_{\sigma}(x,t) \Bigg\}
 \end{equation}
-We finally have that 
+
+ Ok, we are almost there. The next step is to choose how we're going to organize Grassmann variables. I will take the following convention:
+\begin{equation*}
+\eta = \begin{bmatrix} \eta_1 \\ \eta_2 \end{bmatrix}
+\end{equation*} 
+where $\eta_1, \eta_2$ are lists of Grassmann variables of length space $\times$ time. In this arrangement, spin is the ``slowest" variable. Then, in the equation above, we can gather all terms involving spin 1 into one sum, and all the terms with spin 2 into another sum:
 \begin{align*}
-& \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{ \tilde{n}\cdot A_t} }  = \int{} \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \eta^{\dagger} D \eta} = \text{det} \, D
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{ \tilde{n}\cdot (A_t + \Delta t \mu)} }  
+= \\
+& \int{}  D\eta^{\dagger} D\eta ~ \text{exp}\Big(- \big[ \sum_{x t x' t'} \eta_1^{\dagger}(x,t) D^{11}_{(x,t),(x't')} \eta_1(x',t') + \sum_{x t x' t'} \eta_2^{\dagger}(x,t) D^{22}_{(x,t),(x't')} \eta_2(x',t')  \big]  \Big) = \\
+& \int{}  D\eta^{\dagger} D\eta~ 
+\text{exp}\Big(-
+\begin{bmatrix}
+\eta_1^{\dagger} & \eta_2^{\dagger}
+\end{bmatrix}
+\begin{bmatrix}
+D^{11} & 0 \\ 
+0 & D^{22}
+\end{bmatrix}
+\begin{bmatrix}
+\eta_1^{\dagger} \\ \eta_2^{\dagger}
+\end{bmatrix}
+ \Big) = \text{det}
+ \begin{bmatrix}
+D^{11} & 0 \\ 
+0 & D^{22}
+\end{bmatrix}~,
 \end{align*}
-where 
+where both $D^{11}$ and $D^{22}$ are square matrices of side-length spacetime. In this case where we have only coupled to $-\mu N$, $D^{11} = D^{22} = D$ where
 \begin{equation}
 D = \begin{bmatrix} 
-\mathbf{1} & 0 & 0 & 0 & 0 & ... & 0 & 0 & e^{\Delta t \mu} B^{-1} \\
--e^{A_1} & \mathbf{1} & 0 & 0 & 0 & ... & 0 & 0 & 0 \\
-0 & e^{\Delta t \mu} B^{-1} & \mathbf{1} & 0 & 0 & ... & 0 & 0 & 0 \\
-0 & 0 & -e^{A_2} & \mathbf{1} & 0 & ... & 0 & 0 & 0 \\
-0 & 0 & 0 & e^{\Delta t \mu} B^{-1} & \mathbf{1} & ... & 0 & 0 & 0 \\
+\mathbf{1} & 0 & 0 & 0 & 0 & ... & 0 & 0 &  B^{-1} \\
+-e^{A_1+\Delta t \mu} & \mathbf{1} & 0 & 0 & 0 & ... & 0 & 0 & 0 \\
+0 & -B^{-1} & \mathbf{1} & 0 & 0 & ... & 0 & 0 & 0 \\
+0 & 0 & -e^{A_2+\Delta t \mu} & \mathbf{1} & 0 & ... & 0 & 0 & 0 \\
+0 & 0 & 0 & -B^{-1} & \mathbf{1} & ... & 0 & 0 & 0 \\
 . & . & . & . & . & ... & . & . & . \\
 . & . & . & . & . & ... & . & . & . \\
 . & . & . & . & . & ... & . & . & . \\
-0 & 0 & 0 & 0 & 0 & ... & e^{\Delta t \mu} B^{-1} & \mathbf{1} & 0 \\
-0 & 0 & 0 & 0 & 0 & ... & 0 & -e^{A_{N_t}} & \mathbf{1} \\
+0 & 0 & 0 & 0 & 0 & ... &  -B^{-1} & \mathbf{1} & 0 \\
+0 & 0 & 0 & 0 & 0 & ... & 0 & -e^{A_{N_t}+\Delta t \mu} & \mathbf{1} \\
 \end{bmatrix}
 \end{equation}
-Notice that $D$ is a block matrix with $2N_t$ blocks per side. Here is another block matrix, but with only $N_t$ blocks per side,
+and $B^{-1} = e^{-\Delta t k}$. Notice that $D$ is a block matrix with $2N_t$ blocks per side. Here is another block matrix, but with only $N_t$ blocks per side,
 \begin{equation}
 D' = \begin{bmatrix}
 B & 0 & 0 & 0 & ... & 0 & e^{A_{N_t}+ \Delta t \mu} \\
@@ -369,14 +476,106 @@ which satisfies
 \end{equation}
 Since the two matrices differ by a constant factor, either may be used in simulations; we use the latter. Therefore, one finally has
 \begin{align*}
-& \tr{\prod_{t=1}^{N_t} e^{-\Delta t(K - \mu N)}  e^{-\Delta t V}  } = \\
-& {\text{det} B}^{-N_t} \frac{  
-\int DA D\eta^{\dagger} D \eta ~ \text{exp}\Bigg[-\Big( \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t}\eta^{\dagger}(x,t) B_{x y} \eta(y,t) - \sum_{x t}\eta^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta(x,t) \Bigg] 
-}{ 
-\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t}  
-}~.
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V - \mu N)}  } = \Bigg( {\text{det} B}^{2N_t} {\int DA ~ e^{-\frac{1}{2} \sum_t {A}(x,t) M_{xy} A(y,t)}} \Bigg)^{-1} \times \\
+&
+\int DA D\eta^{\dagger} D \eta ~ \text{exp}\Bigg[-\Big( \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t \sigma}\eta_{\sigma}^{\dagger}(x,t) B_{x y} \eta_{\sigma}(y,t) - \sum_{x t \sigma}\eta_{\sigma}^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta_{\sigma}(x,t) \Bigg] 
+~.
 \end{align*}
 Therefore, the action for this theory is 
 \begin{equation}
-S =  \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t}\eta^{\dagger}(x,t) B_{x y} \eta(y,t) - \sum_{x t}\eta^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta(x,t)
+S =  \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t \sigma}\eta_{\sigma}^{\dagger}(x,t) B_{x y} \eta_{\sigma}(y,t) - \sum_{x t \sigma}\eta_{\sigma}^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta_{\sigma}(x,t)
 \end{equation}
+
+
+\subsection{Spin Chemical Potentials}
+To explore the spin polarized system, we have to couple to a spin chemical potential. In this section we will work out the corresponding changes to the fermion matrix. We wish to examine
+\begin{equation*}
+H - \mu N - h_i S_i, ~~~ S_i = \frac{1}{2} \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x)
+\end{equation*}
+where $\sigma_i$ are the Pauli matrices. In this case the trotterized partition function is 
+\begin{equation}
+\tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N-h_i S_i)}  }~,
+\end{equation}
+and the new Hubbard-Stratanovich transformation is 
+\begin{align*}
+& \frac{\int d {A} e^{-\frac{1}{2} {A}^T M A + \tilde{n} \cdot (A+\Delta t \mu) + \frac{1}{2}  \Delta t h_i \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x)  } }{ \int d {A} e^{-\frac{1}{2} {A}^T M A  } } = \\
+& \text{exp}\Bigg( \frac{1}{2} \sum_{x y}\tilde{n}(x) (M^{-1})_{xy} \tilde{n}(y) + \Delta t \mu \sum_x \tilde{n}(x) + \frac{1}{2}  \Delta t h_i \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x) \Bigg) ~.
+\end{align*}
+This new HS transformation looks pretty ugly but it's really not that bad. The only element of the story that changes is the matrix element
+\begin{align*}
+& \langle \eta | e^{ \tilde{n} \cdot (A+\Delta t \mu) + \frac{1}{2}  \Delta t h_i \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x) } | \eta' \rangle = \\
+& \langle \eta | e^{ \sum_x n(x) (A(x)+\Delta t \mu) + \frac{1}{2}  \Delta t h_i \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x) } | \eta' \rangle = \\ 
+& =
+\langle \eta | \text{exp}\Bigg( 
+\begin{bmatrix} \tilde{\Psi}^{\dagger}_{1} &  \tilde{\Psi}^{\dagger}_{2}  \end{bmatrix} 
+\begin{bmatrix}
+A + \Delta t \mu + \frac{1}{2}\Delta t h_3 & \frac{1}{2}(h_1 - i h_2) \\
+\frac{1}{2}(h_1 + i h_2) & A + \Delta t \mu - \frac{1}{2}\Delta t h_3 
+\end{bmatrix} 
+\begin{bmatrix} \tilde{\Psi}_{1} \\  \tilde{\Psi}_{2}  \end{bmatrix} \Bigg)
+| \eta' \rangle \\
+& =
+\text{exp}\Bigg( 
+\begin{bmatrix} \eta^{\dagger}_{1} &  \eta^{\dagger}_{2}  \end{bmatrix} 
+e^{\begin{bmatrix}
+A + \Delta t \mu + \frac{1}{2}\Delta t h_3 & \frac{1}{2}(h_1 - i h_2) \\
+\frac{1}{2}(h_1 + i h_2) & A + \Delta t \mu - \frac{1}{2}\Delta t h_3 
+\end{bmatrix}}
+\begin{bmatrix} \eta_{1} \\  \eta_{2}  \end{bmatrix} \Bigg) .
+\end{align*}
+Here I've abused notation a little by defining the matrix $(A)_{xy} = \delta_{xy} A(x)$. Also, all additional matrices appearing in the equation above are proportional to the identity matrix in space. Anyway, this is where shit gets fucked up: the exponential matrix
+\begin{equation*}
+e^{\begin{bmatrix}
+A + \Delta t \mu + \frac{1}{2}\Delta t h_3 & \frac{1}{2}(h_1 - i h_2) \\
+\frac{1}{2}(h_1 + i h_2) & A + \Delta t \mu - \frac{1}{2}\Delta t h_3 
+\end{bmatrix}}
+\end{equation*}
+is totally non-trivial to unpack.
+
+If we only couple to $S_3$ then the answer remains simple 
+\begin{align*}
+\langle \eta | e^{  \tilde{n} \cdot (A+\Delta t \mu) + \frac{1}{2}  \Delta t h_3 \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_3)_{\alpha \beta} \tilde{\psi}_{\beta}(x)  } | \eta' \rangle 
+& = 
+\text{exp}\Bigg( 
+\sum_{xy}\eta^{\dagger}_1(x) e^{A_t + \Delta t (\mu + h_3 / 2)}_{xy} \eta_1'(y) + \sum_{xy}\eta^{\dagger}_2(x) e^{A_t + \Delta t (\mu - h_3 / 2)}_{xy} \eta_2'(y) \Bigg)~,
+\end{align*}
+and one finds the following in the spin-doped theory:
+\begin{align*}
+& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{ \tilde{n}\cdot (A_t + \Delta t \mu) + \Delta t h_3 S_3} }  
+= \\
+& \int{}  D\eta^{\dagger} D\eta~ 
+\text{exp}\Big(-
+\begin{bmatrix}
+\eta_1^{\dagger} & \eta_2^{\dagger}
+\end{bmatrix}
+\begin{bmatrix}
+\mathcal{D}^{11} & 0 \\ 
+0 & \mathcal{D}^{22}
+\end{bmatrix}
+\begin{bmatrix}
+\eta_1^{\dagger} \\ \eta_2^{\dagger}
+\end{bmatrix}
+ \Big) = \text{det}
+ \begin{bmatrix}
+\mathcal{D}^{11} & 0 \\ 
+0 & \mathcal{D}^{22}
+\end{bmatrix}~,
+\end{align*}
+where $\mathcal{D}^{11} = e^{\Delta t h_3 / 2 }D^{11}$ and $\mathcal{D}^{22} = e^{-\Delta t h_3 / 2 }D^{22}$ .
+
+
+\subsection{Local Chemical Potentials $\&$ Correlation Functions}
+In this section we'll work out how to write
+\begin{equation*}
+\frac{\tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N)} n_{\sigma}(x)}}{\tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N)}  } }, ~~ \frac{ \tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N)} n_{\sigma}(x) n_{\sigma'}(x')} }{ \tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N)}  } }, ~~ ....
+\end{equation*}
+I know two ways to compute these correlation functions: functional derivatives and operator insertions. The operator insertion method involves recomputing the trace  with Grassmann variables with the operator inserted; I have several operators worked out this way in my notes, but it's really laborious. Functional derivatives produce the exact same answer and are easier to compute (assuming the chemical potential in the $V$ rather than the $K$ term of the Trotterization), so we'll do that here.
+
+
+
+
+
+
+
+
+
