@@ -157,7 +157,7 @@ Using fermion coherent states, we will now convert the trace over the Hilbert sp
 Using the conventions of Munster Ch. 4,
 \begin{align}
 	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{n}\cdot (A_t + \Delta\tilde{t} \tilde{\mu})} }
-	=& \int \prod_{t=1}^{N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times
+	=& \int \prod_{t=1}^{2N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times
 	\nonumber\\
 	&
 		\matrixElement{ -\eta_1 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2 N_t}}
@@ -221,11 +221,21 @@ where $\tilde{\kappa}$ is given in the dimensionless Hamiltonian \eqref{dimensio
 By an analogous sequence of manipulations, one also finds
 \begin{align}
 	\matrixElement{\eta}{ e^{\tilde{n} \cdot (A_t + \Delta\tilde{t} \tilde{\mu})} }{\eta'}
+	&=
+		\matrixElement{\eta}{ \exp\left(
+			\begin{bmatrix} \tilde{\psi}^{\dagger}_{1} &  \tilde{\psi}^{\dagger}_{2}  \end{bmatrix} 
+			\begin{bmatrix}
+				A + \Delta \tilde{t} \tilde{\mu}	& 0 \\
+				0 									& A +\Delta \tilde{t} \tilde{\mu} 
+			\end{bmatrix} 
+			\begin{bmatrix} \tilde{\psi}_{1} \\  \tilde{\psi}_{2}  \end{bmatrix}
+		\right) }{\eta'}
+	\label{eq:gaussian spinors}\\
 	& = 
-	\exp\left( 
-		\sum_{ab}\eta^{\dagger}_{1a} \left[e^{A_t + \Delta t \mu}\right]_{ab} \eta'_{1b}
-	+	\sum_{ab}\eta^{\dagger}_{2b} \left[e^{A_t + \Delta t \mu}\right]_{ab} \eta'_{2b}
-	\right)
+		\exp\left( 
+			\sum_{ab}\eta^{\dagger}_{1a} \left[e^{A_t + \Delta t \mu}\right]_{ab} \eta'_{1b}
+		+	\sum_{ab}\eta^{\dagger}_{2b} \left[e^{A_t + \Delta t \mu}\right]_{ab} \eta'_{2b}
+		\right)
 \end{align}
 where
 \begin{align}
@@ -272,14 +282,14 @@ Separating out the spin dimension,
 	D'
 	&=
 	\begin{bmatrix} 
-		\one     & 0                                        & 0        & 0                                        & 0      & \cdots & 0                                        & 0            & +B^{-1}
-	\\	-e^{A_1} & \one                                     & 0        & 0                                        & 0      & \cdots & 0                                        & 0            & 0
-	\\	0        & -B^{-1} & \one     & 0                                        & 0      & \cdots & 0                                        & 0            & 0
-	\\	0        & 0                                        & -e^{A_2} & \one                                     & 0      & \cdots & 0                                        & 0            & 0
-	\\	0        & 0                                        & 0        & -B^{-1} & \one   & \cdots & 0                                        & 0            & 0
-	\\	\vdots   & \vdots                                   & \vdots   & \vdots                                   & \vdots & \ddots & \vdots                                   & \vdots       & \vdots
-	\\	0        & 0                                        & 0        & 0                                        & 0      & \cdots & -B^{-1} & \one         & 0
-	\\	0        & 0                                        & 0        & 0                                        & 0      & \cdots & 0                                        & -e^{A_{N_t}} & \one
+		\one                                & 0         & 0                                     & 0         & 0      & \cdots & 0       & 0                                         & +B^{-1}
+	\\	-e^{A_1+\Delta\tilde{t}\tilde{\mu}} & \one      & 0                                     & 0         & 0      & \cdots & 0       & 0                                         & 0
+	\\	0                                   & -B^{-1}   & \one                                  & 0         & 0      & \cdots & 0       & 0                                         & 0
+	\\	0                                   & 0         & -e^{A_2+\Delta\tilde{t}\tilde{\mu}}   & \one      & 0      & \cdots & 0       & 0                                         & 0
+	\\	0                                   & 0         & 0                                     & -B^{-1}   & \one   & \cdots & 0       & 0                                         & 0
+	\\	\vdots                              & \vdots    & \vdots                                & \vdots    & \vdots & \ddots & \vdots  & \vdots                                    & \vdots
+	\\	0                                   & 0         & 0                                     & 0         & 0      & \cdots & -B^{-1} & \one                                      & 0
+	\\	0                                   & 0         & 0                                     & 0         & 0      & \cdots & 0       & -e^{A_{N_t}+\Delta\tilde{t}\tilde{\mu}}   & \one
 	\end{bmatrix}
 	&
 	\det\mathbb{D} = \left(\det D'\right)^2
@@ -298,6 +308,7 @@ The block matrix
 	\\	0                                      & 0                                      & 0                                      & 0      & \cdots & B                                            & 0
 	\\	0                                      & 0                                      & 0                                      & 0      & \cdots & -e^{A_{N_t-1}+ \Delta \tilde{t} \tilde{\mu}} & B
 	\end{bmatrix}
+	\label{eq:fermion matrix}
 \end{equation} 
 has only $N_t$ blocks per side and its determinant is equal up to a constant factor
 \begin{align}
@@ -329,6 +340,112 @@ If we keep the Grassman variables, we can instead write the action $S$ as
 +	\sum_{ab t \sigma} \eta\adjoint_{\sigma a t} \left[ B = e^{\Delta\tilde{t}\tilde{\kappa}}\right]_{ab} \eta_{\sigma b t}
 -	\sum_{a t \sigma}\eta\adjoint_{\sigma a\; t+1} e^{A_{at} + \Delta \tilde{t} \tilde{\mu}} \eta_{\sigma a t}
 \end{align}
+
+\subsubsection{Incorporating Spin Chemical Potential}
+
+We may wish to create spin imbalance by including a spin chemical potential $\vec{h}$ so that the partition function is
+\begin{align}
+	Z &= \tr{e^{-\tilde{\beta}\left(\tilde{H} - \tilde{\mu}\tilde{N} - \tilde{h}\cdot\tilde{S}\right)} }
+	&
+	S &= \int d^2x~ S(x) \goesto \sum_a \Delta x^2 S_a = \sum_a \tilde{S}_a = \tilde{S}
+	&
+	\tilde{S}_a &= \half \sum_{\alpha \alpha'} \tilde{\psi}\adjoint_{\alpha a} \sigma_{\alpha \alpha'} \tilde{\psi}_{\alpha' a}
+\end{align}
+where $\alpha$ runs over the two spins and we leave off the spatial index for the spatially summed operator.
+These spin operators are 3-vectors (from the vector of Pauli $\sigma$s) and obey the expected algebra
+\begin{align}
+	[\tilde{S}_a^i, \tilde{S}_b^j] &= i \epsilon^{ijk} \tilde{S}^k_a \delta_{ab} \qquad\text{(no sum)}
+\end{align}
+It is possible to show that $[\tilde{S}, \tilde{H}] = 0$ and $[\tilde{S}_a, \tilde{n}_b] = 0$ so that $[\tilde{S}, \tilde{H} - \tilde{\mu}\tilde{N}] = 0$.
+
+Because the spin and number operators commute, the spin operators go along for the ride on the Hubbard-Stratanovich transformation without issue.
+The difference begins with the matrix representation in the Grassman space \eqref{gaussian spinors}, which becomes
+\begin{align}
+	\matrixElement{\eta}{ e^{\tilde{n} \cdot (A_t + \Delta\tilde{t} \tilde{\mu}) + \tilde{h} \cdot \tilde{S}} }{\eta'}
+	&=
+		\matrixElement{\eta}{ \exp\left(
+			\begin{bmatrix} \tilde{\psi}^{\dagger}_{1} &  \tilde{\psi}^{\dagger}_{2}  \end{bmatrix} 
+			\begin{bmatrix}
+				A + \Delta \tilde{t} (\tilde{\mu} + \half h_3)	& \half \Delta\tilde{t}(h_1 - i h_2) \\
+				\half \Delta\tilde{t}(h_1 + i h_2) 				& A +\Delta \tilde{t} (\tilde{\mu} - \half h_3)
+			\end{bmatrix} 
+			\begin{bmatrix} \tilde{\psi}_{1} \\  \tilde{\psi}_{2}  \end{bmatrix}
+		\right) }{\eta'}
+	\nonumber\\
+	&=
+		\matrixElement{\eta}{ \exp\left(
+			\begin{bmatrix} \tilde{\psi}^{\dagger}_{1} &  \tilde{\psi}^{\dagger}_{2}  \end{bmatrix} 
+			\left( (A+\Delta\tilde{t}\tilde{\mu}) \sigma^0 + \half \Delta\tilde{t}\tilde{h}\cdot\sigma\right)
+			\begin{bmatrix} \tilde{\psi}_{1} \\  \tilde{\psi}_{2}  \end{bmatrix}
+		\right) }{\eta'}
+	\nonumber\\
+	&=
+		\exp\left(
+			\begin{bmatrix} \eta^{\dagger}_{1} &  \eta^{\dagger}_{2}  \end{bmatrix} 
+			\exp\left( (A+\Delta\tilde{t}\tilde{\mu}) \sigma^0 + \half \Delta\tilde{t}\tilde{h}\cdot\sigma\right)
+			\begin{bmatrix} \eta'_{1} \\  \eta'_{2}  \end{bmatrix}
+		\right)
+	\nonumber\\
+	&=
+		\exp\left(
+			\begin{bmatrix} \eta^{\dagger}_{1} &  \eta^{\dagger}_{2}  \end{bmatrix} 
+			\exp\left( (A+\Delta\tilde{t}\tilde{\mu}) \sigma^0 \right) 
+			\left[\sigma^0 \cosh \sqrt{\oneover{4}\Delta \tilde{t}^2 \tilde{h}^2} + \frac{\tilde{h} \cdot \sigma}{\sqrt{h^2}} \sinh \sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2}  \right]
+			\begin{bmatrix} \eta'_{1} \\  \eta'_{2}  \end{bmatrix}
+		\right).
+\end{align}
+This propagates straightforwardly to the fermion matrix $\mathbb{D}$,
+\begin{align}
+    \mathbb{D} &= \begin{bmatrix} D'(+h) & O(h) \\ O(h)\conjugate & D'(-h) \end{bmatrix}
+    \\
+    D'(\tilde{h}) &=
+	\begin{bmatrix} 
+	\one            & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                     & +B^{-1}
+\\	-F_1(\tilde{h}) & \one      & 0                 & 0         & 0      & \cdots & 0       & 0                     & 0
+\\	0               & -B^{-1}   & \one              & 0         & 0      & \cdots & 0       & 0                     & 0
+\\	0               & 0         & -F_2(\tilde{h})   & \one      & 0      & \cdots & 0       & 0                     & 0
+\\	0               & 0         & 0                 & -B^{-1}   & \one   & \cdots & 0       & 0                     & 0
+\\	\vdots          & \vdots    & \vdots            & \vdots    & \vdots & \ddots & \vdots  & \vdots                & \vdots
+\\	0               & 0         & 0                 & 0         & 0      & \cdots & -B^{-1} & \one                  & 0
+\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & -F_{N_t}(\tilde{h})   & \one
+	\end{bmatrix}
+	\\
+	F_t(\tilde{h}) &= e^{A_t + \Delta\tilde{t}\tilde{\mu}} \left(\cosh \sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2} + \frac{\tilde{h}_3}{\sqrt{\tilde{h}^2}} \sinh\sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2}\right)
+    \\
+    O(\tilde{h}) &=
+	\begin{bmatrix} 
+	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
+\\	-G_1(\tilde{h}) & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
+\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
+\\	0               & 0         & -G_2(\tilde{h})   & 0         & 0      & \cdots & 0       & 0                    & 0
+\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
+\\	\vdots          & \vdots    & \vdots            & \vdots    & \vdots & \ddots & \vdots  & \vdots               & \vdots
+\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
+\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & -G_{N_t}(\tilde{h})  & 0
+	\end{bmatrix}
+    \\
+	G_t(\tilde{h}) &= e^{A_t + \Delta\tilde{t}\tilde{\mu}} \frac{\tilde{h}_1 - i\tilde{h}_2}{\sqrt{\tilde{h}^2}} \sinh\sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2}
+\end{align}
+When the spin chemical potential points purely in the $z$ direction the spin-off-diagonal block matrices $G$ all vanish and we get the simplifications
+\begin{align}
+	F_t(\tilde{h}) &= e^{A_t + \Delta\tilde{t}\tilde{\mu}} e^{\half \Delta\tilde{t} \tilde{h}_3} = e^{A_t + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t} \tilde{h}_3}
+	&
+	\det \mathbb{D} &= \det D'(+\tilde{h}_3) D'(-\tilde{h}_3)
+	&
+	(\text{only when }\tilde{h}_1=\tilde{h}_2=0)
+\end{align}
+and we can reduce the $2N_t$ timeslices of $D'(\pm\tilde{h}_3)$ to the $N_t$ timeslices of $D(\pm\tilde{h}_3)$ as before \eqref{fermion matrix}.
+
+When the spin chemical potential points purely in the $x$ direction one may leverage the formula
+\begin{align}
+	\det \begin{bmatrix} A & B \\ B & A \end{bmatrix} &= \det(A-B) \det(A+B)
+	&\goesto
+	&&
+	\det \mathbb{D} &= \det(D'-O) \det(D'+O)
+	&
+	(\text{only when }\tilde{h}_2=\tilde{h}_3=0)
+\end{align}
+\todo{Is a similar reduction, or a nice determinant formula, possible in general?}
 
 \subsection{Deriving Path Integral}
 In this subsection we derive a path integral expression for the partition function
