@@ -270,12 +270,12 @@ Performing the Grassmannian integration yields a fermion determinant,
 \begin{align}
 	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu} \tilde{N})} e^{ \tilde{n}\cdot A_t} }
 	=
-	\int D\eta\adjoint D\eta ~ e^{- \eta^{\dagger} ~ \mathbb{D} ~ \eta} = \det \mathbb{D}
+	\int D\eta\adjoint D\eta ~ e^{- \eta^{\dagger} ~ \DD ~ \eta} = \det \DD
 \end{align}
-where $\mathbb{D}$ is $(2\text{ spins})\times(2N_t)\times(\Volume)$ on a side.
+where $\DD$ is $(2\text{ spins})\times(2N_t)\times(\Volume)$ on a side.
 Separating out the spin dimension,
 \begin{align}
-	\mathbb{D}
+	\DD
 	&=
 	\begin{bmatrix} D' & 0 \\ 0 & D' \end{bmatrix}
 	&
@@ -292,7 +292,7 @@ Separating out the spin dimension,
 	\\	0                                   & 0         & 0                                     & 0         & 0      & \cdots & 0       & -e^{A_{N_t}+\Delta\tilde{t}\tilde{\mu}}   & \one
 	\end{bmatrix}
 	&
-	\det\mathbb{D} = \left(\det D'\right)^2
+	\det\DD = \left(\det D'\right)^2
 \end{align}
 where $D'$ is a block matrix with $2N_t$ blocks of side length $\Volume$ per side.
 The block matrix
@@ -394,9 +394,9 @@ The difference begins with the matrix representation in the Grassman space \eqre
 			\begin{bmatrix} \eta'_{1} \\  \eta'_{2}  \end{bmatrix}
 		\right).
 \end{align}
-This propagates straightforwardly to the fermion matrix $\mathbb{D}$,
+This propagates straightforwardly to the fermion matrix $\DD$,
 \begin{align}
-    \mathbb{D} &= \begin{bmatrix} D'(+h) & O(h) \\ O(h)\conjugate & D'(-h) \end{bmatrix}
+    \DD &= \begin{bmatrix} D'(+h) & O(h) \\ O(h)\conjugate & D'(-h) \end{bmatrix}
     \\
     D'(\tilde{h}) &=
 	\begin{bmatrix} 
@@ -409,6 +409,7 @@ This propagates straightforwardly to the fermion matrix $\mathbb{D}$,
 \\	0               & 0         & 0                 & 0         & 0      & \cdots & -B^{-1} & \one                  & 0
 \\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & -F_{N_t}(\tilde{h})   & \one
 	\end{bmatrix}
+	\label{eq:D prime with h}
 	\\
 	F_t(\tilde{h}) &= e^{A_t + \Delta\tilde{t}\tilde{\mu}} \left(\cosh \sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2} + \frac{\tilde{h}_3}{\sqrt{\tilde{h}^2}} \sinh\sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2}\right)
     \\
@@ -430,9 +431,10 @@ When the spin chemical potential points purely in the $z$ direction the spin-off
 \begin{align}
 	F_t(\tilde{h}) &= e^{A_t + \Delta\tilde{t}\tilde{\mu}} e^{\half \Delta\tilde{t} \tilde{h}_3} = e^{A_t + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t} \tilde{h}_3}
 	&
-	\det \mathbb{D} &= \det D'(+\tilde{h}_3) D'(-\tilde{h}_3)
+	\det \DD &= \det D'(+\tilde{h}_3) D'(-\tilde{h}_3)
 	&
 	(\text{only when }\tilde{h}_1=\tilde{h}_2=0)
+	\label{eq:fermion determinant with h3}
 \end{align}
 and we can reduce the $2N_t$ timeslices of $D'(\pm\tilde{h}_3)$ to the $N_t$ timeslices of $D(\pm\tilde{h}_3)$ as before \eqref{fermion matrix}.
 
@@ -441,11 +443,53 @@ When the spin chemical potential points purely in the $x$ direction one may leve
 	\det \begin{bmatrix} A & B \\ B & A \end{bmatrix} &= \det(A-B) \det(A+B)
 	&\goesto
 	&&
-	\det \mathbb{D} &= \det(D'-O) \det(D'+O)
+	\det \DD &= \det(D'-O) \det(D'+O)
 	&
 	(\text{only when }\tilde{h}_2=\tilde{h}_3=0)
 \end{align}
 \todo{Is a similar reduction, or a nice determinant formula, possible in general?}
+
+Perhaps a more amenable way to formulate the needed fermion determinant is to make spin fastest.
+Then, if
+\begin{align}
+	\FF &= \exp\left( (A+\Delta\tilde{t}\tilde{\mu})\sigma^0 + \half \Delta\tilde{t}\tilde{h}\cdot \sigma\right)
+	&
+	\BB\inverse &= B\inverse \sigma^0
+\end{align}
+we can write
+\begin{align}
+	\DD = \begin{bmatrix} 
+			\one            & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                     & +\BB^{-1}
+		\\	-\FF_1(\tilde{h}) & \one      & 0                 & 0         & 0      & \cdots & 0       & 0                     & 0
+		\\	0               & -\BB^{-1}   & \one              & 0         & 0      & \cdots & 0       & 0                     & 0
+		\\	0               & 0         & -\FF_2(\tilde{h})   & \one      & 0      & \cdots & 0       & 0                     & 0
+		\\	0               & 0         & 0                 & -\BB^{-1}   & \one   & \cdots & 0       & 0                     & 0
+		\\	\vdots          & \vdots    & \vdots            & \vdots    & \vdots & \ddots & \vdots  & \vdots                & \vdots
+		\\	0               & 0         & 0                 & 0         & 0      & \cdots & -\BB^{-1} & \one                  & 0
+		\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & -\FF_{N_t}(\tilde{h})   & \one
+	\end{bmatrix}
+\end{align}
+which is essentially just $D'(h)$ \eqref{D prime with h} but with the blocks promoted to bigger blocks.
+The determinant of $\DD$ is equal to the determinant of
+\begin{align}
+    \dd
+	=
+	\begin{bmatrix}
+			\BB                  & 0                             & 0                             & 0             & \cdots & 0                                & +\FF_{N_t}(\tilde{h})
+		\\	-\FF_{1}(\tilde{h})  & \BB                    & 0                             & 0             & \cdots & 0                                & 0
+		\\	0                           & -\FF_{2}(\tilde{h})    & \BB                    & 0             & \cdots & 0                                & 0
+		\\	0                           & 0                             & -\FF_{3}(\tilde{h})    & \BB    & \cdots & 0                                & 0
+		\\	\vdots                      & \vdots                        & \vdots                        & \vdots        & \ddots & \vdots                           & \vdots
+		\\	0                           & 0                             & 0                             & 0             & \cdots & \BB                       & 0
+		\\	0                           & 0                             & 0                             & 0             & \cdots & -\FF_{N_t-1}(\tilde{h})   & \BB
+	\end{bmatrix}
+\end{align}
+up to a constant
+\begin{align}
+    \det \DD = \frac{ \det \dd }{ \det \BB^{N_t} } = \frac{ \det \dd }{ \det \exp 2 \tilde{\beta}\tilde{\kappa} }
+\end{align}
+and we can write the $\det \dd$ in terms of a `block sausage'.
+Just like $\FF$, the block sausage is block-diagonal in the case when $\tilde{h}=\tilde{h}_3$ and $\tilde{h}_1=\tilde{h}_2=0$ so that $\det \dd = \det( D(+\tilde{h}_3) D(-\tilde{h}_3)$ factorizes as before \eqref{fermion determinant with h3}; when $\tilde{h}=0$ the two blocks are equal and $\det\dd = \det D^2$, since $\FF(0)\propto\sigma^0$.
 
 \subsection{Deriving Path Integral}
 In this subsection we derive a path integral expression for the partition function
