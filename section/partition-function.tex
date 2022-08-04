@@ -116,14 +116,14 @@ Recall that the potential operator can be expressed as a sum of Lego spheres \eq
 	\sum_{\vec{R}} \tilde{C}_{\vec{R}} \LegoSphere{\vec{R}}_{ab}
 \end{align}
 where $\tilde{V}_{ab}$ is a symmetric matrix and the radii $\vec{R}$ can be chosen however we like.
-If $\tilde{V}$ has purely real positive eigenvalues (which imposes conditions on the bare coupling constants), then the following \emph{exact} Hubbard-Stratanovich transformation holds:
+If $\tilde{V}$ has purely real negative eigenvalues (which imposes conditions on the bare coupling constants), then the following \emph{exact} Hubbard-Stratanovich transformation holds:
 \begin{equation}
-	\exp\left( -\frac{1}{2} \sum_{ab}\tilde{n}_a \left(\Delta\tilde{t} \tilde{V}\right)_{ab} \tilde{n}_b + \Delta \tilde{t} \tilde{\mu}\tilde{N}\right)
+	\exp\left( \frac{1}{2} \sum_{ab}\tilde{n}_a \left(-\Delta\tilde{t} \tilde{V}\right)_{ab} \tilde{n}_b + \Delta \tilde{t} \tilde{\mu}\tilde{N}\right)
 	=
 	\frac{
-		\int dA\; e^{-\frac{1}{2} A\transpose (\Delta\tilde{t} \tilde{V})\inverse A + \tilde{n} \cdot (A + \Delta\tilde{t} \tilde{\mu} )}
+		\int dA\; e^{-\frac{1}{2} A\transpose (-\Delta\tilde{t} \tilde{V})\inverse A + \tilde{n} \cdot (A + \Delta\tilde{t} \tilde{\mu} )}
 	}{
-		\int dA\; e^{-\frac{1}{2} A\transpose (\Delta\tilde{t} \tilde{V})\inverse A}
+		\int dA\; e^{-\frac{1}{2} A\transpose (-\Delta\tilde{t} \tilde{V})\inverse A}
 	}
 \end{equation}
 where $A$ is a vector with $\Volume$ components but $\Delta\tilde{t}\tilde{\mu}$ is a spatial constant.
@@ -132,10 +132,10 @@ So, we have the \emph{exact} rewriting of the Trotterized partition function \eq
 	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t}(\tilde{V} - \tilde{\mu}\tilde{N})} }
 	= 
 	\frac{  
-		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (\Delta\tilde{t} \tilde{V})\inverse A_t}
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
 	~	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{n}\cdot (A_t + \Delta\tilde{t} \tilde{\mu})} } 
 	}{ 
-		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (\Delta\tilde{t} \tilde{V})\inverse A_t}
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
 	}
 	\label{eq:trotterization bilinearized}
 \end{equation}
@@ -321,23 +321,23 @@ Therefore, one finally has a numerical prescription for the Trotterized trace \e
 \begin{align}
 	\tr{ \prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu}\tilde{N})}  }
 	=&
-	\frac{\det B^{-2N_t}}{ \int DA ~ e^{-\half \sum_t A_t (\Delta\tilde{t}\tilde{V})\inverse A_t } } ~ \times
-	\int DA ~ e^{-\half \sum_t A_t (\Delta\tilde{t}\tilde{V})\inverse A_t } \det D^2
+	\frac{\det \exp\left( -2 \tilde{\beta}\tilde{\kappa}\right)}{ \int DA ~ e^{-\half \sum_t A_t (-\Delta\tilde{t}\tilde{V})\inverse A_t } } ~ \times
+	\int DA ~ e^{-\half \sum_t A_t (-\Delta\tilde{t}\tilde{V})\inverse A_t } \det D^2
 \end{align}
 which is manifestly positive-definite since all the entries of $D$ are real.
 We can cast the determinant up into the action,
 \begin{align}
-	\tr{ \prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu}\tilde{N})}  }
+	\tr{ \prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t} (-\tilde{V} - \tilde{\mu}\tilde{N})}  }
 	=&
 	~\mathcal{N}
 	\int DA ~ \exp -\left(S = \half \sum_t A_t (\Delta\tilde{t}\tilde{V})\inverse A_t - \log \det D^2 \right)
 \end{align}
-where $\mathcal{N}$ is a constant that will cancel from all derivatives of the free energy.
+where $\mathcal{N}$ is a constant that will cancel from many derivatives of the free energy.
 If we keep the Grassman variables, we can instead write the action $S$ as
 \begin{align}
 	S = 
-	\frac{1}{2} \sum_{ab t} A_{at} \left[(\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
-+	\sum_{ab t \sigma} \eta\adjoint_{\sigma a t} \left[ B = e^{\Delta\tilde{t}\tilde{\kappa}}\right]_{ab} \eta_{\sigma b t}
+	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
++	\sum_{ab t \sigma} \eta\adjoint_{\sigma a t} \left[ e^{\Delta\tilde{t}\tilde{\kappa}}\right]_{ab} \eta_{\sigma b t}
 -	\sum_{a t \sigma}\eta\adjoint_{\sigma a\; t+1} e^{A_{at} + \Delta \tilde{t} \tilde{\mu}} \eta_{\sigma a t}
 \end{align}
 
