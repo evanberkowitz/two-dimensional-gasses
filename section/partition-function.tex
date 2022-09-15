@@ -17,7 +17,7 @@ In the latticized language
 	&\goesto
 	\sum_x \Delta x^2 \psi\adjoint_x \psi_x
 	=
-	\sum_a \tilde{\psi}_a \tilde{\psi}_a
+	\sum_a \tilde{\psi}\adjoint_a \tilde{\psi}_a
 	=
 	\sum_a \tilde{n}_a
 	=
@@ -57,21 +57,13 @@ We can isolate the dimensionful quantities
 \end{align}
 where $\tilde{\beta}$, $\tilde{\mu}$, and $\tilde{\vec{h}}$ are dimensionless, and $\tilde{K}$ and $\tilde{V}$ are the dimensionless kinetic and potential operators in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
 
-\subsection{Dimensionless Path Integral}
-
-In this subsection we derive a path integral expression for the spin-balanced partition function
-\begin{align}
-	Z
-	&=
-	\tr{e^{-\tilde{\beta}(\tilde{H}-\tilde{\mu}\tilde{N})}}~.
-\end{align}
-by Trotterizing  $\tilde{\beta}$ into $N_t$ time slices so that $\Delta \tilde{t} = \tilde{\beta}/N_t = \beta/M \Delta x^2 N_t$, which exactly matches $\hat{\gamma}$ in our prior work.
+Let us Trotterize $\tilde{\beta}$ into $N_t$ time slices so that $\Delta \tilde{t} = \tilde{\beta}/N_t = \beta/M \Delta x^2 N_t$, which exactly matches $\hat{\gamma}$ in our prior work.
 We begin with the identity
 \begin{equation}
 	e^{-\Delta \tilde{t}(\tilde{H} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}
 	=
 	e^{-\Delta \tilde{t}\tilde{K} / 2}
-	e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N})}
+	e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
 	e^{-\Delta \tilde{t}\tilde{K} / 2}
 	+
 	\mathcal{O}(\Delta \tilde{t}^3) 
@@ -79,17 +71,17 @@ We begin with the identity
 where $\tilde{H} = \tilde{K} + \tilde{V}$ has been decomposed into the kinetic energy $\tilde{K}$ and the interaction term $\tilde{V}$ as in \eqref{dimensionless hamiltonian}.
 Therefore,
 \begin{align}
-	\tr{e^{-\tilde{\beta}(\tilde{H}-\tilde{\mu} \tilde{N})}}
+	\tr{e^{-\tilde{\beta}(\tilde{H}-\tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}}
 	=
 	\tr{
 		\prod_{t=1}^{N_t}
-		e^{-\Delta \tilde{t} (\tilde{H}-\tilde{\mu}\tilde{N})}
+		e^{-\Delta \tilde{t} (\tilde{H}-\tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
 	}
 	&=
 	\tr{
 		\prod_{t=1}^{N_t}
 		e^{-\Delta \tilde{t}\tilde{K} / 2}
-		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N})}
+		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
 		e^{-\Delta \tilde{t}\tilde{K} / 2}
 	}
 	+ \order{\Delta \tilde{t}^2}
@@ -98,7 +90,7 @@ Therefore,
 	\tr{
 		\prod_{t=1}^{N_t}
 		e^{-\Delta \tilde{t}\tilde{K}}
-		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N})}
+		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
 	}
 	+ \order{\Delta \tilde{t}^2}.
 	\label{eq:trotterization}
@@ -118,22 +110,22 @@ Recall that the potential operator can be expressed as a sum of Lego spheres \eq
 where $\tilde{V}_{ab}$ is a symmetric matrix and the radii $\vec{R}$ can be chosen however we like.
 If $\tilde{V}$ has purely real negative eigenvalues (which imposes conditions on the bare coupling constants), then the following \emph{exact} Hubbard-Stratanovich transformation holds:
 \begin{equation}
-	\exp\left( \frac{1}{2} \sum_{ab}\tilde{n}_a \left(-\Delta\tilde{t} \tilde{V}\right)_{ab} \tilde{n}_b + \Delta \tilde{t} \tilde{\mu}\tilde{N}\right)
+	\exp\left( \frac{1}{2} \sum_{ab}\tilde{n}_a \left(-\Delta\tilde{t} \tilde{V}\right)_{ab} \tilde{n}_b + \Delta \tilde{t} \tilde{\mu}\tilde{N} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\tilde{\vec{S}}\right)
 	=
 	\frac{
-		\int dA\; e^{-\frac{1}{2} A\transpose (-\Delta\tilde{t} \tilde{V})\inverse A + \tilde{n} \cdot (A + \Delta\tilde{t} \tilde{\mu} )}
+		\int dA\; e^{-\frac{1}{2} A\transpose (-\Delta\tilde{t} \tilde{V})\inverse A + \tilde{\psi}\adjoint (A + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}}
 	}{
 		\int dA\; e^{-\frac{1}{2} A\transpose (-\Delta\tilde{t} \tilde{V})\inverse A}
 	}
 \end{equation}
-where $A$ is a vector with $\Volume$ components but $\Delta\tilde{t}\tilde{\mu}$ is a spatial constant.
+where $A$ is a vector with $\Volume$ components but the $\mu$ and $h$ terms are spatial constants and the fermionic term is implicitly summed over space.
 So, we have the \emph{exact} rewriting of the Trotterized partition function \eqref{trotterization}
 \begin{equation}
-	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t}(\tilde{V} - \tilde{\mu}\tilde{N})} }
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t}(\tilde{V} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})} }
 	= 
 	\frac{  
 		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
-	~	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{n}\cdot (A_t + \Delta\tilde{t} \tilde{\mu})} } 
+	~	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} } 
 	}{ 
 		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
 	}
@@ -153,26 +145,28 @@ where $DA = \prod_{t=1}^{N_t} d A_t $.\footnote{
 	If we were to instead group the chemical potential terms with $K$, functional derivatives cease to be simple because $[K,n_{\sigma}(x)] \neq 0$.
 }
 
+\subsection{The Fermion Matrix}
+
 Using fermion coherent states, we will now convert the trace over the Hilbert space into a determinant.
 Using the conventions of Munster Ch. 4,
 \begin{align}
-	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{n}\cdot (A_t + \Delta\tilde{t} \tilde{\mu})} }
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }}
 	=& \int \prod_{t=1}^{2N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times
 	\nonumber\\
 	&
 		\matrixElement{ -\eta_1 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2 N_t}}
-		\matrixElement{ \eta_{2 N_t} }{ e^{ \tilde{n} \cdot (A_{N_t} + \Delta\tilde{t}\tilde{\mu}) } }{\eta_{2 N_t-1}} ~ \times
+		\matrixElement{ \eta_{2 N_t} }{ e^{ \tilde{\psi}\adjoint (A_{N_t} + \Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi} } }{\eta_{2 N_t-1}} ~ \times
 	\nonumber\\
 	&
 		\cdots
 	\nonumber\\
 	&
 		\matrixElement{ \eta_5 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{4}}
-		\matrixElement{ \eta_4 }{ e^{ \tilde{n} \cdot (A_{2} + \Delta\tilde{t}\tilde{\mu})} }{\eta_3} ~ \times
+		\matrixElement{ \eta_4 }{ e^{ \tilde{\psi}\adjoint (A_{2} + \Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_3} ~ \times
 	\nonumber\\
 	&
 		\matrixElement{ \eta_3 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2}}
-		\matrixElement{ \eta_2 }{ e^{ \tilde{n} \cdot (A_{1} + \Delta\tilde{t}\tilde{\mu})} }{\eta_1}
+		\matrixElement{ \eta_2 }{ e^{ \tilde{\psi}\adjoint (A_{1} + \Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_1}
 \end{align}
 where the coherent states
 \begin{equation*}
@@ -185,7 +179,7 @@ To proceed we leverage the exponential identity (4.33) of Munster,
 	=
 	\exp\left[ \sum_{i j} \eta^{\dagger}_j (e^A)_{ji} \eta'_i \right]
 \end{equation}
-to carefully evaluate $\matrixElement{\eta}{ e^{-\Delta \tilde{t}\tilde{K}} }{\eta'}$ and $\matrixElement{\eta}{ e^{\tilde{n}\cdot(A_t + \Delta \tilde{t} \tilde{\mu})} }{\eta'}$, keeping careful track of the spin degree of freedom,
+to carefully evaluate $\matrixElement{\eta}{ e^{-\Delta \tilde{t}\tilde{K}} }{\eta'}$ and $\matrixElement{\eta}{ e^{\tilde{\psi}\adjoint(A_t + \Delta \tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }{\eta'}$, keeping careful track of the spin degree of freedom,
 \begin{align}
 		\matrixElement{\eta}{ e^{-\Delta \tilde{t} \tilde{K}} }{\eta'}
 	&= 
@@ -193,270 +187,104 @@ to carefully evaluate $\matrixElement{\eta}{ e^{-\Delta \tilde{t}\tilde{K}} }{\e
 	\nonumber\\
 	&=
 		\matrixElement{\eta}{ \exp\left(
-			\begin{bmatrix} \tilde{\psi}^{\dagger}_{1} &  \tilde{\psi}^{\dagger}_{2}  \end{bmatrix} 
+			\begin{bmatrix} \tilde{\psi}^{\dagger}_{\up} &  \tilde{\psi}^{\dagger}_{\down}  \end{bmatrix} 
 			\begin{bmatrix}
 				-\Delta \tilde{t} \tilde{\kappa}	& 0 \\
 				0 									& -\Delta \tilde{t} \tilde{\kappa} 
 			\end{bmatrix} 
-			\begin{bmatrix} \tilde{\psi}_{1} \\  \tilde{\psi}_{2}  \end{bmatrix}
+			\begin{bmatrix} \tilde{\psi}_{\up} \\  \tilde{\psi}_{\down}  \end{bmatrix}
 		\right) }{\eta'}
 	\nonumber\\
 	& = 
 		\exp\left( 
-			\begin{bmatrix} {\eta}^{\dagger}_{1} &  {\eta}^{\dagger}_{2}  \end{bmatrix} 
-			\begin{bmatrix}
+			\begin{bmatrix} {\eta}^{\dagger}_{\up} &  {\eta}^{\dagger}_{\down}  \end{bmatrix} 
+			\exp\begin{pmatrix}
 				-\Delta \tilde{t} \tilde{\kappa}	& 0 \\
 				0 									& -\Delta \tilde{t} \tilde{\kappa} 
-			\end{bmatrix} 
-			\begin{bmatrix} {\eta}_{1}' \\  {\eta}_{2}'  \end{bmatrix}
-		\right)
-	\\
-	& = 
-		\exp\left( 
-			\sum_{ab} \eta^{\dagger}_{1a} \left[e^{-\Delta \tilde{t} \tilde{\kappa}}\right]_{ab} \eta'_{1b}
-		+	\sum_{ab} \eta^{\dagger}_{2a} \left[e^{-\Delta \tilde{t} \tilde{\kappa}}\right]_{ab} \eta'_{2b}
+			\end{pmatrix} 
+			\begin{bmatrix} {\eta}_{\up}' \\  {\eta}_{\down}'  \end{bmatrix}
 		\right)
 \end{align}
 where $\tilde{\kappa}$ is given in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian} \todo{and includes the C0 shift!}.
 By an analogous sequence of manipulations, one also finds
 \begin{align}
-	\matrixElement{\eta}{ e^{\tilde{n} \cdot (A_t + \Delta\tilde{t} \tilde{\mu})} }{\eta'}
+	\matrixElement{\eta}{ e^{\tilde{\psi}\adjoint \cdot (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }{\eta'}
 	&=
 		\matrixElement{\eta}{ \exp\left(
-			\begin{bmatrix} \tilde{\psi}^{\dagger}_{1} &  \tilde{\psi}^{\dagger}_{2}  \end{bmatrix} 
-			\begin{bmatrix}
-				A + \Delta \tilde{t} \tilde{\mu}	& 0 \\
-				0 									& A +\Delta \tilde{t} \tilde{\mu} 
-			\end{bmatrix} 
-			\begin{bmatrix} \tilde{\psi}_{1} \\  \tilde{\psi}_{2}  \end{bmatrix}
+			\begin{bmatrix} \tilde{\psi}^{\dagger}_{\up} &  \tilde{\psi}^{\dagger}_{\down}  \end{bmatrix} 
+			\left(
+				(A + \Delta\tilde{t}\tilde{\mu})\one + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}
+			\right)
+			\begin{bmatrix} \tilde{\psi}_{\up} \\  \tilde{\psi}_{\down}  \end{bmatrix}
 		\right) }{\eta'}
 	\label{eq:gaussian spinors}\\
 	& = 
-		\exp\left( 
-			\sum_{ab}\eta^{\dagger}_{1a} \left[e^{A_t + \Delta t \mu}\right]_{ab} \eta'_{1b}
-		+	\sum_{ab}\eta^{\dagger}_{2b} \left[e^{A_t + \Delta t \mu}\right]_{ab} \eta'_{2b}
+		\exp\left(
+			\begin{bmatrix} \eta^{\dagger}_{\up} &  \eta^{\dagger}_{\down}  \end{bmatrix} 
+			\exp\left(
+				(A + \Delta\tilde{t}\tilde{\mu})\one + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}
+			\right)
+			\begin{bmatrix} \eta'_{\up} \\  \eta'_{\down}  \end{bmatrix}
 		\right)
 \end{align}
-where
-\begin{align}
-	\left[e^{A_t+ \Delta \tilde{t} \tilde{\mu}}\right]_{ab} &= \delta_{ab} e^{A_{xt} + \Delta \tilde{t} \tilde{\mu}}~.
-\end{align}
+where the inner exponential is space-dependent through $A$.
 So, we can rewrite the Hilbert space trace in the bilinearized Trotterization \eqref{trotterization bilinearized}
 \begin{align}
-	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{n}\cdot (A_t + \Delta\tilde{t} \tilde{\mu})} }
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }
 	=& \int D\eta\adjoint D\eta \exp\left( - \sum_{t=1}^{2N_t}\sum_{a\sigma} \eta\adjoint_{\sigma a t} \eta_{\sigma a t}\right)~ \times
 	\nonumber\\
 	&
 		\exp\left[ \sum_{ab\sigma} (-\eta_{\sigma a\;1})\adjoint \left(e^{-\Delta \tilde{t} \tilde{\kappa}}\right)_{ab} \eta_{\sigma b\;2N_t} \right]
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2N_t} \left(e^{A_{N_t}+\Delta\tilde{t}\tilde{\mu}}\right)_{ab} \eta_{\sigma b\;2N_t-1}\right] ~ \times
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2N_t} \left(e^{A_{N_t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma} }\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;2N_t-1}\right] ~ \times
 	\nonumber\\
 	&
 		\cdots
 	\nonumber\\
 	&
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;5} \left(e^{-\Delta \tilde{t} \tilde{\kappa}}\right)_{ab} \eta_{\sigma b\;4} \right]
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;4} \left(e^{A_{2}+\Delta\tilde{t}\tilde{\mu}}\right)_{ab} \eta_{\sigma b\;3}\right] ~ \times
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;4} \left(e^{A_{2}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;3}\right] ~ \times
 	\nonumber\\
 	&
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;3} \left(e^{-\Delta \tilde{t} \tilde{\kappa}}\right)_{ab} \eta_{\sigma b\;2} \right]
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2} \left(e^{A_{1}+\Delta\tilde{t}\tilde{\mu}}\right)_{ab} \eta_{\sigma b\;1}\right]
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2} \left(e^{A_{1}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;1}\right]
 \end{align}
 where the measure is given by
 \begin{equation}
 	D\eta\adjoint D\eta \equiv \prod_{t=1}^{2N_t} \left\{ \prod_{a, \sigma} d \eta^{\dagger}_{\sigma a\; t} d\eta_{\sigma a\; t} \right\}.
 \end{equation}
+Written with the Grassmann fields the action is
+\begin{align}
+	S &= 
+	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
++	\sum_{ab t \alpha\alpha'} \eta\adjoint_{\alpha a t} \BB^{\alpha\alpha'}_{ab} \eta_{\alpha' b t}
+-	\sum_{ab t \alpha\alpha'}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{tab} \eta_{\alpha' b t}
+\nonumber\\
+	&=
+	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
++	\sum_{ab t \alpha} \eta\adjoint_{\alpha a t} B_{ab} \eta_{\alpha b t}
+-	\sum_{a t \alpha\alpha'}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{ta} \eta_{\alpha' a t}
+\end{align}
+where we leverage the fact that the hopping in $\BB$ does not mix spins and $\FF$ does not mix sites.
 
 Performing the Grassmannian integration yields a fermion determinant,
 \begin{align}
-	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}(\tilde{K} - \tilde{\mu} \tilde{N})} e^{ \tilde{n}\cdot A_t} }
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}} e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }
 	=
 	\int D\eta\adjoint D\eta ~ e^{- \eta^{\dagger} ~ \DD ~ \eta} = \det \DD
+	\label{eq:fermion determinant with 2nt timeslices}
 \end{align}
-where $\DD$ is $(2\text{ spins})\times(2N_t)\times(\Volume)$ on a side.
-Separating out the spin dimension,
+where $\DD$ is $(2N_t)\times(\Volume)\times(2\text{ spins})$ on a side.
+Writing
 \begin{align}
-	\DD
-	&=
-	\begin{bmatrix} D' & 0 \\ 0 & D' \end{bmatrix}
-	&
-	D'
-	&=
-	\begin{bmatrix} 
-		\one                                & 0         & 0                                     & 0         & 0      & \cdots & 0       & 0                                         & +B^{-1}
-	\\	-e^{A_1+\Delta\tilde{t}\tilde{\mu}} & \one      & 0                                     & 0         & 0      & \cdots & 0       & 0                                         & 0
-	\\	0                                   & -B^{-1}   & \one                                  & 0         & 0      & \cdots & 0       & 0                                         & 0
-	\\	0                                   & 0         & -e^{A_2+\Delta\tilde{t}\tilde{\mu}}   & \one      & 0      & \cdots & 0       & 0                                         & 0
-	\\	0                                   & 0         & 0                                     & -B^{-1}   & \one   & \cdots & 0       & 0                                         & 0
-	\\	\vdots                              & \vdots    & \vdots                                & \vdots    & \vdots & \ddots & \vdots  & \vdots                                    & \vdots
-	\\	0                                   & 0         & 0                                     & 0         & 0      & \cdots & -B^{-1} & \one                                      & 0
-	\\	0                                   & 0         & 0                                     & 0         & 0      & \cdots & 0       & -e^{A_{N_t}+\Delta\tilde{t}\tilde{\mu}}   & \one
-	\end{bmatrix}
-	&
-	\det\DD = \left(\det D'\right)^2
-\end{align}
-where $D'$ is a block matrix with $2N_t$ blocks of side length $\Volume$ per side.
-The block matrix
-\begin{equation}
-	D
-	=
-	\begin{bmatrix}
-		B                                      & 0                                      & 0                                      & 0      & \cdots & 0                                            & e^{A_{N_t}+ \Delta \tilde{t} \tilde{\mu}}
-	\\	-e^{A_1+ \Delta \tilde{t} \tilde{\mu}} & B                                      & 0                                      & 0      & \cdots & 0                                            & 0
-	\\	0                                      & -e^{A_2+ \Delta \tilde{t} \tilde{\mu}} & B                                      & 0      & \cdots & 0                                            & 0
-	\\	0                                      & 0                                      & -e^{A_3+ \Delta \tilde{t} \tilde{\mu}} & B      & \cdots & 0                                            & 0
-	\\	\vdots                                 & \vdots                                 & \vdots                                 & \vdots & \ddots & \vdots                                       & \vdots
-	\\	0                                      & 0                                      & 0                                      & 0      & \cdots & B                                            & 0
-	\\	0                                      & 0                                      & 0                                      & 0      & \cdots & -e^{A_{N_t-1}+ \Delta \tilde{t} \tilde{\mu}} & B
-	\end{bmatrix}
-	\label{eq:fermion matrix}
-\end{equation} 
-has only $N_t$ blocks per side and its determinant is equal up to a constant factor
-\begin{align}
-	\det D' &= \frac{ \det D }{ \det B^{N_t} } = \frac{ \det D }{ \det \exp \tilde{\beta} \tilde{\kappa} },
+	\BB &= B \otimes \one
 	&
 	B &= \exp \Delta\tilde{t} \tilde{\kappa}
+	\label{eq:BB}\\
+	\FF_t &= \left(e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)
+	\label{eq:FF}
 \end{align}
-Either may be used in simulations; we use the latter.
-Therefore, one finally has a numerical prescription for the Trotterized trace \eqref{trotterization}
-\begin{align}
-	\tr{ \prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu}\tilde{N})}  }
-	=&
-	\frac{\det \exp\left( -2 \tilde{\beta}\tilde{\kappa}\right)}{ \int DA ~ e^{-\half \sum_t A_t (-\Delta\tilde{t}\tilde{V})\inverse A_t } } ~ \times
-	\int DA ~ e^{-\half \sum_t A_t (-\Delta\tilde{t}\tilde{V})\inverse A_t } \det D^2
-\end{align}
-which is manifestly positive-definite since all the entries of $D$ are real.
-We can cast the determinant up into the action,
-\begin{align}
-	\tr{ \prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t} (-\tilde{V} - \tilde{\mu}\tilde{N})}  }
-	=&
-	~\mathcal{N}
-	\int DA ~ \exp -\left(S = \half \sum_t A_t (\Delta\tilde{t}\tilde{V})\inverse A_t - \log \det D^2 \right)
-\end{align}
-where $\mathcal{N}$ is a constant that will cancel from many derivatives of the free energy.
-If we keep the Grassman variables, we can instead write the action $S$ as
-\begin{align}
-	S = 
-	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
-+	\sum_{ab t \sigma} \eta\adjoint_{\sigma a t} \left[ e^{\Delta\tilde{t}\tilde{\kappa}}\right]_{ab} \eta_{\sigma b t}
--	\sum_{a t \sigma}\eta\adjoint_{\sigma a\; t+1} e^{A_{at} + \Delta \tilde{t} \tilde{\mu}} \eta_{\sigma a t}
-\end{align}
-
-\subsubsection{Incorporating Spin Chemical Potential}
-
-We may wish to create spin imbalance by including a spin chemical potential $\vec{h}$ so that the partition function is
-\begin{align}
-	Z &= \tr{e^{-\tilde{\beta}\left(\tilde{H} - \tilde{\mu}\tilde{N} - \tilde{h}\cdot\tilde{S}\right)} }
-	&
-	S &= \int d^2x~ S(x) \goesto \sum_a \Delta x^2 S_a = \sum_a \tilde{S}_a = \tilde{S}
-	&
-	\tilde{S}_a &= \half \sum_{\alpha \alpha'} \tilde{\psi}\adjoint_{\alpha a} \sigma_{\alpha \alpha'} \tilde{\psi}_{\alpha' a}
-\end{align}
-where $\alpha$ runs over the two spins and we leave off the spatial index for the spatially summed operator.
-These spin operators are 3-vectors (from the vector of Pauli $\sigma$s) and obey the expected algebra
-\begin{align}
-	[\tilde{S}_a^i, \tilde{S}_b^j] &= i \epsilon^{ijk} \tilde{S}^k_a \delta_{ab} \qquad\text{(no sum on }a)
-\end{align}
-It is possible to show that $[\tilde{S}, \tilde{H}] = 0$ and $[\tilde{S}_a, \tilde{n}_b] = 0$ so that $[\tilde{S}, \tilde{H} - \tilde{\mu}\tilde{N}] = 0$.
-
-Because the spin and number operators commute, the spin operators go along for the ride on the Hubbard-Stratanovich transformation without issue.
-The difference begins with the matrix representation in the Grassman space \eqref{gaussian spinors}, which becomes
-\begin{align}
-	\matrixElement{\eta}{ e^{\tilde{n} \cdot (A_t + \Delta\tilde{t} \tilde{\mu}) + \tilde{h} \cdot \tilde{S}} }{\eta'}
-	&=
-		\matrixElement{\eta}{ \exp\left(
-			\begin{bmatrix} \tilde{\psi}^{\dagger}_{1} &  \tilde{\psi}^{\dagger}_{2}  \end{bmatrix} 
-			\begin{bmatrix}
-				A + \Delta \tilde{t} (\tilde{\mu} + \half h_3)	& \half \Delta\tilde{t}(h_1 - i h_2) \\
-				\half \Delta\tilde{t}(h_1 + i h_2) 				& A +\Delta \tilde{t} (\tilde{\mu} - \half h_3)
-			\end{bmatrix} 
-			\begin{bmatrix} \tilde{\psi}_{1} \\  \tilde{\psi}_{2}  \end{bmatrix}
-		\right) }{\eta'}
-	\nonumber\\
-	&=
-		\matrixElement{\eta}{ \exp\left(
-			\begin{bmatrix} \tilde{\psi}^{\dagger}_{1} &  \tilde{\psi}^{\dagger}_{2}  \end{bmatrix} 
-			\left( (A+\Delta\tilde{t}\tilde{\mu}) \sigma^0 + \half \Delta\tilde{t}\tilde{h}\cdot\sigma\right)
-			\begin{bmatrix} \tilde{\psi}_{1} \\  \tilde{\psi}_{2}  \end{bmatrix}
-		\right) }{\eta'}
-	\nonumber\\
-	&=
-		\exp\left(
-			\begin{bmatrix} \eta^{\dagger}_{1} &  \eta^{\dagger}_{2}  \end{bmatrix} 
-			\exp\left( (A+\Delta\tilde{t}\tilde{\mu}) \sigma^0 + \half \Delta\tilde{t}\tilde{h}\cdot\sigma\right)
-			\begin{bmatrix} \eta'_{1} \\  \eta'_{2}  \end{bmatrix}
-		\right)
-	\nonumber\\
-	&=
-		\exp\left(
-			\begin{bmatrix} \eta^{\dagger}_{1} &  \eta^{\dagger}_{2}  \end{bmatrix} 
-			\exp\left( (A+\Delta\tilde{t}\tilde{\mu}) \sigma^0 \right) 
-			\left[\sigma^0 \cosh \sqrt{\oneover{4}\Delta \tilde{t}^2 \tilde{h}^2} + \frac{\tilde{h} \cdot \sigma}{\sqrt{h^2}} \sinh \sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2}  \right]
-			\begin{bmatrix} \eta'_{1} \\  \eta'_{2}  \end{bmatrix}
-		\right).
-\end{align}
-This propagates straightforwardly to the fermion matrix $\DD$,
-\begin{align}
-    \DD &= \begin{bmatrix} D'(+h) & O(h) \\ O(h)\conjugate & D'(-h) \end{bmatrix}
-    \\
-    D'(\tilde{h}) &=
-	\begin{bmatrix} 
-	\one            & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                     & +B^{-1}
-\\	-F_1(\tilde{h}) & \one      & 0                 & 0         & 0      & \cdots & 0       & 0                     & 0
-\\	0               & -B^{-1}   & \one              & 0         & 0      & \cdots & 0       & 0                     & 0
-\\	0               & 0         & -F_2(\tilde{h})   & \one      & 0      & \cdots & 0       & 0                     & 0
-\\	0               & 0         & 0                 & -B^{-1}   & \one   & \cdots & 0       & 0                     & 0
-\\	\vdots          & \vdots    & \vdots            & \vdots    & \vdots & \ddots & \vdots  & \vdots                & \vdots
-\\	0               & 0         & 0                 & 0         & 0      & \cdots & -B^{-1} & \one                  & 0
-\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & -F_{N_t}(\tilde{h})   & \one
-	\end{bmatrix}
-	\label{eq:D prime with h}
-	\\
-	F_t(\tilde{h}) &= e^{A_t + \Delta\tilde{t}\tilde{\mu}} \left(\cosh \sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2} + \frac{\tilde{h}_3}{\sqrt{\tilde{h}^2}} \sinh\sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2}\right)
-    \\
-    O(\tilde{h}) &=
-	\begin{bmatrix} 
-	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
-\\	-G_1(\tilde{h}) & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
-\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
-\\	0               & 0         & -G_2(\tilde{h})   & 0         & 0      & \cdots & 0       & 0                    & 0
-\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
-\\	\vdots          & \vdots    & \vdots            & \vdots    & \vdots & \ddots & \vdots  & \vdots               & \vdots
-\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                    & 0
-\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & -G_{N_t}(\tilde{h})  & 0
-	\end{bmatrix}
-    \\
-	G_t(\tilde{h}) &= e^{A_t + \Delta\tilde{t}\tilde{\mu}} \frac{\tilde{h}_1 - i\tilde{h}_2}{\sqrt{\tilde{h}^2}} \sinh\sqrt{\oneover{4}\Delta\tilde{t}^2 \tilde{h}^2}
-\end{align}
-When the spin chemical potential points purely in the $z$ direction the spin-off-diagonal block matrices $G$ all vanish and we get the simplifications
-\begin{align}
-	F_t(\tilde{h}) &= e^{A_t + \Delta\tilde{t}\tilde{\mu}} e^{\half \Delta\tilde{t} \tilde{h}_3} = e^{A_t + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t} \tilde{h}_3}
-	&
-	\det \DD &= \det D'(+\tilde{h}_3) D'(-\tilde{h}_3)
-	&
-	(\text{only when }\tilde{h}_1=\tilde{h}_2=0)
-	\label{eq:fermion determinant with h3}
-\end{align}
-and we can reduce the $2N_t$ timeslices of $D'(\pm\tilde{h}_3)$ to the $N_t$ timeslices of $D(\pm\tilde{h}_3)$ as before \eqref{fermion matrix}.
-
-When the spin chemical potential points purely in the $x$ direction one may leverage the formula
-\begin{align}
-	\det \begin{bmatrix} A & B \\ B & A \end{bmatrix} &= \det(A-B) \det(A+B)
-	&\goesto
-	&&
-	\det \DD &= \det(D'-O) \det(D'+O)
-	&
-	(\text{only when }\tilde{h}_2=\tilde{h}_3=0)
-\end{align}
-\todo{Is a similar reduction, or a nice determinant formula, possible in general?}
-
-Perhaps a more amenable way to formulate the needed fermion determinant is to make spin fastest.
-Then, if
-\begin{align}
-	\FF &= \exp\left( (A+\Delta\tilde{t}\tilde{\mu})\sigma^0 + \half \Delta\tilde{t}\tilde{h}\cdot \sigma\right)
-	&
-	\BB\inverse &= B\inverse \sigma^0
-\end{align}
-we can write
+where the doubly-struck quantities are also square matrices in spin dimensions; the hopping matrix is time-independent and spin-diagonal, $\FF$ is space-diagonal.
+Using this notation we can write the Fermion matrix as
 \begin{align}
 	\DD = \begin{bmatrix} 
 			\one            & 0         & 0                 & 0         & 0      & \cdots & 0       & 0                     & +\BB^{-1}
@@ -467,12 +295,11 @@ we can write
 		\\	\vdots          & \vdots    & \vdots            & \vdots    & \vdots & \ddots & \vdots  & \vdots                & \vdots
 		\\	0               & 0         & 0                 & 0         & 0      & \cdots & -\BB^{-1} & \one                  & 0
 		\\	0               & 0         & 0                 & 0         & 0      & \cdots & 0       & -\FF_{N_t}(\tilde{h})   & \one
-	\end{bmatrix}
+	\end{bmatrix}.
 \end{align}
-which is essentially just $D'(h)$ \eqref{D prime with h} but with the blocks promoted to bigger blocks.
-The determinant of $\DD$ is equal to the determinant of
+The determinant of $\DD$ is equal to the determinant
 \begin{align}
-    \dd
+    \dd'
 	=
 	\begin{bmatrix}
 			\BB                  & 0                             & 0                             & 0             & \cdots & 0                                & +\FF_{N_t}(\tilde{h})
@@ -482,317 +309,299 @@ The determinant of $\DD$ is equal to the determinant of
 		\\	\vdots                      & \vdots                        & \vdots                        & \vdots        & \ddots & \vdots                           & \vdots
 		\\	0                           & 0                             & 0                             & 0             & \cdots & \BB                       & 0
 		\\	0                           & 0                             & 0                             & 0             & \cdots & -\FF_{N_t-1}(\tilde{h})   & \BB
-	\end{bmatrix}
+	\end{bmatrix},
 \end{align}
 up to a constant
 \begin{align}
-    \det \DD = \frac{ \det \dd }{ \det \BB^{N_t} } = \frac{ \det \dd }{ \det \exp 2 \tilde{\beta}\tilde{\kappa} }
+    \det \DD = \frac{ \det \dd' }{ \det \BB^{N_t} } = \frac{ \det \dd' }{ \det \exp 2 \tilde{\beta}\tilde{\kappa} }
 \end{align}
-and we can write the $\det \dd$ in terms of a `block sausage'.
-Just like $\FF$, the block sausage is block-diagonal in the case when $\tilde{h}=\tilde{h}_3$ and $\tilde{h}_1=\tilde{h}_2=0$ so that $\det \dd = \det( D(+\tilde{h}_3) D(-\tilde{h}_3)$ factorizes as before \eqref{fermion determinant with h3}; when $\tilde{h}=0$ the two blocks are equal and $\det\dd = \det D^2$, since $\FF(0)\propto\sigma^0$.
+and we can write the $\det \dd'$ in terms of a `block sausage'.
 
-\subsection{Deriving Path Integral}
-In this subsection we derive a path integral expression for the partition function
+However, we will show that it is advantageous to multiply by $-\BB\inverse \otimes \one_{N_t}$ to get
 \begin{align}
-	Z
+    \dd
+	=
+	\begin{bmatrix}
+			-\one                           & 0                                 & 0                                 & 0         & \cdots & 0                                    & -\BB\inverse\FF_{N_t}(\tilde{h})
+		\\	+\BB\inverse\FF_{1}(\tilde{h})  & -\one                             & 0                                 & 0         & \cdots & 0                                    & 0
+		\\	0                               & +\BB\inverse\FF_{2}(\tilde{h})    & -\one                             & 0         & \cdots & 0                                    & 0
+		\\	0                               & 0                                 & +\BB\inverse\FF_{3}(\tilde{h})    & -\one     & \cdots & 0                                    & 0
+		\\	\vdots                          & \vdots                            & \vdots                            & \vdots    & \ddots & \vdots                               & \vdots
+		\\	0                               & 0                                 & 0                                 & 0         & \cdots & -\one                                & 0
+		\\	0                               & 0                                 & 0                                 & 0         & \cdots & +\BB\inverse\FF_{N_t-1}(\tilde{h})   & -\one
+	\end{bmatrix},
+	\label{eq:fermion matrix}
+\end{align}
+or in index notation (letting $\delta_{1,N_t+1}=1$)
+\begin{align}
+	\dd_{\alpha a t, \alpha' a' t'} &= (-1)^{[t'=N_t]} [\BB\inverse]^{\alpha\alpha''}_{aa''}\FF_{t' a''a'}^{\alpha''\alpha'} \delta_{t,t'+1} - \delta_{\alpha\alpha'} \delta_{aa'} \delta_{tt'}
+	\\
+	&= (-1)^{[t'=N_t]} [B\inverse]_{aa''}\FF_{t' a''a'}^{\alpha'\alpha'} \delta_{t,t'+1} - \delta_{\alpha\alpha'} \delta_{aa'} \delta_{tt'}
+\end{align}
+which actually has $\det \DD = \det \dd$ and the way the sausage appears is apparent.
+Using the Shur complement, one has
+\begin{align}
+	\det \dd &= \det\left( \one + \UU \right)
+	&
+	\UU = \BB\inverse \FF_{N_t} \cdots \BB\inverse \FF_{2} \BB\inverse \FF_1.
+	\label{eq:sausage}
+\end{align}
+The sausage $\UU$ is (2 spins)$\times \Volume$ on a side.
+Note that we can separate $\FF_t = e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}$ into a space-dependent spin-independent part $e^{A_t}$ and a space-independent spin-dependent part $\exp( \Delta\tilde{t}(\tilde{\mu} \one + \tilde{\vec{h}} \cdot \vec{\sigma})$ (though the $\mu$ pieces is spin independent!).
+We can collect the space-independent part, pulling them through the sausage,
+\begin{align}
+	\UU 
+	&= \exp\left(\Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma}\right)^{N_t} \BB\inverse (e^{A_{N_t} + \Delta\tilde{t}\tilde{\mu}} \otimes\one)\cdots \BB\inverse (e^{A_2 + \Delta\tilde{t}\tilde{\mu}}\otimes\one) \BB\inverse (e^{A_1 + \Delta\tilde{t}\tilde{\mu}}\otimes \one)
+	\\
+	&= \exp\left(\tilde{\beta}\tilde{\vec{h}}\cdot\vec{\sigma}\right) \begin{pmatrix} U & 0 \\ 0 & U \end{pmatrix}
+	\\
+	U &= B\inverse e^{A_{N_t} + \Delta\tilde{t}\tilde{\mu}} \cdots B\inverse e^{A_2 + \Delta\tilde{t}\tilde{\mu}} B\inverse e^{A_1 + \Delta\tilde{t}\tilde{\mu}}
+\end{align}
+We immediately see that if $\tilde{\vec{h}} = 0$ the spin sectors yield the same determinant, $\det\dd = \det (1+U)^2$, and we can also pull the $\tilde{\mu}$ exponential through $U$.
+Therefore, when $\tilde{h}=0$ the fermion determinant $\det\dd$ is positive semidefinite.
+
+Moreover, since the $2\times2$ $U$ block matrix is spin-independent, for evaluating the fermion determinant we can always rotate by some $O$ that operates only in spin space and diagonalizes $\tilde{\vec{h}}\cdot\vec{\sigma}$,
+\begin{align}
+	\det \dd 
+	= \det(\one+\UU)
+	&= \det\left(\one + e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}}(U\otimes\one)\right)
+	= \det\left(\one + O\inverse O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (U\otimes\one)\right)
+	\nonumber\\
+	&= \det\left(\one + O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (U\otimes\one)O\inverse \right)
+	= \det\left(\one + O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} O\inverse (U\otimes\one) \right)
+	\nonumber\\
+	&= \det\left(\one + e^{\tilde{\beta} \abs{\tilde{h}} \sigma_3 } (U\otimes\one) \right)
+	\\
+	&= \det\left( 1 + e^{+\tilde{\beta}\abs{\tilde{h}}} U\right)\det\left( 1 + e^{-\tilde{\beta}\abs{\tilde{h}}} U\right)
+	\label{eq:finite-h determinant algorithm}
+\end{align}
+which means that to evaluate the fermion determinant for any $\tilde{h}$ we can always evaluate an equivalent expression with just $\vec{\tilde{h}}\parallel\hat{z}$.
+So, any external magnetic field of the same magnitude causes the same difficulty in sign problem.
+
+\subsection{The Auxiliary-Field Action}
+
+Now we may write a computationally-tractable expression for the partition function as a statistical system of classical auxiliary fields.
+Starting with the bilinear \eqref{trotterization bilinearized} we can now replace the Hilbert space trace with the first-pass fermion determinant \eqref{fermion determinant with 2nt timeslices} and trade that for the determinant of the preferable fermion matrix \eqref{sausage},
+\begin{align}
+	Z=\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t}(\tilde{V} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})} }
+	= 
+	\frac{  
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	~	\left(\det \DD = \det \dd = \det \one + \UU \right)
+	}{ 
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}.
+	\label{eq:computational partition function}
+\end{align}
+When $\vec{h}\neq 0$ we may use single-species sausage $U$ and reuse it for each spin to compute the determinant \eqref{finite-h determinant algorithm}.
+When $\vec{h} = 0$ it is even simpler; as that determinant is a square.
+However, in that case it may prove beneficial to use pseudofermions to stochastically estimate the determinant.
+
+\subsection{Fermion Matrix Eigenvectors}
+
+The advantage of this fermion matrix is the identity matrix appearing on the diagonal, which allows us to easily generate $N_t$ eigenvectors of $\dd$, as follows.
+
+Suppose we have an eigenvector $u_{\alpha' a' t'}$ so that $(\dd+\one)u = \lambda u$ where $\lambda$ is some eigenvalue of $(\dd+\one)$ and $\dd u = (\lambda-1) u$.
+In other words, $u$ is an eigenvector of the off-time-diagonal piece of $\dd$, which makes it an eigenvector of $\dd$ itself, since the only difference is the identity,
+\begin{align}
+    (\dd+\one)u &= \lambda u
+    \nonumber\\
+    (\dd+\one)_{\alpha a t, \alpha' a' t'}u_{\alpha' a' t'} &= \lambda u_{\alpha a t}
+    \nonumber\\
+	(-1)^{[t'=N_t]} \BB\inverse_{aa''}\FF_{t' a''a'}^{\alpha\alpha'} \delta_{t,t'+1} u_{\alpha' a' t'} &= \lambda u_{\alpha a t}
+\end{align}
+If we consider the vector $v$ such that $v_{\alpha a t} = e^{2\pi i t/N_t} u_{\alpha a t}$ then
+\begin{align}
+    [(\dd+\one)v]_{\alpha a t} = 
+	(-1)^{[t'=N_t]} \BB\inverse_{aa''}\FF_{t' a''a'}^{\alpha\alpha'} \delta_{t,t'+1} v_{\alpha' a' t'} &=
+	(-1)^{[t'=N_t]} \BB\inverse_{aa''}\FF_{t' a''a'}^{\alpha\alpha'} \delta_{t,t'+1} e^{2\pi i t' /N_t} u_{\alpha' a' t'} 
+\end{align}
+Since the right-hand side is 0 unless $t=t'+1$ we can replace $t'$ with $t-1$,
+\begin{align}
+    [(\dd+\one)v]_{\alpha a t}
+    &=
+	(-1)^{[t'=N_t]} \BB\inverse_{aa''}\FF_{t' a''a'}^{\alpha\alpha'} \delta_{t,t'+1} e^{2\pi i (t-1) /N_t} u_{\alpha' a' t'} 
+    \nonumber\\
+    &=
+	e^{2\pi i (t-1) /N_t} (-1)^{[t'=N_t]} \BB\inverse_{aa''}\FF_{t' a''a'}^{\alpha\alpha'} \delta_{t,t'+1} u_{\alpha' a' t'} 
+    =
+    e^{2\pi i (t-1) /N_t} [(\dd+\one)u]_{\alpha a t}
+\end{align}
+since the phase now escapes the sum on $t'$.
+But $(\dd+\one)u = \lambda u$ by assumption so
+\begin{align}
+    [(\dd+\one)v]_{\alpha a t}
+    =
+    e^{2\pi i (t-1) /N_t} \lambda u_{\alpha a t}
+    =
+	e^{-2\pi i /N_t} \lambda \left(e^{2\pi i t / N_t} u_{\alpha a t}\right)
+    =
+    e^{-2\pi i /N_t} \lambda v_{\alpha a t}
+\end{align}
+So, for every eigenvector of $\dd$ with eigenvalue $(\lambda-1)$ we can immediately construct another eigenvector with eigenvalue $(\lambda e^{2\pi i \cdot 1/N_t}-1)$, and another with $(\lambda e^{2\pi i\cdot 2/N_t}-1)$ and so on until we repeat with $e^{2\pi i \cdot N_t/N_t}=1$.
+
+This only demonstrates that \emph{if you could find an eigenvector of $\dd$ you'd be in business}.
+So: How can we construct eigenvectors of $\dd$ (or $\dd+\one$)?
+
+Now it helps to think of $u$ as an $N_t$-vector of $2\times\Volume$ vectors and apply $(\dd+\one)$,
+\begin{align}
+    (\dd+\one) u &= \lambda u
+    \nonumber\\
+	\begin{bmatrix}
+			0                               & 0                                 & 0                                 & 0         & \cdots & 0                                    & -\BB\inverse\FF_{N_t}(\tilde{h})
+		\\	+\BB\inverse\FF_{1}(\tilde{h})  & 0                                 & 0                                 & 0         & \cdots & 0                                    & 0
+		\\	0                               & +\BB\inverse\FF_{2}(\tilde{h})    & 0                                 & 0         & \cdots & 0                                    & 0
+		\\	0                               & 0                                 & +\BB\inverse\FF_{3}(\tilde{h})    & 0         & \cdots & 0                                    & 0
+		\\	\vdots                          & \vdots                            & \vdots                            & \vdots    & \ddots & \vdots                               & \vdots
+		\\	0                               & 0                                 & 0                                 & 0         & \cdots & 0                                    & 0
+		\\	0                               & 0                                 & 0                                 & 0         & \cdots & +\BB\inverse\FF_{N_t-1}(\tilde{h})   & 0
+	\end{bmatrix}
+    \begin{bmatrix}
+            \uu_1
+        \\  \uu_2
+        \\  \uu_3
+        \\  \uu_4
+        \\  \vdots
+        \\  \uu_{N_t-1}
+        \\  \uu_{N_t}
+    \end{bmatrix}
+    &=
+    \lambda
+    \begin{bmatrix}
+            \uu_1
+        \\  \uu_2
+        \\  \uu_3
+        \\  \uu_4
+        \\  \vdots
+        \\  \uu_{N_t-1}
+        \\  \uu_{N_t}
+    \end{bmatrix}
+\end{align}
+where each $\uu$ is a $2\times\Volume$ vector.
+This is (obviously) a set of linear equations
+\begin{align*}
+	\lambda \uu_1 &= -\BB\inverse \FF_{N_t} \uu_{N_t}
+    \\
+	\lambda \uu_2 &=+\BB\inverse \FF_{1} \uu_{1}
+    \\
+	\lambda \uu_3 &= +\BB\inverse \FF_{2} \uu_{2}
+    \\
+    \vdots \quad &= \qquad \vdots
+    \\
+    \lambda \uu_{N_t} &= +\BB\inverse \FF_{N_t} \uu_{N_t-1}
+\end{align*}
+If we multiply the first equation by $\lambda$ we can substitute the last equation in on the right-hand side.
+Then multiply the resulting equation by $\lambda$ and substitute the second-to-last equation in, replacing $\uu_{N_t-1}$.
+Take this procedure `all the way around' to find
+\begin{align}
+    \left(-\BB\inverse \FF_{N_t} \BB\inverse \FF_{N_t-1} \BB\inverse \cdots \FF_2 \BB\inverse \FF_1 \right) \uu_1 &= \lambda^{N_t} \uu_1
+\end{align}
+In other words the first $2\times\Volume$ entry of an eigenvector of $\dd+\one$ is an eigenvector of the sausage.
+You can construct the remaining entries by using those linear equations, $\uu_2 = \lambda\inverse\BB\inverse \FF_1 \uu_1$, $\uu_3$ by applying $\lambda\inverse \BB\inverse \FF_2$ to $\uu_2$ and so on.
+One also need not focus on $\uu_1$; just rotate the sausage and find its eigenvectors to get the eigen-$\uu$s of interest.
+
+This is marvelous: if you can reliably construct the block sausage you need only calculate its $2\times\Volume$ eigenvectors and you get the $2\times\Volume\times N_t$ eigenvectors of $\dd$.
+{\bf I have not considered the numerical stability or tractability of this procedure, but presumably if we can construct the sausage in a stable way everything else follows.}
+For a detailed discussion of this operator see \Ref{Wynen:2018ryx} (it is the `exponential $\alpha=0$' operator), where it is shown $\dd$ has an ergodicity problem when the lattice is bipartite (if $\vec{h}=0$).
+\emph{For that reason we always pick a lattice with an odd number of sites on at least one side.}
+
+\subsection{Correlation Functions}
+
+We often want to evaluate not just the partition function but the expectation value of some operators, such as $\expectation{\tilde{n}_\sigma(a)}$ or $\expectation{\tilde{n}_{\sigma}(a)\tilde{n}_{\sigma'}(a')}$ for some spins $\sigma, \sigma'$ and (dimensionless) positions $a, a'$.
+Let us currently restrict our attention to equal-time correlators on the same, first, timeslice, so that numerically we wish to evaluate
+\begin{align}
+	\expectation{\O}
+	=
+	\oneover{Z} \tr{ \left(\prod_{t=1}^{N_t} e^{-\Delta\tilde{t} \tilde{K}} e^{-\Delta\tilde{t}(\tilde{V} -\tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}\right) \O}.
+	\label{eq:expectation}
+\end{align}
+One may of course work with the operators directly and re-perform the Grassmann algebra with the operator inserted.
+However, functional differentiation produces the exact same answer and is easier to perform.
+
+Let us add to the chemical potential and external field terms space- and time-dependent perturbations;
+\begin{align}
+	\mu &\goesto \mu_{t,a} = \mu + \delta \mu_{t,a}
+	&
+	\vec{h} &\goesto \vec{h}_{t,a} = \vec{h} + \delta \vec{h}_{t,a}
+	\\\
+	\tilde{\mu} \tilde{N} & \goesto \sum_a \tilde{\mu}_a \tilde{n}_a = \tilde{\mu}\tilde{N} + \sum_a \delta\tilde{\mu}_a \tilde{n}_a
+	&
+	\tilde{\vec{h}} \cdot \tilde{\vec{S}} & \goesto \sum_a \tilde{\vec{h}}_a\cdot \tilde{\vec{S}}_a = \tilde{\vec{h}}\cdot\tilde{\vec{S}} + \sum_a \delta\tilde{\vec{h}}_a \cdot \tilde{\vec{S}}_a
+	&
+	Z &\goesto Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}});
+	\label{eq:local perturbations}
+\end{align}
+and the perturbation can be different on each timeslice.
+We will functionally differentiate the modified partition function $Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})$ with respect to these perturbations and then set them to zero.
+For example
+\begin{align}
+	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} \log Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\mu=0, \delta\vec{h}=0}
 	&=
-	\tr{e^{-\beta(H-\mu N)}}~.
+	\left.\oneover{Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	\nonumber\\
+	&=
+	\left.\oneover{Z} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	\label{eq:functionally differentiate}\\
+	&=\oneover{Z} \tr{\left(\prod_{t=1}^{N_t}e^{-\Delta\tilde{t} \tilde{K}} e^{-\Delta\tilde{t}(\tilde{V} -\tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}\right) \tilde{n}_a} 
+	= \expectation{\tilde{n}_a}.
 \end{align}
-We begin with the identity
-\begin{equation}
-e^{-\Delta t(H - \mu N)} = e^{-\Delta t/2(V - \mu N)}  e^{-\Delta t K}  e^{-\Delta t/2(V - \mu N)} + \mathcal{O}(\Delta t^3) 
-\end{equation}
-where $H = K + V$ has been decomposed into the kinetic energy $K$ and the interaction term $V$. Therefore,
+where in the last line we specialized to differentiating with respect to a fluctuation on timeslice 1; functionally differentiating with respect to a fluctuation on a different timeslice simply inserts $\tilde{n}_a$ in the middle of the Trotterized product but by time translation invariance (or the cyclicity of the trace) we can bring the trace into a similar form with the operator rightmost.
+
+We may replace $Z$ with our computationally-tractable auxiliary-field formulation in the functional derivative \eqref{functionally differentiate} to get estimators of the desired expectation value.
+Since the perturbations \eqref{local perturbations} are spacetime local they go into the fermion matrix $\dd$ \eqref{fermion matrix} and the sausage $\UU$ \eqref{sausage} straightforwardly by making the promotions from space (and time) constants.
+Inserting the auxiliary-field formulation of $Z$ \eqref{computational partition function} into the derivative one finds
 \begin{align}
-\tr{\prod_{t=1}^{N_t} e^{-\Delta t/2(V - \mu N)}  e^{-\Delta t K}  e^{-\Delta t/2(V - \mu N)}} & =
-\tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N)}  } \\
-& =  \tr{e^{-\beta(H-\mu N)}} + \mathcal{O}(\Delta t^2)
+	\expectation{\tilde{n}_a} &= \left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} \log Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\mu=0, \delta\vec{h}=0}
+	%\nonumber\\
+	=
+	\left.\oneover{Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	%\nonumber\\
+	=
+	\left.\oneover{Z} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	\nonumber\\
+	&=
+	\left.\oneover{Z} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} \frac{  
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	~	\det \left(\one + \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}}) \right)
+	}{ 
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	\nonumber\\
+	&=
+	\oneover{Z} \frac{  
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	~	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}}
+	~	\det \left(\one + \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}}) \right)\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	}{ 
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}
+	\nonumber\\
+	&=
+	\oneover{Z} \frac{  
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	~	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}}
+	~	\det \left(\one + \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}}) \right)\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	}{ 
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}
+	\nonumber\\
+	&=
+	\oneover{Z}  \frac{  
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+		\det \left(\one + \UU \right) \tr{\left(\one + \UU \right)\inverse \left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}}
+	}{ 
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}
 \end{align}
-We now begin a sequence of exact manipulations of the object 
-\begin{equation}
-\tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N)}  }~,
-\end{equation}
-which converges to the desired partition function as $\Delta t \rightarrow 0$ . First note that
-\begin{equation}
-V =  \frac{1}{2} \sum_{xy} \Delta x^4 n_x V_{xy} n_y = \frac{1}{2} \sum_{xy} \tilde{n}_x V_{xy} \tilde{n}_y 
-\end{equation}
-where 
-\begin{equation}
-V_{xy} = \frac{g}{\Delta x^2} \mathcal{S}^0_{x y} + \frac{C_{ \vec{R} }}{\Delta x^2} \mathcal{S}^{ \vec{R} }_{xy}
-\end{equation}
-is a symmetric matrix. If V has purely real $\&$ positive eigenvalues (which imposes conditions on the bare coupling constants), then the following Hubbard-Stratanovich transformation holds:
-\begin{equation}
-\frac{\int d {A} e^{-\frac{1}{2} {A}^T M A + \tilde{n} \cdot (A+\Delta t \mu) } }{ \int d {A} e^{-\frac{1}{2} {A}^T M A  } }
-=
-\text{exp}\Bigg( \frac{1}{2} \sum_{x y}\tilde{n}(x) (M^{-1})_{xy} \tilde{n}(y) + \Delta t \mu \sum_x \tilde{n}(x) \Bigg) 
-\end{equation}
-where $A$ is a vector with $N_x^2$ number of components and where
-\begin{equation}
-\tilde{n}\cdot (A + \Delta t \mu) \equiv \sum_x \tilde{n}(x) ( A(x) +\Delta t \mu)~.
-\end{equation}
-Choosing $(M^{-1})_{xy} = (-\Delta t V)_{xy}$, one then has the following
-\begin{equation}
-\tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{-\Delta t (V - \mu N)}  } = 
-\frac{  
-\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t} ~ \tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{ \tilde{n}\cdot (A_t + \Delta t \mu )} } 
-}{ 
-\int DA ~ e^{-\frac{1}{2} \sum_t {A}_t M {A}_t M A_t}  
-}
-\end{equation}
-where $DA = \prod_{t=1}^{N_t} d A_t $ . Notice that this is an \emph{exact} rewriting of the trotterized partition function. \\
+where $\UU$ with no arguments has the local fluctuations st to zero and we assume that $(1+\UU)$ is invertible so that the derivative of the determinant may be replaced via the identity $\partial \det{A} = \det A ~ \tr{ A\inverse \partial A}$.
 
-\begin{center} 
-\textcolor{red}{Begin aside...} \\
-\end{center}
-Before moving on, let us discuss why we choose to group the chemical potential term with $V$ rather than $K$. The main reason is that both $N$ and $V$ are formed from products of local densities which satisfy
-\begin{equation*}
-[\tilde{n}_{\sigma}(x),\tilde{n}_{\sigma'}(x')] = 0~,
-\end{equation*}
-and therefore functional derivatives are simple:
-\begin{align*}
--\frac{1}{\Delta t} \frac{\partial}{\partial \mu_{\sigma '}(x')}\text{exp}\Big( V - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big) & =  n_{\sigma ' }(x') \text{exp}\Big( V - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big) \\
-& =  \text{exp}\Big( V - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big) n_{\sigma ' }(x')~.
-\end{align*} 
-This property allows us to compute density correlation functions with ease. However, the simple ``pulling down" of operators by derivatives occurs \textbf{only if the argument of the exponential and its derivative commute} \cite{10.2307/4146900}. If we were to instead group the chemical potential terms with $K$, functional derivatives cease to be simple because $[K,n_{\sigma}(x)] \neq 0$: 
-\begin{align*}
--\frac{1}{\Delta t} \frac{\partial}{\partial \mu_{\sigma '}(x')}\text{exp}\Big( K - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big) & \neq n_{\sigma'}(x') \text{exp}\Big( K - \Delta t \sum_{\sigma x}\mu_{\sigma}(x) n_{\sigma}(x)\Big)~.
-\end{align*}
-\begin{center}
-\textcolor{red}{...end aside.} \\
-\end{center} 
-
-Let us continue our quest. Using fermion coherent states, we will now convert the Hilbert space trace into a determinant . One has (using the conventions of Munster Ch. 4)
-\begin{align*}
-& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{ \tilde{n}\cdot (A_t + \Delta t \mu) } }  
-= 
-\int{} \prod_{t=1}^{2N_t} \Bigg\{ \prod_{x, \sigma} d \eta^{\dagger}_{\sigma}(x,t) d\eta_{\sigma}(x,t) \Bigg\} ~ \text{exp}\Big(- \sum_{t=1}^{2N_t}\sum_{x \sigma} \eta^{\dagger}_{\sigma}(x,t) \eta_{\sigma}(x,t)\Big)~ \times \\
-& \langle -\eta_1 | e^{-\Delta t K} | \eta_{2 N_t} \rangle \, \langle \eta_{2 N_t} | e^{ \tilde{n} \cdot (A_{N_t} + \Delta t \mu)} | \eta_{2 N_t -1} \rangle ....
-\langle \eta_5 | e^{-\Delta t K} | \eta_4 \rangle \, \langle \eta_4 | e^{ \tilde{n} \cdot (A_2 +\Delta t \mu)} | \eta_3 \rangle
-\langle \eta_3 | e^{-\Delta t K } | \eta_2 \rangle \, \langle \eta_2 | e^{ \tilde{n} \cdot (A_1 + \Delta t \mu)} | \eta_1 \rangle~,
-\end{align*}
-where 
-\begin{equation*}
-| \eta_t \rangle = \text{exp}\Big( \sum_{x \sigma} \tilde{\psi}^{\dagger}_{\sigma}(x) \eta_{\sigma}(x,t) \Big) | 0 \rangle
-\end{equation*}
-is a coherent state on a single timeslice. This expression above is admittedly horrific; to proceed we use Eq. 4.33 of Munster, which states
-\begin{equation}
-\langle \eta | e^{\sum_{ij} a^{\dagger}_j A_{ji} a_i} | \eta' \rangle = \text{exp}\Bigg[ \sum_{i j} \eta^{\dagger}_j (e^A)_{ji} \eta'_i \Bigg]~.
-\end{equation}
-Let us very carefully evaluate $\langle \eta | e^{-\Delta t K} | \eta' \rangle$ and $\langle \eta | e^{\tilde{n} \cdot(A_t + \Delta t \mu)} | \eta' \rangle$, keeping careful track of the spin degree of freedom. 
-\begin{align*}
-\langle \eta | e^{-\Delta t K} | \eta' \rangle 
-= 
-\langle \eta | \text{exp}\Bigg(-\Delta t \sum_{x y \sigma} \tilde{\psi}^{\dagger}_{\sigma}(x) k_{x y} \tilde{\psi}_{\sigma}(y) \Bigg) | \eta' \rangle
-& =
-\langle \eta | \text{exp}\Bigg( 
-\begin{bmatrix} \tilde{\Psi}^{\dagger}_{1} &  \tilde{\Psi}^{\dagger}_{2}  \end{bmatrix} 
-\begin{bmatrix}
--\Delta t k & 0 \\
-0 & -\Delta t k 
-\end{bmatrix} 
-\begin{bmatrix} \tilde{\Psi}_{1} \\  \tilde{\Psi}_{2}  \end{bmatrix} \Bigg)
-| \eta' \rangle \\
-& = 
-\text{exp}\Bigg( 
-\begin{bmatrix} {\eta}^{\dagger}_{1} &  {\eta}^{\dagger}_{2}  \end{bmatrix} 
-\begin{bmatrix}
-e^{-\Delta t k} & 0 \\
-0 & e^{-\Delta t k}
-\end{bmatrix} 
-\begin{bmatrix} {\eta}_{1}' \\  {\eta}_{2}'  \end{bmatrix}  \Bigg) \\
-& = 
-\text{exp}\Bigg( 
-\sum_{xy}\eta^{\dagger}_1(x) e^{-\Delta t k}_{xy} \eta_1'(y) + \sum_{xy}\eta^{\dagger}_2(x) e^{-\Delta t k}_{xy} \eta_2'(y) \Bigg)
-\end{align*}
-where we defined $\tilde{\Psi}_{\sigma}$, which is a vector with $N_x^2$ components containing all fermion fields of spin $\sigma$ on a single timeslice and where
-\begin{equation}
-\big(k\big)_{xy} = \frac{1}{N_x^2} \sum_{\tilde{p}} \frac{\tilde{p}^2}{2 M \Delta x^2} e^{-i \tilde{p} (\tilde{x}-\tilde{y})}
-\end{equation}
-is the matrix exponentiated in $e^{-\Delta t k}$. By an analogous sequence of manipulations, one also finds
-\begin{align*}
-\langle \eta | e^{ \tilde{n} \cdot (A_t + \Delta t \mu)} | \eta' \rangle 
-& = 
-\text{exp}\Bigg( 
-\sum_{xy}\eta^{\dagger}_1(x) e^{A_t + \Delta t \mu}_{xy} \eta_1'(y) + \sum_{xy}\eta^{\dagger}_2(x) e^{A_t + \Delta t \mu}_{xy} \eta_2'(y) \Bigg)
-\end{align*}
-where
-\begin{equation}
-e^{A_t+ \Delta t \mu}_{xy} = \delta_{xy} e^{A(x,t) + \Delta t \mu}~.
-\end{equation}
-
-
-One therefore has
-\begin{align*}
-& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{ \tilde{n}\cdot (A_t + \Delta t \mu)} }  
-=
-\int{} D\eta^{\dagger} D\eta ~ \text{exp}\Big(- \sum_{t=1}^{2N_t}\sum_{x \sigma} \eta^{\dagger}_{\sigma}(x,t) \eta_{\sigma}(x,t)\Big)~ \times \\
-&
-\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,2N_t + 1) e^{-\Delta t k }_{xy} \eta_{\sigma}(y,2 N_t)\Bigg] 
-~ 
-\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,2N_t) e^{A_{N_t} + \Delta t \mu}_{xy} \eta_{\sigma}(y,2N_t - 1) \Bigg]  \\
-& ... \\
-& 
-\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,5) e^{-\Delta t k }_{xy} \eta_{\sigma}(y,4)\Bigg] 
-~ 
-\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,4) e^{A_2 + \Delta t \mu}_{xy} \eta_{\sigma}(y,3) \Bigg]  \\
-& 
-\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,3) e^{-\Delta t k }_{xy} \eta_{\sigma}(y,2)\Bigg] 
-~ 
-\text{exp}\Bigg[ \sum_{xy\sigma} \eta^{\dagger}_{\sigma}(x,2) e^{A_1 + \Delta t \mu}_{xy} \eta_{\sigma}(y,1) \Bigg] 
-\end{align*}
-where $\eta_{2 N_t + 1} \equiv - \eta_1$ and where we use the shorthand
-\begin{equation}
-D\eta^{\dagger} D\eta \equiv \prod_{t=1}^{2N_t} \Bigg\{ \prod_{x, \sigma} d \eta^{\dagger}_{\sigma}(x,t) d\eta_{\sigma}(x,t) \Bigg\}
-\end{equation}
-
- Ok, we are almost there. The next step is to choose how we're going to organize Grassmann variables. I will take the following convention:
-\begin{equation*}
-\eta = \begin{bmatrix} \eta_1 \\ \eta_2 \end{bmatrix}
-\end{equation*} 
-where $\eta_1, \eta_2$ are lists of Grassmann variables of length space $\times$ time. In this arrangement, spin is the ``slowest" variable. Then, in the equation above, we can gather all terms involving spin 1 into one sum, and all the terms with spin 2 into another sum:
-\begin{align*}
-& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{ \tilde{n}\cdot (A_t + \Delta t \mu)} }  
-= \\
-& \int{}  D\eta^{\dagger} D\eta ~ \text{exp}\Big(- \big[ \sum_{x t x' t'} \eta_1^{\dagger}(x,t) D^{11}_{(x,t),(x't')} \eta_1(x',t') + \sum_{x t x' t'} \eta_2^{\dagger}(x,t) D^{22}_{(x,t),(x't')} \eta_2(x',t')  \big]  \Big) = \\
-& \int{}  D\eta^{\dagger} D\eta~ 
-\text{exp}\Big(-
-\begin{bmatrix}
-\eta_1^{\dagger} & \eta_2^{\dagger}
-\end{bmatrix}
-\begin{bmatrix}
-D^{11} & 0 \\ 
-0 & D^{22}
-\end{bmatrix}
-\begin{bmatrix}
-\eta_1^{\dagger} \\ \eta_2^{\dagger}
-\end{bmatrix}
- \Big) = \text{det}
- \begin{bmatrix}
-D^{11} & 0 \\ 
-0 & D^{22}
-\end{bmatrix}~,
-\end{align*}
-where both $D^{11}$ and $D^{22}$ are square matrices of side-length spacetime. In this case where we have only coupled to $-\mu N$, $D^{11} = D^{22} = D$ where
-\begin{equation}
-D = \begin{bmatrix} 
-\mathbf{1} & 0 & 0 & 0 & 0 & ... & 0 & 0 &  B^{-1} \\
--e^{A_1+\Delta t \mu} & \mathbf{1} & 0 & 0 & 0 & ... & 0 & 0 & 0 \\
-0 & -B^{-1} & \mathbf{1} & 0 & 0 & ... & 0 & 0 & 0 \\
-0 & 0 & -e^{A_2+\Delta t \mu} & \mathbf{1} & 0 & ... & 0 & 0 & 0 \\
-0 & 0 & 0 & -B^{-1} & \mathbf{1} & ... & 0 & 0 & 0 \\
-. & . & . & . & . & ... & . & . & . \\
-. & . & . & . & . & ... & . & . & . \\
-. & . & . & . & . & ... & . & . & . \\
-0 & 0 & 0 & 0 & 0 & ... &  -B^{-1} & \mathbf{1} & 0 \\
-0 & 0 & 0 & 0 & 0 & ... & 0 & -e^{A_{N_t}+\Delta t \mu} & \mathbf{1} \\
-\end{bmatrix}
-\end{equation}
-and $B^{-1} = e^{-\Delta t k}$. Notice that $D$ is a block matrix with $2N_t$ blocks per side. Here is another block matrix, but with only $N_t$ blocks per side,
-\begin{equation}
-D' = \begin{bmatrix}
-B & 0 & 0 & 0 & ... & 0 & e^{A_{N_t}+ \Delta t \mu} \\
--e^{A_1+ \Delta t \mu} & B & 0 & 0 & ... & 0 & 0 \\
-0 & -e^{A_2+ \Delta t \mu} & B & 0 & ... & 0 & 0 \\
-0 & 0 & -e^{A_3+ \Delta t \mu} & B & ... & 0 & 0 \\
-. & . & . & . & ... & . & . \\
-. & . & . & . & ... & . & . \\
-. & . & . & . & ... & . & . \\
-0 & 0 & 0 & 0 & ... & B & 0 \\
-0 & 0 & 0 & 0 & ... & -e^{A_{N_t-1}+ \Delta t \mu} & B \\
-\end{bmatrix}
-\end{equation} 
-which satisfies
-\begin{equation}
-\text{det}\, D = \frac{ \text{det}\, D' }{ \text{det}\, B^{N_t} }
-\end{equation}
-Since the two matrices differ by a constant factor, either may be used in simulations; we use the latter. Therefore, one finally has
-\begin{align*}
-& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V - \mu N)}  } = \Bigg( {\text{det} B}^{2N_t} {\int DA ~ e^{-\frac{1}{2} \sum_t {A}(x,t) M_{xy} A(y,t)}} \Bigg)^{-1} \times \\
-&
-\int DA D\eta^{\dagger} D \eta ~ \text{exp}\Bigg[-\Big( \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t \sigma}\eta_{\sigma}^{\dagger}(x,t) B_{x y} \eta_{\sigma}(y,t) - \sum_{x t \sigma}\eta_{\sigma}^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta_{\sigma}(x,t) \Bigg] 
-~.
-\end{align*}
-Therefore, the action for this theory is 
-\begin{equation}
-S =  \frac{1}{2} \sum_{x y t} A(x,t) M_{xy} A(y,t) + \sum_{x y t \sigma}\eta_{\sigma}^{\dagger}(x,t) B_{x y} \eta_{\sigma}(y,t) - \sum_{x t \sigma}\eta_{\sigma}^{\dagger}(x,t+1) e^{A(x,t) + \Delta t \mu} \eta_{\sigma}(x,t)
-\end{equation}
-
-
-\subsection{Spin Chemical Potentials}
-To explore the spin polarized system, we have to couple to a spin chemical potential. In this section we will work out the corresponding changes to the fermion matrix. We wish to examine
-\begin{equation*}
-H - \mu N - h_i S_i, ~~~ S_i = \frac{1}{2} \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x)
-\end{equation*}
-where $\sigma_i$ are the Pauli matrices. In this case the trotterized partition function is 
-\begin{equation}
-\tr{\prod_{t=1}^{N_t} e^{-\Delta t K }  e^{-\Delta t (V -\mu N-h_i S_i)}  }~,
-\end{equation}
-and the new Hubbard-Stratanovich transformation is 
-\begin{align*}
-& \frac{\int d {A} e^{-\frac{1}{2} {A}^T M A + \tilde{n} \cdot (A+\Delta t \mu) + \frac{1}{2}  \Delta t h_i \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x)  } }{ \int d {A} e^{-\frac{1}{2} {A}^T M A  } } = \\
-& \text{exp}\Bigg( \frac{1}{2} \sum_{x y}\tilde{n}(x) (M^{-1})_{xy} \tilde{n}(y) + \Delta t \mu \sum_x \tilde{n}(x) + \frac{1}{2}  \Delta t h_i \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x) \Bigg) ~.
-\end{align*}
-\textcolor{red}{Is this even right if the operators don't commute??} This new HS transformation looks pretty ugly but it's really not that bad. The only element of the story that changes is the matrix element
-\begin{align*}
-& \langle \eta | e^{ \tilde{n} \cdot (A+\Delta t \mu) + \frac{1}{2}  \Delta t h_i \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x) } | \eta' \rangle = \\
-& \langle \eta | e^{ \sum_x n(x) (A(x)+\Delta t \mu) + \frac{1}{2}  \Delta t h_i \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_i)_{\alpha \beta} \tilde{\psi}_{\beta}(x) } | \eta' \rangle = \\ 
-& =
-\langle \eta | \text{exp}\Bigg( 
-\begin{bmatrix} \tilde{\Psi}^{\dagger}_{1} &  \tilde{\Psi}^{\dagger}_{2}  \end{bmatrix} 
-\begin{bmatrix}
-A + \Delta t \mu + \frac{1}{2}\Delta t h_3 & \frac{1}{2}(h_1 - i h_2) \\
-\frac{1}{2}(h_1 + i h_2) & A + \Delta t \mu - \frac{1}{2}\Delta t h_3 
-\end{bmatrix} 
-\begin{bmatrix} \tilde{\Psi}_{1} \\  \tilde{\Psi}_{2}  \end{bmatrix} \Bigg)
-| \eta' \rangle \\
-& =
-\text{exp}\Bigg( 
-\begin{bmatrix} \eta^{\dagger}_{1} &  \eta^{\dagger}_{2}  \end{bmatrix} 
-e^{\begin{bmatrix}
-A + \Delta t \mu + \frac{1}{2}\Delta t h_3 & \frac{1}{2}(h_1 - i h_2) \\
-\frac{1}{2}(h_1 + i h_2) & A + \Delta t \mu - \frac{1}{2}\Delta t h_3 
-\end{bmatrix}}
-\begin{bmatrix} \eta_{1} \\  \eta_{2}  \end{bmatrix} \Bigg) .
-\end{align*}
-Here I've abused notation a little by defining the matrix $(A)_{xy} = \delta_{xy} A(x)$. Also, all additional matrices appearing in the equation above are proportional to the identity matrix in space. Anyway, this is where shit gets fucked up: the exponential matrix
-\begin{equation*}
-e^{\begin{bmatrix}
-A + \Delta t \mu + \frac{1}{2}\Delta t h_3 & \frac{1}{2}(h_1 - i h_2) \\
-\frac{1}{2}(h_1 + i h_2) & A + \Delta t \mu - \frac{1}{2}\Delta t h_3 
-\end{bmatrix}}
-\end{equation*}
-is totally non-trivial to unpack.
-
-If we only couple to $S_3$ then the answer remains simple 
-\begin{align*}
-\langle \eta | e^{  \tilde{n} \cdot (A+\Delta t \mu) + \frac{1}{2}  \Delta t h_3 \sum_x \tilde{\psi}_{\alpha}(x) (\sigma_3)_{\alpha \beta} \tilde{\psi}_{\beta}(x)  } | \eta' \rangle 
-& = 
-\text{exp}\Bigg( 
-\sum_{xy}\eta^{\dagger}_1(x) e^{A_t + \Delta t (\mu + h_3 / 2)}_{xy} \eta_1'(y) + \sum_{xy}\eta^{\dagger}_2(x) e^{A_t + \Delta t (\mu - h_3 / 2)}_{xy} \eta_2'(y) \Bigg)~,
-\end{align*}
-and one finds the following in the spin-doped theory:
-\begin{align*}
-& \tr{\prod_{t=1}^{N_t} e^{-\Delta t K}  e^{ \tilde{n}\cdot (A_t + \Delta t \mu) + \Delta t h_3 S_3} }  
-= \\
-& \int{}  D\eta^{\dagger} D\eta~ 
-\text{exp}\Big(-
-\begin{bmatrix}
-\eta_1^{\dagger} & \eta_2^{\dagger}
-\end{bmatrix}
-\begin{bmatrix}
-\mathcal{D}^{11} & 0 \\ 
-0 & \mathcal{D}^{22}
-\end{bmatrix}
-\begin{bmatrix}
-\eta_1^{\dagger} \\ \eta_2^{\dagger}
-\end{bmatrix}
- \Big) = \text{det}
- \begin{bmatrix}
-\mathcal{D}^{11} & 0 \\ 
-0 & \mathcal{D}^{22}
-\end{bmatrix}~,
-\end{align*}
-where $\mathcal{D}^{11} = e^{\Delta t h_3 / 2 }D^{11}$ and $\mathcal{D}^{22} = e^{-\Delta t h_3 / 2 }D^{22}$ .
+Now we need to know the derivatives of the ingredients of the sausage, evaluated at 0 fluctuation.
+Since $\BB$ only changes with the hopping parameter or with the lattice geometry, we focus on derivates of $\FF$.
+\begin{align}
+	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \tilde{\mu}_{t,a}} \FF_{t'} &= \delta_{tt'} \FF_{t'} \PP_a
+\end{align}
+where $\PP_a$ is a projector to site $a$.
+This derivative is simple because $\tilde{\mu}$ appears inside the matrix exponential $\FF$ \eqref{FF} coupled to the (spin) identity.
 
 
 \subsection{Local Chemical Potentials $\&$ Correlation Functions}
