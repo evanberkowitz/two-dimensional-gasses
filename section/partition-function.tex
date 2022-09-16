@@ -347,7 +347,7 @@ Using the Shur complement, one has
 	\label{eq:sausage}
 \end{align}
 The sausage $\UU$ is (2 spins)$\times \Volume$ on a side.
-Note that we can separate $\FF_t = e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}$ into a space-dependent spin-independent part $e^{A_t}$ and a space-independent spin-dependent part $\exp( \Delta\tilde{t}(\tilde{\mu} \one + \tilde{\vec{h}} \cdot \vec{\sigma})$ (though the $\mu$ pieces is spin independent!).
+Note that we can separate $\FF_t = e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}$ into a space-dependent spin-independent part $e^{A_t}$ and a space-independent spin-dependent part $\exp( \Delta\tilde{t}(\tilde{\mu} \one + \tilde{\vec{h}} \cdot \vec{\sigma}))$ (though the $\mu$ pieces is spin independent!).
 We can collect the space-independent part, pulling them through the sausage,
 \begin{align}
 	\UU 
@@ -586,11 +586,26 @@ where $\UU$ with no arguments has the local fluctuations st to zero and we assum
 
 Now we need to know the derivatives of the ingredients of the sausage, evaluated at 0 fluctuation.
 Since $\BB$ only changes with the hopping parameter or with the lattice geometry, we focus on derivatives of $\FF$.
+The simplest is
 \begin{align}
 	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} \FF_{t'} &= \delta_{tt'} \FF_{t'} \PP_a
+	&
+	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{1,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	&= \UU \PP_a
 \end{align}
-where $\PP_a$ is a projector to site $a$.
-This derivative is simple because $\tilde{\mu}$ appears inside the matrix exponential $\FF$ \eqref{FF} coupled to the (spin) identity.
+where $\PP_a$ is a spin-independent projector to site $a$.
+This derivative is simple because $\tilde{\mu}$ appears inside the matrix exponential $\FF$ \eqref{FF} coupled to the (spin) identity, and the identity commutes with all the Pauli matrices.
+In the generic case, where $\vec{h}\neq0$ the functional derivatives of $\FF$ with respect to the external field is not simple.
+When $\vec{h}=0$ we have the simplification
+\begin{align}
+	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^i_{t,a}} \FF_{t'} &= \delta_{tt'} \FF_{t'} \sigma^i \PP_a
+	&
+	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^i_{1,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	&= \UU \sigma^i \PP_a = \UU \PP_a \sigma^i 
+	&
+	(\vec{h} &= 0)
+\end{align}
+
 
 
 \subsection{Local Chemical Potentials $\&$ Correlation Functions}
