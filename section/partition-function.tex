@@ -602,16 +602,43 @@ The simplest is
 \end{align}
 where $\PP_a$ is a spin-independent projector to site $a$.
 This derivative is simple because $\tilde{\mu}$ appears inside the matrix exponential $\FF$ \eqref{FF} coupled to the (spin) identity, and the identity commutes with all the Pauli matrices.
-In the generic case, where $\vec{h}\neq0$ the functional derivatives of $\FF$ with respect to the external field is not simple.
-When $\vec{h}=0$ we have the simplification
+In the generic case, where $\vec{h}\neq0$ the functional derivatives of $\FF$ with respect to the external field is not simple,
+\begin{align}
+	\left.\oneover{\Delta\tilde{t}}\frac{\partial}{\partial \delta \tilde{h}^i_{t,a}} \FF_{t'}\right|_{\delta\tilde{\mu} = 0, \delta \tilde{h}=0}
+	&=
+	\delta_{tt'}\PP_a e^{A_t + \Delta\tilde{t}\tilde{\mu}}\left(
+		\left[\frac{\tilde{h}^i_{t,a}}{\abs{\tilde{h}}} + \frac{\sigma^i/\Delta\tilde{t}}{\abs{\tilde{h}}}\right]\sinh \Delta\tilde{t}\abs{\tilde{h}}
+		+
+		\tilde{\vec{h}}\cdot\vec{\sigma} \left[
+				\frac{\tilde{h^i}}{\abs{\tilde{h}}^2} \cosh \Delta\tilde{t} \abs{\tilde{h}}
+			-	\frac{\tilde{h^i}}{\Delta\tilde{t} \abs{\tilde{h}}^{3}} \sinh \Delta\tilde{t} \abs{\tilde{h}}
+		\right]
+	\right).
+	\label{eq:dF}
+\end{align}
+When $\vec{h}=0$ we have the simplification (by taking a careful limit)
 \begin{align}
 	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^i_{t,a}} \FF_{t'} &= \delta_{tt'} \FF_{t'} \sigma^i \PP_a
 	&
 	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^i_{1,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
 	&= \UU \sigma^i \PP_a = \UU \PP_a \sigma^i 
 	&
-	(\vec{h} &= 0)
+	(\vec{h} &\goesto 0)
+	\label{eq:dFdh with h=0}
 \end{align}
+To be able to cleanly write the derivative of $\UU$ in the generic case we multiply \eqref{dF} by the the identity $\FF\FF\inverse$.
+After much massaging and cancellation one finds, suppressing the (common) argument of sinh and cosh $\Delta\tilde{t}\abs{\tilde{h}}$ for brevity,
+\begin{align}
+	\left.\oneover{\Delta\tilde{t}}\frac{\partial}{\partial \delta \tilde{h}^i_{t,a}} \FF_{t'}\right|_{\delta\tilde{\mu} = 0, \delta \tilde{h}=0}
+	&= \delta_{tt'} \FF_{t'} \PP_a \left[
+				\frac{\sinh \cosh}{\Delta\tilde{t}\abs{\tilde{h}}} \delta_{ik}
+			+	\left(1 - \frac{\sinh \cosh}{\Delta\tilde{t}\abs{\tilde{h}}}\right) \frac{\tilde{h}_i\tilde{h}_k}{\abs{\tilde{h}}^2}
+			+	\frac{i \sinh^2}{\Delta\tilde{t} \abs{h}} \epsilon_{ijk} \frac{\tilde{h}_j}{\abs{\tilde{h}}}
+		\right]\sigma_k
+	\label{eq:dFdh factor}
+\end{align}
+so that if we differentiate $\UU$ with respect to a fluctuation of $\tilde{h}$ on timeslice 1 we can just append everything after $\FF_t$ to the right of $\UU$; on other timeslices we make the similar insertion to the right of $\FF_t$.
+From the more explicit form \eqref{dFdh factor} we can see how the $\tilde{h}=0$ limit \eqref{dFdh with h=0} emerges; the latter two terms vanish while the first term simplifies to $\sigma_i$.
 
 
 
