@@ -347,7 +347,14 @@ Using the Shur complement, one has
 	\label{eq:sausage}
 \end{align}
 The sausage $\UU$ is (2 spins)$\times \Volume$ on a side.
-Note that we can separate $\FF_t = e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}$ into a space-dependent spin-independent part $e^{A_t}$ and a space-independent spin-dependent part $\exp( \Delta\tilde{t}(\tilde{\mu} \one + \tilde{\vec{h}} \cdot \vec{\sigma}))$ (though the $\mu$ pieces is spin independent!).
+Note that we can separate
+\begin{align} 
+	\FF_t 
+	= e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}
+	= e^{A_t + \Delta\tilde{t}\tilde{\mu}}\left( \cosh \Delta\tilde{t} \abs{\tilde{h}} \one + \frac{\tilde{\vec{h}}\cdot \sigma}{\abs{\tilde{h}}}\sinh \Delta\tilde{t} \abs{\tilde{h}} \right)
+	\label{eq:FF explicitly}
+\end{align}
+into a space-dependent part $e^{A_t}$, a spin-dependent part $\exp( \Delta\tilde{t}\tilde{\vec{h}} \cdot \vec{\sigma})$ and the spin- and space- independent $\mu$ piece.
 We can collect the space-independent part, pulling them through the sausage,
 \begin{align}
 	\UU 
