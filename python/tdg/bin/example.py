@@ -8,11 +8,7 @@ def section(s):
 
 section("Pauli matrices")
 print("The four Pauli matrices are")
-print(f"{tdg.PauliMatrix0=}")
-print(f"{tdg.PauliMatrix1=}")
-print(f"{tdg.PauliMatrix2=}")
-print(f"{tdg.PauliMatrix3=}")
-print(f"There is an array of PauliMatrices which has shape {tdg.PauliMatrices.shape}")
+print(tdg.PauliMatrix)
 
 section("spatial lattice")
 
