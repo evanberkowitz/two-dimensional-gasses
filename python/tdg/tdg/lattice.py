@@ -100,10 +100,10 @@ class Lattice:
         return linearized.reshape(*np.tile(self.dims, len(linearized.shape)))
 
     def vector(self, dtype=complex):
-        return self.tensor(1, dtype)
+        return self.tensor(1, dtype=dtype)
 
     def matrix(self, dtype=complex):
-        return self.tensor_linearized(self.tensor(2, dtype))
+        return self.tensor_linearized(self.tensor(2, dtype=dtype))
 
     def fft(self, vector, axes=(-2,-1), norm='ortho'):
         return np.fft.fft2(vector, axes=axes, norm=norm)
