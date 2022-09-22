@@ -6,6 +6,13 @@ import tdg
 def section(s):
     print(f"\n\n####\n#### {s.upper()}\n####\n")
 
+section("Pauli matrices")
+print("The four Pauli matrices are")
+print(f"{tdg.PauliMatrix0=}")
+print(f"{tdg.PauliMatrix1=}")
+print(f"{tdg.PauliMatrix2=}")
+print(f"{tdg.PauliMatrix3=}")
+print(f"There is an array of PauliMatrices which has shape {tdg.PauliMatrices.shape}")
 
 section("spatial lattice")
 
@@ -39,7 +46,7 @@ section("spacetime")
 
 nt   = 32
 spacetime = tdg.Spacetime(nt, lattice)
-v = spacetime.vector()
+v = spacetime.vector(complex)
 
 print(f"The spacetime lattice is {spacetime}.")
 print(f"Spacetime vectors have shape {v.shape}.")
