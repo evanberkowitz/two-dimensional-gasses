@@ -117,7 +117,7 @@ class Lattice:
         # Creates an (nx, ny, nx, ny) adjacency matrix, where the
         # first two indices form the "row" and the
         # second two indices form the "column"
-        A = self.tensor(2)
+        A = np.zeros(np.tile(self.dims, 2).tolist())
         for i,x in enumerate(self.x):
             for k,z in enumerate(self.x):
                 if np.abs(self.mod_x(x-z)) not in [0,1]:
