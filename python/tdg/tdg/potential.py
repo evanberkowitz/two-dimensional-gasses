@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from functools import cached_property
-import numpy as np
+import torch
 
 class Potential:
 
@@ -17,20 +17,26 @@ class Potential:
 
     @cached_property
     def spatial(self):
-        return np.sum([s.spatial(self.Lattice) for s in self.spheres], axis=0)
+        return torch.sum(torch.stack([s.spatial(self.Lattice) for s in self.spheres]), axis=0)
 
     @cached_property
     def inverse(self):
-        return self.Lattice.linearized_tensor(np.linalg.inv(self.Lattice.tensor_linearized(self.spatial)))
+        return self.Lattice.linearized_tensor(torch.linalg.inv(self.Lattice.tensor_linearized(self.spatial)))
 
     @cached_property
     def eigvals(self):
-        return np.linalg.eigvals(self.Lattice.tensor_linearized(self.spatial))
+        e = torch.linalg.eigvals(self.Lattice.tensor_linearized(self.spatial))
+        if (e.imag != 0).all():
+            raise TypeError(f"{self} yields imaginary eigenvalues.")
+        if (e.real <= 0).any():
+            raise ValueError(f"{self} yields negative eigenvalues.")
+        #return e.real ?
+        return e
 
     @cached_property
     def C0(self):
         c0 = 0
         for s in self.spheres:
-            if( (np.array([0,0]) == s.r).all() ):
+            if( torch.tensor([0,0]) == s.r ):
                 c0 += s.c
         return c0

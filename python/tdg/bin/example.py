@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import numpy as np
+import torch
+torch.set_default_dtype(torch.float64)
 import tdg
 
 def section(s):
@@ -31,10 +33,12 @@ print(f" lattice.Y\n{lattice.Y}")
 x[0,0] = 1
 k = lattice.fft(x)
 print(f"The fourier transform of\n{x}\nis\n{k};\ninverting the fourier transform gives\n{lattice.ifft(k)}.")
-if( np.abs( np.sum(np.conj(k) * k) - np.sum(np.conj(x) * x) ) < 1e-14):
+
+fft_norm=torch.abs( torch.sum(torch.conj(k) * k) - torch.sum(torch.conj(x) * x) )
+if( fft_norm < 1e-14):
     print(f"The fourier transform is unitary.")
 else:
-    print(f"You should think hard about the normalization of the fourier transform.")
+    print(f"You should think hard about the normalization of the fourier transform; numerically it was {fft_norm}.")
 
 
 
@@ -42,7 +46,7 @@ section("spacetime")
 
 nt   = 32
 spacetime = tdg.Spacetime(nt, lattice)
-v = spacetime.vector(complex)
+v = spacetime.vector()
 
 print(f"The spacetime lattice is {spacetime}.")
 print(f"Spacetime vectors have shape {v.shape}.")
@@ -72,18 +76,18 @@ print(f"For example, {V=}.")
 print(f"It has a spatial representation with shape {V.spatial.shape}.")
 print(f"The inverse of the spatial representation has shape {V.inverse.shape}.")
 
-one = lattice.tensor_linearized(np.einsum("abcd,cdef->abef", V.spatial, V.inverse))
+one = lattice.tensor_linearized(torch.einsum("abcd,cdef->abef", V.spatial, V.inverse))
 zero = one - np.eye(lattice.sites)
 if( (np.abs(zero) < 1e-14).all() ):
     print("We can check that V.spatial and V.inverse are floating-point inverses.")
 else:
     print("However, V.spatial and V.inverse fail to be inverses of one another.")
 
-print(f"The eigenvalues of V are\n{V.eigvals}.")
-print(f"The spatial representation, inverse, and eigenvalues are cached, so it's cheap to reuse them.")
-if( (V.eigvals >= 0).all() ):
+try:
+    print(f"The eigenvalues of V are\n{V.eigvals}.")
     print("All the eigenvalues of V are positive, so this potential is amenable to our Hubbard-Stratonovich transformation.")
-else:
+except:
     print("Not all the eigenvalues of V are positive, so the formal Hubbard-Stratonovich transformation is invalid for this potential.")
+print(f"The spatial representation, inverse, and eigenvalues are cached, so it's cheap to reuse them.")
 print(f"Since the contact potential needs to be treated specially, the potential provides a way to get the C0 coefficient {V.C0=}")
 

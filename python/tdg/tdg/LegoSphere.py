@@ -30,7 +30,7 @@ class LegoSphere:
         return str(self)
 
     def spatial(self, Lattice):
-        S = Lattice.tensor(2, dtype=np.float64)
+        S = Lattice.tensor(2)
 
         for i,x in enumerate(Lattice.x):
             for j,y in enumerate(Lattice.y):

@@ -2,6 +2,7 @@
 
 from functools import cached_property
 import numpy as np
+import torch
 
 class Lattice:
 
@@ -55,7 +56,7 @@ class Lattice:
         self.coordinate_lookup= {tuple(x):i for i,x in enumerate(self.coordinates)}
 
     def __str__(self):
-        return f'Lattice({self.nx},{self.ny})'
+        return f'SquareLattice({self.nx},{self.ny})'
 
     def __repr__(self):
         return str(self)
@@ -86,11 +87,11 @@ class Lattice:
         d = self.mod(np.array(a)-np.array(b))
         return np.dot(d,d)
 
-    def tensor(self, n=2, dtype=complex):
+    def tensor(self, n=2):
         # can do matrix-vector via
         #   np.einsum('ijab,ab',matrix,vector)
         # to get a new vector (with indices ij).
-        return np.zeros(np.tile(self.dims, n), dtype=dtype)
+        return torch.zeros(np.tile(self.dims, n).tolist())
 
     def tensor_linearized(self, tensor):
         repeats = len(tensor.shape)
@@ -99,24 +100,24 @@ class Lattice:
     def linearized_tensor(self, linearized):
         return linearized.reshape(*np.tile(self.dims, len(linearized.shape)))
 
-    def vector(self, dtype=complex):
-        return self.tensor(1, dtype=dtype)
+    def vector(self):
+        return self.tensor(1)
 
-    def matrix(self, dtype=complex):
-        return self.tensor_linearized(self.tensor(2, dtype=dtype))
+    def matrix(self):
+        return self.tensor_linearized(self.tensor(2))
 
     def fft(self, vector, axes=(-2,-1), norm='ortho'):
-        return np.fft.fft2(vector, axes=axes, norm=norm)
+        return torch.fft.fft2(vector, dim=axes, norm=norm)
 
     def ifft(self, vector, axes=(-2,-1), norm='ortho'):
-        return np.fft.ifft2(vector, axes=axes, norm=norm)
+        return torch.fft.ifft2(vector, dim=axes, norm=norm)
 
     @cached_property
     def adjacency_tensor(self):
         # Creates an (nx, ny, nx, ny) adjacency matrix, where the
         # first two indices form the "row" and the
         # second two indices form the "column"
-        A = self.tensor(2, dtype=np.int64)
+        A = self.tensor(2)
         for i,x in enumerate(self.x):
             for k,z in enumerate(self.x):
                 if np.abs(self.mod_x(x-z)) not in [0,1]:

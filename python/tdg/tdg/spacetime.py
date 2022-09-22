@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import torch
 import numpy as np
 
 class Spacetime:
@@ -31,5 +32,5 @@ class Spacetime:
     def __repr__(self):
         return str(self)
 
-    def vector(self, dtype=complex):
-        return np.zeros(self.dims, dtype=dtype)
+    def vector(self):
+        return torch.zeros(self.dims.tolist())
