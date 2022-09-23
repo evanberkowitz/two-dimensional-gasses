@@ -14,7 +14,7 @@ print(tdg.PauliMatrix)
 
 section("spatial lattice")
 
-lattice = tdg.Lattice(5, 3)
+lattice = tdg.Lattice(5)
 x = lattice.vector()
 print(f"The spatial lattice is {lattice}.")
 print(f"Spatial vectors have shape {x.shape}.")
@@ -62,7 +62,7 @@ print("A LegoSphere just requires a radius and a Wilson coefficient.")
 contact = tdg.LegoSphere([0,0], 2)
 print(f"This sphere {contact} has radius {contact.r} and coefficient {contact.c}.")
 print("The default coefficient is 1, and LegoSpheres may be multiplied by coefficients.")
-sphere = 3 * tdg.LegoSphere([0,1])
+sphere = 1.5 * tdg.LegoSphere([0,1])
 print(f"This sphere {sphere} has radius {sphere.r} and coefficient {sphere.c}.")
 print(f"The points on this LegoSphere are {sphere.points} from the center.")
 

@@ -14,6 +14,14 @@ class Lattice:
         else:
             self.ny = ny
 
+        if(self.nx != self.ny):
+            # For the time being I will restrict to nx = ny.
+            # The reason is that when nx ≠ ny more care about the kinetic matrix κ is required.
+            # The main issue is that when nx ≠ ny, self.nx**2 ≠ self.sites and so the different
+            # momentum components need different normalizations.
+            # When nx == ny this is coincidentally correct.
+            raise ValueError("Anisotropic lattices not currently supported")
+
         self.dims = np.array([self.nx, self.ny])
         self.sites = self.nx * self.ny
 
