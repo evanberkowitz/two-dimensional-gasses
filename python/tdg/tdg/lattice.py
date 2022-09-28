@@ -142,3 +142,20 @@ class Lattice:
     @cached_property
     def adjacency_matrix(self):
         return self.tensor_linearized(self.adjacency_tensor)
+
+    @cached_property
+    def kappa(self):
+        # Makes an assumption that nx = ny
+        # TODO: ensure the normalization is correct!
+        # This has eigenvalues given by (2*np.pi)**2 * self.ksq.ravel() / self.sites / 2
+        # which is what a direct calculation in (dimensionless) momentum space suggests.
+        # However, in position space we need to fourier transform and we should be careful.
+        c = torch.tensor(self.coordinates).to(torch.float64)
+        c_by_N = c / self.dims
+        ak = torch.exp(-2*np.pi*1j*torch.einsum('ax,kx->ak', c, c_by_N))
+        return 0.5 * (2*np.pi/self.sites)**2 * torch.einsum(
+                'ak,k,kb->ab',
+                ak,
+                torch.tensor(self.ksq.ravel()),
+                torch.conj(ak).transpose(0,1))
+
