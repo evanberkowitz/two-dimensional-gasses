@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from functools import cached_property
+import numpy as np
 import torch
 
 class Potential:
@@ -37,6 +38,6 @@ class Potential:
     def C0(self):
         c0 = 0
         for s in self.spheres:
-            if( torch.tensor([0,0]) == s.r ):
+            if (0 == s.r).all() :
                 c0 += s.c
         return c0

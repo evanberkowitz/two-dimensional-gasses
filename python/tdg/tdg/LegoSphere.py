@@ -6,10 +6,11 @@ import torch
 class LegoSphere:
 
     def __init__(self, r, c=1):
-        self.r = r
 
         x = r[0]
         y = r[1]
+
+        self.r = np.array([x, y])
 
         # Precompute the D4-symmetric set of points.
         # Use the set built-in to eliminate duplicates.
