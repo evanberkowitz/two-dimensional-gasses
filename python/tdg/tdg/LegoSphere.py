@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import numpy as np
+import torch
 
 class LegoSphere:
 
@@ -21,7 +22,7 @@ class LegoSphere:
 
         # The canonical normalization is 1/(the number of points)
         self.norm = 1./len(self.points)
-        self.c = c
+        self.c = torch.tensor(1) * c
 
     def __str__(self):
         return f'LegoSphere({self.r}, {self.c})'
