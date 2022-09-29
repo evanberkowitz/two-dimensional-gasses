@@ -146,16 +146,29 @@ class Lattice:
     @cached_property
     def kappa(self):
         # Makes an assumption that nx = ny
-        # TODO: ensure the normalization is correct!
-        # This has eigenvalues given by (2*np.pi)**2 * self.ksq.ravel() / self.sites / 2
-        # which is what a direct calculation in (dimensionless) momentum space suggests.
-        # However, in position space we need to fourier transform and we should be careful.
-        c = torch.tensor(self.coordinates).to(torch.float64)
-        c_by_N = c / self.dims
-        ak = torch.exp(-2*np.pi*1j*torch.einsum('ax,kx->ak', c, c_by_N))
-        return 0.5 * (2*np.pi/self.sites)**2 * torch.einsum(
-                'ak,k,kb->ab',
-                ak,
-                torch.tensor(self.ksq.ravel()),
-                torch.conj(ak).transpose(0,1))
 
+        # We know kappa_ab = 1/V Σ(k) (2πk)^2/2V exp( -2πik•(a-b)/Nx )
+        # where a are spatial coordinates
+        a = torch.tensor(self.coordinates).to(torch.complex128)
+        # and k are also integer doublets;
+        # in the exponent we group the -2πi / Nx into the momenta
+        p = (-2*np.pi*1j / self.nx) * torch.tensor(self.coordinates).to(torch.complex128)
+        # Separating out the unitary U_ak = 1/√V exp( - 2πik•a )
+        U = torch.exp(torch.einsum('ax,kx->ak', a, p)) / np.sqrt(self.sites)
+
+        # we can write isolate the eigenvalues
+        #   kappa_kq = δ_kq ( 2π k / Nx )^2 / 2
+        eigenvalues = ((2*np.pi)**2 / self.sites) * torch.tensor(self.ksq.ravel()) / 2
+
+        # via the unitary transformation
+        # kappa_ab = Σ(kq) U_ak kappa_kq U*_qb
+        #          = Σ(k)  U_ak [(2πk/Nx)^2/2] U_kb
+        return torch.einsum('ak,k,kb->ab', U, eigenvalues, U.conj().transpose(0,1))
+        #
+        # Can be checked by eg.
+        # ```
+        # lattice = tdg.Lattice(11)
+        # left = torch.linalg.eigvalsh(lattice.kappa).sort().values 
+        # right = torch.tensor(4*np.pi**2 * lattice.ksq.ravel() / lattice.sites / 2).sort().values
+        # (torch.abs(left-right) < 1e-6).all()
+        # ```
