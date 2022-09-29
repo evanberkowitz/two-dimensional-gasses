@@ -70,13 +70,13 @@ print(f"The points on this LegoSphere are {sphere.points} from the center.")
 
 section("Potentials")
 
-print("A potential requires a lattice and a list of LegoSpheres.")
-V = tdg.Potential(lattice, contact, sphere)
+print("A potential requires a list of LegoSpheres.")
+V = tdg.Potential(contact, sphere)
 print(f"For example, {V=}.")
-print(f"It has a spatial representation with shape {V.spatial.shape}.")
-print(f"The inverse of the spatial representation has shape {V.inverse.shape}.")
+print(f"On {lattice} it has a spatial representation with shape {V.spatial(lattice).shape}.")
+print(f"And the inverse of the spatial representation has shape {V.inverse(lattice).shape}.")
 
-one = lattice.tensor_linearized(torch.einsum("abcd,cdef->abef", V.spatial, V.inverse))
+one = lattice.tensor_linearized(torch.einsum("abcd,cdef->abef", V.spatial(lattice), V.inverse(lattice)))
 zero = one - np.eye(lattice.sites)
 if( (np.abs(zero) < 1e-14).all() ):
     print("We can check that V.spatial and V.inverse are floating-point inverses.")
@@ -84,10 +84,19 @@ else:
     print("However, V.spatial and V.inverse fail to be inverses of one another.")
 
 try:
-    print(f"The eigenvalues of V are\n{V.eigvals}.")
-    print("All the eigenvalues of V are positive, so this potential is amenable to our Hubbard-Stratonovich transformation.")
+    print(f"The eigenvalues of V are\n{V.eigvals(lattice)}.")
+    print("All the eigenvalues of V on {lattice} are positive; this is amenable to our Hubbard-Stratonovich transformation.")
 except:
-    print("Not all the eigenvalues of V are positive, so the formal Hubbard-Stratonovich transformation is invalid for this potential.")
+    print("Not all the eigenvalues of V on {lattice} are positive, so the formal Hubbard-Stratonovich transformation is invalid for this potential.")
 print(f"The spatial representation, inverse, and eigenvalues are cached, so it's cheap to reuse them.")
 print(f"Since the contact potential needs to be treated specially, the potential provides a way to get the C0 coefficient {V.C0=}")
 
+
+section("Actions")
+
+print("An action collects all the information about what we're up to.")
+
+beta = torch.tensor(50)
+S = tdg.Action(spacetime, V, beta)
+A = spacetime.vector()
+print(f"The free action is {S(A)}.")
