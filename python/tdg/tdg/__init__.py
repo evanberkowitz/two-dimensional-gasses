@@ -6,3 +6,5 @@ import tdg.Luescher as Luescher
 from .spacetime import Spacetime as Spacetime
 from .LegoSphere import LegoSphere as LegoSphere
 from .potential import Potential as Potential
+from .fermionMatrix import FermionMatrix as FermionMatrix
+from .action import Action as Action
