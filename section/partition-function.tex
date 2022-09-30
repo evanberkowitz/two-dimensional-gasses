@@ -54,6 +54,7 @@ We can isolate the dimensionful quantities
 	\tilde{\mu}   &= M \Delta x^2 \mu
 	&
 	\tilde{\vec{h}} &= M \Delta x^2 \vec{h}
+	\label{eq:dimensionless}
 \end{align}
 where $\tilde{\beta}$, $\tilde{\mu}$, and $\tilde{\vec{h}}$ are dimensionless, and $\tilde{K}$ and $\tilde{V}$ are the dimensionless kinetic and potential operators in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
 
@@ -360,26 +361,32 @@ We can collect the space-independent part, pulling them through the sausage,
 	\UU 
 	&= \exp\left(\Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma}\right)^{N_t} \BB\inverse (e^{A_{N_t} + \Delta\tilde{t}\tilde{\mu}} \otimes\one)\cdots \BB\inverse (e^{A_2 + \Delta\tilde{t}\tilde{\mu}}\otimes\one) \BB\inverse (e^{A_1 + \Delta\tilde{t}\tilde{\mu}}\otimes \one)
 	\\
-	&= \exp\left(\tilde{\beta}\tilde{\vec{h}}\cdot\vec{\sigma}\right) \begin{pmatrix} U & 0 \\ 0 & U \end{pmatrix}
-	\\
-	U &= B\inverse e^{A_{N_t} + \Delta\tilde{t}\tilde{\mu}} \cdots B\inverse e^{A_2 + \Delta\tilde{t}\tilde{\mu}} B\inverse e^{A_1 + \Delta\tilde{t}\tilde{\mu}}
+	&= \exp\left(\tilde{\beta}\tilde{\vec{h}}\cdot\vec{\sigma}\right) \begin{pmatrix} zU & 0 \\ 0 & zU \end{pmatrix}
+	&
+	z &= \exp(\tilde{\beta} \tilde{\mu})
+	\label{eq:fugacity}\\
+	U &= B\inverse e^{A_{N_t}} \cdots B\inverse e^{A_2} B\inverse e^{A_1}
 \end{align}
-We immediately see that if $\tilde{\vec{h}} = 0$ the spin sectors yield the same determinant, $\det\dd = \det (1+U)^2$, and we can also pull the $\tilde{\mu}$ exponential through $U$.
+where $z$ is the fugacity.
+Note that the fugacity can be computed directly from the dimensionful parameters; $z=\exp(\tilde{\beta}\tilde{\mu})=\exp(\beta\mu)$, using the dimensionless definitions \eqref{dimensionless}.
+Similarly, the external field parameter matches, $\tilde{\beta}\tilde{\vec{h}} = \beta \vec{h}$.
+
+We immediately see that if $\tilde{\vec{h}} = 0$ the spin sectors yield the same determinant, $\det\dd = \det (1+zU)^2$.
 Therefore, when $\tilde{h}=0$ the fermion determinant $\det\dd$ is positive semidefinite.
 
 Moreover, since the $2\times2$ $U$ block matrix is spin-independent, for evaluating the fermion determinant we can always rotate by some $O$ that operates only in spin space and diagonalizes $\tilde{\vec{h}}\cdot\vec{\sigma}$,
 \begin{align}
 	\det \dd 
 	= \det(\one+\UU)
-	&= \det\left(\one + e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}}(U\otimes\one)\right)
-	= \det\left(\one + O\inverse O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (U\otimes\one)\right)
+	&= \det\left(\one + e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}}(zU\otimes\one)\right)
+	= \det\left(\one + O\inverse O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (zU\otimes\one)\right)
 	\nonumber\\
-	&= \det\left(\one + O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (U\otimes\one)O\inverse \right)
-	= \det\left(\one + O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} O\inverse (U\otimes\one) \right)
+	&= \det\left(\one + O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (zU\otimes\one)O\inverse \right)
+	= \det\left(\one + O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} O\inverse (zU\otimes\one) \right)
 	\nonumber\\
-	&= \det\left(\one + e^{\tilde{\beta} \abs{\tilde{h}} \sigma_3 } (U\otimes\one) \right)
+	&= \det\left(\one + e^{\tilde{\beta} \abs{\tilde{h}} \sigma_3 } (zU\otimes\one) \right)
 	\\
-	&= \det\left( 1 + e^{+\tilde{\beta}\abs{\tilde{h}}} U\right)\det\left( 1 + e^{-\tilde{\beta}\abs{\tilde{h}}} U\right)
+	&= \det\left( 1 + e^{+\tilde{\beta}\abs{\tilde{h}}} zU\right)\det\left( 1 + e^{-\tilde{\beta}\abs{\tilde{h}}} zU\right)
 	\label{eq:finite-h determinant algorithm}
 \end{align}
 which means that to evaluate the fermion determinant for any $\tilde{h}$ we can always evaluate an equivalent expression with just $\vec{\tilde{h}}\parallel\hat{z}$.
