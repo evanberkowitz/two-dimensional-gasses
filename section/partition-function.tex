@@ -411,6 +411,25 @@ When $\vec{h}\neq 0$ we may use single-species sausage $U$ and reuse it for each
 When $\vec{h} = 0$ it is even simpler; as that determinant is a square.
 However, in that case it may prove beneficial to use pseudofermions to stochastically estimate the determinant.
 
+The denominator may be evaluated exactly.
+For each timeslice we get $(\det -2\pi \Delta\tilde{t} \tilde{V})^{1/2}$.
+Therefore
+\begin{align}
+	\left[\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}\right]\inverse
+	=
+	(\det -2\pi \Delta\tilde{t} \tilde{V})^{-N_t/2}
+	=
+	\exp\left[ -\frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t} \tilde{V}} \right].
+\end{align}
+
+Throwing the determinant up into the action we arrive at
+\begin{align}
+	S &= \half \sum_t A_t\transpose (-\Delta\tilde{t}\tilde{V})\inverse A_t - \log\det(\one+\UU) + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
+	&
+	Z &= \int DA\; e^{-S}.
+\end{align}
+where we even have tracked the usually-irrelevant constant.
+
 \subsection{Fermion Matrix Eigenvectors}
 
 The advantage of this fermion matrix is the identity matrix appearing on the diagonal, which allows us to easily generate $N_t$ eigenvectors of $\dd$, as follows.
