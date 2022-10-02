@@ -13,14 +13,14 @@ class Action:
         self.Spacetime = spacetime
         self.Potential = potential
 
-        self.V = self.Potential.spatial(self.Spacetime.Lattice)
-        self.Vinverse = self.Potential.inverse(self.Spacetime.Lattice)
-
         self.beta = beta
         self.dt = beta / self.Spacetime.nt
 
         self.mu = mu
         self.h  = torch.tensor(h)
+
+        self.V = self.Potential.spatial(self.Spacetime.Lattice)
+        self.Vinverse = self.Potential.inverse(self.Spacetime.Lattice)
 
         # Recall that requiring the contact interaction
         # be written as the quadratic nVn induces a term in the Hamiltonian
@@ -36,8 +36,8 @@ class Action:
         return str(self)
 
     def __call__(self, A):
-        # compute the action here
-        gauss = -0.5 * torch.einsum('txy,xyab,tab->', A, -self.Vinverse, A) / self.dt
+        # S = 1/2 Σ(t) A(t) inverse(- ∆t V) A(t) - log det d
+        gauss = 0.5 * torch.einsum('txy,xyab,tab->', A, -self.Vinverse, A) / self.dt
 
         fermionic = - self.FermionMatrix.logdet(A)
 
