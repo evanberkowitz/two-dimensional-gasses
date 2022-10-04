@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-from functools import cached_property
-import numpy as np
 import torch
 
 from tdg.fermionMatrix import FermionMatrix
