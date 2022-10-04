@@ -22,12 +22,12 @@ class Lattice:
             # When nx == ny this is coincidentally correct.
             raise ValueError("Anisotropic lattices not currently supported")
 
-        self.dims = np.array([self.nx, self.ny])
+        self.dims = torch.tensor([self.nx, self.ny])
         self.sites = self.nx * self.ny
 
         # We want to go from -n/2 to +n/2
-        self.x = np.arange( - (self.nx // 2), self.nx // 2 + 1)
-        self.y = np.arange( - (self.ny // 2), self.ny // 2 + 1)
+        self.x = torch.arange( - (self.nx // 2), self.nx // 2 + 1)
+        self.y = torch.arange( - (self.ny // 2), self.ny // 2 + 1)
         # (up to even/odd issues)
         if self.nx % 2 == 0:
             self.x = self.x[1:]
@@ -38,17 +38,13 @@ class Lattice:
         # https://numpy.org/doc/stable/reference/routines.fft.html#implementation-details
         # where the lowest coordinate / frequency is at 0, we increase to the max,
         # and then go in decreasingly-negative order.
-        origin = np.array([
-            np.where(self.x==0)[0][0],
-            np.where(self.y==0)[0][0]
-            ])
-        self.x = np.roll(self.x, -origin[0])
-        self.y = np.roll(self.y, -origin[1])
+        self.x = torch.roll(self.x, -((self.nx-1) // 2))
+        self.y = torch.roll(self.y, -((self.ny-1) // 2))
 
         # These are chosen so that Lattice(nx, ny)
         # has coordinate matrices of size (nx, ny)
-        self.X = np.tile( self.x, (len(self.y), 1)).T
-        self.Y = np.tile( self.y, (len(self.x), 1))
+        self.X = torch.tile( self.x, (self.ny, 1)).T
+        self.Y = torch.tile( self.y, (self.nx, 1))
 
         # Wavenumbers are the same
         self.kx = self.x
@@ -60,7 +56,7 @@ class Lattice:
 
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
-        self.coordinates = [tuple((x,y)) for x,y in zip(self.X.flat, self.Y.flat)]
+        self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).T
         self.coordinate_lookup= {tuple(x):i for i,x in enumerate(self.coordinates)}
 
     def __str__(self):
@@ -72,32 +68,39 @@ class Lattice:
     def mod_x(self, x):
         # Mods into the x coordinate.
         # Assumes periodic boundary conditions.
-        mod = np.mod(x, self.nx)
-        if type(mod) is np.ndarray:
-            return np.where(mod < 1+self.nx // 2, mod, mod - self.nx)
-        return mod if mod < 1+self.nx // 2 else mod - self.nx
+        mod = torch.remainder(x, self.nx)
+        return torch.where(mod < 1+self.nx // 2, mod, mod - self.nx)
 
     def mod_y(self, y):
         # Mods into the y coordinate.
         # Assumes periodic boundary conditions.
-        mod = np.mod(y, self.ny)
-        if type(mod) is np.ndarray:
-            return np.where(mod < 1+self.ny // 2, mod, mod - self.ny)
-        return mod if mod < 1+self.ny // 2 else mod - self.ny
+        mod = torch.remainder(y, self.ny)
+        return torch.where(mod < 1+self.ny // 2, mod, mod - self.ny)
 
     def mod(self, x):
         # Mod an [x,y] pair into lattice coordinates.
         # Assumes periodic boundary conditions
-        mod = np.mod(x, self.dims)
-        return np.where(mod < 1+self.dims // 2, mod, mod - self.dims)
+        if len(x.shape) == 1:
+            X = x[None,:]
+        else:
+            X = x
+        modx = self.mod_x(X[:,0])
+        mody = self.mod_y(X[:,1])
+
+        mod = torch.stack((modx, mody)).T
+
+        if len(x.shape) == 1:
+            return mod[0]
+        else:
+            return mod
 
     def distance_squared(self, a, b):
-        d = self.mod(np.array(a)-np.array(b))
-        return np.dot(d,d)
+        d = self.mod(torch.tensor(a)-torch.tensor(b))
+        return torch.dot(d,d)
 
     def tensor(self, n=2):
         # can do matrix-vector via
-        #   np.einsum('ijab,ab',matrix,vector)
+        #   torch.einsum('ijab,ab',matrix,vector)
         # to get a new vector (with indices ij).
         return torch.zeros(np.tile(self.dims, n).tolist())
 
@@ -125,16 +128,17 @@ class Lattice:
         # Creates an (nx, ny, nx, ny) adjacency matrix, where the
         # first two indices form the "row" and the
         # second two indices form the "column"
-        A = np.zeros(np.tile(self.dims, 2).tolist())
+        A = torch.zeros(np.tile(self.dims, 2).tolist(), dtype=torch.int)
         for i,x in enumerate(self.x):
             for k,z in enumerate(self.x):
-                if np.abs(self.mod_x(x-z)) not in [0,1]:
+                a = torch.abs(self.mod_x(x-z))
+                if a not in [0,1]:
                     continue
                 for j,y in enumerate(self.y):
                     for l,w in enumerate(self.y):
-                        if np.abs(self.mod_y(y-w)) not in [0,1]:
-                            continue
-                        if self.distance_squared([x,y],[z,w]) == 1:
+                        b = torch.abs(self.mod_y(y-w))
+                        #if self.distance_squared( [x,y], [z,w] ) == 1: # nearest-neighbors
+                        if a+b == 1:
                             A[i,j,k,l] = 1
                             
         return A
@@ -149,16 +153,16 @@ class Lattice:
 
         # We know kappa_ab = 1/V Σ(k) (2πk)^2/2V exp( -2πik•(a-b)/Nx )
         # where a are spatial coordinates
-        a = torch.tensor(self.coordinates).to(torch.complex128)
+        a = self.coordinates.clone().detach().to(torch.complex128)
         # and k are also integer doublets;
         # in the exponent we group the -2πi / Nx into the momenta
-        p = (-2*np.pi*1j / self.nx) * torch.tensor(self.coordinates).to(torch.complex128)
+        p = (-2*torch.pi*1j / self.nx) * a
         # Separating out the unitary U_ak = 1/√V exp( - 2πik•a )
         U = torch.exp(torch.einsum('ax,kx->ak', a, p)) / np.sqrt(self.sites)
 
         # we can write isolate the eigenvalues
         #   kappa_kq = δ_kq ( 2π k / Nx )^2 / 2
-        eigenvalues = ((2*np.pi)**2 / self.sites) * torch.tensor(self.ksq.ravel()) / 2
+        eigenvalues = ((2*torch.pi)**2 / self.sites) * self.ksq.flatten() / 2
 
         # via the unitary transformation
         # kappa_ab = Σ(kq) U_ak kappa_kq U*_qb

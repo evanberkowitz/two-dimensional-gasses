@@ -23,7 +23,8 @@ if( (lattice.adjacency_matrix == lattice.adjacency_matrix.T).all() ):
     print("The adjacency matrix is symmetric.")
 else:
     print("The adjacency matrix is not symmetric.")
-print(f"The sites have {np.sum(lattice.adjacency_matrix, axis=0)} neighbors.")
+print(f"The neighbors of the origin are {lattice.adjacency_tensor[0,0]}")
+print(f"The sites have {torch.sum(lattice.adjacency_matrix, axis=0)} neighbors.")
 
 print(f"The integer x coordinates of this lattice are {lattice.x}")
 print(f"The integer y coordinates of this lattice are {lattice.y}")
