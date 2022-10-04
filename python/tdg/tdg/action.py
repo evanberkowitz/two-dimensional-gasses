@@ -9,7 +9,7 @@ from tdg.fermionMatrix import FermionMatrix
 
 class Action:
 
-    def __init__(self, spacetime, potential, beta, mu=0, h=[0,0,0], fermion=FermionMatrix):
+    def __init__(self, spacetime, potential, beta, mu=torch.tensor(0), h=torch.tensor([0,0,0]), fermion=FermionMatrix):
         self.Spacetime = spacetime
         self.Potential = potential
 
@@ -17,7 +17,7 @@ class Action:
         self.dt = beta / self.Spacetime.nt
 
         self.mu = mu
-        self.h  = torch.tensor(h)
+        self.h  = h
 
         self.V = self.Potential.spatial(self.Spacetime.Lattice)
         self.Vinverse = self.Potential.inverse(self.Spacetime.Lattice)
