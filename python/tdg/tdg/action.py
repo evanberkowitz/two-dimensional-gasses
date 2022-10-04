@@ -7,7 +7,7 @@ from tdg.fermionMatrix import FermionMatrix
 
 class Action:
 
-    def __init__(self, spacetime, potential, beta, mu=torch.tensor(0), h=torch.tensor([0,0,0]), fermion=FermionMatrix):
+    def __init__(self, spacetime, potential, beta, mu=torch.tensor(0, dtype=torch.float), h=torch.tensor([0,0,0], dtype=torch.float), fermion=FermionMatrix):
         self.Spacetime = spacetime
         self.Potential = potential
 

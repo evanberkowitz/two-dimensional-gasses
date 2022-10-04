@@ -5,7 +5,7 @@ import tdg
 
 class FermionMatrix:
 
-    def __init__(self, spacetime, beta, mu=torch.tensor(0), h=torch.tensor([0,0,0])):
+    def __init__(self, spacetime, beta, mu=torch.tensor(0, dtype=torch.float), h=torch.tensor([0,0,0], dtype=torch.float)):
         self.Spacetime = spacetime
 
         self.beta = beta
@@ -13,7 +13,7 @@ class FermionMatrix:
 
         self.mu = mu
         self.h  = h
-        self.absh = torch.sqrt(torch.dot(self.h, self.h))
+        self.absh = torch.linalg.vector_norm(self.h)
 
         self.z = torch.exp(self.beta * self.mu)
         self.zh = torch.exp(self.beta * self.absh)
