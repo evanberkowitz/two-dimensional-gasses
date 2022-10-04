@@ -95,7 +95,7 @@ class Lattice:
             return mod
 
     def distance_squared(self, a, b):
-        d = self.mod(torch.tensor(a)-torch.tensor(b))
+        d = self.mod(a-b)
         return torch.dot(d,d)
 
     def tensor(self, n=2):

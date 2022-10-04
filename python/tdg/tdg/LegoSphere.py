@@ -13,12 +13,25 @@ class LegoSphere:
 
         # Precompute the D4-symmetric set of points.
         # Use the set built-in to eliminate duplicates.
-        self.points= set({
-                (+x, +y),   (+y, +x),
-                (+x, -y),   (+y, -x),
-                (-x, +y),   (-y, +x),
-                (-x, -y),   (-y, -x),
-                })
+        if x ==0 and y==0:
+            self.points = torch.tensor([[0,0]])
+        elif x == 0:
+            self.points = torch.tensor([
+                [+x,+y], [+x,-y],
+                [+y,+x], [-y,+x]
+                ])
+        elif x == y:
+            self.points = torch.tensor([
+                [+x,+y], [+x,-y],
+                [-x,+y], [-x,-y],
+                ])
+        else:
+            self.points = torch.tensor([
+                [+x,+y], [+x,-y],
+                [-x,+y], [-x,-y],
+                [+y,+x], [+y,-x],
+                [-y,+x], [-y,-x],
+                ])
 
         # The canonical normalization is 1/(the number of points)
         self.norm = 1./len(self.points)
@@ -38,7 +51,7 @@ class LegoSphere:
                 for k,z in enumerate(Lattice.x):
                     for l,w in enumerate(Lattice.y):
                         for p in self.points:
-                            if Lattice.distance_squared([x-z,y-w], p) == 0:
+                            if Lattice.distance_squared(torch.tensor([x-z,y-w]), p) == 0:
                                 S[i,j,k,l] += self.c * self.norm
 
         return S
