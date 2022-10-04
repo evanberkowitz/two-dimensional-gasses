@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import numpy as np
 import torch
 
 class LegoSphere:
@@ -10,7 +9,7 @@ class LegoSphere:
         x = r[0]
         y = r[1]
 
-        self.r = np.array([x, y])
+        self.r = torch.tensor([x, y])
 
         # Precompute the D4-symmetric set of points.
         # Use the set built-in to eliminate duplicates.
