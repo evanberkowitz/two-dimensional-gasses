@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
-from functools import cached_property
-import numpy as np
 import torch
 import tdg
 
 class FermionMatrix:
 
-    def __init__(self, spacetime, beta, mu=0, h=torch.tensor([0,0,0])):
+    def __init__(self, spacetime, beta, mu=torch.tensor(0), h=torch.tensor([0,0,0])):
         self.Spacetime = spacetime
 
         self.beta = beta
@@ -23,9 +21,9 @@ class FermionMatrix:
         if self.absh == 0:
             self.exp_h_dt = tdg.PauliMatrix[0]
         else:
-            self.exp_h_dt = np.cosh( self.absh * self.dt ) * tdg.PauliMatrix[0]
+            self.exp_h_dt = torch.cosh( self.absh * self.dt ) * tdg.PauliMatrix[0]
             for h, sigma in zip(self.h, tdg.PauliMatrix[1:]):
-                self.exp_h_dt += np.sinh( self.absh * self.dt) * h / self.absh * sigma
+                self.exp_h_dt += torch.sinh( self.absh * self.dt) * h / self.absh * sigma
 
         self.B = torch.matrix_exp( self.dt * self.Spacetime.Lattice.kappa)
         self.Binverse = torch.matrix_exp( -self.dt * self.Spacetime.Lattice.kappa)
