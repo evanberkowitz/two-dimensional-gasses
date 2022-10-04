@@ -45,7 +45,7 @@ else:
 
 section("spacetime")
 
-nt   = 32
+nt   = torch.tensor(32)
 spacetime = tdg.Spacetime(nt, lattice)
 v = spacetime.vector()
 

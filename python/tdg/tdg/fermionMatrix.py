@@ -48,7 +48,7 @@ class FermionMatrix:
         # For numerical stability we may need a smarter method.
         # This naive method is at least in principle correct.
 
-        assert (A.shape == self.Spacetime.dims).all()
+        assert (A.shape == self.Spacetime.dims), f"Gauge field shape {A.shape} must match the spacetime dimensions {self.Spacetime.dims}"
 
         # Rather than incorporate µ ∆t into the exponential, since it is spacetime-constant,
         # we can just pull alll nt terms out and multiply by z at the end.
