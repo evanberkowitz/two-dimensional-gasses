@@ -86,7 +86,7 @@ else:
 
 try:
     print(f"The eigenvalues of V are\n{V.eigvals(lattice)}.")
-    print("All the eigenvalues of V on {lattice} are positive; this is amenable to our Hubbard-Stratonovich transformation.")
+    print(f"All the eigenvalues of V on {lattice} are positive; this is amenable to our Hubbard-Stratonovich transformation.")
 except:
     print("Not all the eigenvalues of V on {lattice} are positive, so the formal Hubbard-Stratonovich transformation is invalid for this potential.")
 print(f"The spatial representation, inverse, and eigenvalues are cached, so it's cheap to reuse them.")
