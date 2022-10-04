@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-from functools import cached_property
-import numpy as np
+import torch
 
-PauliMatrix = np.array([
+PauliMatrix = torch.tensor([
     [[+1,0],[0,+1]],
     [[0,+1],[+1,0]],
     [[0,-1j],[+1j,0]],
