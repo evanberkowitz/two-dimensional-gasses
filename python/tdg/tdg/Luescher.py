@@ -3,11 +3,13 @@
 import numpy as np
 import torch
 
-class Zeta2D:
+class Zeta2D(torch.nn.Module):
 
     def __init__(self, N=200):
         # N defaults to 200 in my Mathematica implementation.
         # Differs from N=2000 by at most 0.006 on torch.linspace(-5.001,20.001,2000)
+
+        super(Zeta2D,self).__init__()
 
         self.N = N
 
@@ -31,7 +33,7 @@ class Zeta2D:
         self.multiplicity = torch.from_numpy(multiplicity)
 
         # With the 2-norm regulation the counterterm is simple.
-        self.counterterm = 2*np.pi * np.log(self.N/2)
+        self.counterterm = torch.tensor(2*np.pi * np.log(self.N/2))
 
     def __call__(self, x):
         # This computes S(x) which satisfies the finite-volume formula
@@ -75,7 +77,7 @@ class Zeta2D:
 
         for l, h in zip(poles, poles[1:]):
             X = torch.tensor([xi for xi in x if l < xi and xi < h])
-            Z = self(X) / np.pi**2
+            Z = self(X) / torch.pi**2
             ax.plot(X, Z, color=color, **kwargs)
 
         for p in poles:
