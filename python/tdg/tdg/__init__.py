@@ -4,6 +4,7 @@ from .pauli import *
 from .lattice import Lattice as Lattice
 import tdg.Luescher as Luescher
 from .ere import EffectiveRangeExpansion as EffectiveRangeExpansion
+from .a1 import ReducedTwoBodyA1Hamiltonian as ReducedTwoBodyA1Hamiltonian
 from .spacetime import Spacetime as Spacetime
 from .LegoSphere import LegoSphere as LegoSphere
 from .potential import Potential as Potential
