@@ -56,6 +56,8 @@ class Zeta2D(torch.nn.Module):
              asymptote_color='gray',
              asymptote_alpha=0.5,
              asymptote_linestyle='dashed',
+             xlabel=r'$x$',
+             ylabel=r'$\cot\delta - \frac{2}{\pi} \log\sqrt{x}$',
              **kwargs):
         # Plot the zeta function evaluated at all values of x.
         # Take care to not plot the illusory sharp jumps at the poles.
@@ -82,3 +84,8 @@ class Zeta2D(torch.nn.Module):
 
         for p in poles:
             ax.axvline(p, color=asymptote_color, alpha=asymptote_alpha, linestyle=asymptote_linestyle)
+
+        if xlabel:
+            ax.set_xlabel(xlabel)
+        if ylabel:
+            ax.set_ylabel(ylabel)
