@@ -405,7 +405,6 @@ Starting with the bilinear \eqref{trotterization bilinearized} we can now replac
 	}{ 
 		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
 	}.
-	\label{eq:computational partition function}
 \end{align}
 When $\vec{h}\neq 0$ we may use single-species sausage $U$ and reuse it for each spin to compute the determinant \eqref{finite-h determinant algorithm}.
 When $\vec{h} = 0$ it is even simpler; as that determinant is a square.
@@ -427,6 +426,7 @@ Throwing the determinant up into the action we arrive at
 	S &= \half \sum_t A_t\transpose (-\Delta\tilde{t}\tilde{V})\inverse A_t - \log\det(\one+\UU) + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
 	&
 	Z &= \int DA\; e^{-S}.
+	\label{eq:computational partition function}
 \end{align}
 where we even have tracked the usually-irrelevant constant.
 
@@ -591,29 +591,21 @@ Inserting the auxiliary-field formulation of $Z$ \eqref{computational partition 
 	\left.\oneover{Z} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
 	\nonumber\\
 	&=
-	\left.\oneover{Z} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} \frac{  
-		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	\left.\oneover{Z} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}}
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }}
 	~	\det \left(\one + \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}}) \right)
-	}{ 
-		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
-	}\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
 	\nonumber\\
 	&=
-	\oneover{Z} \frac{  
-		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	\oneover{Z}
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }}
 	~	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}}
 	~	\det \left(\one + \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}}) \right)\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
-	}{ 
-		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
-	}
 	\nonumber\\
 	&=
-	\oneover{Z}  \frac{  
-		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	\oneover{Z}
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }}
 		\det \left(\one + \UU \right) \tr{\left(\one + \UU \right)\inverse \left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}}
-	}{ 
-		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
-	}
 \end{align}
 where $\UU$ with no arguments has the local fluctuations st to zero and we assume that $(1+\UU)$ is invertible so that the derivative of the determinant may be replaced via the identity $\partial \det{A} = \det A ~ \tr{ A\inverse \partial A}$.
 
