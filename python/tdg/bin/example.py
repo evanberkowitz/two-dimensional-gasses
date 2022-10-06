@@ -60,10 +60,10 @@ print(f"A linearized list of coordinates has length {len(spacetime.coordinates)}
 section("Lego Spheres")
 
 print("A LegoSphere just requires a radius and a Wilson coefficient.")
-contact = tdg.LegoSphere([0,0], 2)
+contact = tdg.LegoSphere([0,0], -2)
 print(f"This sphere {contact} has radius {contact.r} and coefficient {contact.c}.")
 print("The default coefficient is 1, and LegoSpheres may be multiplied by coefficients.")
-sphere = 1.5 * tdg.LegoSphere([0,1])
+sphere = 0.25 * tdg.LegoSphere([0,1])
 print(f"This sphere {sphere} has radius {sphere.r} and coefficient {sphere.c}.")
 print(f"The points on this LegoSphere are {sphere.points} from the center.")
 
@@ -86,9 +86,9 @@ else:
 
 try:
     print(f"The eigenvalues of V are\n{V.eigvals(lattice)}.")
-    print(f"All the eigenvalues of V on {lattice} are positive; this is amenable to our Hubbard-Stratonovich transformation.")
+    print(f"All the eigenvalues of V on {lattice} are negative; this is amenable to our attractive-channel Hubbard-Stratonovich transformation.")
 except:
-    print("Not all the eigenvalues of V on {lattice} are positive, so the formal Hubbard-Stratonovich transformation is invalid for this potential.")
+    print("Not all the eigenvalues of V on {lattice} are negative, so the formal Hubbard-Stratonovich transformation is invalid for this potential.")
 print(f"The spatial representation, inverse, and eigenvalues are cached, so it's cheap to reuse them.")
 print(f"Since the contact potential needs to be treated specially, the potential provides a way to get the C0 coefficient {V.C0=}")
 
@@ -97,7 +97,7 @@ section("Actions")
 
 print("An action collects all the information about what we're up to.")
 
-beta = torch.tensor(50)
+beta = torch.tensor(1)
 S = tdg.Action(spacetime, V, beta)
 A = spacetime.vector()
 print(f"The free action is {S(A)}.")

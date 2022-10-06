@@ -27,6 +27,8 @@ class Action:
         # Since we work with H-µN-hS this ADDS to the physical chemical potential.
         self.FermionMatrix = fermion(self.Spacetime, self.beta, mu=self.mu + potential.C0/2, h=self.h)
 
+        self.normalizing_offset = self.Spacetime.nt / 2 * torch.sum( torch.log(-2*torch.pi*self.dt * self.Potential.eigvals(self.Spacetime.Lattice)))
+
     def __str__(self):
         return f"Action(β={self.beta}, µ={self.mu}, h={self.h}, {self.Spacetime}, {self.Potential})"
 
@@ -34,10 +36,10 @@ class Action:
         return str(self)
 
     def __call__(self, A):
-        # S = 1/2 Σ(t) A(t) inverse(- ∆t V) A(t) - log det d
-        gauss = 0.5 * torch.einsum('txy,xyab,tab->', A, -self.Vinverse, A) / self.dt
+        # S = 1/2 Σ(t) A(t) inverse(- ∆t V) A(t) - log det d + nt/2 tr log(-2π ∆t V )
+        gauss = -0.5 * torch.einsum('txy,xyab,tab->', A, self.Vinverse.to(A.dtype), A) / self.dt
 
         fermionic = - self.FermionMatrix.logdet(A)
 
-        return gauss + fermionic
+        return gauss + fermionic + self.normalizing_offset
 

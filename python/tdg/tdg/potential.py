@@ -29,8 +29,8 @@ class Potential:
         e = torch.linalg.eigvals(lattice.tensor_linearized(self.spatial(lattice)))
         if (e.imag != 0).all():
             raise TypeError(f"{self} yields imaginary eigenvalues.")
-        if (e.real <= 0).any():
-            raise ValueError(f"{self} yields negative eigenvalues.")
+        if (e.real >= 0).any():
+            raise ValueError(f"{self} yields positive eigenvalues; we require the attractive channel.")
         #return e.real ?
         return e
 
