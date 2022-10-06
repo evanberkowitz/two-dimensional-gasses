@@ -1,0 +1,28 @@
+\section{Sampling Algorithms}\label{sec:sampling}
+
+We can sample our partition function of auxiliary fields \eqref{computational partition function} however we wish.
+
+The classic LQCD approach is HMC.
+Another approach we would like to try is based on normalizing flows.
+
+\subsection{HMC}
+
+Hybrid Monte Carlo~\cite{Duane1987}, HMC, (sometimes called `Hamiltonian Monte Carlo') is a LQCD workhorse.
+It proceeds as follows:
+
+\begin{enumerate}
+	\item \todo{explain HMC}.
+\end{enumerate}
+
+The most straightforward application is to the $\vec{h}=0$ case where $\det \dd$ is a square and we can construct a pseudofermion method.
+However, even when $\vec{h}\neq0$ we can still differentiate $S$: here is where the authomatic differentiation of \pytorch really shines: an implementation of $S$ automatically provides an implementation of $\partial S/\partial A$.
+
+\subsection{HMC with Learning}
+
+Machine learning methods can be inserted into HMC to help explore the configuration space more rapidly~\cite{Foreman:2021ljl}.
+One promising approach is to replace the leapfrog integration with a fast, learned network with a simple Jacobian~\cite{Foreman:2021rhs}
+
+\subsection{Flow-Based Sampling}
+
+An exciting alternative to HMC is flow-based sampling~\cite{Albergo:2019eim,Rezende:2020hrd,Kanwar:2020xzo}, which has found success in a variety of lattice quantum field theory settings~\cite{Albergo:2022qfi}.
+\Ref{Albergo:2021vyo} provides an end-to-end example as an interactive Jupyter notebook.
