@@ -1,27 +1,17 @@
-# latex-base
-An example of my preferred use of LaTeX + git.
+# two-dimensional-gasses
 
-For more information, clone and `make`.  `master.pdf` explains what's going on here.
+We study lattice-field-theory-style Monte Carlo calculations of attractive fermionic gasses in two dimensions.
 
-# A template repository for LaTeX documents
+We offer three pieces,
 
-GitHub introduced [repository templates](https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/), which is exactly the use case of this repo.  If you look at [the main repository page](https://github.com/evanberkowitz/latex-base) next to the familiar clone or download button you should see a bright green "Use this template" button.  Clicking it will allow you to start your own fresh repo (not a fork) with a fresh name in any organization you have repo creation privileges in.
+ - A LaTeX document describing our formalism, ideas, and algorithms,
+ - A Mathematica package `TDG` that constructs the two-body A1-projected Hamiltonian and uses the Lüscher quantization condition to tune Hamiltonian parameters to the desired scattering data / effective range expansion.  This functionality is also available in
+ - A python package `tdg` which can be used for quantum many-body simulations.  `tdg` is built on [pytorch][torch].  Torch is leveraged for GPU calculations, automatic differentiation, and its machine-learning capabilities.
 
-You can also navigate to [the /generate endpoint of this repo](https://github.com/evanberkowitz/latex-base/generate) to achieve the same effect.
+In addition to answering interesting questions about the physics of two-dimensional cold atom traps, we hope to provide a completely open end-to-end physics workflow for [FAIR][bennett] research.
 
-# Continuous Integration with GitHub Actions
 
-GitHub allows you to trigger actions on particular changes to the repository.  I have used a [latex-action](https://github.com/dante-ev/latex-action) to attempt to compile each pushed update to a PDF.  In addition, on a pull-request, [`git-latexdiff`](https://gitlab.com/git-latexdiff/git-latexdiff) is used to compile a PDF that highlights the differences between the two branches to be reconciled.
 
-# Dependencies
 
-Mandatory:
-
- - `git`
- - `make`
- - A LaTeX installation, including the [REVTeX](https://en.wikipedia.org/wiki/REVTeX) macros.
-
-Optional:
-
- - [`when-changed`](https://github.com/joh/when-changed), for continuous TeX recompilation.
- - [`git latexdiff`](https://gitlab.com/git-latexdiff/git-latexdiff), for producing PDFs with diff highlighting.
+ [torch]: https://pytorch.org/
+ [bennett]: https://edbennett.github.io/lattice2022-survey-talk/
