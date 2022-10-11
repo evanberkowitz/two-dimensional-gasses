@@ -29,6 +29,11 @@ class Action:
 
         self.normalizing_offset = self.Spacetime.nt / 2 * torch.sum( torch.log(-2*torch.pi*self.dt * self.Potential.eigvals(self.Spacetime.Lattice)))
 
+        self.quenched = torch.distributions.multivariate_normal.MultivariateNormal(
+            torch.zeros_like(self.Spacetime.Lattice.vector()).flatten(),
+            -self.dt * self.Spacetime.Lattice.tensor_linearized(self.V)
+            ).expand([self.Spacetime.nt])
+
     def __str__(self):
         return f"Action(β={self.beta}, µ={self.mu}, h={self.h}, {self.Spacetime}, {self.Potential})"
 
@@ -43,3 +48,5 @@ class Action:
 
         return gauss + fermionic + self.normalizing_offset
 
+    def quenched_sample(self, sample_shape=torch.Size([])):
+        return self.quenched.sample(sample_shape)
