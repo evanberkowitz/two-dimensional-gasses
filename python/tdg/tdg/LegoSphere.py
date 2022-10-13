@@ -3,6 +3,45 @@
 import torch
 
 class LegoSphere:
+    r'''
+    Translationally-invariant potentials in the :math:`A_1` representations of the lattice :math:`D_4` symmetry can be written as a sum of LegoSpheres,
+
+    .. math::
+        \begin{align}
+            \tilde{V}_{a,a+r} &= \tilde{V}_{0,r}
+        &   \tilde{V}_{0,r} &= \sum_R \tilde{C}_R \mathcal{S}^R_{0,r}
+        \end{align}
+
+    where each LegoSphere :math:`\mathcal{S}` has a radius :math:`R`.
+
+    To be in the :math:`A_1` representation each LegoSphere is a uniformly-weighted stencil with no phases,
+
+    .. math::
+        \begin{align}
+            \mathcal{S}^R_{0,r} &= \frac{1}{\mathcal{N}_R^2} \sum_{g\in D_4} \delta_{r,gR}
+        &   \mathcal{S}^R_{ab}  &= \frac{1}{\mathcal{N}_R^2} \sum_{g\in D_4} \delta_{b-a,gR}
+        \end{align}
+
+    where :math:`g` acts to rotate spatial displacements on the lattice.
+
+    Parameters
+    ----------
+        r:  list or tuple
+            the radius given as a vector ``[x, y]``.
+            The magnitude is insufficient information, because two radii with the same magnitude
+            might yield different LegoSpheres (consider ``[3, 4]`` and ``[0, 5]``, for example).
+        c:  float or a torch.tensor-wrapped number
+            the Wilson coefficient :math:`\tilde{C}_R`.
+
+    LegoSpheres may be multiplied by coefficients on either side to give new LegoSpheres with c
+    changed appropriately,
+
+    >>> sphere = LegoSphere([0,1], 1.23)
+    >>> stronger = 2*sphere
+    >>> stronger.c
+    tensor(2.4600)
+    '''
+
 
     def __init__(self, r, c=1):
 
@@ -44,6 +83,19 @@ class LegoSphere:
         return str(self)
 
     def spatial(self, Lattice):
+        r'''
+
+        Parameters
+        ----------
+            lattice: tdg.Lattice
+                a spatial lattice on which to construct :math:`\tilde{C}_R \mathcal{S}^R_{ab}`
+
+        Returns
+        -------
+            torch.tensor:
+                a tensor of dimension ``[*lattice.dims, *lattice.dims]`` where the first set of indices is the expanded superindex :math:`a`
+                and the second set of indices is the expanded superindex :math:`b`.
+        '''
         S = Lattice.tensor(2)
 
         for i,x in enumerate(Lattice.x):
