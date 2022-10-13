@@ -93,7 +93,7 @@ class ReducedTwoBodyA1Hamiltonian:
         coefficients = torch.ones_like(target_energies, requires_grad=True) if start is None else start
         assert coefficients.shape == target_energies.shape
 
-        optimizer = torch.optim.SGD(
+        optimizer = torch.optim.AdamW(
             [coefficients],
             lr = lr,
         )
