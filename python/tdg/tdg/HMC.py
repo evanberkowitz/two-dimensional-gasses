@@ -52,6 +52,21 @@ class Hamiltonian:
             self._xdot = lambda p: torch.matmul(Minv, p) # relies on the symmetry of the massMatrix
 
     def __call__(self, x, p):
+        r"""
+
+        Parameters
+        ----------
+            x:  torch.tensor
+                a configuration compatible with the Hamiltonian
+            p:  torch.tensor
+                a momentum of the same shape
+
+        Returns
+        -------
+            torch.tensor:
+                :math:`\mathcal{H}` for the given ``x`` and ``p``.
+                
+        """
         return self.T(p) + self.V(x)
 
     def velocity(self, p):
@@ -185,4 +200,7 @@ class LeapFrog:
         return x, p_f
     
     def __call__(self, x_i, p_i):
+        '''
+        Forwards to ``integrate``.
+        '''
         return self.integrate(x_i, p_i)

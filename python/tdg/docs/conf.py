@@ -59,3 +59,8 @@ bibtex_bibfiles = ['../../../master.bib']
 bibtex_default_style = 'unsrt'
 bibtex_reference_style = 'label'
 
+autodoc_default_options = {
+    'member-order': 'bysource',
+    'special-members': '__call__',
+    'undoc-members': True,
+}
