@@ -2,15 +2,17 @@
 
 from setuptools import setup
 
-setup(
-        name='tdg',
-        description='Auxiliary field quantum monte carlo for 2D gasses',
+if __name__ == '__main__':
 
-        version='0.0.0',
-        license='GPL-3',
+    setup(
+            name='tdg',
+            description='Auxiliary field quantum monte carlo for 2D gasses',
 
-        author='Evan Berkowitz',
-        author_email='tdg@evanberkowitz.com',
-        url = "https://github.com/evanberkowitz/two-dimensional-gasses/",
+            version='0.0.0',
+            license='GPL-3',
 
-        )
+            author='Evan Berkowitz',
+            author_email='tdg@evanberkowitz.com',
+            url = "https://github.com/evanberkowitz/two-dimensional-gasses/",
+
+            )
