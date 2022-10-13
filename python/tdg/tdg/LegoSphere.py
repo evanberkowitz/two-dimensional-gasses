@@ -112,3 +112,7 @@ class LegoSphere:
         return LegoSphere(self.r, self.c * c)
 
     __rmul__ = __mul__
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
