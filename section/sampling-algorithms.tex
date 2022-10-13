@@ -1,21 +1,74 @@
 \section{Sampling Algorithms}\label{sec:sampling}
 
-We can sample our partition function of auxiliary fields \eqref{computational partition function} however we wish.
+To compute observables we need to evaluate Trotterized thermal traces~\eqref{trotterization} with operators inserted appropriately, which will amount to evaluating functional derivatives of our partition function \eqref{computational partition function},
+\begin{align}
+	\expectation{\O} &= \int DA\; p[A]\; \O[A]
+	&
+	p[A] = e^{-S[A]}
+\end{align}
+if the probability $p[A]$ is normalized.
 
+We can sample our partition function of auxiliary fields \eqref{computational partition function} however we wish, so long as we reproduce the exact probability.
 The classic LQCD approach is HMC.
 Another approach we would like to try is based on normalizing flows.
 
 \subsection{HMC}
 
-Hybrid Monte Carlo~\cite{Duane1987}, HMC, (sometimes called `Hamiltonian Monte Carlo') is a LQCD workhorse.
-It proceeds as follows:
+Hybrid Monte Carlo~\cite{Duane1987} (sometimes called `Hamiltonian Monte Carlo'), HMC, is a LQCD workhorse.
+The principle by which it operates is very clever.
+First observe that we can multiply our integral of interest by 1, written as the Gaussian integral,
+\begin{align}
+	1 &= \oneover{\sqrt{2\pi}} \int dp\; e^{-\frac{p^2}{2}}
+\end{align}
+once for each degree of freedom $A$,
+\begin{align}
+	Z &= (2\pi)^{-\norm{A}/2} \int Dp\; DA\; e^{-\frac{p^2}{2} - S}
+\end{align}
+and for each sample of A we may independently sample $p$ from a Gaussian, which is computationally easy.
+The goal is to sample the joint space according to this joint probability.
 
-\begin{enumerate}
-	\item \todo{explain HMC}.
-\end{enumerate}
+Think of the exponent as a Hamiltonian \Ham with $p$ the momentum conjugate to $A$,
+\begin{align}
+	\Ham &= \frac{p^2}{2} + S(A)
+	&
+	Z &= (2\pi)^{-\norm{A}/2} \int Dp\; DA\; e^{-\Ham}
+\end{align}
+where the action $S$ plays the role of the potential energy.
+We can perform a Metropolis-Hastings accept/reject step on pairs of $p$ and $A$ according to $\Ham$.
+Note that this $\Ham$ is NOT the physical Hamiltonian $H$ \eqref{dimensionless hamiltonian} which governs the physics; $\Ham$ governs the \emph{proposal machine}, as follows.
 
-The most straightforward application is to the $\vec{h}=0$ case where $\det \dd$ is a square and we can construct a pseudofermion method.
-However, even when $\vec{h}\neq0$ we can still differentiate $S$: here is where the authomatic differentiation of \pytorch really shines: an implementation of $S$ automatically provides an implementation of $\partial S/\partial A$.
+The inspired idea is that we can use this Hamiltonian to evolve our drawn $p$ and starting $A$ for some amount of \emph{molecular dynamics} (MD) time $\tau$ via Hamilton's equations,
+\begin{align}
+	\frac{dA}{d\tau} &= +\frac{\partial \Ham}{\partial p}
+	&
+	\frac{dp}{d\tau} &= -\frac{\partial \Ham}{\partial A}
+	\label{eq:Hamiltons equations}
+\end{align}
+which simply say that the positions $A$ should be updated according to the velocities that correspond to $p$ and the momenta $p$ should be updated according to the forces given by the gradient of the potential.
+Because $\Ham$ is a conserved quantity under Hamiltonian evolution \eqref{Hamiltons equations}, as long as our integration scheme works well enough we should produce a $(p, A)$ pair with energy very similar to the starting energy and thus with high probability to be accepted into our Markov chain.
+If the integration scheme were numerically perfect $\Ham$ would be exactly conserved and we would always accept; most integration schemes allow us to pick a number of integration steps to control the (molecular dynamics time) discretization error at computational expense.
+We can then toss out the final momentum and begin again, with a new momentum drawn from the Gaussian.
+The transfer of energy between the kinetic (Gaussian) and potential (action) allows us to sample the positions $A$ very efficiently.
+
+It is important to use a reversible integrator, as this guarantees \emph{detailed balance}, which is sufficient to guarantee the existence of the stationary Markov-chain distribution needed in the Metropolis-Hastings algorithm.
+Most implementations also desire a \href{https://en.wikipedia.org/wiki/Symplectic\_integrator}{\emph{symplectic integrator}}, which preserves the 2-form $dp \wedge dA$, so that no phase-space correction need be incorporated into the accept/reject considerations.
+The most widely used integrator (in the LQCD literature, anyway) is the \href{https://en.wikipedia.org/wiki/Leapfrog\_integration}{Leapfrog integrator}, though other integration schemes share these features\cite{PhysRevE.65.056706}.
+
+In the case where $\vec{h}=0$ the determinant $\det \dd$ is a square and we can construct a pseudofermion method, where the determinant and required forces are stocashtically estimated at the cost of linear solves.
+This scales very well but relies on the $\vec{h}=0$ simplification of the determinant.
+However, even when $\vec{h}\neq0$ we can still construct an HMC method if we can differentiate $S$.
+Here is where the automatic differentiation of \pytorch really shines: an implementation of $S$ automatically provides an implementation of $\partial S/\partial A$.\footnote{
+	We may have to `build in' our approach for handling any sign problem.
+	Otherwise we may encounter issues if the force picks up an imaginary piece (which may happen if the weight becomes negative, for example).
+}
+
+Exceptional configurations, those with zero weight, repel the molecular dynamics integration, since they have infinite action.
+If there are extended manifolds of exceptional configurations this can create obstacles which slow HMC's exploration of the configuration space.
+These manifolds are called \emph{neverland} since they never contribute to the integral.
+Since our weights, even with finite $h$, are real, any path between a positive- and negative-weight configuration must go through neverland.
+Such manifolds are codimension-1 and accurate MD integration be circumnavigate them, partitioning the configuration space and creating an \emph{ergodicity problem} for our sampling that may introduce a bias in our stochastic estimates\cite{Wynen:2018ryx}.
+However, it may be possible to circumvent neverland by deforming our manifold of integration.
+We can also integrate using a force from a different action; if these go to the same continuum limit that may solve the problem without tanking the acceptance rate.
 
 \subsection{HMC with Learning}
 
