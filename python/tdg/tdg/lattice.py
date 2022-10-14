@@ -4,6 +4,21 @@ from functools import cached_property
 import numpy as np
 import torch
 
+def _dimension(n):
+    '''
+
+    Parameters
+    ----------
+        n:  int
+            size of the dimension
+
+    Returns
+    -------
+        an FFT-convention-compatible list of coordinates for a dimension of size n,
+        ``[0, 1, 2, ... max, min ... -2, -1]``.
+    '''
+    return torch.tensor(list(range(0, n // 2 + 1)) + list(range( - n // 2 + 1, 0)), dtype=int)
+
 class Lattice:
 
     def __init__(self, nx, ny=None):
@@ -26,20 +41,8 @@ class Lattice:
         self.sites = self.nx * self.ny
 
         # We want to go from -n/2 to +n/2
-        self.x = torch.arange( - (self.nx // 2), self.nx // 2 + 1)
-        self.y = torch.arange( - (self.ny // 2), self.ny // 2 + 1)
-        # (up to even/odd issues)
-        if self.nx % 2 == 0:
-            self.x = self.x[1:]
-        if self.ny % 2 == 0:
-            self.y = self.y[1:]
-
-        # However, we want to match the FFT convention of numpy
-        # https://numpy.org/doc/stable/reference/routines.fft.html#implementation-details
-        # where the lowest coordinate / frequency is at 0, we increase to the max,
-        # and then go in decreasingly-negative order.
-        self.x = torch.roll(self.x, -((self.nx-1) // 2))
-        self.y = torch.roll(self.y, -((self.ny-1) // 2))
+        self.x = _dimension(self.nx)
+        self.y = _dimension(self.ny)
 
         # These are chosen so that Lattice(nx, ny)
         # has coordinate matrices of size (nx, ny)
