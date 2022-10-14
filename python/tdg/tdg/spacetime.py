@@ -12,18 +12,19 @@ class Spacetime:
         self.t    = torch.arange(0, nt)
         self.sites= nt * lattice.sites
 
-        # These are chosen so that they have shape (nt, nx, ny)
-        self.T = torch.tile( self.t, (self.Lattice.nx, self.Lattice.ny, 1)).permute(2,0,1)
-        self.X = torch.tile( self.Lattice.X, (1, self.nt, 1)).reshape(nt, *self.Lattice.X.shape)
-        self.Y = torch.tile( self.Lattice.Y, (1, self.nt, 1)).reshape(nt, *self.Lattice.Y.shape)
-        # and each timeslice matches the X and Y of the underlying lattice,
-        #print( (self.X[0] == self.Lattice.X).all() and (self.Y[0] == self.Lattice.Y).all() )
+        self.dims = torch.Size([nt, *self.Lattice.dims])
 
         # A linearized list of coordinates.
         # Each timeslice matches lattice.coordinates
-        self.coordinates = torch.stack((self.T.flatten(), self.X.flatten(), self.Y.flatten())).T
+        self.coordinates = torch.cat(tuple(
+            torch.cat((
+                t * torch.ones(self.Lattice.sites,1, dtype=torch.int),
+                self.Lattice.coordinates),
+                1)
+            for t in range(self.nt))
+            )
 
-        self.dims = self.T.shape
+        self.TX = torch.stack(tuple(self.coordinates[:,x].reshape(self.dims) for x in range(len(self.dims))))
 
     def __str__(self):
         return f'Spacetime(nt={self.nt}, {str(self.Lattice)})'
