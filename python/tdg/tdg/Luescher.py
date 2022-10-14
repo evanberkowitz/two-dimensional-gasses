@@ -3,7 +3,31 @@
 import numpy as np
 import torch
 
-class Zeta2D(torch.nn.Module):
+class Zeta2D:
+    r'''
+    In the continuum finite-volume energy levels may be translated into scattering data via *Lüscher's quantization condition*.
+
+    In two dimensions, in the :math:`A_1` sector the energies can be converted into information about the s-wave phase shift,
+
+    .. math::
+        \begin{align}
+           \cot \delta(p) - \frac{2}{\pi} \log \frac{pL}{2\pi} &= \frac{1}{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
+            &
+            S_2(x) &= \lim_{N\rightarrow\infty} \sum_{n^2 \leq \left(\frac{N}{2}\right)^2} \frac{1}{n^2-x} - 2\pi \log \frac{N}{2}
+        \end{align}
+
+
+    where :math:`L` is the physical size of the lattice and :math:`p` is the physical momentum.  In dimensionless units,
+
+    .. math::
+        \cot \delta(p) = \frac{2}{\pi} \log \sqrt{x} + \frac{1}{\pi^2} S_2(x)
+
+    Parameters
+    ----------
+    N:
+        the cutoff in the sum that defines :math:`S_2`.
+
+    '''
 
     def __init__(self, N=200):
         # N defaults to 200 in my Mathematica implementation.
@@ -36,6 +60,18 @@ class Zeta2D(torch.nn.Module):
         self.counterterm = torch.tensor(2*np.pi * np.log(self.N/2))
 
     def __call__(self, x):
+        r'''
+        Apply the finite-volume S to x.
+
+        Parameters
+        ----------
+        x:  torch.tensor
+
+        Returns
+        -------
+        torch.tensor:
+            :math:`S(x)`.  When :math:`x = (pL/2\pi)^2 = E N_x^2 / (2\pi)^2` and :math:`E` is the dimensionless energy of the dimensionless two-body Schrödinger equation :math:`S(x)` goes into the Lüscher quantization condition.
+        '''
         # This computes S(x) which satisfies the finite-volume formula
         #
         #   cot δ(p) - 2/π log√x = S(x) / π^2
@@ -59,8 +95,29 @@ class Zeta2D(torch.nn.Module):
              xlabel=r'$x$',
              ylabel=r'$\cot\delta - \frac{2}{\pi} \log\sqrt{x}$',
              **kwargs):
-        # Plot the zeta function evaluated at all values of x.
-        # Take care to not plot the illusory sharp jumps at the poles.
+        r"""Plots the zeta function for values of ``x`` on the matplotlib axis ``ax``.
+        
+        Takes care not to plot the sharp jumps at the poles of the zeta function.
+
+        Parameters
+        ----------
+            ax: matplotlib.pyplot.axis
+                The axis on which to draw
+            x:  torch.tensor
+                The values to plot along the x-axis
+            asymptote_color: 
+                A `matplotlib color`_ do draw vertical asymptotes at the poles of the zeta.
+            asymptote_linestyle: str
+                A matplotlib linestyle for the asymptotes
+            xlabel: str
+                A label for the x-axis
+            ylabel: str
+                A label for the y-axis
+            kwargs:
+                get forwarded to ``ax.plot``
+
+        .. _matplotlib color: https://matplotlib.org/stable/tutorials/colors/colors.html
+        """
 
         low = min(x)
         high = max(x)
