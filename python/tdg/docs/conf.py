@@ -28,6 +28,7 @@ author = 'Evan Berkowitz'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+        'sphinx.ext.todo',
         'sphinx.ext.napoleon',
         'sphinx.ext.mathjax',
         'sphinx.ext.autodoc',
@@ -64,3 +65,5 @@ autodoc_default_options = {
     'special-members': '__call__',
     'undoc-members': True,
 }
+
+todo_include_todos=True
