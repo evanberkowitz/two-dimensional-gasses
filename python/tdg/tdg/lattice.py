@@ -60,7 +60,6 @@ class Lattice:
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
         self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).T
-        self.coordinate_lookup= {tuple(x):i for i,x in enumerate(self.coordinates)}
 
     def __str__(self):
         return f'SquareLattice({self.nx},{self.ny})'
