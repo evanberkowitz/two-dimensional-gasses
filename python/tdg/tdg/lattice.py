@@ -20,7 +20,7 @@ class Lattice:
             # The main issue is that when nx ≠ ny, self.nx**2 ≠ self.sites and so the different
             # momentum components need different normalizations.
             # When nx == ny this is coincidentally correct.
-            raise ValueError("Anisotropic lattices not currently supported")
+            raise NotImplemented("Anisotropic lattices not currently supported")
 
         self.dims = torch.tensor([self.nx, self.ny])
         self.sites = self.nx * self.ny
