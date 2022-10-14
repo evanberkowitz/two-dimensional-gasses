@@ -65,38 +65,15 @@ class Lattice:
     def __repr__(self):
         return str(self)
 
-    def mod_x(self, x):
-        # Mods into the x coordinate.
-        # Assumes periodic boundary conditions.
-        mod = torch.remainder(x, self.nx)
-        return torch.where(mod < 1+self.nx // 2, mod, mod - self.nx)
-
-    def mod_y(self, y):
-        # Mods into the y coordinate.
-        # Assumes periodic boundary conditions.
-        mod = torch.remainder(y, self.ny)
-        return torch.where(mod < 1+self.ny // 2, mod, mod - self.ny)
-
     def mod(self, x):
-        # Mod an [x,y] pair into lattice coordinates.
-        # Assumes periodic boundary conditions
-        if len(x.shape) == 1:
-            X = x[None,:]
-        else:
-            X = x
-        modx = self.mod_x(X[:,0])
-        mody = self.mod_y(X[:,1])
-
-        mod = torch.stack((modx, mody)).T
-
-        if len(x.shape) == 1:
-            return mod[0]
-        else:
-            return mod
+        return torch.stack((
+            self.x[torch.remainder(x.T[0],self.nx)],
+            self.y[torch.remainder(x.T[1],self.ny)],
+            )).T
 
     def distance_squared(self, a, b):
         d = self.mod(a-b)
-        return torch.dot(d,d)
+        return torch.sum(d.T**2, axis=(0,))
 
     def tensor(self, n=2):
         # can do matrix-vector via
