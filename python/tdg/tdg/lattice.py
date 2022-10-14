@@ -68,12 +68,42 @@ class Lattice:
         return str(self)
 
     def mod(self, x):
+        r'''
+        Mod integer coordinates x into values on the lattice.
+
+        Parameters
+        ----------
+            x:  torch.tensor
+                The last dimension should be of size 2.
+
+        Returns
+        -------
+            torch.tensor
+                Each x is identified with an entry of ``coordinates`` by periodic boundary conditions.
+        '''
         return torch.stack((
             self.x[torch.remainder(x.T[0],self.nx)],
             self.y[torch.remainder(x.T[1],self.ny)],
             )).T
 
     def distance_squared(self, a, b):
+        r'''
+        .. math::
+            \texttt{distance_squared}(a,b) = \left| \texttt{mod}(a - b)\right|^2
+
+        Parameters
+        ----------
+            a:  torch.tensor
+                coordinates that need not be on the lattice
+            b:  torch.tensor
+                coordinates that need not be on the lattice
+
+        Returns
+        -------
+            torch.tensor
+                The distance between ``a`` and ``b`` on the lattice accounting for the fact that,
+                because of periodic boundary conditions, the distance may shorter than naively expected.
+        '''
         d = self.mod(a-b)
         return torch.sum(d.T**2, axis=(0,))
 
