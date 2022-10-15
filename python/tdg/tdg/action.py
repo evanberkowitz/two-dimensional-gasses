@@ -85,7 +85,7 @@ class Action:
         '''
 
         self.quenched = torch.distributions.multivariate_normal.MultivariateNormal(
-            torch.zeros_like(self.Spacetime.Lattice.vector()).flatten(),
+            self.Spacetime.Lattice.vector().flatten(),
             -self.dt * self.V
             ).expand([self.Spacetime.nt])
 
