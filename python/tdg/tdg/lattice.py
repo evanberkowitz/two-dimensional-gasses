@@ -205,9 +205,6 @@ class Lattice:
     def vector(self):
         return self.tensor(1)
 
-    def matrix(self):
-        return self.tensor_linearized(self.tensor(2))
-
     def fft(self, vector, axes=(-2,-1), norm='ortho'):
         return torch.fft.fft2(vector, dim=axes, norm=norm)
 
