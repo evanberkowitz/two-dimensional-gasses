@@ -38,16 +38,66 @@ class Lattice:
             raise NotImplemented("Anisotropic lattices not currently supported")
 
         self.dims = torch.tensor([self.nx, self.ny])
+        r'''
+        The dimension sizes in order.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.dims
+        tensor([5, 5])
+        '''
         self.sites = self.nx * self.ny
+        r'''
+        The total number of sites.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.sites
+        25
+        '''
 
         # We want to go from -n/2 to +n/2
         self.x = _dimension(self.nx)
+        r'''
+        The coordinates in the x direction.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.x
+        tensor([ 0,  1,  2, -2, -1])
+        '''
         self.y = _dimension(self.ny)
+        r'''
+        The coordinates in the y direction.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.y
+        tensor([ 0,  1,  2, -2, -1])
+        '''
 
         # These are chosen so that Lattice(nx, ny)
         # has coordinate matrices of size (nx, ny)
         self.X = torch.tile( self.x, (self.ny, 1)).T
+        r'''
+        A tensor of size ``dims`` with the x coordinate as a value.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.X
+        tensor([[ 0,  0,  0,  0,  0],
+                [ 1,  1,  1,  1,  1],
+                [ 2,  2,  2,  2,  2],
+                [-2, -2, -2, -2, -2],
+                [-1, -1, -1, -1, -1]])
+        '''
         self.Y = torch.tile( self.y, (self.nx, 1))
+        r'''
+        A tensor of size ``dims`` with the y coordinate as a value.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.Y
+        tensor([[ 0,  1,  2, -2, -1],
+                [ 0,  1,  2, -2, -1],
+                [ 0,  1,  2, -2, -1],
+                [ 0,  1,  2, -2, -1],
+                [ 0,  1,  2, -2, -1]])
+        '''
 
         # Wavenumbers are the same
         self.kx = self.x
@@ -60,6 +110,38 @@ class Lattice:
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
         self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).T
+        '''
+        A tensor of size ``[sites, len(dims)]``.  Each row contains a pair of coordinates.  The order matches ``{X,Y}.flatten()``.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.coordinates
+        >>> lattice.coordinates
+        tensor([[ 0,  0],
+                [ 0,  1],
+                [ 0,  2],
+                [ 0, -2],
+                [ 0, -1],
+                [ 1,  0],
+                [ 1,  1],
+                [ 1,  2],
+                [ 1, -2],
+                [ 1, -1],
+                [ 2,  0],
+                [ 2,  1],
+                [ 2,  2],
+                [ 2, -2],
+                [ 2, -1],
+                [-2,  0],
+                [-2,  1],
+                [-2,  2],
+                [-2, -2],
+                [-2, -1],
+                [-1,  0],
+                [-1,  1],
+                [-1,  2],
+                [-1, -2],
+                [-1, -1]])
+        '''
 
     def __str__(self):
         return f'SquareLattice({self.nx},{self.ny})'
@@ -134,30 +216,28 @@ class Lattice:
 
     @cached_property
     def adjacency_tensor(self):
-        # Creates an (nx, ny, nx, ny) adjacency matrix, where the
-        # first two indices form the "row" and the
-        # second two indices form the "column"
-        A = torch.zeros(np.tile(self.dims, 2).tolist(), dtype=torch.int)
-        for i,x in enumerate(self.x):
-            for k,z in enumerate(self.x):
-                a = torch.abs(self.mod_x(x-z))
-                if a not in [0,1]:
-                    continue
-                for j,y in enumerate(self.y):
-                    for l,w in enumerate(self.y):
-                        b = torch.abs(self.mod_y(y-w))
-                        #if self.distance_squared( [x,y], [z,w] ) == 1: # nearest-neighbors
-                        if a+b == 1:
-                            A[i,j,k,l] = 1
-                            
-        return A
+        r'''
+        The `adjacency_matrix` but the two superindices are transformed into coordinate indices.
+        '''
+        return self.linearized_tensor(self.adjacency_matrix)
 
     @cached_property
     def adjacency_matrix(self):
-        return self.tensor_linearized(self.adjacency_tensor)
+        r'''
+        A matrix which is 1 if the corresponding ``coordinates`` are nearest neighbors (accounting for periodic boundary conditions) and 0 otherwise.
+        '''
+        A = torch.zeros(self.sites, self.sites, dtype=torch.int)
+        for i, a in enumerate(self.coordinates):
+            for j, b in enumerate(self.coordinates):
+                if self.distance_squared(a,b) == 1:
+                    A[i,j] = 1
+        return A
 
     @cached_property
     def kappa(self):
+        r'''
+        The kinetic :math:`\kappa` with a perfect dispersion relation, as a ``[sites, sites]`` matrix.
+        '''
         # Makes an assumption that nx = ny
 
         # We know kappa_ab = 1/V Σ(k) (2πk)^2/2V exp( -2πik•(a-b)/Nx )
@@ -185,3 +265,7 @@ class Lattice:
         # right = torch.tensor(4*np.pi**2 * lattice.ksq.ravel() / lattice.sites / 2).sort().values
         # (torch.abs(left-right) < 1e-6).all()
         # ```
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
