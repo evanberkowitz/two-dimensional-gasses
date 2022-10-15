@@ -86,7 +86,7 @@ class Action:
 
         self.quenched = torch.distributions.multivariate_normal.MultivariateNormal(
             torch.zeros_like(self.Spacetime.Lattice.vector()).flatten(),
-            -self.dt * self.Spacetime.Lattice.tensor_linearized(self.V)
+            -self.dt * self.V
             ).expand([self.Spacetime.nt])
 
     def __str__(self):
@@ -108,7 +108,7 @@ class Action:
                 :math:`S(A)`.
         '''
         # S = 1/2 Σ(t) A(t) inverse(- ∆t V) A(t) - log det d + nt/2 tr log(-2π ∆t V )
-        gauss = -0.5 * torch.einsum('txy,xyab,tab->', A, self.Vinverse.to(A.dtype), A) / self.dt
+        gauss = -0.5 * torch.einsum('txy,xyab,tab->', A, self.Spacetime.Lattice.linearized_tensor(self.Vinverse.to(A.dtype)), A) / self.dt
 
         fermionic = - self.FermionMatrix.logdet(A)
 

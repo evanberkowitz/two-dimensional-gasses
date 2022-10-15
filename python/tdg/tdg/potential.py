@@ -22,11 +22,11 @@ class Potential:
 
     @cached
     def inverse(self, lattice):
-        return lattice.linearized_tensor(torch.linalg.inv(lattice.tensor_linearized(self.spatial(lattice))))
+        return torch.linalg.inv(self.spatial(lattice))
 
     @cached
     def eigvals(self, lattice):
-        e = torch.linalg.eigvals(lattice.tensor_linearized(self.spatial(lattice)))
+        e = torch.linalg.eigvals(self.spatial(lattice))
         if (e.imag != 0).all():
             raise TypeError(f"{self} yields imaginary eigenvalues.")
         if (e.real >= 0).any():

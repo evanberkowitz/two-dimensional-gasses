@@ -77,7 +77,7 @@ print(f"For example, {V=}.")
 print(f"On {lattice} it has a spatial representation with shape {V.spatial(lattice).shape}.")
 print(f"And the inverse of the spatial representation has shape {V.inverse(lattice).shape}.")
 
-one = lattice.tensor_linearized(torch.einsum("abcd,cdef->abef", V.spatial(lattice), V.inverse(lattice)))
+one = torch.matmul(V.spatial(lattice), V.inverse(lattice))
 zero = one - np.eye(lattice.sites)
 if( (np.abs(zero) < 1e-14).all() ):
     print("We can check that V.spatial and V.inverse are floating-point inverses.")
