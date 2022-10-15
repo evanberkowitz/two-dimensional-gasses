@@ -226,12 +226,10 @@ class Lattice:
         r'''
         A matrix which is 1 if the corresponding ``coordinates`` are nearest neighbors (accounting for periodic boundary conditions) and 0 otherwise.
         '''
-        A = torch.zeros(self.sites, self.sites, dtype=torch.int)
-        for i, a in enumerate(self.coordinates):
-            for j, b in enumerate(self.coordinates):
-                if self.distance_squared(a,b) == 1:
-                    A[i,j] = 1
-        return A
+        return torch.stack(tuple(
+            torch.where(self.distance_squared(a,self.coordinates) == 1, 1, 0)
+            for a in self.coordinates
+            ))
 
     @cached_property
     def kappa(self):
