@@ -31,9 +31,9 @@ print(f"The integer y coordinates of this lattice are {lattice.y}")
 print(f"We also provide a broadcastable set of coordinates:")
 print(f" lattice.X\n{lattice.X}")
 print(f" lattice.Y\n{lattice.Y}")
-x[0,0] = 1
+lattice.coordinatize(x)[0,0] = 1
 k = lattice.fft(x)
-print(f"The fourier transform of\n{x}\nis\n{k};\ninverting the fourier transform gives\n{lattice.ifft(k)}.")
+print(f"The 2D fourier transform of\n{x}\nis\n{k};\ninverting the fourier transform gives\n{lattice.ifft(k)}.")
 
 fft_norm=torch.abs( torch.sum(torch.conj(k) * k) - torch.sum(torch.conj(x) * x) )
 if( fft_norm < 1e-14):

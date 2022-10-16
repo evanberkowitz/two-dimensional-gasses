@@ -300,13 +300,16 @@ class Lattice:
             ''') from error
 
     def vector(self):
-        return self.tensor(1)
+        return torch.zeros(self.sites)
+        #return self.tensor(1)
 
-    def fft(self, vector, axes=(-2,-1), norm='ortho'):
-        return torch.fft.fft2(vector, dim=axes, norm=norm)
+    def fft(self, vector, axis=-1, norm='ortho'):
+        fft_axes = (axis-1, axis) if axis < 0 else (axis, axis+1)
+        return self.linearize(torch.fft.fft2(self.coordinatize(vector, dims=(axis,)), dim=fft_axes, norm=norm), dims=(axis,))
 
-    def ifft(self, vector, axes=(-2,-1), norm='ortho'):
-        return torch.fft.ifft2(vector, dim=axes, norm=norm)
+    def ifft(self, vector, axis=-1, norm='ortho'):
+        fft_axes = (axis-1, axis) if axis < 0 else (axis, axis+1)
+        return self.linearize(torch.fft.ifft2(self.coordinatize(vector, dims=(axis,)), dim=fft_axes, norm=norm), dims=(axis,))
 
     @cached_property
     def adjacency_tensor(self):
