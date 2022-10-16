@@ -202,6 +202,103 @@ class Lattice:
     def linearized_tensor(self, linearized):
         return linearized.reshape(*np.tile(self.dims, len(linearized.shape)))
 
+    def coordinatize(self, v, dims=(-1,)):
+        r'''
+        Unflattens all the dims from a linear superindex to one index for each dimension in ``.dims``.
+        
+        Parameters
+        ----------
+            v: torch.tensor
+            dims: tuple of integers
+            
+        Returns
+        -------
+            torch.tensor
+                ``v`` but tensor more, shorter dimensions.  Dimensions specified by ``dims`` are unflattened.
+        '''
+        
+        v_dims  = len(v.shape)
+
+        # We'll build up the new shape by considering each index left-to-right.
+        # So, for negative indices we need to mod them by the number of dimensions.
+        to_reshape, _ = torch.sort(torch.remainder(torch.tensor(dims), v_dims))
+        
+        new_shape = tuple(torch.cat(tuple( # Assemble a tuple which has
+                # the size s of the dimension if we're not unflattening it
+                # or the dimensions of the lattice if we are unflattening.
+                torch.tensor([s]) if i not in to_reshape else self.dims
+                for i, s in enumerate(v.shape)) 
+            ))
+        return v.reshape(new_shape)
+
+    def linearize(self, v, dims=(-1,)):
+        r'''
+        Flattens adjacent dimensions of v with shape ``.dims`` into a dimension of size ``.sites``.
+        
+        Parameters
+        ----------
+            v:  torch.tensor
+            dims: tuples of integers that specify that dimensions *in the result* that come from flattening.
+                Modded by the dimension of the resulting tensor so that any dimension is legal.
+                However, one should take care to ensure that no two are the SAME index of the result;
+                this causes a RuntimeError.
+            
+        Returns
+        -------
+            torch.tensor
+                ``v`` but with fewer, larger dimensions
+
+        .. note::
+            The ``dims`` parameter may be a bit confusing.  This perhaps-peculiar convention is to make it easier to
+            combine with ``coordinatize``.  ``linearize`` and ``coordinatize`` are inverses when they get *the same* 
+            dims arguments.
+
+            >>> import torch
+            >>> import tdg
+            >>> nx = 5
+            >>> dims = (0, -1)
+            >>> lattice = tdg.Lattice(5)
+            >>> v = torch.arange(nx**(2*3)).reshape(nx**2, nx**2, nx**2)
+            >>> u = lattice.coordinatize(v, dims)
+            >>> u.shape
+            torch.Size([5, 5, 25, 5, 5])
+            >>> w = lattice.linearize(u, dims) # dims indexes into the dimensions of w, not u!
+            >>> w.shape
+            torch.Size([25, 25, 25])
+            >>> (v == w).all()
+            tensor(True)
+
+        '''
+
+        shape   = v.shape
+        v_dims  = len(shape)
+        
+        dm = set(dims)
+        
+        future_dims = v_dims - (len(self.dims)-1) * len(dm)
+        dm = set(d % future_dims for d in dm)
+            
+        new_shape = []
+        idx = 0
+        for i in range(future_dims):
+            if i not in dm:
+                new_shape += [shape[idx]]
+                idx += 1
+            else:
+                new_shape += [self.sites]
+                idx += len(self.dims)
+        try:
+            return v.reshape(new_shape)
+        except RuntimeError as error:
+            raise ValueError(f'''
+            This happens when two indices to be linearized are accidentally the same.
+            For example, for a lattice of size [5,5], if v has .shape [x, y, 5, 5]
+            and you linearize(v, (2,-1)) the 2 axis and the -1 axis would refer to
+            the same axis in [x, y, 25].
+            
+            Perhaps this happened with your vector of shape {v.shape} and {dims=}?
+            ''') from error
+
     def vector(self):
         return self.tensor(1)
 
