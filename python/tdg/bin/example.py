@@ -18,7 +18,7 @@ lattice = tdg.Lattice(5)
 x = lattice.vector()
 print(f"The spatial lattice is {lattice}.")
 print(f"Spatial vectors have shape {x.shape}.")
-print(f"The adjacency tensor has shape {lattice.adjacency_tensor.shape}; as a matrix it has shape {lattice.tensor_linearized(lattice.adjacency_tensor).shape}")
+print(f"The adjacency tensor has shape {lattice.adjacency_tensor.shape}; as a matrix it has shape {lattice.adjacency_matrix.shape}")
 if( (lattice.adjacency_matrix == lattice.adjacency_matrix.T).all() ):
     print("The adjacency matrix is symmetric.")
 else:

@@ -195,10 +195,6 @@ class Lattice:
         # to get a new vector (with indices ij).
         return torch.zeros(np.tile(self.dims, n).tolist())
 
-    def tensor_linearized(self, tensor):
-        repeats = len(tensor.shape)
-        return tensor.reshape(*np.tile(self.sites, int(repeats / len(self.dims))))
-
     def linearized_tensor(self, linearized):
         return linearized.reshape(*np.tile(self.dims, len(linearized.shape)))
 
