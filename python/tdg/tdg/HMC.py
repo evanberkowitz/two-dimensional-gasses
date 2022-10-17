@@ -129,7 +129,7 @@ class MarkovChain:
                 a similar configuration; a new configuration if the proposal was accepted, or the original if the proposal is rejected.
                 
         """
-        p_i = self.refresh_momentum().reshape(self.H.V.Spacetime.dims).requires_grad_(True)
+        p_i = self.refresh_momentum().reshape(*x.shape).requires_grad_(True)
         x_i = x.clone().requires_grad_(True)
         
         H_i = self.H(x_i,p_i)

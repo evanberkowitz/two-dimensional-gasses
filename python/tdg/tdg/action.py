@@ -108,7 +108,7 @@ class Action:
                 :math:`S(A)`.
         '''
         # S = 1/2 Σ(t) A(t) inverse(- ∆t V) A(t) - log det d + nt/2 tr log(-2π ∆t V )
-        gauss = -0.5 * torch.einsum('txy,xyab,tab->', A, self.Spacetime.Lattice.linearized_tensor(self.Vinverse.to(A.dtype)), A) / self.dt
+        gauss = -0.5 * torch.einsum('ta,ab,tb->', A, self.Vinverse.to(A.dtype), A) / self.dt
 
         fermionic = - self.FermionMatrix.logdet(A)
 

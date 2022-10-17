@@ -110,14 +110,14 @@ class FermionMatrix:
         # For numerical stability we may need a smarter method.
         # This naive method is at least in principle correct.
 
-        assert (A.shape == self.Spacetime.dims), f"Gauge field shape {A.shape} must match the spacetime dimensions {self.Spacetime.dims}"
+        assert (A.shape == self.Spacetime.vector().shape), f"Gauge field shape {A.shape} must match the dimensions of a spacetime vector {self.Spacetime.vector().shape}"
 
         # Rather than incorporate µ ∆t into the exponential, since it is spacetime-constant,
         # we can just pull alll nt terms out and multiply by z at the end.
 
         # First construct all BinvF(t) for each t
 
-        F = torch.exp(A.reshape(self.Spacetime.nt, self.Spacetime.Lattice.sites))
+        F = torch.exp(A)
         # Since F(t) is a diagonal matrix we don't need to expand it and do 'real'
         # matrix multiplication.  Just use the fast simplification for each timeslice instead.
         BinvF = torch.einsum('ij,tj->tij',self.Binverse, F)
