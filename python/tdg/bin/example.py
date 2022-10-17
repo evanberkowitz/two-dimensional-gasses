@@ -52,8 +52,11 @@ v = spacetime.vector()
 print(f"The spacetime lattice is {spacetime}.")
 print(f"Spacetime vectors have shape {v.shape}.")
 print(f"The time coordinate takes values {spacetime.t}")
-print(f"Broadcastable coordinates are provided .T, .X, and .Y")
-print(f"A linearized list of coordinates has length {len(spacetime.coordinates)} which equals the number of sites {spacetime.sites}.")
+print(f"Broadcastable coordinates are provided .TX")
+if len(spacetime.coordinates) == spacetime.sites:
+    print(f"A linearized list of coordinates has length {len(spacetime.coordinates)} which equals the number of sites {spacetime.sites}.")
+else:
+    print(f"There is a problem, as the number of coordinates {len(spacetime.coordinates)} does not match the number of sites {spacetime.sites}.")
 
 
 
