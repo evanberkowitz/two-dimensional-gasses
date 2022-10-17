@@ -295,8 +295,8 @@ class Lattice:
             Perhaps this happened with your vector of shape {v.shape} and {dims=}?
             ''') from error
 
-    def vector(self):
-        return torch.zeros(self.sites)
+    def vector(self, *dims):
+        return torch.zeros(self.sites).repeat(*dims, 1)
         #return self.tensor(1)
 
     def fft(self, vector, axis=-1, norm='ortho'):

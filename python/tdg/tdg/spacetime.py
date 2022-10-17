@@ -32,5 +32,5 @@ class Spacetime:
     def __repr__(self):
         return str(self)
 
-    def vector(self):
-        return torch.zeros(self.dims)
+    def vector(self, *dims):
+        return self.Lattice.vector(*dims, self.nt)
