@@ -189,15 +189,6 @@ class Lattice:
         d = self.mod(a-b)
         return torch.sum(d.T**2, axis=(0,))
 
-    def tensor(self, n=2):
-        # can do matrix-vector via
-        #   torch.einsum('ijab,ab',matrix,vector)
-        # to get a new vector (with indices ij).
-        return torch.zeros(np.tile(self.dims, n).tolist())
-
-    def linearized_tensor(self, linearized):
-        return linearized.reshape(*np.tile(self.dims, len(linearized.shape)))
-
     def coordinatize(self, v, dims=(-1,)):
         r'''
         Unflattens all the dims from a linear superindex to one index for each dimension in ``.dims``.
