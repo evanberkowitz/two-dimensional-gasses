@@ -312,7 +312,7 @@ class Lattice:
         r'''
         The `adjacency_matrix` but the two superindices are transformed into coordinate indices.
         '''
-        return self.linearized_tensor(self.adjacency_matrix)
+        return self.coordinatize(self.adjacency_matrix, (0,1))
 
     @cached_property
     def adjacency_matrix(self):
