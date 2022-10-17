@@ -93,18 +93,16 @@ class LegoSphere:
         Returns
         -------
             torch.tensor:
-                a tensor of dimension ``[*lattice.dims, *lattice.dims]`` where the first set of indices is the expanded superindex :math:`a`
-                and the second set of indices is the expanded superindex :math:`b`.
+                a square matrix of dimension ``[lattice.sites, lattice.sites]`` where the first index is the superindex :math:`a`
+                and the second index  is the superindex :math:`b`.
         '''
-        S = Lattice.tensor(2)
+        S = torch.zeros(Lattice.sites, Lattice.sites)
 
-        for i,x in enumerate(Lattice.x):
-            for j,y in enumerate(Lattice.y):
-                for k,z in enumerate(Lattice.x):
-                    for l,w in enumerate(Lattice.y):
-                        for p in self.points:
-                            if Lattice.distance_squared(torch.tensor([x-z,y-w]), p) == 0:
-                                S[i,j,k,l] += self.c * self.norm
+        for i,x in enumerate(Lattice.coordinates):
+            for j,y in enumerate(Lattice.coordinates):
+                for p in self.points:
+                    if Lattice.distance_squared(x-y, p) == 0:
+                        S[i,j] += self.c * self.norm
 
         return S
 

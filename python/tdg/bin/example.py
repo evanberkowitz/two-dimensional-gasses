@@ -18,7 +18,7 @@ lattice = tdg.Lattice(5)
 x = lattice.vector()
 print(f"The spatial lattice is {lattice}.")
 print(f"Spatial vectors have shape {x.shape}.")
-print(f"The adjacency tensor has shape {lattice.adjacency_tensor.shape}; as a matrix it has shape {lattice.tensor_linearized(lattice.adjacency_tensor).shape}")
+print(f"The adjacency tensor has shape {lattice.adjacency_tensor.shape}; as a matrix it has shape {lattice.adjacency_matrix.shape}")
 if( (lattice.adjacency_matrix == lattice.adjacency_matrix.T).all() ):
     print("The adjacency matrix is symmetric.")
 else:
@@ -31,9 +31,9 @@ print(f"The integer y coordinates of this lattice are {lattice.y}")
 print(f"We also provide a broadcastable set of coordinates:")
 print(f" lattice.X\n{lattice.X}")
 print(f" lattice.Y\n{lattice.Y}")
-x[0,0] = 1
+lattice.coordinatize(x)[0,0] = 1
 k = lattice.fft(x)
-print(f"The fourier transform of\n{x}\nis\n{k};\ninverting the fourier transform gives\n{lattice.ifft(k)}.")
+print(f"The 2D fourier transform of\n{x}\nis\n{k};\ninverting the fourier transform gives\n{lattice.ifft(k)}.")
 
 fft_norm=torch.abs( torch.sum(torch.conj(k) * k) - torch.sum(torch.conj(x) * x) )
 if( fft_norm < 1e-14):
@@ -52,8 +52,11 @@ v = spacetime.vector()
 print(f"The spacetime lattice is {spacetime}.")
 print(f"Spacetime vectors have shape {v.shape}.")
 print(f"The time coordinate takes values {spacetime.t}")
-print(f"Broadcastable coordinates are provided .T, .X, and .Y")
-print(f"A linearized list of coordinates has length {len(spacetime.coordinates)} which equals the number of sites {spacetime.sites}.")
+print(f"Broadcastable coordinates are provided .TX")
+if len(spacetime.coordinates) == spacetime.sites:
+    print(f"A linearized list of coordinates has length {len(spacetime.coordinates)} which equals the number of sites {spacetime.sites}.")
+else:
+    print(f"There is a problem, as the number of coordinates {len(spacetime.coordinates)} does not match the number of sites {spacetime.sites}.")
 
 
 
@@ -77,7 +80,7 @@ print(f"For example, {V=}.")
 print(f"On {lattice} it has a spatial representation with shape {V.spatial(lattice).shape}.")
 print(f"And the inverse of the spatial representation has shape {V.inverse(lattice).shape}.")
 
-one = lattice.tensor_linearized(torch.einsum("abcd,cdef->abef", V.spatial(lattice), V.inverse(lattice)))
+one = torch.matmul(V.spatial(lattice), V.inverse(lattice))
 zero = one - np.eye(lattice.sites)
 if( (np.abs(zero) < 1e-14).all() ):
     print("We can check that V.spatial and V.inverse are floating-point inverses.")

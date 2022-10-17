@@ -4,6 +4,21 @@ from functools import cached_property
 import numpy as np
 import torch
 
+def _dimension(n):
+    '''
+
+    Parameters
+    ----------
+        n:  int
+            size of the dimension
+
+    Returns
+    -------
+        an FFT-convention-compatible list of coordinates for a dimension of size n,
+        ``[0, 1, 2, ... max, min ... -2, -1]``.
+    '''
+    return torch.tensor(list(range(0, n // 2 + 1)) + list(range( - n // 2 + 1, 0)), dtype=int)
+
 class Lattice:
 
     def __init__(self, nx, ny=None):
@@ -20,31 +35,69 @@ class Lattice:
             # The main issue is that when nx ≠ ny, self.nx**2 ≠ self.sites and so the different
             # momentum components need different normalizations.
             # When nx == ny this is coincidentally correct.
-            raise ValueError("Anisotropic lattices not currently supported")
+            raise NotImplemented("Anisotropic lattices not currently supported")
 
         self.dims = torch.tensor([self.nx, self.ny])
+        r'''
+        The dimension sizes in order.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.dims
+        tensor([5, 5])
+        '''
         self.sites = self.nx * self.ny
+        r'''
+        The total number of sites.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.sites
+        25
+        '''
 
         # We want to go from -n/2 to +n/2
-        self.x = torch.arange( - (self.nx // 2), self.nx // 2 + 1)
-        self.y = torch.arange( - (self.ny // 2), self.ny // 2 + 1)
-        # (up to even/odd issues)
-        if self.nx % 2 == 0:
-            self.x = self.x[1:]
-        if self.ny % 2 == 0:
-            self.y = self.y[1:]
+        self.x = _dimension(self.nx)
+        r'''
+        The coordinates in the x direction.
 
-        # However, we want to match the FFT convention of numpy
-        # https://numpy.org/doc/stable/reference/routines.fft.html#implementation-details
-        # where the lowest coordinate / frequency is at 0, we increase to the max,
-        # and then go in decreasingly-negative order.
-        self.x = torch.roll(self.x, -((self.nx-1) // 2))
-        self.y = torch.roll(self.y, -((self.ny-1) // 2))
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.x
+        tensor([ 0,  1,  2, -2, -1])
+        '''
+        self.y = _dimension(self.ny)
+        r'''
+        The coordinates in the y direction.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.y
+        tensor([ 0,  1,  2, -2, -1])
+        '''
 
         # These are chosen so that Lattice(nx, ny)
         # has coordinate matrices of size (nx, ny)
         self.X = torch.tile( self.x, (self.ny, 1)).T
+        r'''
+        A tensor of size ``dims`` with the x coordinate as a value.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.X
+        tensor([[ 0,  0,  0,  0,  0],
+                [ 1,  1,  1,  1,  1],
+                [ 2,  2,  2,  2,  2],
+                [-2, -2, -2, -2, -2],
+                [-1, -1, -1, -1, -1]])
+        '''
         self.Y = torch.tile( self.y, (self.nx, 1))
+        r'''
+        A tensor of size ``dims`` with the y coordinate as a value.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.Y
+        tensor([[ 0,  1,  2, -2, -1],
+                [ 0,  1,  2, -2, -1],
+                [ 0,  1,  2, -2, -1],
+                [ 0,  1,  2, -2, -1],
+                [ 0,  1,  2, -2, -1]])
+        '''
 
         # Wavenumbers are the same
         self.kx = self.x
@@ -57,7 +110,38 @@ class Lattice:
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
         self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).T
-        self.coordinate_lookup= {tuple(x):i for i,x in enumerate(self.coordinates)}
+        '''
+        A tensor of size ``[sites, len(dims)]``.  Each row contains a pair of coordinates.  The order matches ``{X,Y}.flatten()``.
+
+        >>> lattice = tdg.Lattice(5)
+        >>> lattice.coordinates
+        >>> lattice.coordinates
+        tensor([[ 0,  0],
+                [ 0,  1],
+                [ 0,  2],
+                [ 0, -2],
+                [ 0, -1],
+                [ 1,  0],
+                [ 1,  1],
+                [ 1,  2],
+                [ 1, -2],
+                [ 1, -1],
+                [ 2,  0],
+                [ 2,  1],
+                [ 2,  2],
+                [ 2, -2],
+                [ 2, -1],
+                [-2,  0],
+                [-2,  1],
+                [-2,  2],
+                [-2, -2],
+                [-2, -1],
+                [-1,  0],
+                [-1,  1],
+                [-1,  2],
+                [-1, -2],
+                [-1, -1]])
+        '''
 
     def __str__(self):
         return f'SquareLattice({self.nx},{self.ny})'
@@ -65,90 +149,223 @@ class Lattice:
     def __repr__(self):
         return str(self)
 
-    def mod_x(self, x):
-        # Mods into the x coordinate.
-        # Assumes periodic boundary conditions.
-        mod = torch.remainder(x, self.nx)
-        return torch.where(mod < 1+self.nx // 2, mod, mod - self.nx)
-
-    def mod_y(self, y):
-        # Mods into the y coordinate.
-        # Assumes periodic boundary conditions.
-        mod = torch.remainder(y, self.ny)
-        return torch.where(mod < 1+self.ny // 2, mod, mod - self.ny)
-
     def mod(self, x):
-        # Mod an [x,y] pair into lattice coordinates.
-        # Assumes periodic boundary conditions
-        if len(x.shape) == 1:
-            X = x[None,:]
-        else:
-            X = x
-        modx = self.mod_x(X[:,0])
-        mody = self.mod_y(X[:,1])
+        r'''
+        Mod integer coordinates x into values on the lattice.
 
-        mod = torch.stack((modx, mody)).T
+        Parameters
+        ----------
+            x:  torch.tensor
+                The last dimension should be of size 2.
 
-        if len(x.shape) == 1:
-            return mod[0]
-        else:
-            return mod
+        Returns
+        -------
+            torch.tensor
+                Each x is identified with an entry of ``coordinates`` by periodic boundary conditions.
+        '''
+        return torch.stack((
+            self.x[torch.remainder(x.T[0],self.nx)],
+            self.y[torch.remainder(x.T[1],self.ny)],
+            )).T
 
     def distance_squared(self, a, b):
+        r'''
+        .. math::
+            \texttt{distance_squared}(a,b) = \left| \texttt{mod}(a - b)\right|^2
+
+        Parameters
+        ----------
+            a:  torch.tensor
+                coordinates that need not be on the lattice
+            b:  torch.tensor
+                coordinates that need not be on the lattice
+
+        Returns
+        -------
+            torch.tensor
+                The distance between ``a`` and ``b`` on the lattice accounting for the fact that,
+                because of periodic boundary conditions, the distance may shorter than naively expected.
+        '''
         d = self.mod(a-b)
-        return torch.dot(d,d)
+        return torch.sum(d.T**2, axis=(0,))
 
-    def tensor(self, n=2):
-        # can do matrix-vector via
-        #   torch.einsum('ijab,ab',matrix,vector)
-        # to get a new vector (with indices ij).
-        return torch.zeros(np.tile(self.dims, n).tolist())
+    def coordinatize(self, v, dims=(-1,)):
+        r'''
+        Unflattens all the dims from a linear superindex to one index for each dimension in ``.dims``.
+        
+        Parameters
+        ----------
+            v: torch.tensor
+            dims: tuple of integers
+            
+        Returns
+        -------
+            torch.tensor
+                ``v`` but tensor more, shorter dimensions.  Dimensions specified by ``dims`` are unflattened.
+        '''
+        
+        v_dims  = len(v.shape)
 
-    def tensor_linearized(self, tensor):
-        repeats = len(tensor.shape)
-        return tensor.reshape(*np.tile(self.sites, int(repeats / len(self.dims))))
+        # We'll build up the new shape by considering each index left-to-right.
+        # So, for negative indices we need to mod them by the number of dimensions.
+        to_reshape, _ = torch.sort(torch.remainder(torch.tensor(dims), v_dims))
+        
+        new_shape = tuple(torch.cat(tuple( # Assemble a tuple which has
+                # the size s of the dimension if we're not unflattening it
+                # or the dimensions of the lattice if we are unflattening.
+                torch.tensor([s]) if i not in to_reshape else self.dims
+                for i, s in enumerate(v.shape)) 
+            ))
+        return v.reshape(new_shape)
 
-    def linearized_tensor(self, linearized):
-        return linearized.reshape(*np.tile(self.dims, len(linearized.shape)))
+    def linearize(self, v, dims=(-1,)):
+        r'''
+        Flattens adjacent dimensions of v with shape ``.dims`` into a dimension of size ``.sites``.
+        
+        Parameters
+        ----------
+            v:  torch.tensor
+            dims: tuples of integers that specify that dimensions *in the result* that come from flattening.
+                Modded by the dimension of the resulting tensor so that any dimension is legal.
+                However, one should take care to ensure that no two are the SAME index of the result;
+                this causes a RuntimeError.
+            
+        Returns
+        -------
+            torch.tensor
+                ``v`` but with fewer, larger dimensions
 
-    def vector(self):
-        return self.tensor(1)
+        .. note::
+            The ``dims`` parameter may be a bit confusing.  This perhaps-peculiar convention is to make it easier to
+            combine with ``coordinatize``.  ``linearize`` and ``coordinatize`` are inverses when they get *the same* 
+            dims arguments.
 
-    def matrix(self):
-        return self.tensor_linearized(self.tensor(2))
+            >>> import torch
+            >>> import tdg
+            >>> nx = 5
+            >>> dims = (0, -1)
+            >>> lattice = tdg.Lattice(5)
+            >>> v = torch.arange(nx**(2*3)).reshape(nx**2, nx**2, nx**2)
+            >>> u = lattice.coordinatize(v, dims)
+            >>> u.shape
+            torch.Size([5, 5, 25, 5, 5])
+            >>> w = lattice.linearize(u, dims) # dims indexes into the dimensions of w, not u!
+            >>> w.shape
+            torch.Size([25, 25, 25])
+            >>> (v == w).all()
+            tensor(True)
 
-    def fft(self, vector, axes=(-2,-1), norm='ortho'):
-        return torch.fft.fft2(vector, dim=axes, norm=norm)
+        '''
 
-    def ifft(self, vector, axes=(-2,-1), norm='ortho'):
-        return torch.fft.ifft2(vector, dim=axes, norm=norm)
+        shape   = v.shape
+        v_dims  = len(shape)
+        
+        dm = set(dims)
+        
+        future_dims = v_dims - (len(self.dims)-1) * len(dm)
+        dm = set(d % future_dims for d in dm)
+            
+        new_shape = []
+        idx = 0
+        for i in range(future_dims):
+            if i not in dm:
+                new_shape += [shape[idx]]
+                idx += 1
+            else:
+                new_shape += [self.sites]
+                idx += len(self.dims)
+        try:
+            return v.reshape(new_shape)
+        except RuntimeError as error:
+            raise ValueError(f'''
+            This happens when two indices to be linearized are accidentally the same.
+            For example, for a lattice of size [5,5], if v has .shape [x, y, 5, 5]
+            and you linearize(v, (2,-1)) the 2 axis and the -1 axis would refer to
+            the same axis in [x, y, 25].
+            
+            Perhaps this happened with your vector of shape {v.shape} and {dims=}?
+            ''') from error
+
+    def vector(self, *dims):
+        r'''
+        Parameters
+        ----------
+            dims:   tuple
+                Specifies how how many vectors to produce.
+                
+        Returns
+        -------
+            torch.tensor:
+                A ``dims``-dimensional stack of linearized zero vectors.
+        '''
+        return torch.zeros(self.sites).repeat(*dims, 1)
+
+    def fft(self, vector, axis=-1, norm='ortho'):
+        r'''The Fourier transform on a linearized axis.
+
+        Parameters
+        ----------
+            vector: torch.tensor
+                A vector of data.
+            axis:
+                The axis along which to perform a 2D Fourier transform on the vector.
+            norm:
+                A `convention for the Fourier transform`_, one of ``"forward"``, ``"backward"``, or ``"ortho"``.
+
+        Returns
+        -------
+            torch.tensor:
+                F(vector) with the same shape as the input vector, transformed along the axis.
+
+        .. _convention for the Fourier transform: https://pytorch.org/docs/stable/generated/torch.fft.fft2.html#torch.fft.fft2
+        '''
+        fft_axes = (axis-1, axis) if axis < 0 else (axis, axis+1)
+        return self.linearize(torch.fft.fft2(self.coordinatize(vector, dims=(axis,)), dim=fft_axes, norm=norm), dims=(axis,))
+
+    def ifft(self, vector, axis=-1, norm='ortho'):
+        r'''The Fourier inverse transform on a linearized axis.
+
+        Parameters
+        ----------
+            vector: torch.tensor
+                A vector of data.
+            axis:
+                The axis along which to perform a 2D inverse Fourier transform on the vector.
+            norm:
+                A `convention for the Fourier transform`_, one of ``"forward"``, ``"backward"``, or ``"ortho"``.
+
+        Returns
+        -------
+            torch.tensor:
+                Inverse[F](vector) with the same shape as the input vector, transformed along the axis.
+
+        .. _convention for the Fourier transform: https://pytorch.org/docs/stable/generated/torch.fft.fft2.html#torch.fft.fft2
+        '''
+        fft_axes = (axis-1, axis) if axis < 0 else (axis, axis+1)
+        return self.linearize(torch.fft.ifft2(self.coordinatize(vector, dims=(axis,)), dim=fft_axes, norm=norm), dims=(axis,))
 
     @cached_property
     def adjacency_tensor(self):
-        # Creates an (nx, ny, nx, ny) adjacency matrix, where the
-        # first two indices form the "row" and the
-        # second two indices form the "column"
-        A = torch.zeros(np.tile(self.dims, 2).tolist(), dtype=torch.int)
-        for i,x in enumerate(self.x):
-            for k,z in enumerate(self.x):
-                a = torch.abs(self.mod_x(x-z))
-                if a not in [0,1]:
-                    continue
-                for j,y in enumerate(self.y):
-                    for l,w in enumerate(self.y):
-                        b = torch.abs(self.mod_y(y-w))
-                        #if self.distance_squared( [x,y], [z,w] ) == 1: # nearest-neighbors
-                        if a+b == 1:
-                            A[i,j,k,l] = 1
-                            
-        return A
+        r'''
+        The `adjacency_matrix` but the two superindices are transformed into coordinate indices.
+        '''
+        return self.coordinatize(self.adjacency_matrix, (0,1))
 
     @cached_property
     def adjacency_matrix(self):
-        return self.tensor_linearized(self.adjacency_tensor)
+        r'''
+        A matrix which is 1 if the corresponding ``coordinates`` are nearest neighbors (accounting for periodic boundary conditions) and 0 otherwise.
+        '''
+        return torch.stack(tuple(
+            torch.where(self.distance_squared(a,self.coordinates) == 1, 1, 0)
+            for a in self.coordinates
+            ))
 
     @cached_property
     def kappa(self):
+        r'''
+        The kinetic :math:`\kappa` with a perfect dispersion relation, as a ``[sites, sites]`` matrix.
+        '''
         # Makes an assumption that nx = ny
 
         # We know kappa_ab = 1/V Σ(k) (2πk)^2/2V exp( -2πik•(a-b)/Nx )
@@ -176,3 +393,7 @@ class Lattice:
         # right = torch.tensor(4*np.pi**2 * lattice.ksq.ravel() / lattice.sites / 2).sort().values
         # (torch.abs(left-right) < 1e-6).all()
         # ```
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
