@@ -33,7 +33,8 @@ extensions = [
         'sphinx.ext.mathjax',
         'sphinx.ext.autodoc',
         'sphinx.ext.viewcode',
-        'sphinxcontrib.bibtex'
+        'sphinxcontrib.bibtex',
+        'sphinx_git',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
