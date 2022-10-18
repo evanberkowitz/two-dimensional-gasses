@@ -12,6 +12,7 @@ Two-Dimensional Gases
 
    modules
    todo
+   version
 
 
 Indices and tables
@@ -20,3 +21,13 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+Version Information
+===================
+
+.. git_commit_detail::
+    :branch:
+    :commit:
+    :uncommitted:
+    :untracked:
