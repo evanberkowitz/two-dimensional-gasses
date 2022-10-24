@@ -65,11 +65,11 @@ class FermionMatrix:
         self.zh = torch.exp(self.beta * self.absh)
 
         if self.absh == 0:
-            self.exp_h_dt = tdg.PauliMatrix[0]
+            self.exp_beta_h = tdg.PauliMatrix[0]
         else:
-            self.exp_h_dt = torch.cosh( self.absh * self.dt ) * tdg.PauliMatrix[0]
+            self.exp_beta_h = torch.cosh( self.absh * self.beta ) * tdg.PauliMatrix[0]
             for h, sigma in zip(self.h, tdg.PauliMatrix[1:]):
-                self.exp_h_dt += torch.sinh( self.absh * self.dt) * h / self.absh * sigma
+                self.exp_beta_h += torch.sinh( self.absh * self.beta) * h / self.absh * sigma
 
         self.B = torch.matrix_exp( self.dt * self.Spacetime.Lattice.kappa)
         self.Binverse = torch.matrix_exp( -self.dt * self.Spacetime.Lattice.kappa)
