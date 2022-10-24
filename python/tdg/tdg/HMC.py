@@ -204,3 +204,80 @@ class LeapFrog:
         Forwards to ``integrate``.
         '''
         return self.integrate(x_i, p_i)
+
+class Omelyan:
+    r"""
+    The Omelyan integrator is a second-order integrator which integrates Hamilton's equations of motion for a total of :math:`\tau` molecular dynamics time `md_time` in a reversible, symplectic way.
+
+    It discretizes :math:`\tau` into `md_steps` steps of :math:`d\tau` and given :math:`0\leq\zeta\leq1` applies the following integration scheme:
+
+    #. Update the coordinates by :math:`\zeta\;d\tau`,
+    #. update the momenta by :math:`\frac{1}{2}\; d\tau`,
+    #. update the coordinates by :math:`(1-2\zeta)\;d\tau`,
+    #. update the momenta by :math:`\frac{1}{2}\; d\tau`,
+    #. update the coordinates by :math:`\zeta\;d\tau`.
+
+    However, if the number of steps is more than 1 the trailing coordinate update from one step is combined with the leading coordinate update from the next.
+
+    If nothing is known about the structure of the potential, the :math:`h^3` errors are minimized when :math:`\zeta \approx 0.193` :cite:`PhysRevE.65.056706`.
+    """
+
+    def __init__(self, H, md_steps, md_time=1, zeta=0.193):
+        self.H = H
+        self.md_time  = md_time
+        self.md_steps = md_steps
+        self.md_dt    = self.md_time / self.md_steps
+        self.zeta     = zeta
+
+        if (zeta < 0) or (1 < zeta):
+            raise ValueError("Second-order integrators need 0 <= zeta <= 1 for any hope of improvement over LeapFrog.")
+
+    def integrate(self, x_i, p_i):
+        r"""Integrate an initial position and momentum.
+
+        Parameters
+        ----------
+            x_i:    torch.tensor
+                    a tensor of positions
+            p_i:    torch.tensor
+                    a tensor of momenta
+
+        Returns
+        -------
+            x_f:    torch.tensor
+                    a tensor of positions,
+            p_f:    torch.tensor
+                    a tensor of momenta
+
+        """
+        # Take an initial zeta-step of the coordinates
+        x = x_i + self.H.velocity(p_i) * (self.zeta * self.md_dt)
+        
+        # do the initial half-step of momentum update,
+        p = p_i + self.H.force(x) * (self.md_dt / 2)
+        
+
+        # Now do whole-dt coordinate AND momentum updates
+        for md_step in range(self.md_steps-1):
+            x = x + self.H.velocity(p) * ((1-2*self.zeta) * self.md_dt)
+            p = p + self.H.force(x) * (self.md_dt / 2)
+            x = x + self.H.velocity(p) * (2 * self.zeta * self.md_dt)
+            p = p + self.H.force(x) * (self.md_dt / 2)
+
+        # do the middle coordinate step of (1-2zeta)
+        x = x + self.H.velocity(p) * ((1-2 * self.zeta) * self.md_dt)
+            
+        # do the final half-step of momentum integration,
+        p = p + self.H.force(x) * (self.md_dt / 2)
+
+         # take a final coordinate zeta-step
+        x = x + self.H.velocity(p) * (self.zeta * self.md_dt)
+
+        return x, p
+    
+    def __call__(self, x_i, p_i):
+        '''
+        Forwards to ``integrate``.
+        '''
+        return self.integrate(x_i, p_i)
+
