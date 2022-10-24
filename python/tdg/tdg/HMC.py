@@ -209,7 +209,7 @@ class Omelyan:
     r"""
     The Omelyan integrator is a second-order integrator which integrates Hamilton's equations of motion for a total of :math:`\tau` molecular dynamics time `md_time` in a reversible, symplectic way.
 
-    It discretizes :math:`\tau` into `md_steps` steps of :math:`d\tau` and given :math:`0\leq\zeta\leq1` applies the following integration scheme:
+    It discretizes :math:`\tau` into `md_steps` steps of :math:`d\tau` and given :math:`0\leq\zeta\leq 0.5` applies the following integration scheme:
 
     #. Update the coordinates by :math:`\zeta\;d\tau`,
     #. update the momenta by :math:`\frac{1}{2}\; d\tau`,
@@ -220,6 +220,8 @@ class Omelyan:
     However, if the number of steps is more than 1 the trailing coordinate update from one step is combined with the leading coordinate update from the next.
 
     If nothing is known about the structure of the potential, the :math:`h^3` errors are minimized when :math:`\zeta \approx 0.193` :cite:`PhysRevE.65.056706`.
+
+    When :math:`\zeta=0` this reproduces the momentum-first leapfrog; when :math:`\zeta=0.5` it reproduces the position-first LeapFrog.
     """
 
     def __init__(self, H, md_steps, md_time=1, zeta=0.193):
@@ -229,8 +231,8 @@ class Omelyan:
         self.md_dt    = self.md_time / self.md_steps
         self.zeta     = zeta
 
-        if (zeta < 0) or (1 < zeta):
-            raise ValueError("Second-order integrators need 0 <= zeta <= 1 for any hope of improvement over LeapFrog.")
+        if (zeta < 0) or (0.5 < zeta):
+            raise ValueError("Second-order integrators need 0 <= zeta <= 0.5 for any hope of improvement over LeapFrog.")
 
     def integrate(self, x_i, p_i):
         r"""Integrate an initial position and momentum.
