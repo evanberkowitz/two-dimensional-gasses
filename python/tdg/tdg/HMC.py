@@ -194,7 +194,7 @@ class LeapFrog:
             x = x + self.H.velocity(p) * self.md_dt
             p = p + self.H.force(x) * self.md_dt
             
-        # Take a final half-step of momentum
+        # Take a final half-step of coordinates
         x = x + self.H.velocity(p) * self.md_dt / 2
 
         return x, p
@@ -266,7 +266,7 @@ class Omelyan:
 
         # do the middle coordinate step of (1-2zeta)
         x = x + self.H.velocity(p) * ((1-2 * self.zeta) * self.md_dt)
-            
+
         # do the final half-step of momentum integration,
         p = p + self.H.force(x) * (self.md_dt / 2)
 
