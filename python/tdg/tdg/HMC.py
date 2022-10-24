@@ -151,11 +151,11 @@ class LeapFrog:
 
     One step of :math:`d\tau` integration is accomplished by
 
-    #. updating the momentum by :math:`d\tau/2`
-    #. updating the position by :math:`d\tau`
-    #. updating the momentum by :math:`d\tau/2`.
+    #. updating the coordinates by :math:`d\tau/2`
+    #. updating the momenta by :math:`d\tau`
+    #. updating the coordinates by :math:`d\tau/2`.
 
-    However, if the number of steps is more than 1 the trailing half-step momentum update from one step is combined with the leading half-step momentum update from the next.
+    However, if the number of steps is more than 1 the trailing half-step coordinate update from one step is combined with the leading half-step coordinate update from the next.
     """
  
     def __init__(self, H, md_steps, md_time=1):
@@ -183,21 +183,21 @@ class LeapFrog:
 
         """
         
-        # Take an initial half-step of the momentum
-        p = p_i + self.H.force(x_i) * self.md_dt / 2
+        # Take an initial half-step of the coordinates
+        x = x_i + self.H.velocity(p_i) * self.md_dt / 2
         
-        # do the initial position update,
-        x = (x_i + self.H.velocity(p) * self.md_dt).clone()
+        # do the initial momentum update,
+        p = p_i + self.H.force(x) * self.md_dt
         
-        # Now do whole-dt momentum AND position updates
+        # Now do whole-dt coordinate AND momentum updates
         for md_step in range(self.md_steps-1):
+            x = x + self.H.velocity(p) * self.md_dt
             p = p + self.H.force(x) * self.md_dt
-            x = (x + self.H.velocity(p) * self.md_dt).clone()
             
         # Take a final half-step of momentum
-        p_f = p + self.H.force(x) * self.md_dt / 2
+        x = x + self.H.velocity(p) * self.md_dt / 2
 
-        return x, p_f
+        return x, p
     
     def __call__(self, x_i, p_i):
         '''
