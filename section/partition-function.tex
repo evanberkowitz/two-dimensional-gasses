@@ -540,7 +540,7 @@ This is marvelous: if you can reliably construct the block sausage you need only
 For a detailed discussion of this operator see \Ref{Wynen:2018ryx} (it is the `exponential $\alpha=0$' operator), where it is shown $\dd$ has an ergodicity problem when the lattice is bipartite (if $\vec{h}=0$).
 \emph{For that reason we always pick a lattice with an odd number of sites on at least one side.}
 
-\subsection{Correlation Functions}
+\subsection{Correlation Functions}\label{sec:correlation functions}
 
 We often want to evaluate not just the partition function but the expectation value of some operators, such as $\expectation{\tilde{n}_\sigma(a)}$ or $\expectation{\tilde{n}_{\sigma}(a)\tilde{n}_{\sigma'}(a')}$ for some spins $\sigma, \sigma'$ and (dimensionless) positions $a, a'$.
 Let us currently restrict our attention to equal-time correlators on the same, first, timeslice, so that numerically we wish to evaluate
@@ -608,6 +608,7 @@ Inserting the auxiliary-field formulation of $Z$ \eqref{computational partition 
 	\oneover{Z}
 		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }}
 		\det \left(\one + \UU \right) \tr{\left(\one + \UU \right)\inverse \left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}}
+	\label{eq:fermionic particle number}
 \end{align}
 where $\UU$ with no arguments has the local fluctuations st to zero and we assume that $(1+\UU)$ is invertible so that the derivative of the determinant may be replaced via the identity $\partial \det{A} = \det A ~ \tr{ A\inverse \partial A}$.
 

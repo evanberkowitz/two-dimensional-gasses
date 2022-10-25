@@ -1,5 +1,87 @@
 \section{Observables}\label{sec:observables}
 
+\subsection{Total Particle Number}\label{sec:number}
+
+In \Secref{correlation functions} we give an example for calculating one-body observables by functionally differentiating the partition function.
+In particular, by calculating a trace of combinations of $\UU$ one may calculate the local particle number $\expectation{\tilde{n}_a}$ \eqref{fermionic particle number}.
+By summing the result on every lattice site we find
+\begin{align}
+	\expectation{\tilde{N}}
+	=
+	\expectation{\sum_a \tilde{n}_a}
+	=
+	\sum_a \expectation{\tilde{n}_a}
+	&=
+	\sum_a \expectation{\tr{(\one+\UU)\inverse \UU \PP_a}}
+	\nonumber\\
+	&=
+	\expectation{\tr{(\one+\UU)\inverse \UU \sum_a \PP_a}}
+	=
+	\expectation{\tr{(\one+\UU)\inverse \UU \one}}
+	=
+	\expectation{\tr{(\one+\UU)\inverse \UU}}
+	\label{eq:fermionic total number}
+\end{align}
+Since this observable requires the fermion matrix $\UU$, let's call this the fermionic method for computing $\tilde{N}$.
+
+We will now show that there is a much cheaper estimator for $\tilde{N}$.\footnote{This point is strongly informed by discussions with Andreas Wipf.}
+The philosophy is similar to the derivation of a Ward identity.
+The starting point is the bilinear Trotterization \eqref{trotterization bilinearized}.
+Consider shifting each auxiliary field timeslice in the numerator by any finite amount $\delta A_t$ (which might vary in space).
+Since $A$ is integrated over the real line such a shift cannot change the partition function.
+Therefore if we expand the result order-by-order in $\delta A$ we will get a series of terms that all must vanish.
+
+Concretely,
+\begin{align}
+	\int DA&\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{-2\pi \Delta\tilde{t}\tilde{V}}}
+		\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} } 
+	\nonumber\\
+	=&
+	\int DA\; e^{-\frac{1}{2} \sum_t (A+\delta A)\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse (A+\delta A)_t - \frac{N_t}{2} \trlog{-2\pi \Delta\tilde{t}\tilde{V}}}
+	~	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint ((A+\delta A)_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} } 
+	\nonumber\\
+	=&
+	\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2}\trlog{-2\pi \Delta\tilde{t}\tilde{V}}}
+		\left\{1 - \half \sum_t \left(A\transpose_t (-\Delta\tilde{t}\tilde{V})\inverse \delta A_t + \delta A\transpose_t (-\Delta\tilde{t}\tilde{V})\inverse A_t\right) +\cdots\right\} 
+	\nonumber\\
+	&\times\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} \left\{1 + \delta A_t \tilde{\psi}\adjoint_t \tilde{\psi}_t + \cdots\right\} } 
+\end{align}
+Collecting the right-hand-side order-by-order in $\delta A$ gives the original expression at the $0^\text{th}$ order, so all further orders must be individually 0.
+In particular, the first order in $\delta A$ gives
+\begin{align}
+	0 =
+	\delta A_t \Bigg(&
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2}\trlog{-2\pi \Delta\tilde{t}\tilde{V}}}
+		\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} \tilde{\psi}\adjoint_t \tilde{\psi}_t }
+	\nonumber\\
+	&
+	-	\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2}\trlog{-2\pi \Delta\tilde{t}\tilde{V}}}
+		\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} } \left((-\Delta\tilde{t}\tilde{V})\inverse A_t\right)
+	\Bigg) 
+	\nonumber\\
+	0 = \delta A_t \Bigg(& \expectation{\tilde{\psi}\adjoint_t\tilde{\psi}_t = \tilde{n}_t} - \expectation{ (-\Delta\tilde{t}\tilde{V})\inverse A_t} \Bigg)
+\end{align}
+where we used the symmetry of $\tilde{V}$ to simplify the gauge piece and conclude that for each site $a$ we can estimate
+\begin{align}
+	\expectation{n_{ta}} &= \expectation{(-\Delta\tilde{t}\tilde{V})_{ab}\inverse A_{tb}}
+\end{align}
+To compute the total particle number we can simply sum over $a$; for improved statistics we can average over time $t$,
+\begin{align}
+	\expectation{\tilde{N}} &= \expectation{\oneover{N_t}\sum_{ta}(-\Delta\tilde{t}\tilde{V})_{ab}\inverse A_{tb}}
+	\label{eq:bosonic particle number}
+\end{align}
+which gives a purely bosonic estimator that can be computed from the auxiliary field very quickly.
+
+This worked because we performed the Hubbard-Stratanovich transformation in the density channel.
+We can go to higher order in $\delta A$ with greater analytic effort, though at higher orders it is not possible to eliminate the fermionic operators completely: it is only possible to reduce the number of bilinears by 1.
+
+We note that the computational speed of the bosonic estimator is a tradeoff.
+In a few tests at large particle number the bosonic and fermionic estimators yielded similar distributions.
+However, the fermionic estimator \eqref{fermionic particle number} seems to be positive-definite in tests at small particle number, while the bosonic estimator is not.
+Therefore, especially at small particle number, the bosonic method may have much greater variance.
+
+\subsection{The Contact}\label{sec:contact}
+
 The contact is given by~\cite{PhysRevA.86.013626}
 \begin{align}
 	\hat{C} &= \frac{2 \pi M}{\hbar^2} \frac{dH}{d\log a}
