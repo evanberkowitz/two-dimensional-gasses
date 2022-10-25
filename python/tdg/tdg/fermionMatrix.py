@@ -128,6 +128,69 @@ class FermionMatrix:
             U = torch.matmul(BinvF[t], U)
         return U
 
+    def UU_tensor(self, A):
+        r'''
+        .. math::
+            \mathbb{U} = \mathbb{B}^{-1} \mathbb{F}_{N_t} \cdots \mathbb{B}^{-1} \mathbb{F}_{2} \mathbb{B}^{-1} \mathbb{F}_{1} 
+
+        where :math:`\mathbb{F}` contains the chemical potential and external field terms.  However, since those terms are space-independent we can commute them with :math:`\mathbb{B}` so that
+
+        .. math::
+            \mathbb{U} = \exp(\beta h\cdot\sigma) \begin{pmatrix} zU & 0 \\ 0 & zU\end{pmatrix}
+
+        where :math:`U` is given by :func:`U` and is (space × space).
+
+        Parameters
+        ----------
+            A:  torch.tensor
+                An auxiliary-field configuration.
+
+        Returns
+        -------
+            torch.tensor:
+                :math:`\mathbb{U}` not as a matrix but with shape `[space, space, spin, spin]`.
+                This makes the spin indices broadcastable, which is often useful for future manipulation.
+
+        '''
+        zU = self.z * self.U(A)
+        return torch.matmul(self.exp_beta_h, torch.stack(
+            (torch.stack((zU, torch.zeros_like(zU))),
+             torch.stack((torch.zeros_like(zU), zU)))
+            ).permute(2,3,0,1))
+
+    def UU(self, A):
+        r'''
+        Parameters
+        ----------
+            A:  torch.tensor
+                An auxiliary-field configuration
+
+        Returns
+        -------
+            torch.tensor:
+                The same as :func:`UU_tensor` but as a true matrix of shape (space ⊗ spin) × (space ⊗ spin), with spin fastest.
+
+        .. todo::
+            Leveraging this makes some code much slower.  For example,
+
+            >>> UU = torch.stack(
+            ...     tuple(Action.FermionMatrix.UU_tensor(cfg) for cfg in configurations)
+            ...     ).permute(0,1,3,2,4).reshape(-1,
+            ...                                  2*Action.FermionMatrix.Spacetime.Lattice.sites,
+            ...                                  2*Action.FermionMatrix.Spacetime.Lattice.sites)
+
+            is much faster to subsequently manipulate than
+
+            >>> UU = torch.stack(
+            ...     tuple(Action.FermionMatrix.UU(cfg) for cfg in configuration))
+            
+            which is something that ought to be understood / addressed.  Perhaps it is autograd- or computational-graph-related?
+
+            Is it possible to construct this code to distribute over a whole ensemble of auxiliary fields?
+            This perhaps should inform the way we code other observables.
+        '''
+        return self.UU_tensor(A).permute(0,2,1,3).reshape(2*self.Spacetime.Lattice.sites, 2*self.Spacetime.Lattice.sites)
+
     def logdet(self, A):
         r'''
         The log determinant of the fermion matrix appears in the action.
