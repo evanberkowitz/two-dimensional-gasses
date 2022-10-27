@@ -24,7 +24,7 @@ For spin-half fermions these projection operators can be written in an operator 
 	&
 	N &\in \left\{0, 1, \cdots, 2\Volume\right\}
 	\\
-	P_{S_h} &= \oneover{2\Volume+1} \sum_{s=-\Volume}^{\Volume} \exp\left(i \phi_s (2 h\cdot \hat{S} - 2 S_h )\right)
+	P_{S_h} &= \oneover{2\Volume+1} \sum_{s=-\Volume}^{\Volume} \exp\left(i \phi_s (2 \hat{h}\cdot \hat{S} - 2 S_h )\right)
 	&
 	\phi_s &= \frac{2\pi s}{2\Volume+1}
 	&
@@ -32,7 +32,7 @@ For spin-half fermions these projection operators can be written in an operator 
 \end{align}
 Since $[\hat{N}, \hat{S}]=0$ we can combine these projectors together,
 \begin{align}
-	\PP_{N, S_h} &= \oneover{(2\Volume+1)^2} \sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n (\hat{N}-N) + s (2h\cdot\hat{S} - 2 S_h)\right]\right)
+	\PP_{N, S_h} &= \oneover{(2\Volume+1)^2} \sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n (\hat{N}-N) + s (2\hat{h}\cdot\hat{S} - 2 S_h)\right]\right)
 \end{align}
 So, we should understand how to Trotterize the identity \eqref{canonical-grand canonical projection} and transform the projected grand-canonical traces into an auxiliary-field equivalents.
 
@@ -41,21 +41,21 @@ Actually, transforming the Trotterized projected grand-canonical traces proceeds
 	\matrixElement{\eta}{ \PP_{N, S_h} }{\eta'}
 	=&
 	\matrixElement{\eta}{
-		\oneover{(2\Volume+1)^2}\sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx} -N\right) + s \left(2 h^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx} - 2S_h\right)\right]\right)
+		\oneover{(2\Volume+1)^2}\sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx} -N\right) + s \left(2 \hat{h}^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx} - 2S_h\right)\right]\right)
 	}{\eta'}
 	\nonumber\\
 	=&
 	\oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
 	\nonumber\\
 	&\matrixElement{\eta}{
-		\exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx}\right) + s \left(2 h^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx}\right)\right]\right)
+		\exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx}\right) + s \left(2 \hat{h}^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx}\right)\right]\right)
 	}{\eta'}
 	\nonumber\\
 	=&
 	\oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
 	\nonumber\\
 	&\matrixElement{\eta}{
-		\exp\left(\frac{2\pi i}{2\Volume+1}\left[ \left(\sum_{ijx}\psi\adjoint_{ix}\left[n \delta_{ji} + s h^k\sigma_{ji}^k\right]\psi_{jx}\right) \right]\right)
+		\exp\left(\frac{2\pi i}{2\Volume+1}\left[ \left(\sum_{ijx}\psi\adjoint_{ix}\left[n \delta_{ji} + s \hat{h}^k\sigma_{ji}^k\right]\psi_{jx}\right) \right]\right)
 	}{\eta'}
 	\nonumber\\
 	=&
@@ -63,7 +63,7 @@ Actually, transforming the Trotterized projected grand-canonical traces proceeds
 	\exp\left[
 		\sum_{ijx}
 		\eta\adjoint_{ix}
-			\exp\left( \frac{2\pi i}{2\Volume+1} \left(n\one + s h\cdot \sigma\right) \right)_{ji}
+			\exp\left( \frac{2\pi i}{2\Volume+1} \left(n\one + s \hat{h}\cdot \sigma\right) \right)_{ji}
 		\eta'_{jx}
 	\right]
 \end{align}
@@ -72,7 +72,7 @@ The projected Trotterized trace therefore yields a sum of expressions just like 
 \begin{align}
 	\tr{\PP_{N,S_h} \prod_{t=1}^{N_t} e^{-\Delta t K}e^{\psi\adjoint\left(A_t + \Delta t \mu + \Delta t h\cdot\sigma\right)\psi}}
 	=
-	\oneover{(2\Volume+1)^2} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1} (nN+2sS_h)}\; \det\left[ \one + \UU \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s h \cdot \sigma\right)\right\}\right].
+	\oneover{(2\Volume+1)^2} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1} (nN+2sS_h)}\; \det\left[ \one + \UU \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s \hat{h} \cdot \sigma\right)\right\}\right].
 \end{align}
 Using \href{https://en.wikipedia.org/wiki/Determinant#Sylvester's\_determinant\_theorem}{Sylvester's identity} we can put the projection factor on the left of $\UU$.
 
@@ -82,7 +82,7 @@ So the projected grand-canonica auxiliary field partition function is not given 
 	=
 	\expectation{
 		\oneover{(2\Volume+1)^2} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1} (nN+2sS_h)}\; \frac{
-			\det\left[ \one + \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s h \cdot \sigma\right)\right\} \UU\right]
+			\det\left[ \one + \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s \hat{h} \cdot \sigma\right)\right\} \UU\right]
 		}{
 			\det\left[ \one + \UU \right]
 		}
@@ -93,7 +93,7 @@ That is, if we can write the expectation value in a form like the computational 
 \begin{align}
 	Z_{N, S_h} = \expectation{\PP_{N,S_h}} &= \int DA\; e^{-S} \PP_{N, S_h} = \int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}}
 	\\
-	S_{ns} &= \half \sum_{t} A_t\transpose (-\Delta\tilde{t}\tilde{V})\inverse A_t - \log\det\left(\one+\exp\left\{\frac{2\pi i}{2\Volume+1}(n\one+s h\cdot\sigma)\right\}\UU\right) + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}
+	S_{ns} &= \half \sum_{t} A_t\transpose (-\Delta\tilde{t}\tilde{V})\inverse A_t - \log\det\left(\one+\exp\left\{\frac{2\pi i}{2\Volume+1}(n\one+s \hat{h}\cdot\sigma)\right\}\UU\right) + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}
 \end{align}
 then if the grand canonical $\expectation{\O}$ for some operator $\O$ can be formulated as a functional derivative of $Z$ we may evaluate canonical expectation value \eqref{canonical-grand canonical projection} via the same derivative of $Z_{N, S_h}$,
 \begin{align}
@@ -108,4 +108,4 @@ then if the grand canonical $\expectation{\O}$ for some operator $\O$ can be for
 and we conclude that and $\expectation{\PP_{N,S_h}}$ is proportional to the canonical partition function in that sector.
 So, the (absolute) free energy is out of bounds, but functional derivatives are OK.
 However, remember that we \emph{functionally differentiate first} and then multiply by unity to ensure the grand canonical Boltzmann factor is used as the computational measure, and that we need to calculate the observable in each Fourier component.
-The Fourier-dependent observable can be computed with the same method as in the grand-canonical case but promoting $\UU \goesto \exp\{2\pi i(n+sh\cdot\sigma)/(2\Volume+1)\}\UU$.
+The Fourier-dependent observable can be computed with the same method as in the grand-canonical case but promoting $\UU \goesto \exp\{2\pi i(n+s\hat{h}\cdot\sigma)/(2\Volume+1)\}\UU$.
