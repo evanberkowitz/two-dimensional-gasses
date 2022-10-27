@@ -73,6 +73,14 @@ tdg.pauli module
    :undoc-members:
    :show-inheritance:
 
+tdg.epsilon module
+------------------
+
+.. automodule:: tdg.epsilon
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tdg.potential module
 --------------------
 

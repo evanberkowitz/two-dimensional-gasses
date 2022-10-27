@@ -1,6 +1,7 @@
 from . import meta
 
 from .pauli import *
+from .epsilon import epsilon as epsilon
 from .lattice import Lattice as Lattice
 import tdg.Luescher as Luescher
 from .ere import EffectiveRangeExpansion as EffectiveRangeExpansion
