@@ -29,16 +29,16 @@ class FermionMatrix:
             \end{pmatrix}
         \end{align}
 
-    where 
+    where the double-struck quantities
 
     .. math::
         \begin{align}
-            \mathbb{F}_t &= \left(e^{A_{t}+\Delta t\mu + \Delta t\vec{h}\cdot\vec{\sigma}}\right)
+            \mathbb{F}_t &= \left(e^{A_{t}+\Delta t\mu + \frac{1}{2}\Delta t\vec{h}\cdot\vec{\sigma}}\right)
             &
             \mathbb{B} &= (B = \exp \Delta t \kappa) \otimes \mathbb{1}
         \end{align}
 
-    where the double-struck quantities are space ⊗ spin in size.
+    are space ⊗ spin in size.
 
     In the language of Ref. :cite:`Wynen:2018ryx` this is called the :math:`\alpha=0` exponential discretization
     because the hopping matrix :math:`\kappa` which encodes the kinetic piece of the Hamiltonian appears inside an exponential,
@@ -60,16 +60,20 @@ class FermionMatrix:
         self.mu = mu
         self.h  = h
         self.absh = torch.linalg.vector_norm(self.h)
+        if self.absh == 0.:
+            self.hhat = torch.tensor([0,0,1.])
+        else:
+            self.hhat = self.h / self.absh
 
         self.z = torch.exp(self.beta * self.mu)
-        self.zh = torch.exp(self.beta * self.absh)
+        self.zh = torch.exp(0.5 * self.beta * self.absh)
 
         if self.absh == 0:
-            self.exp_beta_h = tdg.PauliMatrix[0]
+            self.exp_half_beta_h = tdg.PauliMatrix[0]
         else:
-            self.exp_beta_h = torch.cosh( self.absh * self.beta ) * tdg.PauliMatrix[0]
-            for h, sigma in zip(self.h, tdg.PauliMatrix[1:]):
-                self.exp_beta_h += torch.sinh( self.absh * self.beta) * h / self.absh * sigma
+            self.exp_half_beta_h = torch.cosh( 0.5 * self.absh * self.beta ) * tdg.PauliMatrix[0]
+            for h, sigma in zip(self.hhat, tdg.PauliMatrix[1:]):
+                self.exp_half_beta_h += torch.sinh( 0.5 * self.absh * self.beta) * h * sigma
 
         self.B = torch.matrix_exp( self.dt * self.Spacetime.Lattice.kappa)
         self.Binverse = torch.matrix_exp( -self.dt * self.Spacetime.Lattice.kappa)
@@ -136,7 +140,7 @@ class FermionMatrix:
         where :math:`\mathbb{F}` contains the chemical potential and external field terms.  However, since those terms are space-independent we can commute them with :math:`\mathbb{B}` so that
 
         .. math::
-            \mathbb{U} = \exp(\beta h\cdot\sigma) \begin{pmatrix} zU & 0 \\ 0 & zU\end{pmatrix}
+            \mathbb{U} = \exp\left(\frac{1}{2}\beta h\cdot\sigma\right) \begin{pmatrix} zU & 0 \\ 0 & zU\end{pmatrix}
 
         where :math:`U` is given by :func:`U` and is (space × space).
 
@@ -153,7 +157,7 @@ class FermionMatrix:
 
         '''
         zU = self.z * self.U(A)
-        return torch.matmul(self.exp_beta_h, torch.stack(
+        return torch.matmul(self.exp_half_beta_h, torch.stack(
             (torch.stack((zU, torch.zeros_like(zU))),
              torch.stack((torch.zeros_like(zU), zU)))
             ).permute(2,3,0,1))
@@ -215,13 +219,13 @@ class FermionMatrix:
             the space-independent pieces of :math:`\mathbb{F}` can be pulled through so that
 
             .. math::
-                \mathbb{U} = \exp\left( \beta \vec{h}\cdot\vec{\sigma} \right) \begin{pmatrix} zU & 0 \\ 0 & zU \end{pmatrix}
+                \mathbb{U} = \exp\left( \frac{1}{2} \beta \vec{h}\cdot\vec{\sigma} \right) \begin{pmatrix} zU & 0 \\ 0 & zU \end{pmatrix}
 
             Furthermore, an orthogonal transformation can diagonalize the spin-dependent factor and leave the spin-independent 
             factor alone.  The determinant of :math:`\mathbb{d}` can then be expressed as
 
             .. math::
-                \det \mathbb{d} = \det\left( 1 + e^{+\beta |h|} z U\right) \det\left( 1 + e^{-\beta |h|} z U\right)
+                \det \mathbb{d} = \det\left( 1 + e^{+\frac{1}{2}\beta |h|} z U\right) \det\left( 1 + e^{-\frac{1}{2}\beta |h|} z U\right)
 
             where the fugacity :math:`z = \exp(\beta \mu)`.
         '''
