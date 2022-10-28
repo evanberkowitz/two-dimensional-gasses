@@ -114,7 +114,7 @@ If $\tilde{V}$ has purely real negative eigenvalues (which imposes conditions on
 	\exp\left( \frac{1}{2} \sum_{ab}\tilde{n}_a \left(-\Delta\tilde{t} \tilde{V}\right)_{ab} \tilde{n}_b + \Delta \tilde{t} \tilde{\mu}\tilde{N} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\tilde{\vec{S}}\right)
 	=
 	\frac{
-		\int dA\; e^{-\frac{1}{2} A\transpose (-\Delta\tilde{t} \tilde{V})\inverse A + \tilde{\psi}\adjoint (A + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}}
+		\int dA\; e^{-\frac{1}{2} A\transpose (-\Delta\tilde{t} \tilde{V})\inverse A + \tilde{\psi}\adjoint (A + \Delta\tilde{t} \tilde{\mu} + \half \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}}
 	}{
 		\int dA\; e^{-\frac{1}{2} A\transpose (-\Delta\tilde{t} \tilde{V})\inverse A}
 	}
@@ -126,7 +126,7 @@ So, we have the \emph{exact} rewriting of the Trotterized partition function \eq
 	= 
 	\frac{  
 		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
-	~	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} } 
+	~	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \half \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} } 
 	}{ 
 		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
 	}
@@ -156,18 +156,18 @@ Using the conventions of Munster Ch. 4,
 	\nonumber\\
 	&
 		\matrixElement{ -\eta_1 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2 N_t}}
-		\matrixElement{ \eta_{2 N_t} }{ e^{ \tilde{\psi}\adjoint (A_{N_t} + \Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi} } }{\eta_{2 N_t-1}} ~ \times
+		\matrixElement{ \eta_{2 N_t} }{ e^{ \tilde{\psi}\adjoint (A_{N_t} + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi} } }{\eta_{2 N_t-1}} ~ \times
 	\nonumber\\
 	&
 		\cdots
 	\nonumber\\
 	&
 		\matrixElement{ \eta_5 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{4}}
-		\matrixElement{ \eta_4 }{ e^{ \tilde{\psi}\adjoint (A_{2} + \Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_3} ~ \times
+		\matrixElement{ \eta_4 }{ e^{ \tilde{\psi}\adjoint (A_{2} + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_3} ~ \times
 	\nonumber\\
 	&
 		\matrixElement{ \eta_3 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2}}
-		\matrixElement{ \eta_2 }{ e^{ \tilde{\psi}\adjoint (A_{1} + \Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_1}
+		\matrixElement{ \eta_2 }{ e^{ \tilde{\psi}\adjoint (A_{1} + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_1}
 \end{align}
 where the coherent states
 \begin{equation*}
@@ -180,7 +180,7 @@ To proceed we leverage the exponential identity (4.33) of Munster,
 	=
 	\exp\left[ \sum_{i j} \eta^{\dagger}_j (e^A)_{ji} \eta'_i \right]
 \end{equation}
-to carefully evaluate $\matrixElement{\eta}{ e^{-\Delta \tilde{t}\tilde{K}} }{\eta'}$ and $\matrixElement{\eta}{ e^{\tilde{\psi}\adjoint(A_t + \Delta \tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }{\eta'}$, keeping careful track of the spin degree of freedom,
+to carefully evaluate $\matrixElement{\eta}{ e^{-\Delta \tilde{t}\tilde{K}} }{\eta'}$ and $\matrixElement{\eta}{ e^{\tilde{\psi}\adjoint(A_t + \Delta \tilde{t} \tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }{\eta'}$, keeping careful track of the spin degree of freedom,
 \begin{align}
 		\matrixElement{\eta}{ e^{-\Delta \tilde{t} \tilde{K}} }{\eta'}
 	&= 
@@ -209,12 +209,12 @@ to carefully evaluate $\matrixElement{\eta}{ e^{-\Delta \tilde{t}\tilde{K}} }{\e
 where $\tilde{\kappa}$ is given in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian} \todo{and includes the C0 shift!}.
 By an analogous sequence of manipulations, one also finds
 \begin{align}
-	\matrixElement{\eta}{ e^{\tilde{\psi}\adjoint \cdot (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }{\eta'}
+	\matrixElement{\eta}{ e^{\tilde{\psi}\adjoint \cdot (A_t + \Delta\tilde{t} \tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }{\eta'}
 	&=
 		\matrixElement{\eta}{ \exp\left(
 			\begin{bmatrix} \tilde{\psi}^{\dagger}_{\up} &  \tilde{\psi}^{\dagger}_{\down}  \end{bmatrix} 
 			\left(
-				(A + \Delta\tilde{t}\tilde{\mu})\one + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}
+				(A + \Delta\tilde{t}\tilde{\mu})\one + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}
 			\right)
 			\begin{bmatrix} \tilde{\psi}_{\up} \\  \tilde{\psi}_{\down}  \end{bmatrix}
 		\right) }{\eta'}
@@ -223,7 +223,7 @@ By an analogous sequence of manipulations, one also finds
 		\exp\left(
 			\begin{bmatrix} \eta^{\dagger}_{\up} &  \eta^{\dagger}_{\down}  \end{bmatrix} 
 			\exp\left(
-				(A + \Delta\tilde{t}\tilde{\mu})\one + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}
+				(A + \Delta\tilde{t}\tilde{\mu})\one + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}
 			\right)
 			\begin{bmatrix} \eta'_{\up} \\  \eta'_{\down}  \end{bmatrix}
 		\right)
@@ -231,23 +231,23 @@ By an analogous sequence of manipulations, one also finds
 where the inner exponential is space-dependent through $A$.
 So, we can rewrite the Hilbert space trace in the bilinearized Trotterization \eqref{trotterization bilinearized}
 \begin{align}
-	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \half \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }
 	=& \int D\eta\adjoint D\eta \exp\left( - \sum_{t=1}^{2N_t}\sum_{a\sigma} \eta\adjoint_{\sigma a t} \eta_{\sigma a t}\right)~ \times
 	\nonumber\\
 	&
 		\exp\left[ \sum_{ab\sigma} (-\eta_{\sigma a\;1})\adjoint \left(e^{-\Delta \tilde{t} \tilde{\kappa}}\right)_{ab} \eta_{\sigma b\;2N_t} \right]
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2N_t} \left(e^{A_{N_t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma} }\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;2N_t-1}\right] ~ \times
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2N_t} \left(e^{A_{N_t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma} }\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;2N_t-1}\right] ~ \times
 	\nonumber\\
 	&
 		\cdots
 	\nonumber\\
 	&
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;5} \left(e^{-\Delta \tilde{t} \tilde{\kappa}}\right)_{ab} \eta_{\sigma b\;4} \right]
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;4} \left(e^{A_{2}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;3}\right] ~ \times
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;4} \left(e^{A_{2}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;3}\right] ~ \times
 	\nonumber\\
 	&
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;3} \left(e^{-\Delta \tilde{t} \tilde{\kappa}}\right)_{ab} \eta_{\sigma b\;2} \right]
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2} \left(e^{A_{1}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;1}\right]
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2} \left(e^{A_{1}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;1}\right]
 	\label{eq:grassmann integral}
 \end{align}
 where the measure is given by
@@ -282,7 +282,7 @@ Writing
 	&
 	B &= \exp \Delta\tilde{t} \tilde{\kappa}
 	\label{eq:BB}\\
-	\FF_t &= \left(e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)
+	\FF_t &= \left(e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)
 	\label{eq:FF}
 \end{align}
 where the doubly-struck quantities are also square matrices in spin dimensions; the hopping matrix is time-independent and spin-diagonal, $\FF$ is space-diagonal.
@@ -353,17 +353,17 @@ The sausage $\UU$ is (2 spins)$\times \Volume$ on a side.
 Note that we can separate
 \begin{align} 
 	\FF_t 
-	= e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}
-	= e^{A_t + \Delta\tilde{t}\tilde{\mu}}\left( \cosh \Delta\tilde{t} \abs{\tilde{h}} \one + \frac{\tilde{\vec{h}}\cdot \sigma}{\abs{\tilde{h}}}\sinh \Delta\tilde{t} \abs{\tilde{h}} \right)
+	= e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}
+	= e^{A_t + \Delta\tilde{t}\tilde{\mu}}\left( \cosh \half \Delta\tilde{t} \abs{\tilde{h}} \one + \frac{\tilde{\vec{h}}\cdot \sigma}{\abs{\tilde{h}}}\sinh \half \Delta\tilde{t} \abs{\tilde{h}} \right)
 	\label{eq:FF explicitly}
 \end{align}
 into a space-dependent part $e^{A_t}$, a spin-dependent part $\exp( \Delta\tilde{t}\tilde{\vec{h}} \cdot \vec{\sigma})$ and the spin- and space- independent $\mu$ piece.
 We can collect the space-independent part, pulling them through the sausage,
 \begin{align}
 	\UU 
-	&= \exp\left(\Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma}\right)^{N_t} \BB\inverse (e^{A_{N_t} + \Delta\tilde{t}\tilde{\mu}} \otimes\one)\cdots \BB\inverse (e^{A_2 + \Delta\tilde{t}\tilde{\mu}}\otimes\one) \BB\inverse (e^{A_1 + \Delta\tilde{t}\tilde{\mu}}\otimes \one)
+	&= \exp\left(\half \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma}\right)^{N_t} \BB\inverse (e^{A_{N_t} + \Delta\tilde{t}\tilde{\mu}} \otimes\one)\cdots \BB\inverse (e^{A_2 + \Delta\tilde{t}\tilde{\mu}}\otimes\one) \BB\inverse (e^{A_1 + \Delta\tilde{t}\tilde{\mu}}\otimes \one)
 	\\
-	&= \exp\left(\tilde{\beta}\tilde{\vec{h}}\cdot\vec{\sigma}\right) \begin{pmatrix} zU & 0 \\ 0 & zU \end{pmatrix}
+	&= \exp\left(\half \tilde{\beta}\tilde{\vec{h}}\cdot\vec{\sigma}\right) \begin{pmatrix} zU & 0 \\ 0 & zU \end{pmatrix}
 	&
 	z &= \exp(\tilde{\beta} \tilde{\mu})
 	\label{eq:fugacity}\\
@@ -380,15 +380,15 @@ Moreover, since the $2\times2$ $U$ block matrix is spin-independent, for evaluat
 \begin{align}
 	\det \dd 
 	= \det(\one+\UU)
-	&= \det\left(\one + e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}}(zU\otimes\one)\right)
-	= \det\left(\one + O\inverse O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (zU\otimes\one)\right)
+	&= \det\left(\one + e^{\half \tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}}(zU\otimes\one)\right)
+	= \det\left(\one + O\inverse O e^{\half \tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (zU\otimes\one)\right)
 	\nonumber\\
-	&= \det\left(\one + O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (zU\otimes\one)O\inverse \right)
-	= \det\left(\one + O e^{\tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} O\inverse (zU\otimes\one) \right)
+	&= \det\left(\one + O e^{\half \tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (zU\otimes\one)O\inverse \right)
+	= \det\left(\one + O e^{\half \tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} O\inverse (zU\otimes\one) \right)
 	\nonumber\\
-	&= \det\left(\one + e^{\tilde{\beta} \abs{\tilde{h}} \sigma_3 } (zU\otimes\one) \right)
+	&= \det\left(\one + e^{\half \tilde{\beta} \abs{\tilde{h}} \sigma_3 } (zU\otimes\one) \right)
 	\\
-	&= \det\left( 1 + e^{+\tilde{\beta}\abs{\tilde{h}}} zU\right)\det\left( 1 + e^{-\tilde{\beta}\abs{\tilde{h}}} zU\right)
+	&= \det\left( 1 + e^{+\half \tilde{\beta}\abs{\tilde{h}}} zU\right)\det\left( 1 + e^{-\half \tilde{\beta}\abs{\tilde{h}}} zU\right)
 	\label{eq:finite-h determinant algorithm}
 \end{align}
 which means that to evaluate the fermion determinant for any $\tilde{h}$ we can always evaluate an equivalent expression with just $\vec{\tilde{h}}\parallel\hat{z}$.
@@ -628,41 +628,42 @@ In the generic case, where $\vec{h}\neq0$ the functional derivatives of $\FF$ wi
 	\left.\oneover{\Delta\tilde{t}}\frac{\partial}{\partial \delta \tilde{h}^i_{t,a}} \FF_{t'}\right|_{\delta\tilde{\mu} = 0, \delta \tilde{h}=0}
 	&=
 	\delta_{tt'}\PP_a e^{A_t + \Delta\tilde{t}\tilde{\mu}}\left(
-		\left[\frac{\tilde{h}^i_{t,a}}{\abs{\tilde{h}}} + \frac{\sigma^i/\Delta\tilde{t}}{\abs{\tilde{h}}}\right]\sinh \Delta\tilde{t}\abs{\tilde{h}}
+		\left[\frac{\tilde{h}^i_{t,a}}{2 \abs{\tilde{h}}} + \frac{\sigma^i/\Delta\tilde{t}}{\abs{\tilde{h}}}\right]\sinh \Delta\tilde{t}\abs{\tilde{h}}
 		+
 		\tilde{\vec{h}}\cdot\vec{\sigma} \left[
-				\frac{\tilde{h^i}}{\abs{\tilde{h}}^2} \cosh \Delta\tilde{t} \abs{\tilde{h}}
+				\frac{\tilde{h^i}}{2 \abs{\tilde{h}}^2} \cosh \Delta\tilde{t} \abs{\tilde{h}}
 			-	\frac{\tilde{h^i}}{\Delta\tilde{t} \abs{\tilde{h}}^{3}} \sinh \Delta\tilde{t} \abs{\tilde{h}}
 		\right]
 	\right).
 	\label{eq:dF}
 \end{align}
-When $\vec{h}=0$ we have the simplification (by taking a careful limit)
-\begin{align}
-	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^i_{t,a}} \FF_{t'} &= \delta_{tt'} \FF_{t'} \sigma^i \PP_a
-	&
-	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^i_{1,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
-	&= \UU \sigma^i \PP_a = \UU \PP_a \sigma^i 
-	&
-	(\vec{h} &\goesto 0)
-	\label{eq:dFdh with h=0}
-\end{align}
 To be able to cleanly write the derivative of $\UU$ in the generic case we multiply \eqref{dF} by the the identity $\FF\FF\inverse$.
-After much massaging and cancellation one finds, suppressing the (common) argument of sinh and cosh $\Delta\tilde{t}\abs{\tilde{h}}$ for brevity,
+After much massaging and cancellation one finds, suppressing the (common) argument of sinh and cosh $\half\Delta\tilde{t}\abs{\tilde{h}}$ for brevity,
 \begin{align}
 	\left.\oneover{\Delta\tilde{t}}\frac{\partial}{\partial \delta \tilde{h}^i_{t,a}} \FF_{t'}\right|_{\delta\tilde{\mu} = 0, \delta \tilde{h}=0}
 	&= \delta_{tt'} \FF_{t'} \PP_a \left[
-				\frac{\sinh \cosh}{\Delta\tilde{t}\abs{\tilde{h}}} \delta_{ik}
-			+	\left(1 - \frac{\sinh \cosh}{\Delta\tilde{t}\abs{\tilde{h}}}\right) \frac{\tilde{h}_i\tilde{h}_k}{\abs{\tilde{h}}^2}
-			+	\frac{i \sinh^2}{\Delta\tilde{t} \abs{h}} \epsilon_{ijk} \frac{\tilde{h}_j}{\abs{\tilde{h}}}
+				\half \hat{h}^i \hat{h}^k
+			+	\frac{\sinh \cosh}{\Delta\tilde{t} \abs{\tilde{h}}} \left(\delta^{ik}-\hat{h}^i\hat{h}^k\right)
+			+	\frac{i \sinh^2}{\Delta\tilde{t} \abs{h}} \epsilon_{ijk} \hat{h}^j
 		\right]\sigma_k
 	\label{eq:dFdh factor}
 \end{align}
 so that if we differentiate $\UU$ with respect to a fluctuation of $\tilde{h}$ on timeslice 1 we can just append everything after $\FF_t$ to the right of $\UU$; on other timeslices we make the similar insertion to the right of $\FF_t$.
-From the more explicit form \eqref{dFdh factor} we can see how the $\tilde{h}=0$ limit \eqref{dFdh with h=0} emerges; the latter two terms vanish while the first term simplifies to $\sigma_i$.
+When $\vec{h}=0$ we have the simplification (by taking a careful limit, holding $\hat{h}$ a unit vector)
+\begin{align}
+	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^i_{t,a}} \FF_{t'} &= \delta_{tt'} \FF_{t'} \half \sigma^i \PP_a
+	&
+	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^i_{1,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
+	&= \UU \half \sigma^i \PP_a = \UU \PP_a \half\sigma^i 
+	&
+	(\vec{h} &\goesto 0)
+	\label{eq:dFdh with h=0}
+\end{align}
+From the more explicit form \eqref{dFdh factor} we can see how the $\tilde{h}\goesto0$ limit \eqref{dFdh with h=0} emerges; the last term vanishes while the $\delta$ term survives and the $\hat{h}^i\hat{h}^k$ terms cancel.
 
 Finally, note that if we take the inner product of the matrix element \eqref{dFdh factor} with $\hat{h}$ one finds
 \begin{align}
 	\hat{h}^i \left.\oneover{\Delta\tilde{t}}\frac{\partial}{\partial \delta \tilde{h}^i_{t,a}} \FF_{t'}\right|_{\delta\tilde{\mu} = 0, \delta \tilde{h}=0}
-	&= \delta_{tt'} \FF_{t'} \PP_a (\hat{h}\cdot\sigma).
+	&= \delta_{tt'} \FF_{t'} \PP_a \half(\hat{h}\cdot\sigma)
 \end{align}
+as expected.
