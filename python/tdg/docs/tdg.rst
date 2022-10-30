@@ -97,6 +97,15 @@ tdg.spacetime module
    :undoc-members:
    :show-inheritance:
 
+tdg.canonical module
+--------------------
+
+.. automodule:: tdg.canonical
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
 Bibliography
 ------------
 .. bibliography::
