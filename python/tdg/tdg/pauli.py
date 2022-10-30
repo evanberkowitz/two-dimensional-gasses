@@ -7,7 +7,7 @@ PauliMatrix = torch.tensor([
     [[0,+1],[+1,0]],
     [[0,-1j],[+1j,0]],
     [[+1,0],[0,-1]]
-    ])
+    ], dtype=torch.complex128)
 r'''
 A :math:`4\times2\times2` tensor of `Pauli matrices`_ :math:`\sigma`.
 
