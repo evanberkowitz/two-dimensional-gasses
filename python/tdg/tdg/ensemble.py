@@ -212,9 +212,13 @@ class GrandCanonical:
         '''
         return functorch.vmap(self.Action)(self.configurations)
 
+####
+#### Demo!
+####
 
-def _demo(steps=100):
+def _demo(steps=100, **kwargs):
 
+    import tdg.action
     S = tdg.action._demo()
 
     import tdg.HMC as HMC
@@ -222,13 +226,16 @@ def _demo(steps=100):
     integrator = HMC.Omelyan(H, 50, 1)
     hmc = HMC.MarkovChain(H, integrator)
 
-    from tqdm import tqdm
-    ensemble = GrandCanonical(S).generate(steps, hmc, progress=tqdm)
+    try:
+        ensemble = GrandCanonical(S).generate(steps, hmc, progress=kwargs['progress'])
+    except:
+        ensemble = GrandCanonical(S).generate(steps, hmc)
 
     return ensemble
 
 if __name__ == '__main__':
-    ensemble = _demo()
+    from tqdm import tqdm
+    ensemble = _demo(progress=tqdm)
     print(f"The fermionic estimator for the total particle number is {ensemble.N('fermionic').mean():+.4f}")
     print(f"The bosonic   estimator for the total particle number is {ensemble.N('bosonic'  ).mean():+.4f}")
     print(f"The Spin[0]   estimator for the total particle number is {ensemble.Spin[0].mean()       :+.4f}")
