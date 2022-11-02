@@ -219,7 +219,7 @@ class GrandCanonical:
 def _demo(steps=100, **kwargs):
 
     import tdg.action
-    S = tdg.action._demo()
+    S = tdg.action._demo(**kwargs)
 
     import tdg.HMC as HMC
     H = HMC.Hamiltonian(S)
