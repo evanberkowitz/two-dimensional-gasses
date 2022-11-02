@@ -156,17 +156,26 @@ class Lattice:
         Parameters
         ----------
             x:  torch.tensor
+                Either one coordinate pair of `.shape==torch.Size([2])` or a set of pairs `.shape==torch.Size([*,2])`
                 The last dimension should be of size 2.
 
         Returns
         -------
             torch.tensor
                 Each x is identified with an entry of ``coordinates`` by periodic boundary conditions.
+                The output is the same shape as the input.
         '''
+
+        if x.ndim == 1:
+            return torch.tensor([
+                    self.x[torch.remainder(x[0],self.nx)],
+                    self.y[torch.remainder(x[1],self.ny)],
+                ])
+
         return torch.stack((
             self.x[torch.remainder(x.T[0],self.nx)],
             self.y[torch.remainder(x.T[1],self.ny)],
-            )).T
+            )).mT
 
     def distance_squared(self, a, b):
         r'''
@@ -185,9 +194,13 @@ class Lattice:
             torch.tensor
                 The distance between ``a`` and ``b`` on the lattice accounting for the fact that,
                 because of periodic boundary conditions, the distance may shorter than naively expected.
+                Either ``a`` and ``b`` are the same shape (a single or 1D-tensor of coordinate pairs) or one is a singlet and one is a tensor.
         '''
         d = self.mod(a-b)
-        return torch.sum(d.T**2, axis=(0,))
+        if d.ndim == 1:
+            return torch.sum(d**2)
+
+        return torch.sum(d**2, axis=(1,))
 
     def coordinatize(self, v, dims=(-1,)):
         r'''
