@@ -135,19 +135,9 @@ class Action:
         '''
         return self.quenched.sample(sample_shape)
 
-def _demo():
+def _demo(nx = 3, nt=8, beta=1, mu=torch.tensor(-2.0), h=torch.tensor([0,0,0], dtype=torch.complex128), C0=-5.0,  **kwargs):
+
     import tdg
-
-    nx = 3
-    nt = 8
-    lattice = tdg.Lattice(nx)
-    spacetime = tdg.Spacetime(nt, lattice)
-
-    beta = torch.tensor(1)
-    mu = torch.tensor(-2.0)
-    h  = torch.tensor([0,0,0], dtype=torch.float64)
-
-    contact = (-5)*tdg.LegoSphere([0,0])
-    V = tdg.Potential(contact)
-
+    spacetime = tdg.Spacetime(nt, tdg.Lattice(nx))
+    V = tdg.Potential(C0*tdg.LegoSphere([0,0]))
     return Action(spacetime, V, beta, mu, h)
