@@ -11,3 +11,4 @@ from .LegoSphere import LegoSphere as LegoSphere
 from .potential import Potential as Potential
 from .fermionMatrix import FermionMatrix as FermionMatrix
 from .action import Action as Action
+import tdg.ensemble as ensemble
