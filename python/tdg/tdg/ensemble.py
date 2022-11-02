@@ -108,6 +108,13 @@ class GrandCanonical:
         # A matrix for each configuration.
         return torch.matmul(self._UUPlusOneInverse,self._UU)
     
+    @cached_property
+    def average_field(self):
+        r'''
+        The average auxiliary field, one per configuration.
+        '''
+        return self.configurations.mean((1,2))
+
     @cached
     def n(self, method='fermionic'):
         r'''
