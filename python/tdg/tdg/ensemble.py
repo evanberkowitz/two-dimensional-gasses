@@ -160,11 +160,7 @@ class GrandCanonical:
     def spin(self):
         r'''
         The local spin density.
-
-        Returns
-        -------
-            torch.tensor
-                Direction slowest, then configurations , then sites.  That makes it easy to do something with ``ensemble.s[1]``.
+        Direction slowest, then configurations, then sites.  That makes it easy to do something with ``ensemble.s[1]``.
 
         .. note ::
             The indices on the spins match the indices on :data:`tdg.PauliMatrix`.
@@ -198,11 +194,7 @@ class GrandCanonical:
     def Spin(self):
         r'''
         The total spin, summed over all sites.
-
-        Returns
-        -------
-            torch.tensor
-                Direction slowest, then configurations.
+        Direction slowest, then configurations.
         '''
         return self.spin.sum(-1)
     
@@ -210,11 +202,6 @@ class GrandCanonical:
     def S(self):
         r'''
         The ``Action`` evaluated on the ensemble.
-
-        Returns
-        -------
-            torch.tensor
-                One per configuration.
         '''
         return functorch.vmap(self.Action)(self.configurations)
 
