@@ -134,3 +134,20 @@ class Action:
         .. _the torch.distributions interface: https://pytorch.org/docs/stable/distributions.html#torch.distributions.distribution.Distribution.sample
         '''
         return self.quenched.sample(sample_shape)
+
+def _demo():
+    import tdg
+
+    nx = 3
+    nt = 8
+    lattice = tdg.Lattice(nx)
+    spacetime = tdg.Spacetime(nt, lattice)
+
+    beta = torch.tensor(1)
+    mu = torch.tensor(-2.0)
+    h  = torch.tensor([0,0,0], dtype=torch.float64)
+
+    contact = (-5)*tdg.LegoSphere([0,0])
+    V = tdg.Potential(contact)
+
+    return Action(spacetime, V, beta, mu, h)
