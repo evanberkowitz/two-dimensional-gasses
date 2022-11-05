@@ -147,3 +147,6 @@ class EffectiveRangeExpansion:
 
         # and return the energies
         return (2*torch.pi/nx)**2 * X
+
+def _demo(parameters=torch.tensor([1.0, 0.0])):
+    return EffectiveRangeExpansion(parameters)
