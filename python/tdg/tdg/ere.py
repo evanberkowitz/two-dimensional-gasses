@@ -45,13 +45,14 @@ class EffectiveRangeExpansion:
 
     def __init__(self, parameters):
 
-        self.a = parameters[0]
+        self.parameters = parameters.clone().requires_grad_(True)
+        self.a = self.parameters[0]
         '''
         The dimensionless scattering length.
         '''
         assert self.a > 0, "In 2D the scattering length must be positive-definite."
 
-        self.coefficients = parameters[1:]
+        self.coefficients = self.parameters[1:]
         '''
         The dimensionless shape parameters.  We assume that in the expansion in :math:`x` every term gets a numerical coefficient of 1/4.
         '''
