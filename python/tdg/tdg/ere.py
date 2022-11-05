@@ -96,7 +96,7 @@ class EffectiveRangeExpansion:
         '''
         return 2/torch.pi * torch.log(torch.sqrt(x)) + self.analytic(x)
 
-    def target_energies(self, nx, levels, zeta=Zeta2D(), lr = 0.05, epochs=100000):
+    def target_energies(self, lattice, levels, zeta=Zeta2D(), lr = 0.001, epochs=10000):
         r'''
         Given the ERE, we can use the Lüscher quantization condition to find the values of :math:`x`
         that correspond to that ERE.  Then, those :math:`x` can be transformed into dimensionless
@@ -104,8 +104,8 @@ class EffectiveRangeExpansion:
         
         Parameters
         ----------
-            nx: int
-                linear size of the lattice
+            lattice: tdg.Lattice
+                the lattice
             levels: int
                 how many energies to find
             zeta: callable
@@ -115,6 +115,7 @@ class EffectiveRangeExpansion:
             epochs: int
                 the number of minimization steps
         '''
+        nx = lattice.nx
         # We need to find x that satisfy
         #     self(x) - 2/π log(√x) == zeta(x) / π^2
         # One way to do that is to simply rearrange to get
