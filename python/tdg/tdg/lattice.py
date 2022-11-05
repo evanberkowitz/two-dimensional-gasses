@@ -407,6 +407,9 @@ class Lattice:
         # (torch.abs(left-right) < 1e-6).all()
         # ```
 
+def _demo(nx=7):
+    return Lattice(nx)
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
