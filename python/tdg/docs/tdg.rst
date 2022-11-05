@@ -33,6 +33,15 @@ tdg.a1 module
    :undoc-members:
    :show-inheritance:
 
+tdg.tuning module
+-----------------
+
+.. automodule:: tdg.tuning
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
 tdg.action module
 -----------------
 
