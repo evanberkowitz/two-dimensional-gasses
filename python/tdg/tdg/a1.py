@@ -172,7 +172,7 @@ class ReducedTwoBodyA1Hamiltonian:
         '''
         return torch.linalg.eigvalsh(self.operator(C))
 
-    def tuning(self, target_energies, start=None, epochs=10000, lr=0.05):
+    def tuning(self, target_energies, start=None, epochs=10000, lr=0.001):
         r'''
         *Tuning* the Hamiltonian solves the inverse problem: which Wilson coefficients do we need to produce
         some energy eigenvalues and a set of LegoSphere operators?
