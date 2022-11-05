@@ -63,6 +63,9 @@ class EffectiveRangeExpansion:
         '''
         self._gamma = torch.distributions.utils.euler_constant
 
+    def __str__(self):
+        return f"EffectiveRangeExpansion(" + (", ".join(f'{p:+.8f}' for p in self.parameters)) + ")"
+
     def analytic(self, x):
         r"""
         Includes the constant piece = 2/π [ log(a/2) + γ ];
