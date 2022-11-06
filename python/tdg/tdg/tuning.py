@@ -45,9 +45,12 @@ class Tuning:
         self.zeta  = zeta
         self.start = starting_guess if starting_guess is not None else torch.ones(len(self.radii))
         
+        assert len(self.radii) == len(self.ere.parameters), f'You must tune as many LegoSpheres ({len(self.radii)}) as there are ERE parameters ({len(self.ere.parameters)}).'
+
         # To avoid the expense of and jitter in retuning:
         if C is not None:
             self.C = C
+            assert len(self.C) == len(self.radii), f'Radii ({len(self.radii)}) and coefficients ({len(self.C)}) must be one-to-one.'
 
     def __str__(self):
         return f'Tuning({self.ere}, {self.Lattice}, {self.radii})'
