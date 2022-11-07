@@ -88,7 +88,7 @@ class Tuning:
                 self.Lattice,
                 len(self.ere.parameters),
                 zeta=self.zeta,
-                lr=1e-5, epochs=1000000,
+                lr=1e-4, epochs=100000,
                 )
     #
     # and now our problem is reduced to finding Hamiltonian parameters that
@@ -113,7 +113,7 @@ class Tuning:
         return self._A1.tuning(
             self._tuning_energies.clone().detach(),
             start=self.start.clone().detach().requires_grad_(True),
-            lr=1e-5, epochs=10000,
+            lr=1e-4, epochs=10000,
         )
     #
     # If this were our only goal, we would be finished.
