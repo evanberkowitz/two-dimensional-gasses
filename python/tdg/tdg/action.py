@@ -135,6 +135,13 @@ class Action:
         '''
         return self.quenched.sample(sample_shape)
 
+    def set_tuning(self, ere):
+        spheres = self.Potential.spheres
+        radii = [s.r for s in spheres]
+        coeff = [s.c for s in spheres]
+        self.Tuning = tdg.Tuning(ere, self.Lattice, radii, C=coeff)
+        return self
+
 def _demo(nx = 3, nt=8, beta=1, mu=torch.tensor(-2.0), h=torch.tensor([0,0,0], dtype=torch.complex128), C0=-5.0,  **kwargs):
 
     import tdg

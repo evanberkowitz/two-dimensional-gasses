@@ -116,6 +116,44 @@ class Tuning:
             lr=1e-4, epochs=10000,
         )
     #
+    # We can use these C to construct a potential,
+    #
+    @cached_property
+    def Potential(self):
+        r'''
+        A potential constructed from LegoSpheres with the given ``radii`` and the tuned Wilson coefficients ``C``.
+        '''
+        return tdg.Potential(*[c*tdg.LegoSphere(r) for c, r in zip(self.C, self.radii)])
+    #
+    # and, with additional information, an action.
+    #
+    def Action(self, nt, beta, mu=torch.tensor(0.), h=torch.zeros(3), fermionMatrix=tdg.fermionMatrix.FermionMatrix):
+        r'''
+        An action with a :class:`~.Spacetime` given by the provided ``nt`` and the tuning's `Lattice`, a potential given by :attr:`~.Potential`, and other :class:`~.Action` parameters.
+
+        Parameters
+        ----------
+            nt:     int
+                Timeslices.
+            others:
+                Forwarded to :class:`~.Action` as expected.
+
+        Returns
+        -------
+            :class:`~.Action` with ``.Tuning`` set.
+        '''
+        A = tdg.Action(
+                tdg.Spacetime(nt, self.Lattice),
+                self.Potential,
+                beta,
+                mu=mu,
+                h=h,
+                fermion=fermionMatrix
+                )
+        # additionally store the tuning itself.
+        A.Tuning= self
+        return A
+    #
     # If this were our only goal, we would be finished.
     #
     # However, at least one observable we care about---the contact---depends on
