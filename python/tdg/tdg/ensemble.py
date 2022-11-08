@@ -212,6 +212,46 @@ class GrandCanonical:
         '''
         return functorch.vmap(self.Action)(self.configurations)
 
+    @cached
+    def contact(self, method='bosonic'):
+        r'''
+        The `contact`, :math:`\frac{dH}{d\log a}`.
+
+        Parameters
+        ----------
+            method: str
+                The approach for calculating the number densities ``fermionic`` or ``bosonic``.
+
+        Returns
+        -------
+            torch.tensor
+                One per configuration.
+
+        .. note::
+
+            The method combines matrix elements with the derivative of the Wilson coefficients with respect to :math:`\log a` through :meth:`~.Tuning.dC_dloga`.
+            Therefore the ``ensemble.Action`` must have a tuning!
+
+        .. note::
+
+            The ``'bosonic'`` method computes the derivative of the action with respect to the Wilson coefficients.
+            This is faster but noiser.
+
+        .. todo::
+
+            The ``'fermionic'`` method computes matrix elements of number operators.
+        '''
+        if method=='bosonic':
+            with torch.autograd.forward_ad.dual_level():
+                C0_dual = torch.autograd.forward_ad.make_dual(self.Action.Tuning.C, self.Action.Tuning.dC_dloga)
+                V_dual  = tdg.Potential(*[c * tdg.LegoSphere(r) for c,r in zip(C0_dual, self.Action.Tuning.radii)])
+                S_dual  = tdg.Action(self.Action.Spacetime, V_dual, self.Action.beta, self.Action.mu, self.Action.h, type(self.Action.FermionMatrix))
+
+                s_dual  = functorch.vmap(S_dual)(self.configurations)
+                return  torch.autograd.forward_ad.unpack_dual(s_dual).tangent
+
+        raise NotImplemented('Unknown {method=} for calculating the contact.')
+
 ####
 #### Demo!
 ####
