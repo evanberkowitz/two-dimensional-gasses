@@ -297,7 +297,7 @@ class Tuning:
 #### DEMO!
 ####
 
-def _demo(recompute=True):
+def _demo(recompute=False):
     # Nobody would use the demo if it took forever.
     # Therefore I precomputed the answer.
     # You can toss it and recompute if needed.
