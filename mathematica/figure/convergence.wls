@@ -53,17 +53,47 @@ plotCoupling=GraphicsColumn[{
 viewMinx=-3;
 viewMaxx=+25;
 viewMiny=-1;
-viewMaxy=+1
+viewMaxy=+1;
 
 plotAmplitude=Show[
 	LuescherPlot[{viewMinx,viewMaxx},FrameLabel->{"x","cot \[Delta] - \!\(\*FractionBox[\(2\), \(\[Pi]\)]\)log\!\(\*SqrtBox[\(x\)]\) = \!\(\*FractionBox[\(1\), SuperscriptBox[\(\[Pi]\), \(2\)]]\)\!\(\*SubscriptBox[\(S\), \(2\)]\)(x)"}],
 	Plot[(ere[x]-2/\[Pi] Log[Sqrt[x]]),{x,viewMinx,viewMaxx},PlotStyle->{Black}],
 	ListPlot[Evaluate@Table[Take[{X[nx],Z[nx]}\[Transpose],UpTo[15]],{nx,NX}],PlotStyle->colors],
 	PlotRange->{{viewMinx,viewMaxx},{viewMiny,viewMaxy}}
-] 
+]
+
+
+reliable = Table[Energies[nx,ere][[;;-2]],{nx,NX}];
+reliable = Map[#[[1;;Min[Length/@reliable]]]&,reliable]\[Transpose];
+
+plotEnergy=Show[
+Plot[min^2 x,{x,0,1/min^2},PlotStyle->{LightGray}],
+ListPlot[
+	Table[{1/NX^2,r/r[[1]]}\[Transpose],{r,reliable}]
+	],
+FrameLabel->{"1/\!\(\*SuperscriptBox[SubscriptBox[\(N\), \(x\)], \(2\)]\)","\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(E\), \(~\)]\)\), SubscriptBox[\(N\), \(x\)]]\)/\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(E\), \(~\)]\)\), \(7\)]\)"}
+]
+
+
+reliableX = Table[X[nx,ere][[;;-2]],{nx,NX}];
+reliableX = Map[#[[1;;Min[Length/@reliableX]]]&,reliableX]\[Transpose];
+
+plotx=Show[
+ListPlot[
+	Table[{1/NX^2,r/r[[1]]}\[Transpose],{r,reliableX}]
+	],
+FrameLabel->{
+	"1/\!\(\*SuperscriptBox[SubscriptBox[\(N\), \(x\)], \(2\)]\)",
+	"\!\(\*SubscriptBox[\(x\), SubscriptBox[\(N\), \(x\)]]\)/\!\(\*SubscriptBox[\(x\), \(7\)]\)"
+	}
+]
 
 
 convergenceCoupling=FileNameJoin[{DirectoryName@AbsoluteFileName[$InputFileName],"convergence-coupling.pdf"}]
 convergenceAmplitude=FileNameJoin[{DirectoryName@AbsoluteFileName[$InputFileName],"convergence-amplitude.pdf"}]
+convergenceEnergies=FileNameJoin[{DirectoryName@AbsoluteFileName[$InputFileName],"convergence-energies.pdf"}]
+convergencex=FileNameJoin[{DirectoryName@AbsoluteFileName[$InputFileName],"convergence-x.pdf"}]
 Export[convergenceCoupling,plotCoupling]
 Export[convergenceAmplitude,plotAmplitude]
+Export[convergenceEnergies,plotEnergy]
+Export[convergencex,plotx]

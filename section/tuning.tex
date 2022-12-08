@@ -333,8 +333,7 @@ Let us again focus on $\tilde{a} = 1$ but tune $\tilde{C}_{\vec{0}}$ and $\tilde
 Then, we must use the L\"{u}scher method to compute two $x$s which can be turned into dimensionless energies.
 
 We show the results in \Figref{tune two spheres}.
-By eye it seems like we get an improvement in the lattice-induced ERE shape parameters; it looks quadratic in $x$ (quartic in $p$), so it is presumably improved.
-More careful study is required.
+It \emph{looks} better by eye but in \Secref{automatic improvement} we provide evidence that pure-contact \emph{already} scales well with $N_x$.
 
 \begin{figure}
 	\includegraphics[width=0.475\textwidth]{mathematica/figure/improved-coupling}
@@ -349,7 +348,8 @@ More careful study is required.
 \subsection{Demonstration: Further Improvement}
 
 In \Figref{tune three spheres} we tune $\tilde{C}_{\vec{0}}$, $\tilde{C}_{(0,1)}$ and $\tilde{C}_{(1,1)}$ to the three lowest energies.
-By eye it does not seem like we get further parametric improvement, though it does look like we get \emph{some} numeric improvement.
+By eye it does not seem like we get parametric improvement, though it does look like we get \emph{some} numeric improvement.
+Presumably there is \emph{some} number of operators we can tune to get parametric improvement?
 
 \begin{figure}
 	\includegraphics[width=0.33\textwidth]{mathematica/figure/further-coupling}
@@ -373,3 +373,44 @@ Since I was aiming for `strong coupling' in the sense of non-interacting energie
 Fixing $a$ in absolute physical units is neither strong coupling or weak coupling---it depends on what size box it's in.
 Make the box very big and $\tilde{a}$ becomes very small, and the energies go to the asymptotes from the right side (downward).
 Make the box very small and $\tilde{a}$ becomes very big, and the energies go to the asymptotes from the left  side (upward).
+
+\subsection{Pure Contact is already $\sim N_x^{-2}$!}
+\label{sec:automatic improvement}
+
+In the left panel of \Figref{convergence energies} we examine some contact-interaction energy levels to see how they depend on $N_x$.
+We see that the convergence towards the continuum (to the left) is like $N_x^{-2}$.
+More interestingly is that the energies \emph{go to zero in the continuum limit}.
+Why?
+
+\begin{figure}
+	\includegraphics[width=0.475\textwidth]{mathematica/figure/convergence-energies}
+	\includegraphics[width=0.475\textwidth]{mathematica/figure/convergence-x}
+	\caption{
+		Left: the ground state, 1st state, 2nd state, and so on through the 8th state, as a function of $N_x^{-2}$, normalized by the energy with $N_x=7$.
+		The normalization cancels $e^j$ \eqref{quadratic convergence}, so all the different states land on top of one another, up to effects down in $N_x$.
+		Right: the L\"{u}scher $x$ \eqref{ere dimensionless}, normalized by $N_x=7$.
+		If all subleading corrections vanished all the states would yield a line at $1$ (the lowest state is tuned by matching $x$, so it shows this behavior trivially).
+	}
+	\label{fig:convergence energies}
+\end{figure}
+
+Let us change our perspective.
+If instead of thinking that by sending $N_x\goesto\infty$ while holding the dimensionless ERE fixed, by the magic, we can instead think of holding the lattice spacing fixed and take the infinite volume limit (holding the dimensionless ERE parameter $\tilde{a}$ fixed).
+Then we expect the allowed momenta to become smaller and smaller, $p \sim 2\pi/L \goesto p\Delta x \sim  2\pi / N_x $.
+Because we have this second interpretation for the exact same simulation, via the magic, the physics of that interpretation should come in too!
+
+Or, the physical energies should go to some continuum limit but $\tilde{E} \sim E \Delta x^2$ which \emph{already} scales like $N_x^{-2}$.
+
+Taking these arguments seriously we have for energy level $j$,
+\begin{align}
+	\tilde{E}^j_{N_x} &= \oneover{N_x^2} \left(e^j + \order{\text{at least } N_x\inverse} \right)
+	&
+	x^j = \frac{\tilde{E}^j N_x^2}{(2\pi)^2} &= \frac{e^j}{(2\pi)^2} + \order{N_x^{-2\text{ by eye}}}
+	\label{eq:quadratic convergence}
+\end{align}
+where the dimensionless L\"{u}scher $x$ goes to $e^j/(2\pi)^2$ plus corrections and \Figref{convergence energies} provides evidence that the corrections are small and, by eye, quadratic!
+
+In 3D the corrections to the finite-volume energies is linear in $\Delta x \sim L/N_x$.
+Why the difference?
+One cartoon is that in the (dimensionful) continuum, the difference is simple to state: the loop integral needed is like $\int d^3q (q^2-ME)\inverse$, the antiderivative of which is odd in $q$ (the divergence is absorbed into the tuning).
+In contrast, in 2D the integral is $\int d^2q$ and the antiderivative is even in $q$ (the log controls the tuning).
