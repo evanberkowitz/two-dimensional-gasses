@@ -67,7 +67,10 @@ where we used the symmetry of $\tilde{V}$ to simplify the gauge piece and conclu
 \end{align}
 To compute the total particle number we can simply sum over $a$; for improved statistics we can average over time $t$,
 \begin{align}
-	\expectation{\tilde{N}} &= \expectation{\oneover{N_t}\sum_{ta}(-\Delta\tilde{t}\tilde{V})_{ab}\inverse A_{tb}}
+	\expectation{\tilde{N}}
+	= \expectation{\oneover{N_t}\sum_{ta}(-\Delta\tilde{t}\tilde{V})_{ab}\inverse A_{tb}}
+	= - \oneover{N_t \Delta t} \sum_a \tilde{V}_{ab}\inverse \expectation{ \sum_t A_{tb}}
+	= - \oneover{\beta} \sum_a \tilde{V}_{ab}\inverse \expectation{ \sum_t A_{tb}}
 	\label{eq:bosonic particle number}
 \end{align}
 which gives a purely bosonic estimator that can be computed from the auxiliary field very quickly.
