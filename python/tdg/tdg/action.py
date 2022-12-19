@@ -95,6 +95,37 @@ class Action:
     def __repr__(self):
         return str(self)
 
+    def gauge(self, A):
+        r'''
+        Parameters
+        ----------
+            A: torch.tensor
+                an auxiliary field configuration
+
+        Returns
+        -------
+            torch.tensor
+                :math:`\frac{1}{2} \sum_t A_t (-\Delta t V)^{-1} A_t`
+        '''
+        # S_gauge = 1/2 Σ(t) A(t) inverse(- ∆t V) A(t)
+        # We can pull the minus sign in the inverse out front.
+        return -0.5 * torch.einsum('ta,ab,tb->', A, self.Vinverse.to(A.dtype), A) / self.dt
+
+    def fermionic(self, A):
+        r'''
+        Parameters
+        ----------
+            A: torch.tensor
+                an auxiliary field configuration
+
+        Returns
+        -------
+            torch.tensor
+                :math:`-\log \det \mathbb{d}`
+        '''
+        # S_fermionic = - log det d
+        return - self.FermionMatrix.logdet(A)
+
     def __call__(self, A):
         r'''
         Parameters
@@ -105,14 +136,10 @@ class Action:
         Returns
         -------
             torch.tensor
-                :math:`S(A)`.
+                :math:`S(A) =\texttt{S.gauge}(A) + \texttt{S.fermionic}(A) + \texttt{S.normalizing_offset}`.
         '''
         # S = 1/2 Σ(t) A(t) inverse(- ∆t V) A(t) - log det d + nt/2 tr log(-2π ∆t V )
-        gauss = -0.5 * torch.einsum('ta,ab,tb->', A, self.Vinverse.to(A.dtype), A) / self.dt
-
-        fermionic = - self.FermionMatrix.logdet(A)
-
-        return gauss + fermionic + self.normalizing_offset
+        return self.gauge(A) + self.fermionic(A) + self.normalizing_offset
 
     def quenched_sample(self, sample_shape=torch.Size([])):
         r'''
