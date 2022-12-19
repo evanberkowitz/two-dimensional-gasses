@@ -51,6 +51,11 @@ class Action:
         r''' The chemical potential :math:`\mu`.'''
         self.h  = h
         r''' The spin chemical potential :math:`\vec{h}`.'''
+        self.absh = torch.sqrt(torch.einsum('i,i->', self.h, self.h))
+        if self.absh == 0.:
+            self.hhat = torch.tensor([0,0,1.])
+        else:
+            self.hhat = self.h / self.absh
 
         self.V = self.Potential.spatial(self.Spacetime.Lattice)
         r'''The spatial representation of ``Potential`` on the ``Spacetime.Lattice``'''

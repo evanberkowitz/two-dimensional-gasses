@@ -386,13 +386,17 @@ Moreover, since the $2\times2$ $U$ block matrix is spin-independent, for evaluat
 	&= \det\left(\one + O e^{\half \tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} (zU\otimes\one)O\inverse \right)
 	= \det\left(\one + O e^{\half \tilde{\beta} \tilde{\vec{h}}\cdot\vec{\sigma}} O\inverse (zU\otimes\one) \right)
 	\nonumber\\
-	&= \det\left(\one + e^{\half \tilde{\beta} \abs{\tilde{h}} \sigma_3 } (zU\otimes\one) \right)
+	&= \det\left(\one + e^{\half \tilde{\beta} \sqrt{\tilde{\vec{h}}\cdot\tilde{\vec{h}}} \sigma_3 } (zU\otimes\one) \right)
 	\\
-	&= \det\left( 1 + e^{+\half \tilde{\beta}\abs{\tilde{h}}} zU\right)\det\left( 1 + e^{-\half \tilde{\beta}\abs{\tilde{h}}} zU\right)
+	&= \det\left( 1 + e^{+\half \tilde{\beta}\sqrt{\tilde{\vec{h}}\cdot\tilde{\vec{h}}}} zU\right)\det\left( 1 + e^{-\half \tilde{\beta}\sqrt{\tilde{\vec{h}}\cdot\tilde{\vec{h}}}} zU\right)
 	\label{eq:finite-h determinant algorithm}
 \end{align}
 which means that to evaluate the fermion determinant for any $\tilde{h}$ we can always evaluate an equivalent expression with just $\vec{\tilde{h}}\parallel\hat{z}$.
 So, any external magnetic field of the same magnitude causes the same difficulty in sign problem.
+
+The construction $\sqrt{\tilde{\vec{h}}\cdot\tilde{\vec{h}}}$ in the fermion matrix evaluation \eqref{finite-h determinant algorithm} looks peculiar; surely it should be $\abs{\tilde{h}}$?
+No.
+Later, when we do canonical projections, we will find that complex $h$ is needed and, moreover, the construction needs the imaginary piece, and therefore the square root of the square, rather than the absolute modulus.
 
 \subsection{The Auxiliary-Field Action}
 

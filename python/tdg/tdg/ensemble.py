@@ -175,8 +175,8 @@ class GrandCanonical:
         '''
 
         dt   = self.Action.dt
-        hhat = self.Action.FermionMatrix.hhat.to(torch.complex128)
-        absh = self.Action.FermionMatrix.absh.to(torch.complex128)
+        hhat = self.Action.hhat.to(torch.complex128)
+        absh = self.Action.absh.to(torch.complex128)
         
         if absh == 0.:
             Pspin = torch.diag(torch.tensor((0,0,0.5))).to(torch.complex128)

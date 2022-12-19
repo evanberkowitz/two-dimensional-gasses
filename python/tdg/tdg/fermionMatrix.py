@@ -59,7 +59,7 @@ class FermionMatrix:
 
         self.mu = mu
         self.h  = h
-        self.absh = torch.linalg.vector_norm(self.h)
+        self.absh = torch.sqrt(torch.einsum('i,i->', self.h, self.h))
         if self.absh == 0.:
             self.hhat = torch.tensor([0,0,1.])
         else:
@@ -225,9 +225,9 @@ class FermionMatrix:
             factor alone.  The determinant of :math:`\mathbb{d}` can then be expressed as
 
             .. math::
-                \det \mathbb{d} = \det\left( 1 + e^{+\frac{1}{2}\beta |h|} z U\right) \det\left( 1 + e^{-\frac{1}{2}\beta |h|} z U\right)
+                \det \mathbb{d} = \det\left( 1 + e^{+\frac{1}{2}\beta \sqrt{h^2}} z U\right) \det\left( 1 + e^{-\frac{1}{2}\beta \sqrt{h^2}} z U\right)
 
-            where the fugacity :math:`z = \exp(\beta \mu)`.
+            where the fugacity :math:`z = \exp(\beta \mu)` and the :math:`\sqrt{h^2}` helps correctly handle complex :math:`h`.
         '''
         one = torch.eye(self.Spacetime.Lattice.sites).to(torch.complex128)
         zU = self.z * self.U(A)
