@@ -59,7 +59,7 @@ print(f"The ratio of the finite differencing and exact derivative is")
 ratio_a = tuning.dC_dERE[:,0] / finite_difference_a
 print(ratio_a)
 
-print(f"\n\nFirst we detune the scattering length only, changing the ERE parameters by")
+print(f"\n\nNext we detune the range only, changing the ERE parameters by")
 dr = torch.tensor([0., 0.01])
 print(f"{dr=}")
 print(f"The r-detuned coefficients are...")
