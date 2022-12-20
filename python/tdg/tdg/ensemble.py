@@ -99,6 +99,10 @@ class GrandCanonical:
         return torch.eye(2*self.Action.Spacetime.Lattice.sites) + self._UU
     
     @cached_property
+    def _detUUPlusOne(self):
+        return torch.det(self._UUPlusOne)
+
+    @cached_property
     def _UUPlusOneInverse(self):
         # A matrix for each configuration.
         return torch.linalg.inv(self._UUPlusOne)
