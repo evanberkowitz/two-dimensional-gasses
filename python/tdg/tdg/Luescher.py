@@ -20,7 +20,11 @@ class Zeta2D:
     where :math:`L` is the physical size of the lattice and :math:`p` is the physical momentum.  In dimensionless units,
 
     .. math::
-        \cot \delta(p) = \frac{2}{\pi} \log \sqrt{x} + \frac{1}{\pi^2} S_2(x)
+        \begin{align}
+        \cot \delta(p) &= \frac{2}{\pi} \log \sqrt{x} + \frac{1}{\pi^2} S_2(x)
+        &
+        x &= \left(\frac{pL}{2\pi}\right)^2
+        \end{align}
 
     Parameters
     ----------
@@ -66,11 +70,12 @@ class Zeta2D:
         Parameters
         ----------
         x:  torch.tensor
+            :math:`x = (pL/2\pi)^2`.
 
         Returns
         -------
         torch.tensor:
-            :math:`S(x)`.  When :math:`x = (pL/2\pi)^2 = E N_x^2 / (2\pi)^2` and :math:`E` is the dimensionless energy of the dimensionless two-body Schrödinger equation :math:`S(x)` goes into the Lüscher quantization condition.
+            :math:`S(x)`.  :math:`x = E N_x^2 / (2\pi)^2` where :math:`E` is the dimensionless energy of the dimensionless two-body Schrödinger equation :math:`S(x)` goes into the Lüscher quantization condition.
         '''
         # This computes S(x) which satisfies the finite-volume formula
         #

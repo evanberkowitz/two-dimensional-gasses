@@ -36,6 +36,16 @@ class ReducedTwoBodyA1Hamiltonian:
         \end{align}
 
     where :math:`\vec{n}` is a vector of lattice momentum and the normalization depends on the size of the orbit of :math:`\vec{n}` under :math:`D_4`.
+
+    .. note::
+        A user should only very rarely need to directly construct a ``ReducedTwoBodyA1Hamiltonian``; but it is integral to the :class:`~.Tuning`.
+
+    Parameters
+    ----------
+        lattice:        :class:`~.Lattice`
+                        The spatial lattice on which the Hamiltonian describes dynamics.
+        legoSpheres:    list of :class:`~.LegoSphere`
+                        The spheres in the interaction.
     '''
 
     def __init__(self, lattice, legoSpheres):
