@@ -44,6 +44,16 @@ class FermionMatrix:
     because the hopping matrix :math:`\kappa` which encodes the kinetic piece of the Hamiltonian appears inside an exponential,
     and we're in the attractive channel, so the auxiliary field appears without an explicit :math:`i` in :math:`\mathbb{F}`.
 
+    Parameters
+    ----------
+        spacetime: :class:`~.Spacetime`
+        beta:   torch.tensor scalar
+                The inverse temperature
+        mu:     torch.tensor scalar
+                The chemical potential
+        h:      torch.tensor triplet
+                The external field
+
     .. todo::
         We should add a method to do fermion matrix-vector multiply, perhaps as ``__call__``.
         The programming puzzle is that when :math:`\vec{h}=0` or :math:`\vec{h}\parallel \hat{z}` we can split :math:`\mathbb{d}` into
