@@ -109,3 +109,11 @@ and we conclude that and $\expectation{\PP_{N,S_h}}$ is proportional to the cano
 So, the (absolute) free energy is out of bounds, but functional derivatives are OK.
 However, remember that we \emph{functionally differentiate first} and then multiply by unity to ensure the grand canonical Boltzmann factor is used as the computational measure, and that we need to calculate the observable in each Fourier component.
 The Fourier-dependent observable can be computed with the same method as in the grand-canonical case but promoting $\UU \goesto \exp\{2\pi i(n+s\hat{h}\cdot\sigma)/(2\Volume+1)\}\UU$.
+
+In fact, looking at the explicit form of $\UU$ \eqref{fugacity}, we can think of $S_{ns}$ as the normal action but with the replacements
+\begin{align}
+	\tilde{\mu}&\goesto \tilde{\mu} + \frac{2\pi i}{2\Volume+1} \frac{n}{\tilde{\beta}}
+	&
+	\tilde{\vec{h}} \goesto \tilde{\vec{h}} + \frac{2\pi i}{2\Volume+1} \frac{2s}{\tilde{\beta}} \hat{h}
+\end{align}
+Then, ``under the sum'' we can functionally differentiate $\exp(-S_{ns})$ and 
