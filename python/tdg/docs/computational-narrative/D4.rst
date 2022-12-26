@@ -1,0 +1,313 @@
+*************
+D_4 Symmmetry
+*************
+
+The :class:`~Lattice` has :math:`D_4` symmetry, the symmetry of the set of points in the finite-volume Brillouin zone.
+
+:math:`D_4` has 8 elements (the identity :math:`E`, 3 nontrivial rotations :math:`2C_4(z)` and :math:`C_2(z)`, 2 edge :math:`2C'_2` and 2 vertex :math:`2C''_2` reflections).
+
+
+There are five irreducible representations; the character table is show below.
+
++-------------+-----------+-----------------+----------------+---------------+----------------+
+| :math:`D_4` | :math:`E` | :math:`2C_4(z)` | :math:`C_2(z)` | :math:`2C'_2` | :math:`2C''_2` |
++=============+===========+=================+================+===============+================+
+| :math:`A_1` |    +1     |        +1       |       +1       |       +1      |       +1       |
++-------------+-----------+-----------------+----------------+---------------+----------------+
+| :math:`A_2` |    +1     |        +1       |       +1       |       -1      |       -1       |
++-------------+-----------+-----------------+----------------+---------------+----------------+
+| :math:`B_1` |    +1     |        -1       |       +1       |       +1      |       -1       |
++-------------+-----------+-----------------+----------------+---------------+----------------+
+| :math:`B_2` |    +1     |        -1       |       +1       |       -1      |       +1       |
++-------------+-----------+-----------------+----------------+---------------+----------------+
+| :math:`E`   |    +2     |         0       |       -2       |        0      |        0       |
++-------------+-----------+-----------------+----------------+---------------+----------------+
+
+The irreducible multiplication table is
+
++-----------------+-------------+-------------+-------------+-------------+----------------------------------------------+
+| :math:`\otimes` | :math:`A_1` | :math:`A_2` | :math:`B_1` | :math:`B_2` | :math:`E`                                    |
++-----------------+-------------+-------------+-------------+-------------+----------------------------------------------+
+| :math:`A_1`     | :math:`A_1` | :math:`A_2` | :math:`B_1` | :math:`B_2` | :math:`E`                                    |
++-----------------+-------------+-------------+-------------+-------------+----------------------------------------------+
+| :math:`A_2`     | :math:`A_2` | :math:`A_1` | :math:`B_2` | :math:`B_1` | :math:`E`                                    |
++-----------------+-------------+-------------+-------------+-------------+----------------------------------------------+
+| :math:`B_1`     | :math:`B_1` | :math:`B_2` | :math:`A_1` | :math:`A_2` | :math:`E`                                    |
++-----------------+-------------+-------------+-------------+-------------+----------------------------------------------+
+| :math:`B_2`     | :math:`B_2` | :math:`B_1` | :math:`A_2` | :math:`A_1` | :math:`E`                                    |
++-----------------+-------------+-------------+-------------+-------------+----------------------------------------------+
+| :math:`E`       | :math:`E`   | :math:`E`   | :math:`E`   | :math:`E`   | :math:`A_1 \oplus A_2 \oplus B_1 \oplus B_2` |
++-----------------+-------------+-------------+-------------+-------------+----------------------------------------------+
+
+The representation on both the lattice points and the Brillouin zone (also a space of 2D vectors), is an :math:`E` irreducible representation
+
+.. math::
+    \begin{align}
+        E       &=  \left\{ 
+                        \begin{pmatrix} +1 & 0 \\ 0 & +1 \end{pmatrix} 
+                    \right\}
+    \\
+        2C_4(z) &=  \left\{
+                        \begin{pmatrix} 0 & -1 \\ +1 & 0 \end{pmatrix},\;
+                        \begin{pmatrix} 0 & +1 \\ -1 & 0 \end{pmatrix}
+                    \right\}
+    \\
+        C_2(z)  &=  \left\{
+                        \begin{pmatrix} -1 & 0 \\ 0 & -1 \end{pmatrix}
+                    \right\}
+    \\
+        2C'_2   &=  \left\{
+                        \begin{pmatrix} +1 & 0 \\ 0 & -1 \end{pmatrix},\;
+                        \begin{pmatrix} -1 & 0 \\ 0 & +1 \end{pmatrix}
+                    \right\}
+    \\
+        2C''_2  &=  \left\{
+                        \begin{pmatrix} 0 & +1 \\ +1 & 0 \end{pmatrix},\;
+                        \begin{pmatrix} 0 & -1 \\ -1 & 0 \end{pmatrix}
+                    \right\}
+    \end{align}
+
+and one complete set of generators is given by the first generators of :math:`2C_4(z)` (rotation by +π/2) and :math:`2C'_2` (reflection across the x-axis).
+
+Angular Momentum Analog
+=======================
+
+All of the irreducible representations are one-dimensional except :math:`E`, in which case we can distinguish the rows of the irrep by eigenvalues of generators.
+Since for :math:`D_4` no two generators are simultaneously diagonalizable, we just pick the first matrix in :math:`2C_4(z)`, a rotation matrix.
+Its eigenvalues are :math:`\pm i`.
+But these are group elements; usually we think of the z-projection of angular momentum quantum numbers as eigenvalues of Lie algebra elements.
+
+Even though :math:`D_4` is a finite group, we can still write the elements of :math:`2C_4(z)` as exponentials of matrices.
+In fact,
+
+.. math::
+    \begin{align}
+        \begin{pmatrix} 0 & -1 \\ +1 & 0 \end{pmatrix} &= \exp\left(2\pi i/4\, \sigma_2 \right)
+    \end{align}
+
+and the eigenvalues of :math:`\sigma_2` are ±1, which are the values we prefer to label the rows of :math:`E` irreps.
+We write the phase suggestively to remind ourselves that the period of this group element is 4; the 'angular momentum' is :math:`(\text{mod } 4)`.
+
+Continuing the analogy, the :math:`A` irreps have 'angular momentum' 0 and :math:`B` irreps have 'angular momentum' +2 [which is the same as -2 (mod 4)].
+The additivity of this 'angular momentum' is one way to see that :math:`E \otimes E` has to yield two :math:`A` representations and two :math:`B` representations.
+
+
+Orbits
+======
+
+Given a set :math:`X` acted on by a group :math:`G`, the *orbit* of a point :math:`x` is the set :math:`\{gx | g \in G\}`.
+Orbits are equivalence classes, since the group is closed under multiplication.
+
+Consider the orbits of the two-dimensional integer lattice under :math:`D_4`.
+The orbits fall into a small set of cases.
+
+#. :math:`(0,0)` which is fixed under all the group operations; its orbit is just itself, a singleton.
+#. :math:`(a,0)` which has an orbit of size 4, :math:`\{(a,0),(0,a),(-a,0),(0,-a)\}`.
+#. :math:`(a,a)` which also has an orbit of size 4, :math:`\{(a,a),(-a,a),(-a,-a),(a,-a)\}`.
+#. :math:`(a,b)` which has an orbit of size 8, :math:`\{(a,b),(b,a),(-b,a),(-a,b),(-a,-b),(-b,-a),(b,-a),(a,-b)\}`.
+
+for any integers :math:`a>b>0`.
+All the points in an orbit have the same magnitude, but vectors with the same magnitude may be in different orbits, such as :math:`(3,4)` and :math:`(0,5)`.
+
+Each element of :math:`G` induces a permutation on an orbit; thinking of an orbit as a vector space that group element is represented by a permutation matrix,
+
+.. math ::
+    \begin{align}
+        g &\rightarrow \left\langle i \middle| g \middle| j \right\rangle
+        &
+        \left| i \right\rangle,\, \left| j \right\rangle &\in \text{orbit}
+        &
+        \left\langle i | j \right\rangle &= \delta_{ij}.
+    \end{align}
+
+The set of permutation matrices is (typically) reducible.
+Decomposing these matrices into their irreducible representations requires a single unitary transformation that simultaneously block-diagonalizes the group generators.
+We can pick one generator to be diagonalized; as discussed above we pick the rotational generator.
+
+For one-dimensional irreps we can identify them by the pair of generator eigenvalues; we know each two-dimensional irrep is :math:`E` and we can identify the row of the irrep from the eigenvalue.
+
+Let us perform this decomposition now.
+
+Because the :math:`(0,0)` orbit is a singleton, every permutation matrix is just the 1×1 identity "matrix", and the generator eigenvalues are both 1, so
+
+.. math::
+    \begin{align}
+        \left| A_1^{(0,0)} \right\rangle = \begin{pmatrix} 1 \end{pmatrix} \left| (0,0) \right\rangle.
+    \end{align}
+
+We put the equivalence class orbit label as a superscript, as a reminder.
+
+For orbits of type :math:`(a,0)` the induced permutation matrices are
+
+.. math::
+    \begin{align}
+        2C_4(z) &\rightarrow \begin{pmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{pmatrix}
+    &
+        2C'_2   &\rightarrow \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \end{pmatrix}
+    \end{align}
+
+which are block-diagonalized by moving to the basis
+
+.. math::
+    \begin{align}
+        \begin{pmatrix}
+            \left| A^{(a,0)}_1   \right\rangle
+         \\ \left| B^{(a,0)}_1   \right\rangle
+         \\ \left| E^{(a,0)}; +1 \right\rangle
+         \\ \left| E^{(a,0)}; -1 \right\rangle
+        \end{pmatrix}
+        &=
+        \frac{1}{2}
+        \begin{pmatrix}
+            +1 & +1 & +1 & +1
+        \\  +1 & -1 & +1 & -1
+        \\  +1 & +i & -1 & -i
+        \\  +1 & -i & -1 & +i
+        \end{pmatrix}
+        \begin{pmatrix}
+            \left| (+a, 0) \right\rangle
+        \\  \left| (0, +a) \right\rangle
+        \\  \left| (-a, 0) \right\rangle
+        \\  \left| (0, -a) \right\rangle
+        \end{pmatrix}
+    \end{align}
+
+and the labels of the states on the left were fixed by the block-diagonalized generators :math:`U g U^\dagger`.
+
+For the orbits of type :math:`(a,a)` the induced permutation matrices are
+
+.. math::
+    \begin{align}
+        2C_4(z) &\rightarrow \begin{pmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{pmatrix}
+    &
+        2C'_2   &\rightarrow \begin{pmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0 \end{pmatrix}
+    \end{align}
+
+which are block-diagonalized by moving to the basis
+
+.. math::
+    \begin{align}
+        \begin{pmatrix}
+            \left| A^{(a,a)}_1  \right\rangle
+        \\  \left| B^{(a,a)}_2  \right\rangle
+        \\  \left| E^{(a,a)}; +1\right\rangle
+        \\  \left| E^{(a,a)}; -1\right\rangle
+        \end{pmatrix}
+        =
+        \frac{1}{2}
+        \begin{pmatrix}
+            +1  &   +1  &   +1  &   +1
+        \\  +1  &   -1  &   +1  &   -1
+        \\  +1  &   +i  &   -1  &   -i
+        \\  +1  &   -i  &   -1  &   +i
+        \end{pmatrix}
+        \begin{pmatrix}
+            \left| (+a,+a) \right\rangle
+        \\  \left| (-a,+a) \right\rangle
+        \\  \left| (-a,-a) \right\rangle
+        \\  \left| (+a,-a) \right\rangle
+        \end{pmatrix}.
+    \end{align}
+
+Note that even though the unitary transformation is the same, the type of :math:`B` irrep differs between the :math:`(a,0)` and :math:`(a,a)` orbits.
+
+Finally, for the orbits of type :math:`(a,b)` the induced permutation matrices are
+
+.. math::
+       \begin{align}
+            2C_4(z) &\rightarrow    \begin{pmatrix} 
+                                        0 & 0 & 1 & 0 & 0 & 0 & 0 & 0
+                                    \\  0 & 0 & 0 & 1 & 0 & 0 & 0 & 0
+                                    \\  0 & 0 & 0 & 0 & 1 & 0 & 0 & 0
+                                    \\  0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
+                                    \\  0 & 0 & 0 & 0 & 0 & 0 & 1 & 0
+                                    \\  0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+                                    \\  1 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+                                    \\  0 & 1 & 0 & 0 & 0 & 0 & 0 & 0
+                                    \end{pmatrix}
+        &
+            2C'_2   &\rightarrow    \begin{pmatrix}
+                                        0 & 0 & 0 & 1 & 0 & 0 & 0 & 0
+                                    \\  0 & 0 & 1 & 0 & 0 & 0 & 0 & 0
+                                    \\  0 & 1 & 0 & 0 & 0 & 0 & 0 & 0
+                                    \\  1 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+                                    \\  0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+                                    \\  0 & 0 & 0 & 0 & 0 & 0 & 1 & 0
+                                    \\  0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
+                                    \\  0 & 0 & 0 & 0 & 1 & 0 & 0 & 0
+                                    \end{pmatrix}
+    \end{align}
+
+which are block-diagonalized by moving to the basis
+
+.. math::
+    \begin{align}
+        \begin{pmatrix}
+            \left| A_1 \right\rangle
+        \\  \left| A_2 \right\rangle
+        \\  \left| B_1 \right\rangle
+        \\  \left| B_2 \right\rangle
+        \\  \left| E; +1 \right\rangle
+        \\  \left| E; -1 \right\rangle
+        \\  \left| E'; +1 \right\rangle
+        \\  \left| E'; -1 \right\rangle
+        \end{pmatrix}
+        =
+        \frac{1}{2\sqrt{2}}
+        \begin{pmatrix}
+            +1  &   +1  &   +1  &   +1  &   +1  &   +1  &   +1  &   +1
+        \\  +1  &   -1  &   +1  &   -1  &   +1  &   -1  &   +1  &   -1
+        \\  +1  &   -1  &   -1  &   +1  &   +1  &   -1  &   -1  &   +1
+        \\  +1  &   +1  &   -1  &   -1  &   +1  &   +1  &   -1  &   -1
+        \\  +1  &   +i  &   +i  &   -1  &   -1  &   -i  &   -i  &   +1
+        \\  +1  &   -i  &   -i  &   -1  &   -1  &   +i  &   +i  &   +1
+        \\  +1  &   -i  &   +i  &   +1  &   -1  &   +i  &   -i  &   -1
+        \\  +1  &   +i  &   -i  &   +1  &   -1  &   -i  &   +i  &   -1
+        \end{pmatrix}
+        \begin{pmatrix}
+            \left| (+a,+b) \right\rangle
+        \\  \left| (+b,+a) \right\rangle
+        \\  \left| (-b,+a) \right\rangle
+        \\  \left| (-a,+b) \right\rangle
+        \\  \left| (-a,-b) \right\rangle
+        \\  \left| (-b,-a) \right\rangle
+        \\  \left| (+b,-a) \right\rangle
+        \\  \left| (+a,-b) \right\rangle
+        \end{pmatrix}
+    \end{align}
+
+The :math:`A_2` irrep only appears in the orbits of size 8.
+
+Lattice Interactions
+====================
+
+The :class:`~tdg.LegoSphere.LegoSphere` is one example of a lattice-native interaction which by construction transforms in a definite way under the :math:`D_4` point symmetry.
+To construct a translationally-invariant two-body interaction we can restrict :math:`V_{x,x+r} = V_{0, r}` and study the relative-coordinate :math:`r` dependence.
+The set of relative coordinates is a two-dimensional integer lattice, and therefore we can leverage our knowledge about eigenfunctions on orbits to construct potentials in definite irreducible representations.
+
+For a fixed radius :math:`R` we construct the potential of strength :math:`C`
+
+.. math::
+    \begin{align}
+        V^{\Lambda, R}_{0,r} = C^{\Lambda, R}\sum_{gR} U^{R}_{\Lambda,gR} \delta_{r,gR}
+    \end{align}
+
+where :math:`gR` are the elements of its orbit, :math:`U^{R}_{\Lambda,gR}` the unitary transformation from the orbit to the eigenbasis, and :math:`\Lambda` labels the irrep (and row, if needed).
+An arbitrary potential on the orbit of :math:`R` can be constructed in this way because the eigenbasis is complete; a completely arbitrary lattice interaction can be constructed by summing contributions from different radii.
+
+One trivial example is the *contact interaction* where the whole sphere is the singleton :math:`(0,0)`, and the interaction is proportional to :math:`\delta_{r,0}`.
+In this language, a :class:`~tdg.LegoSphere.LegoSphere` is an :math:`A_1` interaction.
+
+Higher-body interactions are more complicated because they need not depend on only one coordinate.
+A three-body interaction could depend on two relative coordinates, for example.
+Then, the permutation matrices are induced by the action of the group generators on orbits of pairs of coordinate pairs; the algebra quickly becomes unpleasant.
+However, the reduction into irreps proceeds in the same conceptual way.
+
+
+Momentum Shells
+===============
+
+Given a generic momentum vector :math:`\vec{p}`, the corresponding momentum *shell* is the set of vectors in the image :math:`g\vec{p}`.
+Note that because the edges of the BZ are identified, some points have no 'obvious' partner; they might map to themselves under a nontrivial operation.
+
+.. _group orbits: https://mathworld.wolfram.com/GroupOrbit.html

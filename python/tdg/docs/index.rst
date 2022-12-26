@@ -6,11 +6,16 @@
 Two-Dimensional Gases
 =====================
 
+.. toctree:: 
+   :maxdepth: 3
+
+   computational-narrative/index.rst
+
+Source
+======
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   modules
    todo
    version
 
