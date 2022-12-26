@@ -15,6 +15,8 @@ class Action:
             the interaction with which the fermions interact; must be negative-definite for the Hubbard-Stratanovich transformation used to make sense.
         beta:       torch.tensor scalar
             the inverse temperature
+        mu:         torch.tensor scalar
+            the chemical potential
         h:          torch.tensor
             the spin chemical potential; a triplet
         fermion:    tdg.FermionMatrix
@@ -67,6 +69,7 @@ class Action:
         # proportional to n itself; a chemical potential equal to - C0/2.
         #
         # Since we work with H-µN-hS this ADDS to the physical chemical potential.
+        self.fermion = fermion
         self.FermionMatrix = fermion(self.Spacetime, self.beta, mu=self.mu + potential.C0/2, h=self.h)
         r'''The fermion matrix that gives the discretization.
 
@@ -173,6 +176,38 @@ class Action:
         coeff = [s.c for s in spheres]
         self.Tuning = tdg.Tuning(ere, self.Lattice, radii, C=coeff)
         return self
+
+    def projected(self, n, s):
+        r'''
+        Provides a convenience constructor for actions derived from this one that are needed in the implementation of :class:`~Sector`.
+        Shifts the chemical potential and external field, via
+
+        .. math::
+            \begin{align}
+                \mu &\rightarrow \mu + \frac{2\pi i}{2V+1} \frac{n}{\beta}
+                &
+                \vec{h} &\rightarrow \vec{h} + \frac{2\pi i}{2V+1} \frac{2s}{\beta} \hat{h}
+            \end{align}
+
+        Parameters
+        ----------
+            n: integer
+                Fourier sector for particle number projection
+            s: half-integer
+                Fourier sector for spin projection
+
+        Returns
+        -------
+            Action
+        '''
+        phase = 2j*torch.pi / (2*self.Spacetime.Lattice.sites + 1) / self.beta
+        S = Action(self.Spacetime, self.Potential, self.beta,
+                      self.mu + n * phase,
+                      self.h  + 2*s * phase * self.hhat,
+                      self.fermion)
+        try:    S.Tuning = self.Tuning
+        except: pass
+        return S
 
 def _demo(nx = 3, nt=8, beta=1, mu=torch.tensor(-2.0), h=torch.tensor([0,0,0], dtype=torch.complex128), C0=-5.0,  **kwargs):
 
