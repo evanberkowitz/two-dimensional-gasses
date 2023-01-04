@@ -252,7 +252,7 @@ class GrandCanonical:
                 S_dual  = tdg.Action(self.Action.Spacetime, V_dual, self.Action.beta, self.Action.mu, self.Action.h, self.Action.fermion)
 
                 s_dual  = functorch.vmap(S_dual)(self.configurations)
-                return  torch.autograd.forward_ad.unpack_dual(s_dual).tangent
+                return  (2*torch.pi / self.Action.beta)* torch.autograd.forward_ad.unpack_dual(s_dual).tangent
 
         raise NotImplemented('Unknown {method=} for calculating the contact.')
 
