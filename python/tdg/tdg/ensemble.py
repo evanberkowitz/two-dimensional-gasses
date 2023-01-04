@@ -249,7 +249,7 @@ class GrandCanonical:
             with torch.autograd.forward_ad.dual_level():
                 C0_dual = torch.autograd.forward_ad.make_dual(self.Action.Tuning.C, self.Action.Tuning.dC_dloga)
                 V_dual  = tdg.Potential(*[c * tdg.LegoSphere(r) for c,r in zip(C0_dual, self.Action.Tuning.radii)])
-                S_dual  = tdg.Action(self.Action.Spacetime, V_dual, self.Action.beta, self.Action.mu, self.Action.h, type(self.Action.FermionMatrix))
+                S_dual  = tdg.Action(self.Action.Spacetime, V_dual, self.Action.beta, self.Action.mu, self.Action.h, self.Action.fermion)
 
                 s_dual  = functorch.vmap(S_dual)(self.configurations)
                 return  torch.autograd.forward_ad.unpack_dual(s_dual).tangent
