@@ -397,6 +397,7 @@ class Sector:
     '''
     def __init__(self, canonical, Particles, Spin):
         self.Canonical = canonical
+        self.configurations = canonical.configurations
         
         self.Particles_projected = (Particles is not None)
         r'''
