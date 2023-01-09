@@ -77,6 +77,32 @@ class GrandCanonical(H5able):
 
         return self
     
+    def cut(self, start):
+        r'''
+        Parameters
+        ----------
+            start:  int
+                The number of configurations to drop from the beginning of the ensemble.
+
+        Returns
+        -------
+            :class:`~.GrandCanonical` without some configurations at the start.  Useful for performing a thermalization cut.
+        '''
+        return GrandCanonical(self.Action).from_configurations(self.configurations[start:])
+
+    def every(self, frequency):
+        r'''
+        Parameters
+        ----------
+            frequency:  int
+                The frequency with which to keep configurations.
+
+        Returns
+        -------
+            :class:`~.GrandCanonical` with configurations reduced in size by a factor of the frequency.  Useful for Markov Chain decorrelation.
+        '''
+        return GrandCanonical(self.Action).from_configurations(self.configurations[::frequency])
+
     # These utility functions help turn a doubly-struck sausage UU into a tensor, and back.
     def _matrix_to_tensor(self, matrix):
         V = self.Action.Spacetime.Lattice.sites
