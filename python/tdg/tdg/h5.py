@@ -282,7 +282,7 @@ class H5able:
             See: https://docs.python.org/3/library/pickle.html for more.
 
         '''
-        logger.info(f'Reading from_h5 {group.name} {"strictly" if strict else "leniently"}')
+        logger.info(f'Reading from_h5 {group.name} {"strictly" if strict else "leniently"}.')
         o = cls.__new__(cls)
         for field in group:
             if field == '_':
