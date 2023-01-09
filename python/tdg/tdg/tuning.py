@@ -3,10 +3,11 @@
 import torch
 import tdg
 from tdg.Luescher import Zeta2D
+from tdg.h5 import H5able
 
 from functools import cached_property
 
-class Tuning:
+class Tuning(H5able):
     r'''
     A :class:`~.Tuning` is a set of Wilson coefficients :math:`C` that reproduce chosen physics.
     In our case the physics being held fixed is the effective range expansion, or ERE.

@@ -2,8 +2,9 @@
 
 import torch
 import numpy as np
+from tdg.h5 import H5able
 
-class Spacetime:
+class Spacetime(H5able):
 
     def __init__(self, nt, lattice):
         self.nt   = nt

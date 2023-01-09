@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
+from tdg.h5 import H5able
 import numpy as np
 import torch
 
-class Zeta2D:
+class Zeta2D(H5able):
     r'''
     In the continuum finite-volume energy levels may be translated into scattering data via *Lüscher's quantization condition*.
 

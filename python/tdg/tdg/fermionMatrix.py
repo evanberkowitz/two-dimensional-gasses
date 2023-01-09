@@ -2,8 +2,9 @@
 
 import torch
 import tdg
+from tdg.h5 import H5able
 
-class FermionMatrix:
+class FermionMatrix(H5able):
     r'''
     The fermion matrix :math:`\mathbb{d}` which corresponds to
 

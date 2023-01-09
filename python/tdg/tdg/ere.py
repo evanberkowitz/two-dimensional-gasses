@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 import torch
+from tdg.h5 import H5able
 from tdg.Luescher import Zeta2D
 
-class EffectiveRangeExpansion:
+class EffectiveRangeExpansion(H5able):
     r'''
     The *effective range expansion* is an expansion of :math:`\cot\delta` as a function of momentum.
     In 2D the :math:`\ell=0` partial wave scattering amplitude can be expanded

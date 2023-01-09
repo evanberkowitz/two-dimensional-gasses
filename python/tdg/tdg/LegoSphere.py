@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import torch
+from tdg.h5 import H5able
 
-class LegoSphere:
+class LegoSphere(H5able):
     r'''
     Translationally-invariant potentials in the :math:`A_1` representations of the lattice :math:`D_4` symmetry can be written as a sum of LegoSpheres,
 

@@ -3,9 +3,9 @@
 import torch
 
 from tdg.fermionMatrix import FermionMatrix
+from tdg.h5 import H5able
 
-
-class Action:
+class Action(H5able):
     r'''
     Parameters
     ----------

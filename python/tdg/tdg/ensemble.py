@@ -7,11 +7,12 @@ import torch
 import functorch
 
 import tdg
+from tdg.h5 import H5able
 
 def _no_op(x):
     return x
 
-class GrandCanonical:
+class GrandCanonical(H5able):
     r''' A grand-canonical ensemble of configurations and associated observables, importance-sampled according to :attr:`~.Action`.
 
     Parameters
@@ -260,7 +261,7 @@ class GrandCanonical:
 #### Canonical
 ####
 
-class Canonical:
+class Canonical(H5able):
     r'''
     Whereas the grand-canonical ensemble fixes thermodynamic variables (such chemical potential :math:`\mu` or external field :math:`\vec{h}`),
     a canonical ensemble fixes quantum numbers (like total particle number :math:`N` or total spin projection along :math:`\vec{h}`, :math:`S_\vec{h}`).
@@ -363,7 +364,7 @@ class Canonical:
     # This is in fact sort of magical because the . resolution happens first, so it even
     # forwards the arguments to method calls correctly.
 
-class Sector:
+class Sector(H5able):
     r'''
     A `sector` is a choice of quantum numbers that specify a particular canonical ensemble.
     We currently have the capacity to project particle number (``Particles``) or the spin
