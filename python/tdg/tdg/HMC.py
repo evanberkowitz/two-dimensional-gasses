@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import torch
+from tdg.h5 import H5able
 
 r'''
 
@@ -8,7 +9,7 @@ HMC is an importance-sampling algorithm.
 
 '''
 
-class Hamiltonian:
+class Hamiltonian(H5able):
     r"""The HMC *Hamiltonian* for a given action :math:`S` is
     
     .. math::
@@ -88,7 +89,7 @@ class Hamiltonian:
         grad, = torch.autograd.grad(self.V(x), x)
         return -grad
 
-class MarkovChain:
+class MarkovChain(H5able):
     r"""
     The HMC algorithm for updating an initial configuration :math:`x_i` goes as follows:
 
@@ -144,7 +145,7 @@ class MarkovChain:
         else:
             return x_i
 
-class LeapFrog:
+class LeapFrog(H5able):
     r"""The LeapFrog integrator integrates Hamilton's equations of motion for a total of :math:`\tau` molecular dynamics time `md_time` in a reversible, symplectic way.
     
     It discretizes :math:`\tau` into `md_steps` steps of :math:`d\tau` and then uses simple finite-differencing.
@@ -205,7 +206,7 @@ class LeapFrog:
         '''
         return self.integrate(x_i, p_i)
 
-class Omelyan:
+class Omelyan(H5able):
     r"""
     The Omelyan integrator is a second-order integrator which integrates Hamilton's equations of motion for a total of :math:`\tau` molecular dynamics time `md_time` in a reversible, symplectic way.
 

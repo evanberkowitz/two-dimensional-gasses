@@ -4,6 +4,8 @@ from functools import cached_property
 import numpy as np
 import torch
 
+from tdg.h5 import H5able
+
 def _dimension(n):
     '''
 
@@ -19,7 +21,7 @@ def _dimension(n):
     '''
     return torch.tensor(list(range(0, n // 2 + 1)) + list(range( - n // 2 + 1, 0)), dtype=int)
 
-class Lattice:
+class Lattice(H5able):
 
     def __init__(self, nx, ny=None):
         self.nx = nx

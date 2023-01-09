@@ -2,8 +2,9 @@
 
 from functools import cached_property
 import torch
+from tdg.h5 import H5able
 
-class ReducedTwoBodyA1Hamiltonian:
+class ReducedTwoBodyA1Hamiltonian(H5able):
     r'''
     We can project our Hamiltonian to the two-body sector.  If we project to total momentum 0 we need only track the relative coordinate :math:`r`,
 
