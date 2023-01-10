@@ -7,9 +7,10 @@ Two-Dimensional Gases
 =====================
 
 .. toctree:: 
-   :maxdepth: 3
+   :maxdepth: 2
 
    computational-narrative/index.rst
+   data-analysis/index.rst
 
 Source
 ======
