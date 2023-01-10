@@ -15,7 +15,7 @@ This can help us see if anything suspicious has happened; if proposals have been
 
 For example, if we have uniformly- and normally-distributed observables, we can visualize them on the same trace, or separately.
 
-.. plot:: examples/plot/history.py
+.. plot:: examples/plot/History.py
    :include-source:
 
 Markov Chain data must often be further analyzed, and correlations in the data can affect uncertainty estimates for post-processed observables.
@@ -28,7 +28,7 @@ One way to visualize the correlation between different observables is to show sc
 
 For example, consider two ensembles of three datasets, two of which are correlated.
 
-.. plot:: examples/plot/scatter-matrix.py
+.. plot:: examples/plot/ScatterMatrix.py
    :include-source:
 
 The x-axis of each column and y-axis of each row are shared; except for the diagonal, on which we plot the histograms.
