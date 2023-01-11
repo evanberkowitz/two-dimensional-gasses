@@ -11,12 +11,12 @@ ERE[a_,re2_][x_]:=2/\[Pi] (Log[a/2 Sqrt[x]]+EulerGamma)+1/4 re2 x
 
 nx=5;
 e1=LuescherTuningTargetEnergy[nx,ERE[a,re2]]/@Range[10];
-x1=2e1 nx^2/(2\[Pi])^2;
+x1=e1 nx^2/(2\[Pi])^2;
 \[Zeta]1=1/\[Pi]^2 (LuescherZeta/@x1);
 
-nx=11
+nx=11;
 e2=LuescherTuningTargetEnergy[nx,ERE[a,0]]/@Range[10];
-x2=2e2 nx^2/(2\[Pi])^2;
+x2=e2 nx^2/(2\[Pi])^2;
 \[Zeta]2=1/\[Pi]^2 (LuescherZeta/@x2);
 
 
