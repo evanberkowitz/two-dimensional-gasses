@@ -1,3 +1,5 @@
+.. _grand-canonical:
+
 ****************************
 The Grand Canonical Ensemble
 ****************************

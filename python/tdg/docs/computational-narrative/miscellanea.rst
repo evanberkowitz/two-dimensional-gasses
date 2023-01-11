@@ -1,16 +1,19 @@
-Miscellenea
-===========
+.. _misc:
 
-tdg.pauli module
-----------------
+***********
+Miscellenea
+***********
+
+tdg.PauliMatrix
+---------------
 
 .. automodule:: tdg.pauli
    :members:
    :undoc-members:
    :show-inheritance:
 
-tdg.epsilon module
-------------------
+tdg.epsilon
+-----------
 
 .. automodule:: tdg.epsilon
    :members:

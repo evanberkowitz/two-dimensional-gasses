@@ -1,5 +1,8 @@
+.. background:
+
+**********
 Background
-==========
+**********
 
 Ultracold atomic experiments can squeeze nonrelativistic fermionic atoms in one dimension, constructing a two-dimensional Fermi gas.
 The leading-order effective field theory :cite:`Beane:2022wcn`

@@ -1,5 +1,8 @@
+.. _many-body:
+
+*********
 Many-Body
-=========
+*********
 
 As we increase the system size beyond the one- and two- body sectors an exact calculation becomes more and more difficult.
 Instead, we turn to studying thermal averages, which ultimately yields a euclidean path integral.
