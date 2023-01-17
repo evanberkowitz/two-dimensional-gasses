@@ -1,3 +1,52 @@
 \subsection{Double Occupancy}\label{sec:double occupancy}
 
-
+The (local) double occupancy is the expectation value of $\doubleOccupancy=\tilde{n}_\up \tilde{n}_\down$ (or the equivalent along some other direction).
+The \doubleOccupancy operator is equivalent to a combination of total-number operators,
+\begin{align}
+    \doubleOccupancy
+    = \tilde{n}_\up \tilde{n}_\dn
+    = \half \left(2 \tilde{n}_\up \tilde{n}_\dn \right)
+    = \half \left( (\tilde{n}_\up + \tilde{n}_\dn)^2 - \tilde{n}_\up^2 - \tilde{n}_\dn^2\right)
+    = \half \left( \tilde{n}^2 - \tilde{n} \right)
+\end{align}
+so that the expectation value
+\begin{align}
+    \expectation{2\doubleOccupancy_a}
+    =
+    \frac{\tr{e^{-\beta H}(\tilde{n}^2 - \tilde{n})}}{\tr{e^{-\beta H}}}
+    \approx
+    \frac{ \int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}}
+    ~\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \half \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} (\tilde{n}^2_a - \tilde{n}_a)} 
+    }{
+    \int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}}
+    ~\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \half \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}}} 
+    }
+\end{align}
+which follows from a similar derivation as the bilinearized trotterization \eqref{trotterization bilinearized}.
+By following the prescription demonstrated in our calculation of the particle number \eqref{fermionic particle number}, promoting the variation of chemical potential to a local field and differentiating, we find
+\begin{align}
+    \expectation{2\doubleOccupancy_a}
+    &=
+    \oneover{Z}\int DA e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}}
+    \left[\left(\oneover{\Delta t}\frac{\partial}{\partial \delta\mu_{t,a}}\right)^2 - \left(\oneover{\Delta t}\frac{\partial}{\partial \delta\mu_{t,a}}\right)\right]\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \half \Delta\tilde{t} \tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}}}
+    \nonumber\\
+    &=
+    \oneover{Z}\int DA e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}}
+    \left[\left(\oneover{\Delta t}\frac{\partial}{\partial \delta\mu_{t,a}}\right)^2 - \left(\oneover{\Delta t}\frac{\partial}{\partial \delta\mu_{t,a}}\right)\right] \det(\one + \UU)
+    \nonumber\\
+    &=
+    \oneover{Z}\int DA e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}}
+    \left[\left(\oneover{\Delta t}\frac{\partial}{\partial \delta\mu_{t,a}}\right) - 1 \right] \left(\oneover{\Delta t}\frac{\partial}{\partial \delta\mu_{t,a}}\right) \det(\one + \UU)
+    \nonumber\\
+    &=
+    \oneover{Z}\int DA e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}}
+    \left[\left(\oneover{\Delta t}\frac{\partial}{\partial \delta\mu_{t,a}}\right) - 1 \right] \det(\one + \UU) \tr{(\one + \UU)\inverse \UU \PP_a}
+    \nonumber\\
+    &=
+    \oneover{Z}\int DA e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}}
+    \det( \one+\UU ) \left(\tr{(\one + \UU)\inverse \UU \PP_a}^2 - \tr{(\one+\UU)\inverse \UU \PP_a (\one+\UU)\inverse \UU \PP_a}\right)
+    \nonumber\\
+    &=
+    \expectation{\tr{(\one + \UU)\inverse \UU \PP_a}^2 - \tr{(\one+\UU)\inverse \UU \PP_a (\one+\UU)\inverse \UU \PP_a}}
+\end{align}
+where the right-hand side expectation value is a grand-canonical auxiliary-field expression.
