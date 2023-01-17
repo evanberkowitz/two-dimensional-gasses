@@ -52,6 +52,14 @@ By following the prescription demonstrated in our calculation of the particle nu
     \label{eq:double occupancy}
 \end{align}
 where the right-hand side expectation value is a grand-canonical auxiliary-field expression.
+We can rewrite these projected traces if we leverage the simple properties of the projector,
+\begin{align}
+    \expectation{\doubleOccupancy_a}
+    &=
+    \half\expectation{\sum_{st}\; [(\one + \UU)\inverse \UU]_{aa}^{ss} [(\one + \UU)\inverse \UU]_{aa}^{tt} - [(\one + \UU)\inverse \UU]_{aa}^{st} [(\one + \UU)\inverse \UU]_{aa}^{ts} }
+\end{align}
+where $s,t$ are spin indices; this form is easily amenable to programming via \href{https://pytorch.org/docs/stable/generated/torch.einsum.html}{\texttt{einsum}}.
+
 
 \subsubsection{The $\beta\goesto0$ Limit}
 
