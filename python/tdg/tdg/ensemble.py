@@ -243,6 +243,43 @@ class GrandCanonical(H5able):
         '''
         return functorch.vmap(self.Action)(self.configurations)
 
+    @cached_property
+    def doubleOccupancy(self):
+        r'''
+        The double occupancy of a site is :math:`n_{\uparrow} n_{\downarrow}` on that site (or the equivalent along any direction; not just the :math:`z`-axis),
+        which as an operator is equal to :math:`\frac{1}{2}(n^2-n)`, where :math:`n` is the total number operator :func:`~.n`.
+
+        Configuration slowest, then space.
+        '''
+
+        # The double occupancy on site a is given by the expectation value of
+        #
+        #   2 * doubleOccupancy =
+        #   sum_{st}
+        #     + [ (1+UU)^-1 U ]^{ss}_{aa} [ (1+UU)^-1 U ]^{tt}_{aa}
+        #     - [ (1+UU)^-1 U ]^{st}_{aa} [ (1+UU)^-1 U ]^{ts}_{aa}
+        #
+        # where the lower indices are spatial and the upper indices are spin.
+        #
+        # The first term is the square of the contraction of the fermionic n operator.
+        first = self.n('fermionic')**2
+        # The second term is a bit more annoying;
+        UUPlusOneInverseUU = self._matrix_to_tensor(self._UUPlusOneInverseUU)
+        second = torch.einsum('caast,caats->ca',
+                                UUPlusOneInverseUU,
+                                UUPlusOneInverseUU,
+                             )
+
+        # To get the double occupancy itself, take half the difference.
+        return 0.5*(first - second)
+
+    @cached_property
+    def DoubleOccupancy(self):
+        r'''
+        The spatial sum of the :func:`~.doubleOccupancy`; one per configurtion.
+        '''
+        return self.doubleOccupancy.sum(axis=1)
+
     @cached
     def contact(self, method='bosonic'):
         r'''
