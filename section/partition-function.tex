@@ -671,3 +671,25 @@ Finally, note that if we take the inner product of the matrix element \eqref{dFd
 	&= \delta_{tt'} \FF_{t'} \PP_a \half(\hat{h}\cdot\sigma)
 \end{align}
 as expected.
+
+\subsection{The Infinite-Temperature Limit}\label{sec:infinite temperature}
+
+One particularly simple limit is $\beta\goesto0$, where the normalized gaussian in the partition function
+\begin{align}
+	\lim_{\beta\goesto0} \exp\left(-\half \sum_t A_t\transpose (-\Delta\tilde{t}\tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }\right)
+	=
+	\delta( A ).
+\end{align}
+In other words, to evaluate infinite-temperature expectation values using our numerical setup we don't need an ensemble of configurations, but just one: the all-zero configuration.
+With this simplification, we can see that the fermion matrix $\UU \goesto \one$ smoothly.
+Then, the partition function
+\begin{align}
+	Z
+	=&
+	\int DA \exp\left(-\half \sum_t A_t\transpose (-\Delta\tilde{t}\tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }\right) \det(\one+\UU)
+	\nonumber\\
+	\goesto&
+	\det(\one+\one) = 2^{2\Volume} = 4^\Volume
+\end{align}
+which counts all the possible states, and is what you expect from a direct evaluation of $\lim_{\beta\goesto0}\tr{e^{-\beta H}}$.
+The simplicity of this limit can provide a good sanity check.
