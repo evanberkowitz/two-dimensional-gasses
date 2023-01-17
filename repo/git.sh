@@ -46,17 +46,19 @@ result='\texttt{'"${NEWPRINT}"'} differs from commit \texttt{'"${OLDPRINT}"'}'" 
 
 # Turn red if there are dirty files.
 if [[ ! "${files_changed:0:1}" == "0" ]]; then
-    result="{\color{Red}${result}}"
+    color="\color{red}"
 else
-    result="{\color{Green}${result}}"
+    color="\color{green}"
 fi
 
-result="\newcommand{\repositoryInformationSetup}{
-    \usepackage[dvipsnames]{xcolor}
+result="\newcommand{\gitColor}[1]{{${color}#1}}
+\newcommand{\gitBranch}{$(git branch --show-current)}
+\newcommand{\gitCommit}{${OLDPRINT}}
+\newcommand{\repositoryInformationSetup}{
     \usepackage[ angle=90, color=black, opacity=1, scale=2, ]{background} 
     \SetBgPosition{current page.west} 
     \SetBgVshift{-4.5mm} 
-    \backgroundsetup{contents={${result}}}
+    \backgroundsetup{contents={\gitColor{${result}}}}
 }"
 
 popd 2>/dev/null 1>/dev/null
