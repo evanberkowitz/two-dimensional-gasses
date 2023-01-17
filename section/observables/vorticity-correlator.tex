@@ -1,0 +1,127 @@
+\subsection{Vortex-Sensitive Observables}\label{sec:vortex}
+
+The BKT transition is a transition between no vortices (at low temperature) and lots of vortex/antivortex pairs (at high temperature), which is driven by the entropic considerations of where all the vortices can be~\cite{1971JETP...32..493B,1972JETP...34..610B,Kosterlitz:1973}.
+\Ref{PhysRevLett.129.076403} provides an analysis of the BKT transition by studying the condensate fraction [their (2)] and the Cooper pair momentum distribution [their (3)].
+This transition is topological, in the sense that there isn't a good local order parameter to capture the change we're talking about.
+Consider, for example, an observable that measures the local vorticity, like
+\begin{align}
+	\omega^3_x = \text{curl}(j)_x = \grad \times \vec{j}_x = \epsilon^{3mn} \partial^m j^n_x.
+\end{align}
+By periodic boundary conditions the net vorticity vanishes
+\begin{align}
+	\sum_x \omega^3_x = 0
+	\label{eq:net vorticity}
+\end{align}
+if the current $j$ corresponds obeys a lattice continuity equation, since particles cannot leave across a boundary without coming back `on the other side'.
+(The vorticity is entirely in the 3 direction, since the fermions are confined to 2D; in what follows we suppress the 3 superscript.)
+This vanishes exactly because of the periodic boundary conditions; the boundary-condition-dependence is a hint it's accessing something topological.
+
+Let us find the needed $j$, first in dimensionful language.
+One well-defined method is to require the lattice continuity equation $\partial_t n = -\grad \cdot \vec{j}$ and to replace the left-hand side with $+i[H, n]$,
+\begin{align}
+	M\grad\cdot\vec{j}_z = -M \partial_t n_x = -i[MH, n_z]
+	=
+	-i \left[
+	\sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} - \frac{M g}{2 \Delta x^2} \frac{\delta_{xy}}{\Delta x^2}\right) \psi_y,
+	n_z\right]
+\end{align}
+because the interaction depends only on $n$s, which commute.  Moreover, the $g$-dependent piece gives a term proportional to $n$, so we need only worry about the commutator with the hopping.
+Fourier transforming the $z$ coordinate and suppressing spin indices,
+\begin{align}
+	\sum_z \Delta x^2 e^{-ip \cdot z} (M i\grad \cdot \vec{j}_z)
+	&=
+	\left[
+	\sum_{xy}\Delta x^4 \psi\adjoint_x \kappa_{xy} \psi_y,
+	\sum_z \Delta x^2 e^{-ip \cdot z} n_z\right]
+\nonumber\\
+	\sum_z \Delta x^2 e^{-ip \cdot z} M i\grad \cdot \oneover{\Volume \Delta x^2} \sum_q e^{i q\cdot z} \vec{j}_q
+	&=
+	\sum_{xyz} \Delta x^6 e^{-ip \cdot z} \kappa_{xy} \left[ \psi\adjoint_x \psi_y, n_z\right]
+\nonumber\\
+	-\sum_z \Delta x^2 e^{-ip \cdot z} \oneover{\Volume \Delta x^2} \sum_q M \vec{q} \cdot \vec{j}_q e^{i q\cdot z} 
+	&=
+	-\sum_{xyz} \Delta x^6 e^{-ip \cdot z} \kappa_{xy} \left[n_z, \psi\adjoint_x \psi_y\right]
+\nonumber\\
+	-\oneover{\Volume} \sum_q M \vec{q} \cdot \vec{j}_q \sum_z e^{i(q-p) \cdot z} 
+	&=
+	-\sum_{xyz} \Delta x^6 e^{-ip \cdot z} \kappa_{xy} \left(\left[n_z, \psi\adjoint_x\right]\psi_y + \psi\adjoint_x\left[n_z, \psi_y\right]\right)
+\nonumber\\
+	\oneover{\Volume} \sum_q M \vec{q} \cdot \vec{j}_q \Volume \delta_{pq}
+	&=
+	\sum_{xyz} \Delta x^6 e^{-ip \cdot z} \kappa_{xy} \left(\psi\adjoint_x\delta_{xz} \psi_y - \psi\adjoint_x \psi_y \delta_{yz}\right) \Delta x^{-2}
+\nonumber\\
+	M \vec{p} \cdot \vec{j}_p
+	&=
+	\sum_{xz} \Delta x^4 e^{-ip \cdot z} \left(\psi\adjoint_z \kappa_{zx} \psi_x - \psi\adjoint_x \kappa_{xz} \psi_z\right)
+\nonumber\\
+	&=
+	\oneover{\Volume \Delta x^2}\sum_{qxz} \frac{q^2}{2} \Delta x^4 e^{-ip \cdot z} \left(\psi\adjoint_z e^{-iq(z-x)} \psi_x - \psi\adjoint_x e^{-iq(x-z)} \psi_z\right)
+\nonumber\\
+	&=
+	\oneover{\Volume \Delta x^2}\sum_{q} \frac{q^2}{2} \left(\sum_{xz} \Delta x^4 \psi\adjoint_z e^{-i(q+p)z+iqx} \psi_x - \sum_{xz} \Delta x^4 \psi\adjoint_x e^{-i(p-q)z-iqx)} \psi_z\right)
+\nonumber\\
+	&=
+	\oneover{\Volume \Delta x^2}\sum_{q} \frac{q^2}{2} \left(\psi\adjoint_{-(p+q)} \psi_{-q} - \psi\adjoint_{-q} \psi_{p-q} \right)
+\nonumber\\
+	&=
+	\half \oneover{\Volume \Delta x^2}\sum_{q} \left(q^2\psi\adjoint_{-(p-q)} \psi_q - q^2 \psi\adjoint_{q} \psi_{p+q} \right)
+\nonumber\\
+	&=
+	\half \oneover{\Volume \Delta x^2}\sum_{q} \left((p+q)^2\psi\adjoint_{q} \psi_{p+q} - q^2 \psi\adjoint_{q} \psi_{p+q} \right)
+\nonumber\\
+	&=
+	\half \oneover{\Volume \Delta x^2}\sum_{q} (p^2 + 2pq)\psi\adjoint_{q} \psi_{p+q}
+\nonumber\\
+	M \vec{p} \cdot \vec{j}_p
+	&=
+	\vec{p} \cdot \left(\half \oneover{\Volume \Delta x^2} \sum_q (\vec{p}+2\vec{q}) \psi\adjoint_q\psi_{p+q}\right)
+\end{align}
+where we leveraged the anticommutation rules, the Fourier transform conventions, the ability to shift the sum over the Brillouin zone without causing problems.
+Since this is true for any mommentum $p$,
+\begin{align}
+	M \vec{j}_p = \half\oneover{V\Delta x^2} \sum_q (\vec{p}+2\vec{q}) \psi\adjoint_{q} \psi_{p+q}.
+\end{align}
+where the sum is over the Brillouin zone and both $p+q$ and $p+2q$ are understood mod the Brillouin zone.
+We can now find $\omega$ as a function of momentum.
+Fourier transforming,
+\begin{align}
+	\omega^3_k
+	= \sum_x \Delta x^2 e^{-ikx} \omega^3_x
+	= \sum_x \Delta x^2 e^{-ikx} \grad \times \vec{j}_x
+	&= \sum_x \Delta x^2 e^{-ikx} \grad \times \oneover{\Volume \Delta x^2} \sum_p e^{+ipx} \vec{j}_p
+\nonumber\\
+	&= \sum_p i\vec{p} \times \vec{j}_p \oneover{\Volume} \sum_x e^{i(p-k)x}
+	= \sum_p i\vec{p} \times \vec{j}_p \delta_{pk}
+	= i \vec{k} \times \vec{j}_k
+\end{align}
+which shows that the total vorticity is 0.
+Moreover, when calculating the vorticity we can drop the piece proportional to the momentum itself,
+\begin{align}
+	\omega^3_k
+	= i \vec{k} \times \left(\vec{j}_k = \half\oneover{M \Volume\Delta x^2} \sum_q (\vec{k}+2\vec{q}) \psi\adjoint_{q} \psi_{k+q}\right)
+	= i \half\oneover{M \Volume\Delta x^2} \sum_q \left(\vec{k} \times (\vec{k}+2\vec{q})\right) \psi\adjoint_{q} \psi_{k+q}
+\nonumber\\
+	= \oneover{M \Volume\Delta x^2} \sum_q (i\vec{k} \times \vec{q}) \psi\adjoint_{q} \psi_{k+q}
+\end{align}
+
+
+Instead of the total vorticity \eqref{net vorticity}, which must vanish by periodic boundary conditions, consider the vorticity-vorticity two-point correlation
+\begin{align}
+	\Omega_{\delta x} &= \oneover{\Volume \Delta x^2} \sum_x \Delta x^2 \Omega_{x,x-\delta x}
+&	\Omega_{xy} &= \omega\adjoint_x \omega_y.
+\end{align}
+If there were one vortex/antivortex pair that were well-separated the correlations would reach far as a function of the separation $\delta$.
+But when there are very many vortices and antivortices $\Omega$ should decay quickly.
+Evaluated via convolution, one finds
+\begin{align}
+	\Omega_{\delta x}
+	= \oneover{M^2}\left(\oneover{\Volume \Delta x^2}\right)^2 \sum_p e^{-ip \cdot \delta x} \omega\adjoint_p \omega_p
+	= \oneover{M^2}\left(\oneover{\Volume \Delta x^2}\right)^4 \sum_{pkq} e^{-ip \cdot \delta x} (\vec{p}\times\vec{q})\cdot(\vec{p}\times\vec{k}) \psi\adjoint_{p+q}\psi_q\psi\adjoint_k\psi_{p+k}
+\end{align}
+where the dot product between the cross products arises naturally from considering $\omega\adjoint \cdot \omega$ (and we focus on the $z$ direction when the momenta are all confined to the plane).
+Using a vector identity one finds
+\begin{align}
+	\Omega_{\delta x}
+	= \oneover{M^2}\left(\oneover{\Volume \Delta x^2}\right)^4 \sum_{pkq} e^{-ip \cdot \delta x} \left[p^2 (k\cdot q) - (p\cdot k)(p\cdot q)\right] \psi\adjoint_{p+q}\psi_q\psi\adjoint_k\psi_{p+k}
+\end{align}
+with no need to subtract a disconnected piece; that piece is 0 by translation invariance, since $\expectation{\omega_x} = \oneover{\Volume} \expectation{\sum_x \omega_x} = 0$.
