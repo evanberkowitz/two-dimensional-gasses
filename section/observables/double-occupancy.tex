@@ -46,7 +46,102 @@ By following the prescription demonstrated in our calculation of the particle nu
     \oneover{Z}\int DA e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t - \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}}
     \det( \one+\UU ) \left(\tr{(\one + \UU)\inverse \UU \PP_a}^2 - \tr{(\one+\UU)\inverse \UU \PP_a (\one+\UU)\inverse \UU \PP_a}\right)
     \nonumber\\
+    \expectation{\doubleOccupancy_a}
     &=
-    \expectation{\tr{(\one + \UU)\inverse \UU \PP_a}^2 - \tr{(\one+\UU)\inverse \UU \PP_a (\one+\UU)\inverse \UU \PP_a}}
+    \half\expectation{\tr{(\one + \UU)\inverse \UU \PP_a}^2 - \tr{(\one+\UU)\inverse \UU \PP_a (\one+\UU)\inverse \UU \PP_a}}
+    \label{eq:double occupancy}
 \end{align}
 where the right-hand side expectation value is a grand-canonical auxiliary-field expression.
+
+\subsubsection{The $\beta\goesto0$ Limit}
+
+One way to determine the double occupancy in the infinite temperature limit is to just enumerate states.
+On a given site the possible states are $\ket{\null}$, $\ket{\up}$, $\ket{\dn}$, and $\ket{\up\dn}$ and only the last has nonnzero double occupancy, so the expected value is $\oneover{4}$.
+Using the auxiliary field expression for double occupancy \eqref{double occupancy} and taking the $\beta\goesto0$ limit as in \secref{infinite temperature} one finds
+\begin{align}
+    \expectation{\doubleOccupancy_a}
+    \goesto&
+    \half\expectation{\tr{(\one + \one)\inverse \one \PP_a}^2 - \tr{(\one+\one)\inverse \one \PP_a (\one+\one)\inverse \one \PP_a}}
+    \nonumber\\
+    =&
+    \half\expectation{\tr{\oneover{2} \PP_a}^2 - \tr{\oneover{2} \PP_a \oneover{2} \PP_a}}
+    \nonumber\\
+    =&
+    \oneover{8}\expectation{\tr{\PP_a}^2 - \tr{\PP_a}}
+    =
+    \oneover{8}\expectation{ 2^2 - 2 } = \frac{2}{8} = \frac{1}{4}.
+\end{align}
+where we recall that the projector $\PP_a$ projects both spins to site $a$.
+
+In a canonical sector we need to evaluate
+\begin{align}
+    \expectation{ \doubleOccupancy_a \PP_{N,S_h}} \expectation{\PP_{N,S_h}}
+    =
+    \half \Bigg\langle &\oneover{(2\Volume+1)^2}\oneover{\det(\one+\UU)} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \det(\one+\UU_{ns})
+    \nonumber\\
+    &\left\{\tr{(\one + \UU_{ns})\inverse \UU_{ns} \PP_a}^2 - \tr{(\one+\UU_{ns})\inverse \UU_{ns} \PP_a (\one+\UU_{ns})\inverse \UU_{ns} \PP_a}\right\} \Bigg\rangle
+    \nonumber\\
+    =\Bigg\langle & \oneover{(2\Volume+1)^2} \oneover{2^{2\Volume+1}} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \left(1+e^{\frac{2\pi i}{2\Volume+1}(n+s)}\right)^\Volume \left(1+e^{\frac{2\pi i}{2\Volume+1}(n-s)}\right)^\Volume
+    \nonumber\\
+    &\left\{
+        \left(
+            \frac{e^{\frac{2\pi i}{2\Volume+1}(n+s)}}{1+e^{\frac{2\pi i}{2\Volume+1}(n+s)}}
+          + \frac{e^{\frac{2\pi i}{2\Volume+1}(n-s)}}{1+e^{\frac{2\pi i}{2\Volume+1}(n-s)}}
+        \right)^2
+      - \left(
+            \left[\frac{e^{\frac{2\pi i}{2\Volume+1}(n+s)}}{1+e^{\frac{2\pi i}{2\Volume+1}(n+s)}}\right]^2
+          + \left[\frac{e^{\frac{2\pi i}{2\Volume+1}(n-s)}}{1+e^{\frac{2\pi i}{2\Volume+1}(n-s)}}\right]^2
+        \right)
+      \right\}
+      \Bigg\rangle
+    \nonumber\\
+    =\Bigg\langle & \oneover{(2\Volume+1)^2} \oneover{2^{2\Volume+1}} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \left(1+e^{\frac{2\pi i}{2\Volume+1}(n+s)}\right)^\Volume \left(1+e^{\frac{2\pi i}{2\Volume+1}(n-s)}\right)^\Volume
+    \nonumber\\
+    &\left\{
+        \frac{2 e^{\frac{2\pi i}{2\Volume+1} \cdot 2n}}{
+            \left(1+e^{\frac{2\pi i}{2\Volume+1}(n+s)}\right)
+            \left(1+e^{\frac{2\pi i}{2\Volume+1}(n-s)}\right)
+        }
+      \right\}
+      \Bigg\rangle
+    \nonumber\\
+    =\Bigg\langle & \oneover{(2\Volume+1)^2} \oneover{2^{2\Volume}} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \left(1+e^{\frac{2\pi i}{2\Volume+1}(n+s)}\right)^{\Volume-1} \left(1+e^{\frac{2\pi i}{2\Volume+1}(n-s)}\right)^{\Volume-1} e^{\frac{2\pi i}{2\Volume+1} \cdot 2n} \Bigg\rangle
+    \nonumber\\
+    =\Bigg\langle & \oneover{(2\Volume+1)^2} \oneover{2^{2\Volume}} \sum_{nsab} \begin{pmatrix} \Volume-1 \\ a \end{pmatrix} \begin{pmatrix} \Volume-1 \\ b \end{pmatrix} e^{\frac{2\pi i}{2\Volume+1} n (2+a+b-N)} e^{\frac{2\pi i}{2\Volume+1} s (a-b-2S_h)} \Bigg\rangle
+    \nonumber\\
+    =\Bigg\langle & \oneover{2^{2\Volume}} \sum_{ab} \begin{pmatrix} \Volume-1 \\ a \end{pmatrix} \begin{pmatrix} \Volume-1 \\ b \end{pmatrix} \delta_{N,a+b+2} \delta_{2S_h,a-b} \Bigg\rangle
+    \nonumber\\
+    &= \oneover{2^{2\Volume}} \begin{pmatrix} \Volume-1 \\ \frac{N}{2}-1+S_h \end{pmatrix} \begin{pmatrix} \Volume-1 \\ \frac{N}{2}-1-S_h \end{pmatrix}
+\end{align}
+so that dividing by the canonical infinite-temperature partition function \eqref{canonical infinite-temperature partition function} one finds
+\begin{align}
+    \expectation{\doubleOccupancy_a \PP_{N,S_h}}
+    =
+    \frac{
+        \begin{pmatrix} \Volume-1 \\ \frac{N}{2}-1+S_h \end{pmatrix} \begin{pmatrix} \Volume-1 \\ \frac{N}{2}-1-S_h \end{pmatrix}
+    }{  \begin{pmatrix} \Volume \\ \frac{N}{2} + S_h \end{pmatrix} \begin{pmatrix} \Volume \\ \frac{N}{2}-S_h \end{pmatrix}}
+    =
+    \oneover{\Volume^2}\left(\frac{N}{2}+S_h\right)\left(\frac{N}{2}-S_h\right)
+\end{align}
+so that the total double occupancy 
+\begin{align}
+    \expectation{\DoubleOccupancy \PP_{N,S_h}}
+    \expectation{\sum_a \doubleOccupancy_a\PP_{N,S_h}}
+    =
+    \oneover{\Volume}\left(\frac{N}{2}+S_h\right)\left(\frac{N}{2}-S_h\right)
+    \label{eq:infinite temperature Double Occupancy}
+\end{align}
+which matches some simple examples we can easily do by counting and extreme limits.
+For example, the double occupancy vanishes when $\abs{S_h}$ is maximal, which makes sense via the Pauli exclusion principle.
+When $N=2$ and $S_h=0$, the spin-\up\ particle can be anywhere and the odds that the spin-\dn\ particle is on the same site is $\Volume\inverse$, which agrees with the formula.
+A more nontrivial example is to calculate the double occupancy with $N=4$ and $S_h=0$ via a counting argument:
+\begin{align}
+    \expectation{\DoubleOccupancy \PP_{N,S_h}}
+    = \oneover{\begin{pmatrix} \Volume \\ 2 \end{pmatrix}^2}\left[
+        0 \times \begin{pmatrix} \Volume \\ 2 \end{pmatrix} \begin{pmatrix} \Volume-2 \\ 2 \end{pmatrix}
+      + 1 \times \begin{pmatrix} \Volume \\ 2 \end{pmatrix} \begin{pmatrix} 2 \\ 1 \end{pmatrix} \begin{pmatrix} \Volume-2 \\ 1 \end{pmatrix}
+      + 2 \times \begin{pmatrix} \Volume \\ 2 \end{pmatrix} \begin{pmatrix} 2 \\ 2 \end{pmatrix} \begin{pmatrix} \Volume-2 \\ 0 \end{pmatrix}
+      \right]
+    = \frac{4}{\Volume}
+\end{align}
+where each term counts the number of ways to put two spin-\up{}s arbitrarily, two spin-\dn{}s so that they have 0, 1, or 2 sites in common with the spin-\up{}s, weighted by the number of sites in common, and the result matches the infinite temperature double occupancy \eqref{infinite temperature Double Occupancy}.
