@@ -116,4 +116,34 @@ In fact, looking at the explicit form of $\UU$ \eqref{fugacity}, we can think of
 	&
 	\tilde{\vec{h}} \goesto \tilde{\vec{h}} + \frac{2\pi i}{2\Volume+1} \frac{2s}{\tilde{\beta}} \hat{h}
 \end{align}
-Then, ``under the sum'' we can functionally differentiate $\exp(-S_{ns})$ and 
+Then, to find observables we can functionally differentiate $\exp(-S_{ns})$ ``under the sum'', and only then insert $\det(\one+\UU)$ both upstairs and downstairs to get the canonically-projected grand-canonical evaluation of the observable.
+
+\subsection{The $\beta\goesto0$ Limit}\label{sec:canonical infinite temperature}
+
+In a canonical sector with $N$ particles and total spin $S_h$ we can evaluate the partition function $Z_{N,S_h}$ at high temperature as in \secref{infinite temperature}, since the gaussian still approaches a Dirac delta.
+So, we need to evaluate
+\begin{align}
+    \expectation{\PP_{N,S_h}}
+    \goesto&
+    \oneover{(2\Volume+1)^2}\oneover{\det(\one+\UU)} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \det(\one+\UU_{ns})
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\oneover{\det(\two)} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \det\left((1+e^{+\frac{2\pi i}{2\Volume+1}(n + s \hat{h}\cdot\sigma)})\one\right)
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\oneover{2^{2\Volume}} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \left(1+e^{\frac{2\pi i}{2\Volume+1}(n+s)}\right)^\Volume \left(1+e^{\frac{2\pi i}{2\Volume+1}(n-s)}\right)^\Volume 
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\oneover{2^{2\Volume}} \sum_{nsab} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \begin{pmatrix} \Volume \\ a \end{pmatrix} e^{\frac{2\pi i}{2\Volume+1} a (n+s)} \begin{pmatrix} \Volume \\ b \end{pmatrix} e^{\frac{2\pi i}{2\Volume+1} b (n-s)}
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\oneover{2^{2\Volume}} \sum_{ab} \begin{pmatrix} \Volume \\ a \end{pmatrix} \begin{pmatrix} \Volume \\ b \end{pmatrix} \sum_n e^{\frac{2\pi i}{2\Volume+1}n(a+b-N)} \sum_s e^{\frac{2\pi i}{2\Volume+1}s(a-b-2S_h)}
+    \nonumber\\
+    =&
+    \oneover{2^{2\Volume}} \sum_{ab} \begin{pmatrix} \Volume \\ a \end{pmatrix} \begin{pmatrix} \Volume \\ b \end{pmatrix} \delta_{a+b,N} \delta_{a-b,2S_h}
+    \nonumber\\
+    =&
+    \oneover{2^{2\Volume}} \begin{pmatrix} \Volume \\ \frac{N}{2} + S_h \end{pmatrix} \begin{pmatrix} \Volume \\ \frac{N}{2}-S_h \end{pmatrix}
+    \label{eq:canonical infinite-temperature partition function}
+\end{align}
+which can also be computed by counting all states with $\frac{N}{2} + S_h$ spin-\up\ particles and $\frac{N}{2} - S_h$ spin-\dn\ particles.
