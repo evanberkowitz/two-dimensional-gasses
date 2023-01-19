@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import numpy as np
+import torch
 from itertools import product
 
 import matplotlib.pyplot as plt
@@ -76,7 +77,8 @@ class ScatterMatrix:
             kwargs:
                 Currently ignored.
         '''
-        for ((i, y), (j, x)) in product(enumerate(data), enumerate(data)):
+        d = tuple(d.clone().detach().numpy() if isinstance(d, torch.Tensor) else d for d in data)
+        for ((i, y), (j, x)) in product(enumerate(d), enumerate(d)):
             if i != j:
                 self.grid[i,j].scatter(x,y,
                                        alpha=scatter_alpha,
@@ -161,7 +163,8 @@ class ScatterTriangle:
             kwargs:
                 Currently ignored.
         '''
-        for ((i, y), (j, x)) in product(enumerate(data), enumerate(data)):
+        d = tuple(d.clone().detach().numpy() if isinstance(d, torch.Tensor) else d for d in data)
+        for ((i, y), (j, x)) in product(enumerate(d), enumerate(d)):
             if j > i:
                 continue
             if i != j:

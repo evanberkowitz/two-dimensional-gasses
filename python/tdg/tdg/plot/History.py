@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import numpy as np
+import torch
 from itertools import product
 
 import matplotlib.pyplot as plt
@@ -25,7 +26,7 @@ class History:
     '''
     def __init__(self, rows=1, histogram=5, row_height=3, width=12, **kwargs):
         self.fig, self.ax = plt.subplots(
-            rows, 2, sharex='col', sharey='row',
+            rows, 2, sharey='row',
             squeeze = False,
             gridspec_kw={'width_ratios': [histogram-1, 1], 'wspace': 0},
             figsize = (width, rows*row_height),
@@ -33,6 +34,11 @@ class History:
         )
         self.history   = self.ax[:,0]
         self.histogram = self.ax[:,1]
+
+        # The histograms need not be on the same scale.
+        # But the hitories should be.
+        for h in self.history:
+            h.sharex(self.history[0])
         
     def plot(self, data, row=0, x=None, frequency=1, **kwargs):
         r'''
@@ -48,8 +54,12 @@ class History:
                 Plotting every sample can prove visually overwhelming.
                 To reduce the number of points in the temporal history, only plot once per frequency.
         '''
-        self._plot_history  (data, row=row, frequency=frequency, **kwargs)
-        self._plot_histogram(data, row=row, **kwargs)
+        if isinstance(data, torch.Tensor):
+            d = data.clone().detach().numpy()
+        else:
+            d = data
+        self._plot_history  (d, row=row, frequency=frequency, **kwargs)
+        self._plot_histogram(d, row=row, **kwargs)
         
     def _plot_history(self, data, row=0, x=None, label=None, frequency=1, **kwargs):
         if x is None:
