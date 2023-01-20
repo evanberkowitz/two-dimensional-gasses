@@ -9,6 +9,9 @@ import functorch
 import tdg
 from tdg.h5 import H5able
 
+import logging
+logger = logging.getLogger(__name__)
+
 def _no_op(x):
     return x
 
@@ -285,6 +288,16 @@ class GrandCanonical(H5able):
         r'''
         The `contact`, :math:`\frac{dH}{d\log a}`.
 
+        The ``bosonic`` method uses automatic differentiation to compute :math:`dH/dC_R` and the ensemble's :class:`Tuning` to compute :math:`dC_R / d\log a`.
+        Just as the `bosonic` method for :func:`~.n` is extremely noisy compared to the ``fermionic`` method, so too is the ``bosonic`` action noisy.
+        
+        .. todo::
+            
+            In fact, it is SO NOISY that it has not been checked for correctness by comparing with an exact Trotterized two-body calcuation.
+
+        The ``fermionic`` method is much less noisy by comparison, computing tensor contractions.
+        In the case where the only :class:`~.LegoSphere` in the interaction is the on-site interaction, the ``fermionic`` method is accelerated by computing the :func:`~.DoubleOccupancy`.
+
         Parameters
         ----------
             method: str
@@ -300,14 +313,6 @@ class GrandCanonical(H5able):
             The method combines matrix elements with the derivative of the Wilson coefficients with respect to :math:`\log a` through :meth:`~.Tuning.dC_dloga`.
             Therefore the ``ensemble.Action`` must have a tuning!
 
-        .. note::
-
-            The ``'bosonic'`` method computes the derivative of the action with respect to the Wilson coefficients.
-            This is faster but noiser.
-
-        .. todo::
-
-            The ``'fermionic'`` method computes matrix elements of number operators.
         '''
         if method=='bosonic':
             with torch.autograd.forward_ad.dual_level():
@@ -317,6 +322,36 @@ class GrandCanonical(H5able):
 
                 s_dual  = functorch.vmap(S_dual)(self.configurations)
                 return  (2*torch.pi / self.Action.beta)* torch.autograd.forward_ad.unpack_dual(s_dual).tangent
+        elif method=='fermionic':
+            # For the on-site interaction we have a shortcut, which is a good acceleration because the LegoSphere is a delta function
+            # and thus we can do contractions that don't cost volume^2 but simply volume.
+            if len(self.Action.Tuning.radii) == 1 and all(r==0 for r in self.Action.Tuning.radii[0]):
+                # This shortcut was implemented and tested AFTER the remaining portion of this routine was,
+                # so that what is below was checked to be correct for the on-site interaction.
+                logger.info('Calculating the contact via the double occupancy.')
+                return 2*torch.pi * self.Action.Tuning.dC_dloga[0] * self.DoubleOccupancy
+
+            logger.info('Using the general form of the fermionic contact.')
+
+            L = self.Action.Spacetime.Lattice
+            S = torch.stack(tuple(tdg.LegoSphere(r, c).spatial(L) for c,r in zip(self.Action.Tuning.dC_dloga, self.Action.Tuning.radii) )).sum(axis=0).to(self._UUPlusOneInverseUU.dtype)
+
+            # The contractions looks just like the doubleOccupancy contractions, but with two spatial indices tied together just like the spins are,
+            # and then summed with the derivative LegoSphere stencil.
+            UUPlusOneInverseUU = self._matrix_to_tensor(self._UUPlusOneInverseUU)
+            first = torch.einsum(
+                    'ab,caass,cbbtt->c',
+                    S,
+                    UUPlusOneInverseUU,
+                    UUPlusOneInverseUU,
+                    )
+            second = torch.einsum(
+                    'ab,cbats,cabst->c',
+                    S,
+                    UUPlusOneInverseUU,
+                    UUPlusOneInverseUU,
+                    )
+            return torch.pi * (first-second)
 
         raise NotImplemented('Unknown {method=} for calculating the contact.')
 
