@@ -147,3 +147,75 @@ So, we need to evaluate
     \label{eq:canonical infinite-temperature partition function}
 \end{align}
 which can also be computed by counting all states with $\frac{N}{2} + S_h$ spin-\up\ particles and $\frac{N}{2} - S_h$ spin-\dn\ particles.
+
+\subsection{Exact Calculations in the $N=2$, $S_h=0$ Sector}
+
+One purpose of going through this whole rigamarole is to check the code's correctness.
+If we pick a small enough lattice and a sector with few enough particles we can evaluate expectation values according to the Trotterization \eqref{trotterization} projected to a canonical sector.
+Since the Hubbard-Stratonovich transformation and subsequent manipulations are exact, we can make an apples-to-apples comparison of observables at finite $\Delta \tilde{t}$ given enough statistics.
+
+Let us proceed by evaluating the kinetic and potential in a two-body state
+\begin{align}
+    \ket{a,b} = \alpha \tilde{\psi}\adjoint_{\up a} \tilde{\psi}\adjoint_{\dn b} \ket{0}
+\end{align}
+where $\ket{0}$ is the Fock vacuum and $\alpha$ is a normalization which we now calculate (up to a phase).
+Requiring \ket{a,b} to be normalized, and leveraging the anticommutation relations,
+\begin{align}
+    1\equiv\braket{a,b}{a,b} 
+    &= \abs{\alpha}^2 \matrixElement{0}{\tilde{\psi}_{\dn b}\tilde{\psi}_{\up a} \tilde{\psi}\adjoint_{\up a} \tilde{\psi}\adjoint_{\dn b}}{0}
+    \nonumber\\
+    &= \abs{\alpha}^2 \matrixElement{0}{\tilde{\psi}_{\dn b}(1-\tilde{\psi}\adjoint_{\up a} \tilde{\psi}_{\up a}) \tilde{\psi}\adjoint_{\dn b}}{0}
+    = \abs{\alpha}^2 \matrixElement{0}{1-\tilde{\psi}\adjoint_{\dn b} \tilde{\psi}_{\dn b}}{0}
+    = \abs{\alpha}^2 \braket{0}{0},
+\end{align}
+so we pick $\alpha=1$ for convenience.
+A similar calculation shows that we have
+\begin{align}
+    \braket{c,d}{a,b} = \delta_{ac}\delta_{bd}
+\end{align}
+
+Next, let us evaluate the (dimensionless) two-body kinetic energy; the momentum-squared piece of the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
+\begin{align}
+    \tilde{K}_{a'b';ab} = \matrixElement{a',b'}{
+        \sum_{cd} \tilde{\psi}\adjoint_c \tilde{\kappa}_{cd} \tilde{\psi}_d
+    }{a,b}
+\end{align}
+where the diagonal sum over spins is suppressed.
+Writing out the state, and applying the anticommuation relations until ladder operators destroy the Fock vacuum,
+\begin{align}
+    \tilde{K}_{a'b';ab}
+    &= \matrixElement{0}{
+            \tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} 
+            \left(\sum_{cd} \tilde{\psi}\adjoint_c \tilde{\kappa}_{cd} \tilde{\psi}_d\right)
+            \tilde{\psi}\adjoint_{a\up} \tilde{\psi}\adjoint_{b\dn}
+        }{0}
+    \nonumber\\
+    &= \sum_{cd\sigma} \tilde{\kappa}_{cd} \matrixElement{0}{
+            \tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} 
+            \tilde{\psi}\adjoint_{c\sigma} \tilde{\psi}_{d\sigma}
+            \tilde{\psi}\adjoint_{a\up} \tilde{\psi}\adjoint_{b\dn}
+        }{0}
+    \nonumber\\
+    &= \sum_{cd\sigma} \tilde{\kappa}_{cd} \matrixElement{0}{
+            \tilde{\psi}_{b'\dn}
+            \left(\delta_{a'c}\delta_{\up\sigma} - \tilde{\psi}\adjoint_{c\sigma} \tilde{\psi}_{a'\up} \right)
+            \left(\delta_{ad}\delta_{\up\sigma} - \tilde{\psi}\adjoint_{a\up}\tilde{\psi}_{d\sigma} \right)
+            \tilde{\psi}\adjoint_{b\dn}
+        }{0}
+    \nonumber\\
+    &= \tilde{\kappa}_{a'a} \delta_{b'b} + \sum_{cd} \tilde{\kappa}_{cd} \matrixElement{0}{
+            \tilde{\psi}_{b'\dn}
+            \tilde{\psi}\adjoint_{c\dn} \tilde{\psi}_{a'\up}
+            \tilde{\psi}\adjoint_{a\up}\tilde{\psi}_{d\dn}
+            \tilde{\psi}\adjoint_{b\dn}
+        }{0}
+    \nonumber\\
+    &= \tilde{\kappa}_{a'a} \delta_{b'b} + \sum_{cd} \tilde{\kappa}_{cd} \matrixElement{0}{
+            \left(\delta_{b'c} - \tilde{\psi}\adjoint_{c\dn}\tilde{\psi}_{b'\dn} \right)
+            \left(\delta_{a'a} - \tilde{\psi}\adjoint_{a\up}\tilde{\psi}_{a'\up} \right)
+            \left(\delta_{db} - \tilde{\psi}\adjoint_{b\dn} \tilde{\psi}_{d\dn} \right)
+        }{0}
+    \nonumber\\
+    &= \tilde{\kappa}_{a'a} \delta_{b'b} + \tilde{\kappa}_{b'b} \delta_{a'a}.
+\end{align}
+Of course: the kinetic energy is just the sum of the kinetic energy of each particle.
