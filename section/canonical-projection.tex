@@ -217,5 +217,89 @@ Writing out the state, and applying the anticommuation relations until ladder op
         }{0}
     \nonumber\\
     &= \tilde{\kappa}_{a'a} \delta_{b'b} + \tilde{\kappa}_{b'b} \delta_{a'a}.
+    \label{eq:two-body kinetic energy}
 \end{align}
 Of course: the kinetic energy is just the sum of the kinetic energy of each particle.
+
+Finally, we evaluate the (dimensionless) two-body potential energy; the remaining piece of the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}
+\begin{align}
+    \tilde{V}_{a'b';ab}
+    =& \matrixElement{a',b'}{
+        -\sum_{cd} \tilde{\psi}\adjoint_c
+            \frac{\tilde{C}_0}{2} \delta_{cd}
+            \tilde{\psi}_d
+        + \frac{1}{2} \sum_{cd} \tilde{n}_c \tilde{V}_{cd} \tilde{n}_d
+    }{a,b}
+    \nonumber\\
+    =&
+    -\sum_c \half \tilde{C}_0 \matrixElement{a',b'}{n_c}{a,b}
+    + \frac{1}{2} \sum_{cd} \tilde{C}_R \LegoSphere{R}_{cd} \matrixElement{a',b'}{\tilde{n}_c \tilde{n}_d}{a,b}
+    \nonumber\\
+    =&
+    -\sum_{c\sigma} \half \tilde{C}_0 \matrixElement{0}{\tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} n_{c\sigma} \tilde{\psi}\adjoint_{a\up}\tilde{\psi}\adjoint_{b\dn} }{0}
+    + \frac{1}{2} \sum_{cd\sigma\tau} \tilde{C}_R \LegoSphere{R}_{cd} \matrixElement{0}{\tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} \tilde{n}_{c\sigma} \tilde{n}_{d\tau} \tilde{\psi}\adjoint_{a\up}\tilde{\psi}\adjoint_{b\dn}}{0}
+    \nonumber\\
+    =&
+    -\sum_{c\sigma} \half \tilde{C}_0 \matrixElement{0}{\tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} \left(\delta_{ac}\delta_{\sigma\up}\tilde{\psi}\adjoint_{c\sigma} + \tilde{\psi}\adjoint_{a\up} n_{c\sigma}\right)\tilde{\psi}\adjoint_{b\dn}}{0}
+    \nonumber\\
+    &+ \frac{1}{2} \sum_{cd\sigma\tau} \tilde{C}_R \LegoSphere{R}_{cd} \matrixElement{0}{\tilde{\psi}_{a'\up} \tilde{\psi}_{b'\dn} \tilde{n}_{c\sigma} \left(\delta_{ad}\delta_{\tau\up}\tilde{\psi}\adjoint_{d\tau} +  \tilde{\psi}\adjoint_{a\up}\tilde{n}_{d\tau}\right) \tilde{\psi}\adjoint_{b\dn}}{0}
+    \nonumber\\
+    =&
+    - \half \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    -\sum_{c\sigma} \half \tilde{C}_0 \matrixElement{0}{\tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} \tilde{\psi}\adjoint_{a\up} \left(\delta_{cb}\delta_{\sigma\dn}\tilde{\psi}\adjoint_{c\sigma} + \tilde{\psi}\adjoint_{b\dn}n_{c\sigma}\right)}{0}
+    \nonumber\\
+    &+ \frac{1}{2} \sum_{cd\sigma\tau} \tilde{C}_R \LegoSphere{R}_{cd} \left[
+        \delta_{ad}\delta_{\tau\up} \matrixElement{a'b'}{\tilde{n}_{c\sigma}}{d,b}
+        +\matrixElement{0}{\tilde{\psi}_{a'\up} \tilde{\psi}_{b'\dn} \tilde{n}_{c\sigma} \tilde{\psi}\adjoint_{a\up}\left(\delta_{bd}\delta_{\dn\tau} \tilde{\psi}\adjoint_{d\tau} + \tilde{\psi}\adjoint_{b\dn}\tilde{n}_{d\tau}\right)}{0}
+        \right]
+    \nonumber\\
+    =&
+    - \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    + \half \sum_{c\sigma} \tilde{C}_R \LegoSphere{R}_{ca} \matrixElement{a',b'}{\tilde{n}_{c\sigma}}{a,b}
+    + \frac{1}{2} \sum_{c\sigma} \tilde{C}_R \LegoSphere{R}_{cb}
+        \matrixElement{a',b'}{\tilde{n}_{c\sigma}}{a,b}
+    \nonumber\\
+    =&
+    - \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    + \half \sum_{c\sigma} \tilde{C}_R \left(\LegoSphere{R}_{ca} + \LegoSphere{R}_{cb}\right) \matrixElement{a',b'}{\tilde{n}_{c\sigma}}{a,b}
+    \nonumber\\
+    =&
+    - \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    + \half \sum_{c} \tilde{C}_R \left(\LegoSphere{R}_{ca} + \LegoSphere{R}_{cb}\right) \delta_{a'a}\delta_{b'b} \left(\delta_{ca} + \delta_{cb}\right)
+    \nonumber\\
+    =&
+    - \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    + \half \tilde{C}_R \left(\LegoSphere{R}_{aa} + \LegoSphere{R}_{bb} + \LegoSphere{R}_{ab} + \LegoSphere{R}_{ba}\right)\delta_{a'a}\delta_{b'b}
+\end{align}
+where the repeated indices on the Lego spheres are unsummed.  Since the spheres are symmetric, we can cancel the $\half$ and write
+\begin{align}
+    \tilde{V}_{a'b';ab}
+    =&
+    \delta_{a'a}\delta_{b'b} \left(
+    + \tilde{C}_R \LegoSphere{R}_{aa} + \tilde{C}_R \LegoSphere{R}_{ab}
+    - \tilde{C}_0
+    \right).
+\end{align}
+Note that $\LegoSphere{R}_{aa} = 0$ unless $R=0$.
+So, if the on-site interaction is included $\tilde{C}_0\neq 0$ the subtracted piece exactly cancels the first term, while if no on-site interaction is included $\tilde{C}_0=0$ the subtracted piece vanishes, but so does the first piece, independently.
+Therefore
+\begin{align}
+    \tilde{V}_{a'b';ab} = \delta_{a'a} \delta_{b'b} \; \tilde{C}_R \LegoSphere{R}_{ab},
+    \label{eq:two-body potential energy}
+\end{align}
+the obvious answer.
+
+With the two-body kinetic \eqref{two-body kinetic energy} and potential \eqref{two-body potential energy} energies, we can construct the $N=2$, $S_h=0$ canonically-projected Trotterized trace,
+\begin{align}
+    \tr{ \PP_{2,0}  \prod_{t=1}^{N_t}
+        e^{-\Delta \tilde{t}\tilde{K}}
+        e^{-\Delta \tilde{t} \tilde{V} }
+    } = \tr{ \prod_{t=1}^{N_t}
+        e^{-\Delta \tilde{t}\tilde{K}}
+        e^{-\Delta \tilde{t} \tilde{V} }
+    }_{N=2, S_h=0}
+\end{align}
+needed to evaluate canonical expectation values \eqref{canonical-grand canonical projection} with $\mu=0$ and $\vec{h}=0$.
+Since the values of $\mu$ and $\vec{h}$ only serve to numerically stabilize the canonically-projected auxiliary field partition function, this restriction does not influence canonically-projected expectation values.
+
+By inserting the two-body representation of an observable into the trace and taking the ratio we can get exact results for finite-$\Delta\tilde{t}$ calculations done via Monte Carlo.
