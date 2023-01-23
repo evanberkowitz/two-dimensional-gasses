@@ -3,107 +3,107 @@
 By inserting projectors to sectors of conserved quantum numbers we can evaluate canonical-ensemble expectation values via grand canonical expectation values.
 For example, since the total fermion number $N$ and the spin along $h$ have definite value in a canonical sector,
 \begin{align}
-	\expectation{\O}_{N, S_h}
-	=
-	\frac{\tr{ e^{-\beta H} \O}_{N, S_h}}{\tr{ e^{-\beta H}}_{N, S_h}}
-	=
-	\frac{\tr{ e^{-\beta (H-\mu \hat{N}-h \cdot \hat{S})} \O }_{N, S_h}}{\tr{ e^{-\beta (H-\mu \hat{N}-h \cdot \hat{S})}}_{N, S_h}} 
-	=
-	\frac{\tr{ e^{-\beta (H-\mu\hat{N}-h\cdot \hat{S})} P_N P_{S_h} \O}}{\tr{ e^{-\beta (H - \mu \hat{N} - h \cdot \hat{S})} P_N P_{S_h}}}
-	=
-	\frac{\expectation{P_N P_{S_h} \O}}{\expectation{P_N P_{S_h}}}
-	\label{eq:canonical-grand canonical projection}
+    \expectation{\O}_{N, S_h}
+    =
+    \frac{\tr{ e^{-\beta H} \O}_{N, S_h}}{\tr{ e^{-\beta H}}_{N, S_h}}
+    =
+    \frac{\tr{ e^{-\beta (H-\mu \hat{N}-h \cdot \hat{S})} \O }_{N, S_h}}{\tr{ e^{-\beta (H-\mu \hat{N}-h \cdot \hat{S})}}_{N, S_h}} 
+    =
+    \frac{\tr{ e^{-\beta (H-\mu\hat{N}-h\cdot \hat{S})} P_N P_{S_h} \O}}{\tr{ e^{-\beta (H - \mu \hat{N} - h \cdot \hat{S})} P_N P_{S_h}}}
+    =
+    \frac{\expectation{P_N P_{S_h} \O}}{\expectation{P_N P_{S_h}}}
+    \label{eq:canonical-grand canonical projection}
 \end{align}
 where the $N$ and $S_h$ expectation-value and trace subscripts indicate the desired sector, $\hat{N}$ and $\hat{S}$ the number and spin operators, $P_N$ and $P_{S_h}$ the operator that project to the $N$-body sector with definite spin along $h$, and subscript-free traces and expectation values are grand-canonical.
 
 For spin-half fermions these projection operators can be written in an operator form,
 \begin{align}
-	P_N &= \oneover{2\Volume+1} \sum_{n=0}^{2\Volume} \exp\left(i \phi_n (\hat{N}-N)\right)
-	&
-	\phi_n &= \frac{2\pi n}{2\Volume+1}
-	&
-	N &\in \left\{0, 1, \cdots, 2\Volume\right\}
-	\\
-	P_{S_h} &= \oneover{2\Volume+1} \sum_{s=-\Volume}^{\Volume} \exp\left(i \phi_s (2 \hat{h}\cdot \hat{S} - 2 S_h )\right)
-	&
-	\phi_s &= \frac{2\pi s}{2\Volume+1}
-	&
-	S_h &\in \half \left\{ -\Volume, \cdots, 0, \cdots, +\Volume\right\}
+    P_N &= \oneover{2\Volume+1} \sum_{n=0}^{2\Volume} \exp\left(i \phi_n (\hat{N}-N)\right)
+    &
+    \phi_n &= \frac{2\pi n}{2\Volume+1}
+    &
+    N &\in \left\{0, 1, \cdots, 2\Volume\right\}
+    \\
+    P_{S_h} &= \oneover{2\Volume+1} \sum_{s=-\Volume}^{\Volume} \exp\left(i \phi_s (2 \hat{h}\cdot \hat{S} - 2 S_h )\right)
+    &
+    \phi_s &= \frac{2\pi s}{2\Volume+1}
+    &
+    S_h &\in \half \left\{ -\Volume, \cdots, 0, \cdots, +\Volume\right\}
 \end{align}
 Since $[\hat{N}, \hat{S}]=0$ we can combine these projectors together,
 \begin{align}
-	\PP_{N, S_h} &= \oneover{(2\Volume+1)^2} \sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n (\hat{N}-N) + s (2\hat{h}\cdot\hat{S} - 2 S_h)\right]\right)
+    \PP_{N, S_h} &= \oneover{(2\Volume+1)^2} \sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n (\hat{N}-N) + s (2\hat{h}\cdot\hat{S} - 2 S_h)\right]\right)
 \end{align}
 So, we should understand how to Trotterize the identity \eqref{canonical-grand canonical projection} and transform the projected grand-canonical traces into an auxiliary-field equivalents.
 
 Actually, transforming the Trotterized projected grand-canonical traces proceeds in a straightfoward way that matches \eqref{trotterization}, \eqref{trotterization bilinearized}, and the derivation of the fermion matrix \secref{fermion matrix}, but with an extra Grassman `timeslice' that gives matrix elements of the projector,
 \begin{align}
-	\matrixElement{\eta}{ \PP_{N, S_h} }{\eta'}
-	=&
-	\matrixElement{\eta}{
-		\oneover{(2\Volume+1)^2}\sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx} -N\right) + s \left(2 \hat{h}^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx} - 2S_h\right)\right]\right)
-	}{\eta'}
-	\nonumber\\
-	=&
-	\oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
-	\nonumber\\
-	&\matrixElement{\eta}{
-		\exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx}\right) + s \left(2 \hat{h}^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx}\right)\right]\right)
-	}{\eta'}
-	\nonumber\\
-	=&
-	\oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
-	\nonumber\\
-	&\matrixElement{\eta}{
-		\exp\left(\frac{2\pi i}{2\Volume+1}\left[ \left(\sum_{ijx}\psi\adjoint_{ix}\left[n \delta_{ji} + s \hat{h}^k\sigma_{ji}^k\right]\psi_{jx}\right) \right]\right)
-	}{\eta'}
-	\nonumber\\
-	=&
-	\oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
-	\exp\left[
-		\sum_{ijx}
-		\eta\adjoint_{ix}
-			\exp\left( \frac{2\pi i}{2\Volume+1} \left(n\one + s \hat{h}\cdot \sigma\right) \right)_{ji}
-		\eta'_{jx}
-	\right]
+    \matrixElement{\eta}{ \PP_{N, S_h} }{\eta'}
+    =&
+    \matrixElement{\eta}{
+        \oneover{(2\Volume+1)^2}\sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx} -N\right) + s \left(2 \hat{h}^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx} - 2S_h\right)\right]\right)
+    }{\eta'}
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
+    \nonumber\\
+    &\matrixElement{\eta}{
+        \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx}\right) + s \left(2 \hat{h}^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx}\right)\right]\right)
+    }{\eta'}
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
+    \nonumber\\
+    &\matrixElement{\eta}{
+        \exp\left(\frac{2\pi i}{2\Volume+1}\left[ \left(\sum_{ijx}\psi\adjoint_{ix}\left[n \delta_{ji} + s \hat{h}^k\sigma_{ji}^k\right]\psi_{jx}\right) \right]\right)
+    }{\eta'}
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
+    \exp\left[
+        \sum_{ijx}
+        \eta\adjoint_{ix}
+            \exp\left( \frac{2\pi i}{2\Volume+1} \left(n\one + s \hat{h}\cdot \sigma\right) \right)_{ji}
+        \eta'_{jx}
+    \right]
 \end{align}
 This matrix element appears as an additional term in the Grassman integral \eqref{grassmann integral} with an accompanying diagonal piece.
 The projected Trotterized trace therefore yields a sum of expressions just like the standard fermion determinant \eqref{fermion determinant with 2nt timeslices}, giving a fermion matrix analogous to $\DD$ \eqref{DD}, each with a different phase factor and an extended sausage,
 \begin{align}
-	\tr{\PP_{N,S_h} \prod_{t=1}^{N_t} e^{-\Delta t K}e^{\psi\adjoint\left(A_t + \Delta t \mu + \Delta t h\cdot\sigma\right)\psi}}
-	=
-	\oneover{(2\Volume+1)^2} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1} (nN+2sS_h)}\; \det\left[ \one + \UU \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s \hat{h} \cdot \sigma\right)\right\}\right].
+    \tr{\PP_{N,S_h} \prod_{t=1}^{N_t} e^{-\Delta t K}e^{\psi\adjoint\left(A_t + \Delta t \mu + \Delta t h\cdot\sigma\right)\psi}}
+    =
+    \oneover{(2\Volume+1)^2} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1} (nN+2sS_h)}\; \det\left[ \one + \UU \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s \hat{h} \cdot \sigma\right)\right\}\right].
 \end{align}
 Using \href{https://en.wikipedia.org/wiki/Determinant#Sylvester's\_determinant\_theorem}{Sylvester's identity} we can put the projection factor on the left of $\UU$.
 
 So the projected grand-canonica auxiliary field partition function is not given by \eqref{computational partition function}, but we can multiply by 1 to get the expected action and evaluate the reweighting factor
 \begin{align}
-	\expectation{\PP_{N, S_h}}
-	=
-	\expectation{
-		\oneover{(2\Volume+1)^2} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1} (nN+2sS_h)}\; \frac{
-			\det\left[ \one + \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s \hat{h} \cdot \sigma\right)\right\} \UU\right]
-		}{
-			\det\left[ \one + \UU \right]
-		}
-	}
-	\label{eq:grand canonical projector representation}
+    \expectation{\PP_{N, S_h}}
+    =
+    \expectation{
+        \oneover{(2\Volume+1)^2} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1} (nN+2sS_h)}\; \frac{
+            \det\left[ \one + \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s \hat{h} \cdot \sigma\right)\right\} \UU\right]
+        }{
+            \det\left[ \one + \UU \right]
+        }
+    }
+    \label{eq:grand canonical projector representation}
 \end{align}
 That is, if we can write the expectation value in a form like the computational partition function \eqref{computational partition function},
 \begin{align}
-	Z_{N, S_h} = \expectation{\PP_{N,S_h}} &= \int DA\; e^{-S} \PP_{N, S_h} = \int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}}
-	\\
-	S_{ns} &= \half \sum_{t} A_t\transpose (-\Delta\tilde{t}\tilde{V})\inverse A_t - \log\det\left(\one+\exp\left\{\frac{2\pi i}{2\Volume+1}(n\one+s \hat{h}\cdot\sigma)\right\}\UU\right) + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}
+    Z_{N, S_h} = \expectation{\PP_{N,S_h}} &= \int DA\; e^{-S} \PP_{N, S_h} = \int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}}
+    \\
+    S_{ns} &= \half \sum_{t} A_t\transpose (-\Delta\tilde{t}\tilde{V})\inverse A_t - \log\det\left(\one+\exp\left\{\frac{2\pi i}{2\Volume+1}(n\one+s \hat{h}\cdot\sigma)\right\}\UU\right) + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}
 \end{align}
 then if the grand canonical $\expectation{\O}$ for some operator $\O$ can be formulated as a functional derivative of $Z$ we may evaluate canonical expectation value \eqref{canonical-grand canonical projection} via the same derivative of $Z_{N, S_h}$,
 \begin{align}
-	\expectation{\O}_{N,S_h} = \partial \log Z_{N, S_h}
-	&= \frac{\int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}} \O_{ns}}{\int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}}}
-	\nonumber\\
-	&= \frac{\int DA\; e^{-S} \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}} \O_{ns}}{\int DA\; e^{-S}\oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}}}
-	\nonumber\\
-	&= \frac{\expectation{\oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}} \O_{ns}}}{\expectation{\oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}}}}
-	= \frac{\expectation{\PP_{N,S_h} \O_{ns}}}{\expectation{\PP_{N,S_h}}}
+    \expectation{\O}_{N,S_h} = \partial \log Z_{N, S_h}
+    &= \frac{\int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}} \O_{ns}}{\int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}}}
+    \nonumber\\
+    &= \frac{\int DA\; e^{-S} \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}} \O_{ns}}{\int DA\; e^{-S}\oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}}}
+    \nonumber\\
+    &= \frac{\expectation{\oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}} \O_{ns}}}{\expectation{\oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}}}}
+    = \frac{\expectation{\PP_{N,S_h} \O_{ns}}}{\expectation{\PP_{N,S_h}}}
 \end{align}
 and we conclude that and $\expectation{\PP_{N,S_h}}$ is proportional to the canonical partition function in that sector.
 So, the (absolute) free energy is out of bounds, but functional derivatives are OK.
@@ -112,9 +112,9 @@ The Fourier-dependent observable can be computed with the same method as in the 
 
 In fact, looking at the explicit form of $\UU$ \eqref{fugacity}, we can think of $S_{ns}$ as the normal action but with the replacements
 \begin{align}
-	\tilde{\mu}&\goesto \tilde{\mu} + \frac{2\pi i}{2\Volume+1} \frac{n}{\tilde{\beta}}
-	&
-	\tilde{\vec{h}} \goesto \tilde{\vec{h}} + \frac{2\pi i}{2\Volume+1} \frac{2s}{\tilde{\beta}} \hat{h}
+    \tilde{\mu}&\goesto \tilde{\mu} + \frac{2\pi i}{2\Volume+1} \frac{n}{\tilde{\beta}}
+    &
+    \tilde{\vec{h}} \goesto \tilde{\vec{h}} + \frac{2\pi i}{2\Volume+1} \frac{2s}{\tilde{\beta}} \hat{h}
 \end{align}
 Then, to find observables we can functionally differentiate $\exp(-S_{ns})$ ``under the sum'', and only then insert $\det(\one+\UU)$ both upstairs and downstairs to get the canonically-projected grand-canonical evaluation of the observable.
 
