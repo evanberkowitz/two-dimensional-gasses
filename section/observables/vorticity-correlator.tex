@@ -104,6 +104,16 @@ Moreover, when calculating the vorticity we can drop the piece proportional to t
 	= \oneover{M \Volume\Delta x^2} \sum_q (i\vec{k} \times \vec{q}) \psi\adjoint_{q} \psi_{k+q}
 \end{align}
 
+Actually, $\omega_k$ is not an observable; only $\omega_0$ is Hermitian (and 0!):
+\begin{align}
+    M\Volume \Delta x^2 \omega\adjoint_k
+    &= \sum_q (-i) \vec{k} \times \vec{q} \psi\adjoint_{k+q} \psi_{q}
+    \nonumber\\
+    &= \sum_{q' = q+k} (-i) \vec{k} \times (\vec{q}' - \vec{k}) \psi\adjoint_{k+q'-k} \psi_{q'-k}
+    \nonumber\\
+    &= \sum_{q'} i (-i\vec{k}) \times \vec{q}' \psi\adjoint_{q'} \psi_{q'-k} = M \Volume \Delta x^2 \omega_{-k}.
+\end{align}
+Therefore, $\omega_{-k} \omega_{k} = \omega\adjoint_k \omega_k$ \emph{is} observable.
 
 Instead of the total vorticity \eqref{net vorticity}, which must vanish by periodic boundary conditions, consider the vorticity-vorticity two-point correlation
 \begin{align}
