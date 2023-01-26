@@ -1,0 +1,305 @@
+\section{Canonical Projection}\label{sec:canonical projection}
+
+By inserting projectors to sectors of conserved quantum numbers we can evaluate canonical-ensemble expectation values via grand canonical expectation values.
+For example, since the total fermion number $N$ and the spin along $h$ have definite value in a canonical sector,
+\begin{align}
+    \expectation{\O}_{N, S_h}
+    =
+    \frac{\tr{ e^{-\beta H} \O}_{N, S_h}}{\tr{ e^{-\beta H}}_{N, S_h}}
+    =
+    \frac{\tr{ e^{-\beta (H-\mu \hat{N}-h \cdot \hat{S})} \O }_{N, S_h}}{\tr{ e^{-\beta (H-\mu \hat{N}-h \cdot \hat{S})}}_{N, S_h}} 
+    =
+    \frac{\tr{ e^{-\beta (H-\mu\hat{N}-h\cdot \hat{S})} P_N P_{S_h} \O}}{\tr{ e^{-\beta (H - \mu \hat{N} - h \cdot \hat{S})} P_N P_{S_h}}}
+    =
+    \frac{\expectation{P_N P_{S_h} \O}}{\expectation{P_N P_{S_h}}}
+    \label{eq:canonical-grand canonical projection}
+\end{align}
+where the $N$ and $S_h$ expectation-value and trace subscripts indicate the desired sector, $\hat{N}$ and $\hat{S}$ the number and spin operators, $P_N$ and $P_{S_h}$ the operator that project to the $N$-body sector with definite spin along $h$, and subscript-free traces and expectation values are grand-canonical.
+
+For spin-half fermions these projection operators can be written in an operator form,
+\begin{align}
+    P_N &= \oneover{2\Volume+1} \sum_{n=0}^{2\Volume} \exp\left(i \phi_n (\hat{N}-N)\right)
+    &
+    \phi_n &= \frac{2\pi n}{2\Volume+1}
+    &
+    N &\in \left\{0, 1, \cdots, 2\Volume\right\}
+    \\
+    P_{S_h} &= \oneover{2\Volume+1} \sum_{s=-\Volume}^{\Volume} \exp\left(i \phi_s (2 \hat{h}\cdot \hat{S} - 2 S_h )\right)
+    &
+    \phi_s &= \frac{2\pi s}{2\Volume+1}
+    &
+    S_h &\in \half \left\{ -\Volume, \cdots, 0, \cdots, +\Volume\right\}
+\end{align}
+Since $[\hat{N}, \hat{S}]=0$ we can combine these projectors together,
+\begin{align}
+    \PP_{N, S_h} &= \oneover{(2\Volume+1)^2} \sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n (\hat{N}-N) + s (2\hat{h}\cdot\hat{S} - 2 S_h)\right]\right)
+\end{align}
+So, we should understand how to Trotterize the identity \eqref{canonical-grand canonical projection} and transform the projected grand-canonical traces into an auxiliary-field equivalents.
+
+Actually, transforming the Trotterized projected grand-canonical traces proceeds in a straightfoward way that matches \eqref{trotterization}, \eqref{trotterization bilinearized}, and the derivation of the fermion matrix \secref{fermion matrix}, but with an extra Grassman `timeslice' that gives matrix elements of the projector,
+\begin{align}
+    \matrixElement{\eta}{ \PP_{N, S_h} }{\eta'}
+    =&
+    \matrixElement{\eta}{
+        \oneover{(2\Volume+1)^2}\sum_{n,s} \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx} -N\right) + s \left(2 \hat{h}^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx} - 2S_h\right)\right]\right)
+    }{\eta'}
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
+    \nonumber\\
+    &\matrixElement{\eta}{
+        \exp\left(\frac{2\pi i}{2\Volume+1}\left[ n \left(\sum_{ijx}\psi\adjoint_{ix} \delta_{ij}\psi_{jx}\right) + s \left(2 \hat{h}^k \sum_{xij}\psi\adjoint_{ix} \half \sigma_{ij}^k \psi_{jx}\right)\right]\right)
+    }{\eta'}
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
+    \nonumber\\
+    &\matrixElement{\eta}{
+        \exp\left(\frac{2\pi i}{2\Volume+1}\left[ \left(\sum_{ijx}\psi\adjoint_{ix}\left[n \delta_{ji} + s \hat{h}^k\sigma_{ji}^k\right]\psi_{jx}\right) \right]\right)
+    }{\eta'}
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\sum_{ns} \exp\left(-\frac{2\pi i}{2\Volume+1} (nN+2s S_h)\right)\times
+    \exp\left[
+        \sum_{ijx}
+        \eta\adjoint_{ix}
+            \exp\left( \frac{2\pi i}{2\Volume+1} \left(n\one + s \hat{h}\cdot \sigma\right) \right)_{ji}
+        \eta'_{jx}
+    \right]
+\end{align}
+This matrix element appears as an additional term in the Grassman integral \eqref{grassmann integral} with an accompanying diagonal piece.
+The projected Trotterized trace therefore yields a sum of expressions just like the standard fermion determinant \eqref{fermion determinant with 2nt timeslices}, giving a fermion matrix analogous to $\DD$ \eqref{DD}, each with a different phase factor and an extended sausage,
+\begin{align}
+    \tr{\PP_{N,S_h} \prod_{t=1}^{N_t} e^{-\Delta t K}e^{\psi\adjoint\left(A_t + \Delta t \mu + \Delta t h\cdot\sigma\right)\psi}}
+    =
+    \oneover{(2\Volume+1)^2} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1} (nN+2sS_h)}\; \det\left[ \one + \UU \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s \hat{h} \cdot \sigma\right)\right\}\right].
+\end{align}
+Using \href{https://en.wikipedia.org/wiki/Determinant#Sylvester's\_determinant\_theorem}{Sylvester's identity} we can put the projection factor on the left of $\UU$.
+
+So the projected grand-canonica auxiliary field partition function is not given by \eqref{computational partition function}, but we can multiply by 1 to get the expected action and evaluate the reweighting factor
+\begin{align}
+    \expectation{\PP_{N, S_h}}
+    =
+    \expectation{
+        \oneover{(2\Volume+1)^2} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1} (nN+2sS_h)}\; \frac{
+            \det\left[ \one + \exp\left\{ \frac{2\pi i}{2\Volume+1}\left(n + s \hat{h} \cdot \sigma\right)\right\} \UU\right]
+        }{
+            \det\left[ \one + \UU \right]
+        }
+    }
+    \label{eq:grand canonical projector representation}
+\end{align}
+That is, if we can write the expectation value in a form like the computational partition function \eqref{computational partition function},
+\begin{align}
+    Z_{N, S_h} = \expectation{\PP_{N,S_h}} &= \int DA\; e^{-S} \PP_{N, S_h} = \int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}}
+    \\
+    S_{ns} &= \half \sum_{t} A_t\transpose (-\Delta\tilde{t}\tilde{V})\inverse A_t - \log\det\left(\one+\exp\left\{\frac{2\pi i}{2\Volume+1}(n\one+s \hat{h}\cdot\sigma)\right\}\UU\right) + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V}}
+\end{align}
+then if the grand canonical $\expectation{\O}$ for some operator $\O$ can be formulated as a functional derivative of $Z$ we may evaluate canonical expectation value \eqref{canonical-grand canonical projection} via the same derivative of $Z_{N, S_h}$,
+\begin{align}
+    \expectation{\O}_{N,S_h} = \partial \log Z_{N, S_h}
+    &= \frac{\int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}} \O_{ns}}{\int DA\; \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{-S_{ns}}}
+    \nonumber\\
+    &= \frac{\int DA\; e^{-S} \oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}} \O_{ns}}{\int DA\; e^{-S}\oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}}}
+    \nonumber\\
+    &= \frac{\expectation{\oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}} \O_{ns}}}{\expectation{\oneover{(2\Volume+1)^2}\sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} e^{S-S_{ns}}}}
+    = \frac{\expectation{\PP_{N,S_h} \O_{ns}}}{\expectation{\PP_{N,S_h}}}
+\end{align}
+and we conclude that and $\expectation{\PP_{N,S_h}}$ is proportional to the canonical partition function in that sector.
+So, the (absolute) free energy is out of bounds, but functional derivatives are OK.
+However, remember that we \emph{functionally differentiate first} and then multiply by unity to ensure the grand canonical Boltzmann factor is used as the computational measure, and that we need to calculate the observable in each Fourier component.
+The Fourier-dependent observable can be computed with the same method as in the grand-canonical case but promoting $\UU \goesto \exp\{2\pi i(n+s\hat{h}\cdot\sigma)/(2\Volume+1)\}\UU$.
+
+In fact, looking at the explicit form of $\UU$ \eqref{fugacity}, we can think of $S_{ns}$ as the normal action but with the replacements
+\begin{align}
+    \tilde{\mu}&\goesto \tilde{\mu} + \frac{2\pi i}{2\Volume+1} \frac{n}{\tilde{\beta}}
+    &
+    \tilde{\vec{h}} \goesto \tilde{\vec{h}} + \frac{2\pi i}{2\Volume+1} \frac{2s}{\tilde{\beta}} \hat{h}
+\end{align}
+Then, to find observables we can functionally differentiate $\exp(-S_{ns})$ ``under the sum'', and only then insert $\det(\one+\UU)$ both upstairs and downstairs to get the canonically-projected grand-canonical evaluation of the observable.
+
+\subsection{The $\beta\goesto0$ Limit}\label{sec:canonical infinite temperature}
+
+In a canonical sector with $N$ particles and total spin $S_h$ we can evaluate the partition function $Z_{N,S_h}$ at high temperature as in \secref{infinite temperature}, since the gaussian still approaches a Dirac delta.
+So, we need to evaluate
+\begin{align}
+    \expectation{\PP_{N,S_h}}
+    \goesto&
+    \oneover{(2\Volume+1)^2}\oneover{\det(\one+\UU)} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \det(\one+\UU_{ns})
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\oneover{\det(\two)} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \det\left((1+e^{+\frac{2\pi i}{2\Volume+1}(n + s \hat{h}\cdot\sigma)})\one\right)
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\oneover{2^{2\Volume}} \sum_{ns} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \left(1+e^{\frac{2\pi i}{2\Volume+1}(n+s)}\right)^\Volume \left(1+e^{\frac{2\pi i}{2\Volume+1}(n-s)}\right)^\Volume 
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\oneover{2^{2\Volume}} \sum_{nsab} e^{-\frac{2\pi i}{2\Volume+1}(nN+2sS_h)} \begin{pmatrix} \Volume \\ a \end{pmatrix} e^{\frac{2\pi i}{2\Volume+1} a (n+s)} \begin{pmatrix} \Volume \\ b \end{pmatrix} e^{\frac{2\pi i}{2\Volume+1} b (n-s)}
+    \nonumber\\
+    =&
+    \oneover{(2\Volume+1)^2}\oneover{2^{2\Volume}} \sum_{ab} \begin{pmatrix} \Volume \\ a \end{pmatrix} \begin{pmatrix} \Volume \\ b \end{pmatrix} \sum_n e^{\frac{2\pi i}{2\Volume+1}n(a+b-N)} \sum_s e^{\frac{2\pi i}{2\Volume+1}s(a-b-2S_h)}
+    \nonumber\\
+    =&
+    \oneover{2^{2\Volume}} \sum_{ab} \begin{pmatrix} \Volume \\ a \end{pmatrix} \begin{pmatrix} \Volume \\ b \end{pmatrix} \delta_{a+b,N} \delta_{a-b,2S_h}
+    \nonumber\\
+    =&
+    \oneover{2^{2\Volume}} \begin{pmatrix} \Volume \\ \frac{N}{2} + S_h \end{pmatrix} \begin{pmatrix} \Volume \\ \frac{N}{2}-S_h \end{pmatrix}
+    \label{eq:canonical infinite-temperature partition function}
+\end{align}
+which can also be computed by counting all states with $\frac{N}{2} + S_h$ spin-\up\ particles and $\frac{N}{2} - S_h$ spin-\dn\ particles.
+
+\subsection{Exact Calculations in the $N=2$, $S_h=0$ Sector}
+
+One purpose of going through this whole rigamarole is to check the code's correctness.
+If we pick a small enough lattice and a sector with few enough particles we can evaluate expectation values according to the Trotterization \eqref{trotterization} projected to a canonical sector.
+Since the Hubbard-Stratonovich transformation and subsequent manipulations are exact, we can make an apples-to-apples comparison of observables at finite $\Delta \tilde{t}$ given enough statistics.
+
+Let us proceed by evaluating the kinetic and potential in a two-body state
+\begin{align}
+    \ket{a,b} = \alpha \tilde{\psi}\adjoint_{\up a} \tilde{\psi}\adjoint_{\dn b} \ket{0}
+\end{align}
+where $\ket{0}$ is the Fock vacuum and $\alpha$ is a normalization which we now calculate (up to a phase).
+Requiring \ket{a,b} to be normalized, and leveraging the anticommutation relations,
+\begin{align}
+    1\equiv\braket{a,b}{a,b} 
+    &= \abs{\alpha}^2 \matrixElement{0}{\tilde{\psi}_{\dn b}\tilde{\psi}_{\up a} \tilde{\psi}\adjoint_{\up a} \tilde{\psi}\adjoint_{\dn b}}{0}
+    \nonumber\\
+    &= \abs{\alpha}^2 \matrixElement{0}{\tilde{\psi}_{\dn b}(1-\tilde{\psi}\adjoint_{\up a} \tilde{\psi}_{\up a}) \tilde{\psi}\adjoint_{\dn b}}{0}
+    = \abs{\alpha}^2 \matrixElement{0}{1-\tilde{\psi}\adjoint_{\dn b} \tilde{\psi}_{\dn b}}{0}
+    = \abs{\alpha}^2 \braket{0}{0},
+\end{align}
+so we pick $\alpha=1$ for convenience.
+A similar calculation shows that we have
+\begin{align}
+    \braket{c,d}{a,b} = \delta_{ac}\delta_{bd}
+\end{align}
+
+Next, let us evaluate the (dimensionless) two-body kinetic energy; the momentum-squared piece of the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
+\begin{align}
+    \tilde{K}_{a'b';ab} = \matrixElement{a',b'}{
+        \sum_{cd} \tilde{\psi}\adjoint_c \tilde{\kappa}_{cd} \tilde{\psi}_d
+    }{a,b}
+\end{align}
+where the diagonal sum over spins is suppressed.
+Writing out the state, and applying the anticommuation relations until ladder operators destroy the Fock vacuum,
+\begin{align}
+    \tilde{K}_{a'b';ab}
+    &= \matrixElement{0}{
+            \tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} 
+            \left(\sum_{cd} \tilde{\psi}\adjoint_c \tilde{\kappa}_{cd} \tilde{\psi}_d\right)
+            \tilde{\psi}\adjoint_{a\up} \tilde{\psi}\adjoint_{b\dn}
+        }{0}
+    \nonumber\\
+    &= \sum_{cd\sigma} \tilde{\kappa}_{cd} \matrixElement{0}{
+            \tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} 
+            \tilde{\psi}\adjoint_{c\sigma} \tilde{\psi}_{d\sigma}
+            \tilde{\psi}\adjoint_{a\up} \tilde{\psi}\adjoint_{b\dn}
+        }{0}
+    \nonumber\\
+    &= \sum_{cd\sigma} \tilde{\kappa}_{cd} \matrixElement{0}{
+            \tilde{\psi}_{b'\dn}
+            \left(\delta_{a'c}\delta_{\up\sigma} - \tilde{\psi}\adjoint_{c\sigma} \tilde{\psi}_{a'\up} \right)
+            \left(\delta_{ad}\delta_{\up\sigma} - \tilde{\psi}\adjoint_{a\up}\tilde{\psi}_{d\sigma} \right)
+            \tilde{\psi}\adjoint_{b\dn}
+        }{0}
+    \nonumber\\
+    &= \tilde{\kappa}_{a'a} \delta_{b'b} + \sum_{cd} \tilde{\kappa}_{cd} \matrixElement{0}{
+            \tilde{\psi}_{b'\dn}
+            \tilde{\psi}\adjoint_{c\dn} \tilde{\psi}_{a'\up}
+            \tilde{\psi}\adjoint_{a\up}\tilde{\psi}_{d\dn}
+            \tilde{\psi}\adjoint_{b\dn}
+        }{0}
+    \nonumber\\
+    &= \tilde{\kappa}_{a'a} \delta_{b'b} + \sum_{cd} \tilde{\kappa}_{cd} \matrixElement{0}{
+            \left(\delta_{b'c} - \tilde{\psi}\adjoint_{c\dn}\tilde{\psi}_{b'\dn} \right)
+            \left(\delta_{a'a} - \tilde{\psi}\adjoint_{a\up}\tilde{\psi}_{a'\up} \right)
+            \left(\delta_{db} - \tilde{\psi}\adjoint_{b\dn} \tilde{\psi}_{d\dn} \right)
+        }{0}
+    \nonumber\\
+    &= \tilde{\kappa}_{a'a} \delta_{b'b} + \tilde{\kappa}_{b'b} \delta_{a'a}.
+    \label{eq:two-body kinetic energy}
+\end{align}
+Of course: the kinetic energy is just the sum of the kinetic energy of each particle.
+
+Finally, we evaluate the (dimensionless) two-body potential energy; the remaining piece of the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}
+\begin{align}
+    \tilde{V}_{a'b';ab}
+    =& \matrixElement{a',b'}{
+        -\sum_{cd} \tilde{\psi}\adjoint_c
+            \frac{\tilde{C}_0}{2} \delta_{cd}
+            \tilde{\psi}_d
+        + \frac{1}{2} \sum_{cd} \tilde{n}_c \tilde{V}_{cd} \tilde{n}_d
+    }{a,b}
+    \nonumber\\
+    =&
+    -\sum_c \half \tilde{C}_0 \matrixElement{a',b'}{n_c}{a,b}
+    + \frac{1}{2} \sum_{cd} \tilde{C}_R \LegoSphere{R}_{cd} \matrixElement{a',b'}{\tilde{n}_c \tilde{n}_d}{a,b}
+    \nonumber\\
+    =&
+    -\sum_{c\sigma} \half \tilde{C}_0 \matrixElement{0}{\tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} n_{c\sigma} \tilde{\psi}\adjoint_{a\up}\tilde{\psi}\adjoint_{b\dn} }{0}
+    + \frac{1}{2} \sum_{cd\sigma\tau} \tilde{C}_R \LegoSphere{R}_{cd} \matrixElement{0}{\tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} \tilde{n}_{c\sigma} \tilde{n}_{d\tau} \tilde{\psi}\adjoint_{a\up}\tilde{\psi}\adjoint_{b\dn}}{0}
+    \nonumber\\
+    =&
+    -\sum_{c\sigma} \half \tilde{C}_0 \matrixElement{0}{\tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} \left(\delta_{ac}\delta_{\sigma\up}\tilde{\psi}\adjoint_{c\sigma} + \tilde{\psi}\adjoint_{a\up} n_{c\sigma}\right)\tilde{\psi}\adjoint_{b\dn}}{0}
+    \nonumber\\
+    &+ \frac{1}{2} \sum_{cd\sigma\tau} \tilde{C}_R \LegoSphere{R}_{cd} \matrixElement{0}{\tilde{\psi}_{a'\up} \tilde{\psi}_{b'\dn} \tilde{n}_{c\sigma} \left(\delta_{ad}\delta_{\tau\up}\tilde{\psi}\adjoint_{d\tau} +  \tilde{\psi}\adjoint_{a\up}\tilde{n}_{d\tau}\right) \tilde{\psi}\adjoint_{b\dn}}{0}
+    \nonumber\\
+    =&
+    - \half \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    -\sum_{c\sigma} \half \tilde{C}_0 \matrixElement{0}{\tilde{\psi}_{b'\dn} \tilde{\psi}_{a'\up} \tilde{\psi}\adjoint_{a\up} \left(\delta_{cb}\delta_{\sigma\dn}\tilde{\psi}\adjoint_{c\sigma} + \tilde{\psi}\adjoint_{b\dn}n_{c\sigma}\right)}{0}
+    \nonumber\\
+    &+ \frac{1}{2} \sum_{cd\sigma\tau} \tilde{C}_R \LegoSphere{R}_{cd} \left[
+        \delta_{ad}\delta_{\tau\up} \matrixElement{a'b'}{\tilde{n}_{c\sigma}}{d,b}
+        +\matrixElement{0}{\tilde{\psi}_{a'\up} \tilde{\psi}_{b'\dn} \tilde{n}_{c\sigma} \tilde{\psi}\adjoint_{a\up}\left(\delta_{bd}\delta_{\dn\tau} \tilde{\psi}\adjoint_{d\tau} + \tilde{\psi}\adjoint_{b\dn}\tilde{n}_{d\tau}\right)}{0}
+        \right]
+    \nonumber\\
+    =&
+    - \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    + \half \sum_{c\sigma} \tilde{C}_R \LegoSphere{R}_{ca} \matrixElement{a',b'}{\tilde{n}_{c\sigma}}{a,b}
+    + \frac{1}{2} \sum_{c\sigma} \tilde{C}_R \LegoSphere{R}_{cb}
+        \matrixElement{a',b'}{\tilde{n}_{c\sigma}}{a,b}
+    \nonumber\\
+    =&
+    - \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    + \half \sum_{c\sigma} \tilde{C}_R \left(\LegoSphere{R}_{ca} + \LegoSphere{R}_{cb}\right) \matrixElement{a',b'}{\tilde{n}_{c\sigma}}{a,b}
+    \nonumber\\
+    =&
+    - \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    + \half \sum_{c} \tilde{C}_R \left(\LegoSphere{R}_{ca} + \LegoSphere{R}_{cb}\right) \delta_{a'a}\delta_{b'b} \left(\delta_{ca} + \delta_{cb}\right)
+    \nonumber\\
+    =&
+    - \tilde{C}_0 \delta_{a'a}\delta_{b'b}
+    + \half \tilde{C}_R \left(\LegoSphere{R}_{aa} + \LegoSphere{R}_{bb} + \LegoSphere{R}_{ab} + \LegoSphere{R}_{ba}\right)\delta_{a'a}\delta_{b'b}
+\end{align}
+where the repeated indices on the Lego spheres are unsummed.  Since the spheres are symmetric, we can cancel the $\half$ and write
+\begin{align}
+    \tilde{V}_{a'b';ab}
+    =&
+    \delta_{a'a}\delta_{b'b} \left(
+    + \tilde{C}_R \LegoSphere{R}_{aa} + \tilde{C}_R \LegoSphere{R}_{ab}
+    - \tilde{C}_0
+    \right).
+\end{align}
+Note that $\LegoSphere{R}_{aa} = 0$ unless $R=0$.
+So, if the on-site interaction is included $\tilde{C}_0\neq 0$ the subtracted piece exactly cancels the first term, while if no on-site interaction is included $\tilde{C}_0=0$ the subtracted piece vanishes, but so does the first piece, independently.
+Therefore
+\begin{align}
+    \tilde{V}_{a'b';ab} = \delta_{a'a} \delta_{b'b} \; \tilde{C}_R \LegoSphere{R}_{ab},
+    \label{eq:two-body potential energy}
+\end{align}
+the obvious answer.
+
+With the two-body kinetic \eqref{two-body kinetic energy} and potential \eqref{two-body potential energy} energies, we can construct the $N=2$, $S_h=0$ canonically-projected Trotterized trace,
+\begin{align}
+    \tr{ \PP_{2,0}  \prod_{t=1}^{N_t}
+        e^{-\Delta \tilde{t}\tilde{K}}
+        e^{-\Delta \tilde{t} \tilde{V} }
+    } = \tr{ \prod_{t=1}^{N_t}
+        e^{-\Delta \tilde{t}\tilde{K}}
+        e^{-\Delta \tilde{t} \tilde{V} }
+    }_{N=2, S_h=0}
+\end{align}
+needed to evaluate canonical expectation values \eqref{canonical-grand canonical projection} with $\mu=0$ and $\vec{h}=0$.
+Since the values of $\mu$ and $\vec{h}$ only serve to numerically stabilize the canonically-projected auxiliary field partition function, this restriction does not influence canonically-projected expectation values.
+
+By inserting the two-body representation of an observable into the trace and taking the ratio we can get exact results for finite-$\Delta\tilde{t}$ calculations done via Monte Carlo.

@@ -3,9 +3,9 @@
 import torch
 
 from tdg.fermionMatrix import FermionMatrix
+from tdg.h5 import H5able
 
-
-class Action:
+class Action(H5able):
     r'''
     Parameters
     ----------
@@ -15,6 +15,8 @@ class Action:
             the interaction with which the fermions interact; must be negative-definite for the Hubbard-Stratanovich transformation used to make sense.
         beta:       torch.tensor scalar
             the inverse temperature
+        mu:         torch.tensor scalar
+            the chemical potential
         h:          torch.tensor
             the spin chemical potential; a triplet
         fermion:    tdg.FermionMatrix
@@ -51,6 +53,11 @@ class Action:
         r''' The chemical potential :math:`\mu`.'''
         self.h  = h
         r''' The spin chemical potential :math:`\vec{h}`.'''
+        self.absh = torch.sqrt(torch.einsum('i,i->', self.h, self.h))
+        if self.absh == 0.:
+            self.hhat = torch.tensor([0,0,1.])
+        else:
+            self.hhat = self.h / self.absh
 
         self.V = self.Potential.spatial(self.Spacetime.Lattice)
         r'''The spatial representation of ``Potential`` on the ``Spacetime.Lattice``'''
@@ -62,6 +69,7 @@ class Action:
         # proportional to n itself; a chemical potential equal to - C0/2.
         #
         # Since we work with H-µN-hS this ADDS to the physical chemical potential.
+        self.fermion = fermion
         self.FermionMatrix = fermion(self.Spacetime, self.beta, mu=self.mu + potential.C0/2, h=self.h)
         r'''The fermion matrix that gives the discretization.
 
@@ -95,6 +103,37 @@ class Action:
     def __repr__(self):
         return str(self)
 
+    def gauge(self, A):
+        r'''
+        Parameters
+        ----------
+            A: torch.tensor
+                an auxiliary field configuration
+
+        Returns
+        -------
+            torch.tensor
+                :math:`\frac{1}{2} \sum_t A_t (-\Delta t V)^{-1} A_t`
+        '''
+        # S_gauge = 1/2 Σ(t) A(t) inverse(- ∆t V) A(t)
+        # We can pull the minus sign in the inverse out front.
+        return -0.5 * torch.einsum('ta,ab,tb->', A, self.Vinverse.to(A.dtype), A) / self.dt
+
+    def fermionic(self, A):
+        r'''
+        Parameters
+        ----------
+            A: torch.tensor
+                an auxiliary field configuration
+
+        Returns
+        -------
+            torch.tensor
+                :math:`-\log \det \mathbb{d}`
+        '''
+        # S_fermionic = - log det d
+        return - self.FermionMatrix.logdet(A)
+
     def __call__(self, A):
         r'''
         Parameters
@@ -105,14 +144,10 @@ class Action:
         Returns
         -------
             torch.tensor
-                :math:`S(A)`.
+                :math:`S(A) =\texttt{S.gauge}(A) + \texttt{S.fermionic}(A) + \texttt{S.normalizing_offset}`.
         '''
         # S = 1/2 Σ(t) A(t) inverse(- ∆t V) A(t) - log det d + nt/2 tr log(-2π ∆t V )
-        gauss = -0.5 * torch.einsum('ta,ab,tb->', A, self.Vinverse.to(A.dtype), A) / self.dt
-
-        fermionic = - self.FermionMatrix.logdet(A)
-
-        return gauss + fermionic + self.normalizing_offset
+        return self.gauge(A) + self.fermionic(A) + self.normalizing_offset
 
     def quenched_sample(self, sample_shape=torch.Size([])):
         r'''
@@ -134,3 +169,49 @@ class Action:
         .. _the torch.distributions interface: https://pytorch.org/docs/stable/distributions.html#torch.distributions.distribution.Distribution.sample
         '''
         return self.quenched.sample(sample_shape)
+
+    def set_tuning(self, ere):
+        spheres = self.Potential.spheres
+        radii = [s.r for s in spheres]
+        coeff = [s.c for s in spheres]
+        self.Tuning = tdg.Tuning(ere, self.Lattice, radii, C=coeff)
+        return self
+
+    def projected(self, n, s):
+        r'''
+        Provides a convenience constructor for actions derived from this one that are needed in the implementation of :class:`~Sector`.
+        Shifts the chemical potential and external field, via
+
+        .. math::
+            \begin{align}
+                \mu &\rightarrow \mu + \frac{2\pi i}{2V+1} \frac{n}{\beta}
+                &
+                \vec{h} &\rightarrow \vec{h} + \frac{2\pi i}{2V+1} \frac{2s}{\beta} \hat{h}
+            \end{align}
+
+        Parameters
+        ----------
+            n: integer
+                Fourier sector for particle number projection
+            s: half-integer
+                Fourier sector for spin projection
+
+        Returns
+        -------
+            Action
+        '''
+        phase = 2j*torch.pi / (2*self.Spacetime.Lattice.sites + 1) / self.beta
+        S = Action(self.Spacetime, self.Potential, self.beta,
+                      self.mu + n * phase,
+                      self.h  + 2*s * phase * self.hhat,
+                      self.fermion)
+        try:    S.Tuning = self.Tuning
+        except: pass
+        return S
+
+def _demo(nx = 3, nt=8, beta=1, mu=torch.tensor(-2.0), h=torch.tensor([0,0,0], dtype=torch.complex128), C0=-5.0,  **kwargs):
+
+    import tdg
+    spacetime = tdg.Spacetime(nt, tdg.Lattice(nx))
+    V = tdg.Potential(C0*tdg.LegoSphere([0,0]))
+    return Action(spacetime, V, beta, mu, h)

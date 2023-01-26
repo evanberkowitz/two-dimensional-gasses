@@ -1,0 +1,45 @@
+\subsection{The Contact}\label{sec:contact}
+
+The contact is given by~\cite{PhysRevA.86.013626}
+\begin{align}
+	\hat{C} &= \frac{2 \pi M}{\hbar^2} \frac{dH}{d\log a}
+	&
+	\hat{C}\Delta x^2 &= 2\pi \frac{d\tilde{H}}{d\log a} 
+	\label{eq:contact}
+\end{align}
+\Refs{Froehlich2011,PhysRevLett.109.130403} report a measurement of the contact.
+Specifically they measure $C/k_F^2$ as a function of $1/\log k_F a_{2D}$ in the Fermi liquid regime.
+In \Ref{PhysRevLett.109.130403} Fig. 4 they show a comparison with a zero-temperature fixed-node diffusion Monte Carlo calculation~\cite{PhysRevLett.106.110403}; the theory and experiment agree at $1/\log k_F a \gtrsim 0.5$ but the experiment and the theory diverge deeper into the weak-coupling regime $1/\ln k_F a \sim 0.3$.
+The disagreement is only one data point, so who knows; the experimentalists did a ladder approximation and reproduced that one point.
+I can't make heads or tails of the method; \Ref{doi:10.1063/1.443766} claims the solution is exact in the region bounded by the nodes.
+
+We can use the chain rule to further expand the operator,
+\begin{align}
+    \hat{C}\Delta x^2 = 2\pi \frac{d\tilde{H}}{d C_R} \frac{d C_R}{d\log a} 
+\end{align}
+where the Wilson coefficients $C_R$ are those of the $A_1$ Lego sphere with radius $R$ described in \secref{Lego spheres}.
+The derivative of the coefficients is accessible from the tuning to the ERE; for details see the code \sourcefile{tdg/tuning.py}.
+So, the expectation value of the contact is
+\begin{align}
+    \expectation{\hat{C} \Delta x^2}
+    = 2 \pi \frac{d C_R}{d\log a} \tr{e^{-\beta H} \left(\frac{d\tilde{H}}{d C_R} = \half \LegoSphere{R}_{ab} (\tilde{n}_a \tilde{n}_b - \tilde{n}_a \delta_{ab}) \right)}
+    \label{eq:contact generic}
+\end{align}
+where the regrouping of the contact interaction into the bilinear term yields the last piece.
+Following the same derivation as the double occupancy \eqref{double occupancy} one finds that the same-site terms conspire to yield
+\begin{align}
+    \expectation{\hat{C} \Delta x^2}
+    &= 2 \pi \frac{d C_R}{d\log a} \LegoSphere{R}_{ab} \half\expectation{\tr{(\one + \UU)\inverse \UU \PP_a}\tr{(\one + \UU)\inverse \UU \PP_b} - \tr{(\one+\UU)\inverse \UU \PP_a (\one+\UU)\inverse \UU \PP_b}}
+    \nonumber\\
+    &= \pi \expectation{\sum_{Rabst} \frac{d C_R}{d\log a} \LegoSphere{R}_{ab} \left\{[(\one+\UU)\inverse \UU]^{ss}_{aa} [(\one+\UU)\inverse \UU]^{tt}_{bb} - [(\one+\UU)\inverse \UU]^{st}_{ba} [(\one+\UU)\inverse \UU]^{ts}_{ab} \right\}}
+\end{align}
+which, in index notation, is easily programmable.
+In the case when only the $R=0$ sphere is included,
+\begin{align}
+    \expectation{\hat{C} \Delta x^2}
+    &= \pi \expectation{\sum_{abst} \frac{d C_0}{d\log a} (\LegoSphere{0}_{ab} = \delta_{ab}) \left\{[(\one+\UU)\inverse \UU]^{ss}_{aa} [(\one+\UU)\inverse \UU]^{tt}_{bb} - [(\one+\UU)\inverse \UU]^{st}_{ba} [(\one+\UU)\inverse \UU]^{ts}_{ab} \right\}}
+    \nonumber\\
+    &= 2\pi \frac{d C_0}{d\log a} \expectation{ \DoubleOccupancy }
+\end{align}
+the contact is directly proportional to the double occupancy described in \secref{double occupancy}.
+

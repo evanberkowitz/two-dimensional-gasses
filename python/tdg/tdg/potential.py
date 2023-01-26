@@ -4,8 +4,9 @@ from functools import cached_property
 from functools import lru_cache as cached
 import numpy as np
 import torch
+from tdg.h5 import H5able
 
-class Potential:
+class Potential(H5able):
     r'''
     A potential encodes a term in the many-body Hamiltonian like :math:`nVn`, where :math:`n` are number operators and :math:`V` can connect
     different sites.

@@ -2,8 +2,9 @@
 
 from functools import cached_property
 import torch
+from tdg.h5 import H5able
 
-class ReducedTwoBodyA1Hamiltonian:
+class ReducedTwoBodyA1Hamiltonian(H5able):
     r'''
     We can project our Hamiltonian to the two-body sector.  If we project to total momentum 0 we need only track the relative coordinate :math:`r`,
 
@@ -36,6 +37,16 @@ class ReducedTwoBodyA1Hamiltonian:
         \end{align}
 
     where :math:`\vec{n}` is a vector of lattice momentum and the normalization depends on the size of the orbit of :math:`\vec{n}` under :math:`D_4`.
+
+    .. note::
+        A user should only very rarely need to directly construct a ``ReducedTwoBodyA1Hamiltonian``; but it is integral to the :class:`~.Tuning`.
+
+    Parameters
+    ----------
+        lattice:        :class:`~.Lattice`
+                        The spatial lattice on which the Hamiltonian describes dynamics.
+        legoSpheres:    list of :class:`~.LegoSphere`
+                        The spheres in the interaction.
     '''
 
     def __init__(self, lattice, legoSpheres):
@@ -172,7 +183,7 @@ class ReducedTwoBodyA1Hamiltonian:
         '''
         return torch.linalg.eigvalsh(self.operator(C))
 
-    def tuning(self, target_energies, start=None, epochs=10000, lr=0.05):
+    def tuning(self, target_energies, start=None, epochs=10000, lr=0.001):
         r'''
         *Tuning* the Hamiltonian solves the inverse problem: which Wilson coefficients do we need to produce
         some energy eigenvalues and a set of LegoSphere operators?
