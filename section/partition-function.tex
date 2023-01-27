@@ -357,7 +357,7 @@ Note that we can separate
 	= e^{A_t + \Delta\tilde{t}\tilde{\mu}}\left( \cosh \half \Delta\tilde{t} \abs{\tilde{h}} \one + \frac{\tilde{\vec{h}}\cdot \sigma}{\abs{\tilde{h}}}\sinh \half \Delta\tilde{t} \abs{\tilde{h}} \right)
 	\label{eq:FF explicitly}
 \end{align}
-into a space-dependent part $e^{A_t}$, a spin-dependent part $\exp( \Delta\tilde{t}\tilde{\vec{h}} \cdot \vec{\sigma})$ and the spin- and space- independent $\mu$ piece.
+into a space-dependent part $e^{A_t}$, a spin-dependent part $\exp( \half \Delta\tilde{t}\tilde{\vec{h}} \cdot \vec{\sigma})$ and the spin- and space- independent $\tilde{\mu}$ piece.
 We can collect the space-independent part, pulling them through the sausage,
 \begin{align}
 	\UU 
@@ -614,7 +614,7 @@ Inserting the auxiliary-field formulation of $Z$ \eqref{computational partition 
 		\det \left(\one + \UU \right) \tr{\left(\one + \UU \right)\inverse \left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}}
 	\label{eq:fermionic particle number}
 \end{align}
-where $\UU$ with no arguments has the local fluctuations st to zero and we assume that $(1+\UU)$ is invertible so that the derivative of the determinant may be replaced via the identity $\partial \det{A} = \det A ~ \tr{ A\inverse \partial A}$.
+where $\UU$ with no arguments has the local fluctuations set to zero and we assume that $(1+\UU)$ is invertible so that the derivative of the determinant may be replaced via the identity $\partial \det{A} = \det A ~ \tr{ A\inverse \partial A}$.
 
 Now we need to know the derivatives of the ingredients of the sausage, evaluated at 0 fluctuation.
 Since $\BB$ only changes with the hopping parameter or with the lattice geometry, we focus on derivatives of $\FF$.
