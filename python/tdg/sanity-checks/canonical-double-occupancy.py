@@ -83,7 +83,7 @@ def two_body_trotter_product(S):
     L = S.Spacetime.Lattice
 
     K = torch.kron(L.kappa, torch.eye(L.sites)) + torch.kron(torch.eye(L.sites), L.kappa)
-    V = torch.diag(S.Potential.spatial(L).ravel()).to(torch.complex128)
+    V = torch.diag(S.Potential.spatial(L).ravel()) + 0j
 
     dt = S.dt
 
@@ -95,8 +95,7 @@ def two_body_double_occupancy(L):
     #   1 if the two particles are on the same site,
     #   0 otherwise
     return torch.diag(torch.tensor(
-        tuple((1.0 if a == b else 0.0 for a,b in itertools.product(range(L.sites), range(L.sites)))),
-        dtype=torch.complex128
+        tuple((1.0+0j if a == b else 0.0+0j for a,b in itertools.product(range(L.sites), range(L.sites)))),
     ))
 
 def two_body_expectation(trotterization, observable):
