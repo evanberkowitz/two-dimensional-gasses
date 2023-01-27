@@ -7,6 +7,9 @@ from tdg.h5 import H5able
 
 from functools import cached_property
 
+import logging
+logger = logging.getLogger(__name__)
+
 class Tuning(H5able):
     r'''
     A :class:`~.Tuning` is a set of Wilson coefficients :math:`C` that reproduce chosen physics.
@@ -207,7 +210,7 @@ class Tuning(H5able):
     #
     @cached_property
     def _x(self):
-        return ((self.Lattice.nx/(2*torch.pi))**2 * self._eigenenergies).to(torch.float64)
+        return (self.Lattice.nx/(2*torch.pi))**2 * self._eigenenergies
     #
     # which corresponds to a simple numerical factor in the chain rule
     #
@@ -254,16 +257,16 @@ class Tuning(H5able):
         numerator = torch.autograd.grad(
                         self.ere.analytic(self._x),
                         self.ere.parameters,
-                        torch.eye(len(self.ere.parameters), dtype=torch.float64),
+                        torch.eye(len(self.ere.parameters)),
                         is_grads_batched=True
-                        )[0].to(torch.float64)
+                        )[0]
         
         denominator = torch.autograd.grad(
                         self.zeta(self._x)/torch.pi**2 - self.ere.analytic(self._x),
                         self._x,
-                        torch.eye(len(self._x), dtype=torch.float64),
+                        torch.eye(len(self._x)),
                         is_grads_batched=True,
-                        )[0].to(torch.float64)
+                        )[0]
         
         # TODO: Use torch.linalg.solve instead?
         return torch.matmul(torch.linalg.inv(denominator), numerator)
@@ -277,7 +280,7 @@ class Tuning(H5able):
 
         One row for each ``C``, one column for each parameter of ``ere``.
         '''
-        return torch.matmul(self._dC_dE.to(torch.float64), self._dE_dx * self._dx_dERE.to(torch.float64))
+        return torch.matmul(self._dC_dE, self._dE_dx * self._dx_dERE)
     #
     # To calculate the contact we will want the derivative of the Wilson coefficients with respect
     # to the LOG of the scattering length only.
@@ -308,20 +311,33 @@ def _demo(recompute=False):
                 radii           = [[0,0],[0,1]],
                 # If you don't want to use the pre-computed values it's handy to have some ballpark
                 # figures to help the tuning get going:
-                starting_guess  = torch.tensor([-5., +1.7], dtype=torch.float64),
+                starting_guess  = torch.tensor([-5., +1.7]),
                 # Pre-computed values to accelerate tuning-dependent examples:
                 C=  (
                        None if recompute  else
-                       torch.tensor([-5.05630981,  1.66827162], dtype=torch.float64, requires_grad=True)
+                       torch.tensor([-5.05630981,  1.66827162], requires_grad=True)
                     )
                 )
 
 if __name__ == '__main__':
 
+    torch.set_default_dtype(torch.float64)
+
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--recompute', action="store_true",  default=False)
+    parser.add_argument('--log', type=str, default='WARNING', help="A logging level, one of CRITICAL, ERROR, WARNING, INFO, DEBUG; defaults to WARNING.")
     args = parser.parse_args()
+
+    logging_levels = {
+        'CRITICAL': logging.CRITICAL,
+        'ERROR':    logging.ERROR,
+        'WARNING':  logging.WARNING,
+        'INFO':     logging.INFO,
+        'DEBUG':    logging.DEBUG,
+        'NOTSET':   logging.NOTSET,
+    }
+    logging.basicConfig(format='%(asctime)s %(name)s %(levelname)10s %(message)s', level=logging_levels[args.log])
 
     tuning = _demo(recompute=args.recompute)
     print(f"We start with the effective range expansion {tuning.ere}")

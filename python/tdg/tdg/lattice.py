@@ -385,7 +385,7 @@ class Lattice(H5able):
 
         # We know kappa_ab = 1/V Σ(k) (2πk)^2/2V exp( -2πik•(a-b)/Nx )
         # where a are spatial coordinates
-        a = self.coordinates.clone().detach().to(torch.complex128)
+        a = self.coordinates +0j # cast to complex for einsum
         # and k are also integer doublets;
         # in the exponent we group the -2πi / Nx into the momenta
         p = (-2*torch.pi*1j / self.nx) * a
