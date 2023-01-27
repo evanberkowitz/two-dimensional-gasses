@@ -138,7 +138,7 @@ class FermionMatrix(H5able):
         BinvF = torch.einsum('ij,tj->tij',self.Binverse, F)
 
         # Then multiply them togther
-        U = torch.eye(self.Spacetime.Lattice.sites, dtype=torch.complex128)
+        U = torch.eye(self.Spacetime.Lattice.sites) + 0j
         for t in self.Spacetime.t:
             U = torch.matmul(BinvF[t], U)
         return U
@@ -240,7 +240,7 @@ class FermionMatrix(H5able):
 
             where the fugacity :math:`z = \exp(\beta \mu)` and the :math:`\sqrt{h^2}` helps correctly handle complex :math:`h`.
         '''
-        one = torch.eye(self.Spacetime.Lattice.sites).to(torch.complex128)
+        one = torch.eye(self.Spacetime.Lattice.sites) + 0j
         zU = self.z * self.U(A)
         return torch.log(torch.det(one + zU*self.zh)) + torch.log(torch.det(one + zU/self.zh))
 

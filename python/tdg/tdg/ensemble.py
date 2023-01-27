@@ -64,7 +64,7 @@ class GrandCanonical(H5able):
         .. _tqdm.tqdm: https://pypi.org/project/tqdm/
         .. _tqdm.notebook: https://tqdm.github.io/docs/notebook/
         '''
-        self.configurations = self.Action.Spacetime.vector(steps).to(torch.complex128)
+        self.configurations = self.Action.Spacetime.vector(steps) + 0j
         
         if start == 'hot':
             self.configurations[0] = self.Action.quenched_sample()
@@ -176,7 +176,7 @@ class GrandCanonical(H5able):
 
         elif method == 'bosonic':
             Vinv = self.Action.Potential.inverse(self.Action.Spacetime.Lattice)
-            return -torch.einsum('ab,ctb->cta', Vinv.to(torch.complex128), self.configurations).mean(1)/ (self.Action.beta/self.Action.Spacetime.nt)
+            return -torch.einsum('ab,ctb->cta', Vinv + 0j, self.configurations).mean(1)/ (self.Action.beta/self.Action.Spacetime.nt)
         
         raise NotImplemented(f'Unknown {method=} for calculating n.')
     
@@ -209,18 +209,18 @@ class GrandCanonical(H5able):
         '''
 
         dt   = self.Action.dt
-        hhat = self.Action.hhat.to(torch.complex128)
-        absh = self.Action.absh.to(torch.complex128)
+        hhat = self.Action.hhat + 0j
+        absh = self.Action.absh + 0j
         
         if absh == 0.:
-            Pspin = torch.diag(torch.tensor((0,0,0.5))).to(torch.complex128)
+            Pspin = torch.diag(torch.tensor((0,0,0.5))) + 0j
         else:
             Pspin = (
                 0.5 * torch.outer(hhat,hhat)
                 # sinh(x/2) * cosh(x/2) = 0.5 * sinh(x)
                 + 0.5*torch.sinh(dt*absh) / (dt * absh) * (torch.eye(3) - torch.outer(hhat,hhat)) 
                 # sinh^2(x/2) = 1/2 * (cosh(x) - 1)
-                + 0.5j * (torch.cosh(0.5*dt*absh)-1) / (dt * absh) * torch.einsum('ijk,j->ik', tdg.epsilon.to(torch.complex128), hhat)
+                + 0.5j * (torch.cosh(0.5*dt*absh)-1) / (dt * absh) * torch.einsum('ijk,j->ik', tdg.epsilon + 0j, hhat)
                )
         
         # expand to include 'all four' "spin" matrices.
@@ -390,7 +390,7 @@ class Canonical(H5able):
         self.V = self.GrandCanonical.Action.Spacetime.Lattice.sites
         self._n = torch.arange(2*self.V+1)
         self._s = torch.arange(-self.V, self.V+1).roll(-self.V)
-        self.hhat = self.GrandCanonical.Action.hhat.to(torch.complex128)
+        self.hhat = self.GrandCanonical.Action.hhat + 0j
         # In the grand canonical ensemble we project spin along the h direction.
         # Therefore the we may need σ.hhat with some frequency.
         self.hhatsigma = torch.einsum('i,ist->st', self.hhat, tdg.PauliMatrix[1:])
