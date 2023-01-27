@@ -4,6 +4,9 @@ import torch
 from tdg.h5 import H5able
 from tdg.Luescher import Zeta2D
 
+import logging
+logger = logging.getLogger(__name__)
+
 class EffectiveRangeExpansion(H5able):
     r'''
     The *effective range expansion* is an expansion of :math:`\cot\delta` as a function of momentum.
@@ -149,5 +152,13 @@ class EffectiveRangeExpansion(H5able):
         # and return the energies
         return (2*torch.pi/nx)**2 * X
 
-def _demo(parameters=torch.tensor([1.0, 0.0])):
+def _demo(parameters=None):
+    if not parameters:
+        # Why not just use parameters=default instead of _demo(parameters=None)?
+        # This prevents the parameters from being evaluated at import time,
+        # which is important as the user might torch.set_default_dtype(torch.float64)
+        # while the default is float32 (which would be used at tdg-import time).
+        # This prevents annoying import-order issues.
+        parameters = torch.tensor([1.0, 0.0])
+    logger.info(f'demo {parameters=} with dtype {parameters.dtype}')
     return EffectiveRangeExpansion(parameters)

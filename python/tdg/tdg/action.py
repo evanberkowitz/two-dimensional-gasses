@@ -5,6 +5,9 @@ import torch
 from tdg.fermionMatrix import FermionMatrix
 from tdg.h5 import H5able
 
+import logging
+logger = logging.getLogger(__name__)
+
 class Action(H5able):
     r'''
     Parameters
@@ -209,7 +212,20 @@ class Action(H5able):
         except: pass
         return S
 
-def _demo(nx = 3, nt=8, beta=1, mu=torch.tensor(-2.0), h=torch.tensor([0,0,0], dtype=torch.complex128), C0=-5.0,  **kwargs):
+def _demo(nx = 3, nt=8, beta=1, mu=None, h=None, C0=-5.0,  **kwargs):
+
+    # Why not just use default assignments for mu and h in the _demo definition?
+    # This prevents the parameters from being evaluated at import time,
+    # which is important as the user might torch.set_default_dtype(torch.float64)
+    # while the default is float32 (which would be used at tdg-import time).
+    # This prevents annoying import-order issues.
+    if mu is None:
+        mu = torch.tensor(-2.0)
+    if h is None:
+        h = torch.tensor([0.+0j,0.+0j,0.+0j])
+
+    logger.info(f'demo {mu=} with dtype {mu.dtype}')
+    logger.info(f'demo {h=} with dtype {h.dtype}')
 
     import tdg
     spacetime = tdg.Spacetime(nt, tdg.Lattice(nx))
