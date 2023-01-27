@@ -200,13 +200,13 @@ to carefully evaluate $\matrixElement{\eta}{ e^{-\Delta \tilde{t}\tilde{K}} }{\e
 		\exp\left( 
 			\begin{bmatrix} {\eta}^{\dagger}_{\up} &  {\eta}^{\dagger}_{\down}  \end{bmatrix} 
 			\exp\begin{pmatrix}
-				-\Delta \tilde{t} \tilde{\kappa}	& 0 \\
-				0 									& -\Delta \tilde{t} \tilde{\kappa} 
+				-\Delta \tilde{t} \tilde{\kappa} + \Delta\tilde{t} \frac{\tilde{C}_0}{2} \one & 0 \\
+				0 									& -\Delta \tilde{t} \tilde{\kappa} + \Delta\tilde{t} \frac{\tilde{C}_0}{2} \one
 			\end{pmatrix} 
 			\begin{bmatrix} {\eta}_{\up}' \\  {\eta}_{\down}'  \end{bmatrix}
 		\right)
 \end{align}
-where $\tilde{\kappa}$ is given in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian} \todo{and includes the C0 shift!}.
+where $\tilde{\kappa}$ is given in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian} and the $\tilde{C}_0$ term is diagonal in space.
 By an analogous sequence of manipulations, one also finds
 \begin{align}
 	\matrixElement{\eta}{ e^{\tilde{\psi}\adjoint \cdot (A_t + \Delta\tilde{t} \tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi}} }{\eta'}
@@ -235,18 +235,18 @@ So, we can rewrite the Hilbert space trace in the bilinearized Trotterization \e
 	=& \int D\eta\adjoint D\eta \exp\left( - \sum_{t=1}^{2N_t}\sum_{a\sigma} \eta\adjoint_{\sigma a t} \eta_{\sigma a t}\right)~ \times
 	\nonumber\\
 	&
-		\exp\left[ \sum_{ab\sigma} (-\eta_{\sigma a\;1})\adjoint \left(e^{-\Delta \tilde{t} \tilde{\kappa}}\right)_{ab} \eta_{\sigma b\;2N_t} \right]
+		\exp\left[ \sum_{ab\sigma} (-\eta_{\sigma a\;1})\adjoint \left(e^{-\Delta \tilde{t} (\tilde{\kappa}-\tilde{C}_0/2)}\right)_{ab} \eta_{\sigma b\;2N_t} \right]
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2N_t} \left(e^{A_{N_t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma} }\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;2N_t-1}\right] ~ \times
 	\nonumber\\
 	&
 		\cdots
 	\nonumber\\
 	&
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;5} \left(e^{-\Delta \tilde{t} \tilde{\kappa}}\right)_{ab} \eta_{\sigma b\;4} \right]
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;5} \left(e^{-\Delta \tilde{t} (\tilde{\kappa}-\tilde{C}_0/2)}\right)_{ab} \eta_{\sigma b\;4} \right]
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;4} \left(e^{A_{2}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;3}\right] ~ \times
 	\nonumber\\
 	&
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;3} \left(e^{-\Delta \tilde{t} \tilde{\kappa}}\right)_{ab} \eta_{\sigma b\;2} \right]
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;3} \left(e^{-\Delta \tilde{t} (\tilde{\kappa}-\tilde{C}_0/2)}\right)_{ab} \eta_{\sigma b\;2} \right]
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2} \left(e^{A_{1}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;1}\right]
 	\label{eq:grassmann integral}
 \end{align}
@@ -280,10 +280,10 @@ Writing
 \begin{align}
 	\BB &= B \otimes \one
 	&
-	B &= \exp \Delta\tilde{t} \tilde{\kappa}
-	\label{eq:BB}\\
+	B &= \exp \Delta\tilde{t} \left(\tilde{\kappa} - \half \tilde{C}_0\right)
+	\label{eq:BB with C0}\\
 	\FF_t &= \left(e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)
-	\label{eq:FF}
+	\label{eq:FF with C0}
 \end{align}
 where the doubly-struck quantities are also square matrices in spin dimensions; the hopping matrix is time-independent and spin-diagonal, $\FF$ is space-diagonal.
 Using this notation we can write the Fermion matrix as
@@ -350,12 +350,27 @@ Using the Shur complement, one has
 	\label{eq:sausage}
 \end{align}
 The sausage $\UU$ is (2 spins)$\times \Volume$ on a side.
+Since the $\tilde{C}_0$ piece is diagonal in space we can pull it out of $B$ and think of it as offsetting $\tilde{\mu}\goesto \tilde{\mu} + \half \tilde{C}_0$; this reorganization can even be seen naturally at the Hamiltonian \eqref{dimensionless hamiltonian} level, as the $\tilde{C}_0$ term can be reexpressed as a number operator term $- \tilde{C}_0 \tilde{N}/2$.
+When we construct fermion matrices we \incode{tdg/action.py\#L76}{construct the auxiliary field action} we incorporate this shift in $\tilde{\mu}$ and henceforth use
+\begin{align}
+	\BB &= B \otimes \one
+	&
+	B &= \exp \Delta\tilde{t} \tilde{\kappa}
+	\label{eq:BB}\\
+	\FF_t &= \left(e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)
+	&
+	\tilde{\mu} &= M \Delta x^2 \mu +\tilde{C}_0/2
+	\label{eq:FF}
+\end{align}
+
 Note that we can separate
 \begin{align} 
 	\FF_t 
-	= e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}
+	&= e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}
 	= e^{A_t + \Delta\tilde{t}\tilde{\mu}}\left( \cosh \half \Delta\tilde{t} \abs{\tilde{h}} \one + \frac{\tilde{\vec{h}}\cdot \sigma}{\abs{\tilde{h}}}\sinh \half \Delta\tilde{t} \abs{\tilde{h}} \right)
 	\label{eq:FF explicitly}
+	&
+	\Bigg[\abs{\tilde{h}} &\text{ means } \sqrt{\tilde{h}\cdot\tilde{h}}\text{; see below \eqref{finite-h determinant algorithm}}\Bigg]
 \end{align}
 into a space-dependent part $e^{A_t}$, a spin-dependent part $\exp( \half \Delta\tilde{t}\tilde{\vec{h}} \cdot \vec{\sigma})$ and the spin- and space- independent $\tilde{\mu}$ piece.
 We can collect the space-independent part, pulling them through the sausage,
@@ -370,7 +385,9 @@ We can collect the space-independent part, pulling them through the sausage,
 	U &= B\inverse e^{A_{N_t}} \cdots B\inverse e^{A_2} B\inverse e^{A_1}
 \end{align}
 where $z$ is the fugacity.
-Note that the fugacity can be computed directly from the dimensionful parameters; $z=\exp(\tilde{\beta}\tilde{\mu})=\exp(\beta\mu)$, using the dimensionless definitions \eqref{dimensionless}.
+Note that (up to the effects of the $\tilde{C}_0$ offset \eqref{FF}) the fugacity can be computed directly from the dimensionful parameters; $z=\exp(\tilde{\beta}\tilde{\mu})=\exp(\beta\mu)$, using the dimensionless definitions \eqref{dimensionless}.\footnote{
+	Or, if you prefer, the $z$ in the matrix is the physical fugacity $z$ rescaled by $\exp(\tilde{\beta} \tilde{C}_0/2)$
+}
 Similarly, the external field parameter matches, $\tilde{\beta}\tilde{\vec{h}} = \beta \vec{h}$.
 
 We immediately see that if $\tilde{\vec{h}} = 0$ the spin sectors yield the same determinant, $\det\dd = \det (1+zU)^2$.
