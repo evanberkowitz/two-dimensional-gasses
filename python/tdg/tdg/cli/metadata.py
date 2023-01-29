@@ -1,4 +1,5 @@
 import tdg.meta
+from tdg.license import license
 import argparse
 
 def print_and_exit(description, data):
@@ -18,6 +19,7 @@ def print_and_exit(description, data):
 def defaults():
     meta_arguments = argparse.ArgumentParser(add_help=False)
     meta_arguments.add_argument('--version', **print_and_exit("the version", tdg.meta.version))
+    meta_arguments.add_argument('--license', **print_and_exit("the license", license))
 
     return meta_arguments
 
