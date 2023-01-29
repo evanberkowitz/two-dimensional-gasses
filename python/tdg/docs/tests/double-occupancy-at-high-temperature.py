@@ -26,10 +26,9 @@ def beta0doubleOccupancy(lattice, nt, C0, beta):
     return ensemble.doubleOccupancy[0], ensemble.DoubleOccupancy[0]
 
 if __name__ == '__main__':
-    import argparse
 
     small = 1e-7
-    parser = argparse.ArgumentParser()
+    parser = tdg.cli.ArgumentParser()
     parser.add_argument('--nx', type=int, default=3)
     parser.add_argument('--beta', type=float, default=small)
     parser.add_argument('--nt', type=int, default=8)

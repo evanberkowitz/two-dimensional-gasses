@@ -12,22 +12,9 @@ import tdg, tdg.HMC
 
 from tqdm import tqdm
 
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('--log', type=str, default='WARNING', help="A logging level, one of CRITICAL, ERROR, WARNING, INFO, DEBUG; defaults to WARNING.")
+parser = tdg.cli.ArgumentParser()
 parser.add_argument('--storage', type=str, default='h5-check.h5', help="An h5 file to use for reading and writing.  Defaults to h5-check.h5")
 args = parser.parse_args()
-
-import logging
-logging_levels = {
-    'CRITICAL': logging.CRITICAL,
-    'ERROR':    logging.ERROR,
-    'WARNING':  logging.WARNING,
-    'INFO':     logging.INFO,
-    'DEBUG':    logging.DEBUG,
-    'NOTSET':   logging.NOTSET,
-}
-logging.basicConfig(format='%(asctime)s %(name)s %(levelname)10s %(message)s', level=logging_levels[args.log])
 
 nx = 3
 lattice = tdg.Lattice(nx)
