@@ -20,16 +20,6 @@ import tdg, tdg.HMC as HMC
 
 from tqdm import tqdm
 
-import logging
-logging_levels = {
-    'CRITICAL': logging.CRITICAL,
-    'ERROR':    logging.ERROR,
-    'WARNING':  logging.WARNING,
-    'INFO':     logging.INFO,
-    'DEBUG':    logging.DEBUG,
-    'NOTSET':   logging.NOTSET,
-}
-
 def action():
     # Just an example that we settled on.
 
@@ -111,15 +101,11 @@ def naive_error(data, digits=5):
 if __name__ == '__main__':
 
     # A simple command-line interface.
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--log', type=str, default='WARNING', help="A logging level, one of CRITICAL, ERROR, WARNING, INFO, DEBUG; defaults to WARNING.")
+    parser = tdg.cli.ArgumentParser()
     parser.add_argument('--cfgs', type=int, default=1000)
     parser.add_argument('--storage', type=str, default='canonical-double-occupancy.h5')
     parser.add_argument('--clobber', default=False, action='store_true')
     args = parser.parse_args()
-
-    logging.basicConfig(format='%(asctime)s %(name)s %(levelname)10s %(message)s', level=logging_levels[args.log])
 
     # Use the same action for both the exact and Monte-Carlo calculation.
     S = action()

@@ -1,4 +1,5 @@
 from . import meta
+import tdg.cli as cli
 
 from .pauli import *
 from .epsilon import epsilon as epsilon
