@@ -106,6 +106,14 @@ class GrandCanonical(H5able):
         '''
         return GrandCanonical(self.Action).from_configurations(self.configurations[::frequency])
 
+    def __len__(self):
+        r'''
+        Returns
+        -------
+            The number of configurations.
+        '''
+        return len(self.configurations)
+
     # These utility functions help turn a doubly-struck sausage UU into a tensor, and back.
     def _matrix_to_tensor(self, matrix):
         V = self.Action.Spacetime.Lattice.sites
