@@ -39,7 +39,7 @@ class LogLevel(StarStarSugar):
 
     parameters = {
             'default': 'WARNING',
-            'help':    'Log level; one of DEBUG, INFO, WARNING, ERROR, CRITICAL, FATAL.',
+            'help':    'Log level; one of DEBUG, INFO, WARNING, ERROR, CRITICAL.',
             'type':    str
             }
 
