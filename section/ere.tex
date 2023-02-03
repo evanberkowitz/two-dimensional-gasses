@@ -41,34 +41,44 @@ so at low momentum the $\ell=0$ scattering dominates the cross section.
 
 What's strange/magical about $D=2$ is that we can absorb $a_0$ into the first time by changing the scale in the log,
 \begin{align}
-	A &= R_0 e^{-\pi/2a_0}
+	a &= R_0 e^{-\pi/2a_0}
 	&
 	\cot \delta(p)
 	&=
-			\frac{2}{\pi} \log(p A)
-		+	\frac{1}{2} r_0 p^2
-		+	\cdots
-	\label{eq:no-constant}
+			\frac{2}{\pi} \log(p a)
+		+	\sigma_2 p^2
+		+	\cdots \text{(analytic in }p^2)
+	\label{eq:ere}
 \end{align}
 but we cannot further absorb the higher terms because they have a real, meaningful momentum dependence.
 So, what could we even mean by something like `unitary gas' in 2D?
 It is not possible, for example, to have a momentum-independent phase shift.
-The issue is that even if $r_0$ and all higher shape parameters vanish, the $\log(pA)$ vanishes when its argument is $1$ and any momentum is allowed.
-So if $A$ is fixed by the Hamiltonian then there is unavoidable momentum dependence.
+The issue is that even if $\sigma_2$ and all higher shape parameters vanish, the $\log(pa)$ vanishes when its argument is $1$ and any momentum is allowed.
+So if $a$ is fixed by the Hamiltonian then there is unavoidable momentum dependence.
+Note that we are guaranteed that $a>0$.
+The coefficient of the $p^2$ term has units of length${}^2$; the effective range $r_e$ has dimensions of length and is given by
+\begin{align}
+	r_e^2 = \sigma_2;
+\end{align}
+its square may be either sign.
+In this form \eqref{ere} the effective range expansion matches the convention of \Ref{Beane:2022wcn}.
+We will call this expression \eqref{ere} `the' effective range expansion.
 
-Is $A$ what is meant by the 2D scattering length?  Or something else?
-At the cold-atoms/nuclear matter ECT* program we saw experimental results always described as a function of $\log k_F a$.
-Let's not forget that there is a \emph{geometric meaning} to the scattering length: where, with linear extrapolation, the wavefunction hits $0$.
+\subsection{Differing Conventions}
+
+Is $a$ what is meant by the 2D scattering length?  Or something else?
+One other way to understand scattering length is to adopt the \emph{geometric meaning} of the scattering length: where, for a hard-disk potential, the wavefunction hits 0 after linear extrapolation  with linear extrapolation from the disk's boundary.
 According to \Refs{Adhikari:1986a,Adhikari:1986b,Khuri:2008ib,Galea:2017jhe}, we recover this geometric meaning when we pick
 \begin{align}
-	\cot \delta_0(p) = \frac{2}{\pi}\left[\log \frac{pa}{2} + \gamma\right] + \oneover{4} r_e^2 p^2 + \cdots
-	\label{eq:ere}
+	\cot \delta_0(p) = \frac{2}{\pi}\left[\log \frac{pA}{2} + \gamma\right] + \oneover{4} R_e^2 p^2 + \cdots
+	\label{eq:ere in the hard-disk convention}
 \end{align}
-where $\gamma = 0.577\ldots$ is the Euler–Mascheroni constant and $r_e$ has a similar geometric meaning (see \Ref{Galea:2017jhe} (18)).
-We will call this expression \eqref{ere} `the' effective range expansion.
-We can match this form to the form \eqref{no-constant} where we totally absorb the constant into $A$ if we pick
-\begin{equation}
-	A = \frac{e^{\gamma}}{2} a = (0.8905362090\cdots) a
-\end{equation}
-Note that we are guaranteed that $a>0$.
+where $\gamma = 0.577\ldots$ is the Euler–Mascheroni constant and $R_e$ has a similar geometric meaning (see \Ref{Galea:2017jhe} (18)).
+We can match this form to the form \eqref{ere} where we totally absorb the constant into $a$ if we pick
+\begin{align}
+	a &= \frac{e^{\gamma}}{2} A = (0.8905362090\cdots) A.
+	&
+	\sigma_2 = r_e^2 &= \oneover{4} R_e^2
+\end{align}
 
+\emph{At the cold-atoms/nuclear matter ECT* program we saw experimental results always described as a function of $\log k_F a$ without specifying which convention was meant.}
