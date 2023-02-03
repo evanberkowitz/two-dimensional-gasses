@@ -4,7 +4,7 @@
 <<TDG`;
 
 a=1;
-ERE[a_,re2_][x_]:=2/\[Pi] (Log[a/2 Sqrt[x]]+EulerGamma)+1/4 re2 x
+ERE[a_,re2_][x_]:=2/\[Pi] Log[a Sqrt[x]]+ re2 x
 ere = ERE[a,0];
 
 
