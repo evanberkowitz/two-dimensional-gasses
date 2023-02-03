@@ -13,10 +13,10 @@ class EffectiveRangeExpansion(H5able):
     In 2D the :math:`\ell=0` partial wave scattering amplitude can be expanded
 
     .. math::
-        \cot \delta_0(p) = \frac{2}{\pi}\left[\log \frac{pa}{2} + \gamma\right] + \frac{1}{4} r_e^2 p^2 + \cdots
+        \cot \delta_0(p) = \frac{2}{\pi}\log pa + r_e^2 p^2 + \cdots
 
-    where :math:`\gamma=0.577\ldots` is the Euler-Mascheroni constant and :math:`a` and :math:`r_e`
-    have the usual geometric meaning :cite:`Adhikari:1986a,Adhikari:1986b,Khuri:2008ib,Galea:2017jhe`.
+    in the convention of Ref. :cite:`Beane:2022wcn`,
+    rather than the hard-disk geometric convention of :cite:`Adhikari:1986a,Adhikari:1986b,Khuri:2008ib,Galea:2017jhe`.
 
     Because we are in 2D and there is an inescapable log, it is profitable to convert the momentum dependence into
     dependence on dimensionless :math:`x=(pL/2\pi)^2 = \tilde{E}N_x^2 / (2\pi)^2`.
@@ -25,12 +25,12 @@ class EffectiveRangeExpansion(H5able):
     .. math::
             \begin{align}
             \cot \delta(p)
-            = \frac{2}{\pi}\left[ \log\left(\frac{1}{2} \frac{2\pi a}{L} \sqrt{x}\right)+ \gamma\right]
-            + \frac{1}{4} \left(\frac{2\pi r_e }{L}\right)^2 x
+            = \frac{2}{\pi} \log\frac{2\pi a}{L} \sqrt{x}
+            + \left(\frac{2\pi r_e }{L}\right)^2 x
             + \cdots
             \end{align}
 
-    where the parameters are normalized by appropriate powers of 2π/L.
+    where the dimensionful parameters are normalized by appropriate powers of 2π/L.
 
     Parameters
     ----------
@@ -40,9 +40,10 @@ class EffectiveRangeExpansion(H5able):
             * ``a > 0`` is the dimensionless scattering length 2πa/L
             * ``*analytic`` is a sequence of coefficients in the dimensionless expansion
               ``analytic[0] = (2πre/L)^2`` since the effective range multiplies the :math:`x^{(0+1)}` term.
+              These coefficients may be of either sign.
 
               Having not found a convention for the pure numbers on higher order terms,
-              all higher-order terms analytic in x have a 1/4 coefficients for simplicity.
+              all higher-order terms analytic in x have coefficients of 1 for simplicity.
 
               Presumably we will tune to scattering amplitudes constant in x anyway.
     '''
@@ -58,21 +59,20 @@ class EffectiveRangeExpansion(H5able):
 
         self.coefficients = self.parameters[1:]
         '''
-        The dimensionless shape parameters.  We assume that in the expansion in :math:`x` every term gets a numerical coefficient of 1/4.
+        The dimensionless shape parameters.  We assume that in the expansion in :math:`x` every term gets a numerical coefficient of 1 × (the dimensionless shape parameter).
         '''
 
         self.powers = torch.arange(len(self.coefficients)) + 1
         '''
         The powers of :math:`x` that go with the ``coefficients``.
         '''
-        self._gamma = torch.distributions.utils.euler_constant
 
     def __str__(self):
         return f"EffectiveRangeExpansion(" + (", ".join(f'{p:+.8f}' for p in self.parameters)) + ")"
 
     def analytic(self, x):
         r"""
-        Includes the constant piece = 2/π [ log(a/2) + γ ];
+        Includes the constant piece = 2/π log(a)
 
         Parameters
         ----------
@@ -81,9 +81,9 @@ class EffectiveRangeExpansion(H5able):
         Returns
         -------
             torch.tensor
-                :math:`\texttt{analytic(x)} = 2/π [ \log(a/2) + γ ] + 1/4 \texttt{coefficients} * x^\texttt{powers}`
+                :math:`\texttt{analytic(x)} = 2/π \log(a) + \texttt{coefficients} * x^\texttt{powers}`
         """
-        return 2/torch.pi * ( torch.log(0.5 * self.a) + self._gamma ) + 0.25 * torch.sum( self.coefficients * x[:,None]**self.powers, axis=1)
+        return 2/torch.pi * torch.log(self.a) + torch.sum( self.coefficients * x[:,None]**self.powers, axis=1)
 
     def __call__(self, x):
         r'''
