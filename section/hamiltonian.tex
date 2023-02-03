@@ -124,14 +124,16 @@ and Newton's 3rd law means $\tilde{V}=\tilde{V}\transpose$.
 
 According to \Ref{Korber:2019cuq} the continuum tuning is given by
 \begin{align}
-	\tilde{C}_0 = gM &= - \frac{2\pi}{\log(A \Lambda)}
+	\tilde{C}_0 = gM &= - \frac{2\pi}{\log\left(\tilde{a} N_x\right) - \frac{2}{\pi}G}
 	\label{eq:tuning}
 \end{align}
-where $A$ is explained below \eqref{no-constant}.
-The conclusion there is that $A$ is naturally of size $\sim L$; since $\Lambda\sim \Delta x^{-1}$ the log will be of something like $N_x$.
-I'll work this out below after explaining wtf $A$ is.
+where $\tilde{a}$ is the dimensionless scattering length explained below, and $G=0.9159655941772190\cdots$ is Catalan's constant.
+The conclusion there is that strong coupling is $\tilde{a}\sim 1$.
 But the punchline is that indeed the tuning \emph{also} only depends on dimensionless things.
-So it's really true; our simulations can be entirely described in terms of the dimensionless $gM$ and $N_x$ and that is all.
+So it's really true; our simulations's Hamiltonian can be entirely described in terms of the dimensionless $gM$ and $N_x$ and that is all.
+
+The tuning \eqref{tuning} is found by doing the `standard' bubble sum in 2 dimensions, but accounting for the cubic shape of the Brilloun zone / cutoff.
+There are momentum-dependent pieces not shown, but they only infect the higher order terms of the effective range expansion.
 
 \subsection{$D_4$ Symmetry and Lego Spheres}
 

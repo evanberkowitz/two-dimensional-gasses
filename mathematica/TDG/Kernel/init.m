@@ -679,7 +679,7 @@ interacting[nx_]:=interacting[nx]=Rest@FoldList[{#1[[1]]+#1[[2]],#2[[2]]}&,{1,0}
 (*L\[UDoubleDot]scher*)
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Numerical Implementation of LuescherZeta*)
 
 
@@ -705,7 +705,7 @@ LuescherZetaDomain[level_]:=({-\[Infinity]}~Join~Select[Range[0,2 level],Squares
 LuescherZetaDomainBound[level_,\[Epsilon]_:0.0001]:=If[level==1,{-1.,-\[Infinity],0},With[{d=LuescherZetaDomain[level]},{N@Mean[d]}~Join~d]]+{0,\[Epsilon],-\[Epsilon]}
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Plot*)
 
 
@@ -719,7 +719,7 @@ LuescherPlot[{min_,max_},OptionsPattern[]]:=Block[{x},Plot[
 ]]
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Matching the ERE and the Quantization Condition*)
 
 
@@ -727,7 +727,7 @@ LuescherPlot[{min_,max_},OptionsPattern[]]:=Block[{x},Plot[
 (*We use the dimensionless ere where \!\(\*OverscriptBox[\(a\), \(~\)]\) and Subscript[\!\(\*OverscriptBox[\(r\), \(~\)]\), e] appear, as well as the dimensionless x*)
 
 
-(*ere[a_,re2_][x_]:= 2/\[Pi] (Log[a Sqrt[x]/2] + \[Gamma]) + 1/4 re2 x *)  (* you can add/parameterize higher powers, as long as you wind up with a function of q with a leading log. *)
+(*ere[a_,re2_][x_]:= 2/\[Pi] Log[a Sqrt[x]] + re2 x *)  (* you can add/parameterize higher powers, as long as you wind up with a function of x with a leading log. *)
 
 
 (* ::Subsection:: *)

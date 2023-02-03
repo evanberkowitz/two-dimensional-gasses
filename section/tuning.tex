@@ -134,18 +134,18 @@ Unlike in 3D we can evaluate this with good precision in the obvious way: just p
 
 So, let's take the ERE \eqref{ere} and try to apply the quantization condition \eqref{quantization condition} to learn how to tune a scattering length $a$,
 \begin{align}
-	\frac{2}{\pi} \left[\log\frac{pa}{2} + \gamma \right] + \cdots
+	\frac{2}{\pi} \log pa + \cdots
 	&=
 	\frac{2}{\pi} \log \frac{pL}{2\pi} + \frac{1}{\pi^2} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
 	\\
-	\log \half \frac{2\pi a}{L} &= \oneover{2\pi} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right) - \gamma
+	\log \frac{2\pi a}{L} + \frac{\pi}{2}(\cdots) &= \oneover{2\pi} S_2\left(\left(\frac{pL}{2\pi}\right)^2\right)
 	\label{eq:renormalization condition}
 \end{align}
 where we dropped all further momentum dependence from the ERE.
 
 Since `weak coupling' leads to energy levels given by the asymptotes in \Figref{S2}, the strong coupling region means trying to tune via \eqref{renormalization condition} to a constant where we get something between the asymptotes.
 Which constant is somewhat a tricky question.
-In 3D we tune to the zeroes of the zeta function; in 3D the best we can do is tune $a \sim L/\pi$.
+In 3D we tune to the zeroes of the zeta function; in 3D the best we can do is tune $a \sim L/2\pi$.
 
 The quantization condition \eqref{quantization condition} is phrased in terms of dimensionful variables $p=\sqrt{2ME}$ and $L$.
 Let's translate these into dimensionless quantities via
@@ -163,9 +163,9 @@ The ERE \eqref{ere} should be rewritten
 \begin{align}
     \cot \delta(p)
     &=
-    \frac{2}{\pi}\left[ \log\left(\half \frac{2\pi a}{L} \sqrt{x}\right)+ \gamma\right]
+    \frac{2}{\pi} \log\left(\frac{2\pi a}{L} \sqrt{x}\right)
     +
-    \frac{1}{4} \left(\frac{2\pi r_e }{L}\right)^2 x
+    \left(\frac{2\pi r_e }{L}\right)^2 x
     +
     \cdots
 	&
@@ -178,42 +178,35 @@ The L\"{u}scher quantization condition \eqref{quantization condition} can be wri
     \cot \delta(p) = \frac{2}{\pi} \log \sqrt{x} + \oneover{\pi^2} S_2(x)
 	\label{eq:quantization condition dimensionless}
 \end{align}
-and to tune we need to adjust the potential to set $2\pi a/L$.
+and to tune we need to adjust the potential to set $2\pi a/L$, $(2\pi r_e/L)^2$, and so on.
+\emph{At every higher order we can always introduce factors of $2\pi/L\times L/2\pi$ to yield a power of $x$ and dimensionless scattering data.}
 So, it is convenient to define dimensionless ERE parameters,
 \begin{align}
     \tilde{a} &= \frac{2 \pi a}{L}
     &
     \tilde{r}_e^2 &= \left(\frac{2 \pi r_e}{L}\right)^2
+    &
+    \text{and so on}
 	\label{eq:dimensionless ere parameters}
 \end{align}
-and so on to get the dimensionless ERE
+to get the dimensionless ERE
 \begin{align}
     \cot \delta(p)
     &=
-	\frac{2}{\pi}\left[ \log\left(\half \tilde{a} \sqrt{x}\right)+ \gamma\right]
+	\frac{2}{\pi} \log\left(\tilde{a} \sqrt{x}\right)
     +
-	\frac{1}{4} \tilde{r}_e^2 x
+	\tilde{r}_e^2 x
     +
     \cdots
     \label{eq:ere dimensionless}
 \end{align}
 Two examples are shown in \Figref{ere tuning}.
-
-If we come back to the tuning \eqref{tuning} and set $\Lambda=2\pi/\Delta x$ then we find
-\begin{align}
-	\tilde{C}_0 = gM
-	&= - \frac{2\pi}{\log\left(\frac{e^\gamma}{2} a \frac{2\pi}{\Delta x}\right)}
-	= - \frac{2\pi}{\log\left(\frac{e^\gamma}{2} a \frac{2\pi N_x}{L}\right)}
-	= - \frac{2\pi}{\log\left(\frac{e^\gamma}{2} N_x \tilde{a} \right)}
-	\label{eq:coupling analytically}
-\end{align}
-where $a/\Delta x$ is the scattering length in units of the lattice spacing.
-If we assume that we want a very large scattering length (on the scale of $L$, so that $\tilde{a} \sim 1$) then we see that the log's argument $\sim N_x$.
+As a reminder we know the lattice-native tuning \eqref{tuning} in the case where we've got an on-site interaction only.
 
 \begin{figure}
 	\includegraphics[width=0.6\textwidth]{mathematica/figure/ere}
 	\caption{
-		Two example dimensionless EREs with $\tilde{a}=1$; green circles have $\tilde{r}_e^2=1/8$, purple triangles have $\tilde{r}_e^2=0$.
+		Two example dimensionless EREs with $\tilde{a}=1$; green circles have $\tilde{r}_e^2=1/16$, purple triangles have $\tilde{r}_e^2=0$.
 		The solid blue curves are given by the zeta function.
 		The points give the finite-volume $x = \tilde{E} N_x^2 / (2\pi)^2$ that dictate the targeted energy levels when tuning with a given $N_x$.
 	}

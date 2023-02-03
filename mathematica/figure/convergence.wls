@@ -3,8 +3,8 @@
 
 <<TDG`;
 
-a=1;
-ERE[a_,re2_][x_]:=2/\[Pi] (Log[a/2 Sqrt[x]]+EulerGamma)+1/4 re2 x
+a=2;
+ERE[a_,re2_][x_]:=2/\[Pi] (Log[a Sqrt[x]])+re2 x
 ere = ERE[a,0];
 
 
@@ -30,12 +30,12 @@ max=23;
 NX=Range[min,max,2];
 colors=Hue[(#-min)/(max-min)]&/@NX;
 data={#,C0@#}&/@NX;
-exact={#,-((2\[Pi])/Log[1/2 a Exp[EulerGamma]#])}&/@NX;
+exact={#,-((2\[Pi])/(Log[1/2 a #]+Log[2]-2/\[Pi] Catalan))}&/@NX;
 
 
 plotCoupling=GraphicsColumn[{
 	Show[
-		Plot[-((2\[Pi])/Log[1/2 a Exp[EulerGamma]/oneOverNx]),{oneOverNx,0,1/min}],
+		Plot[-((2\[Pi])/(Log[1/2 a /oneOverNx]+Log[2]-2/\[Pi] Catalan )),{oneOverNx,0,1/min}],
 		ListPlot[List/@({1/data[[All,1]],data[[All,2]]}\[Transpose]),PlotStyle->colors],
 		FrameLabel->{None,"\!\(\*SubscriptBox[\(\!\(\*OverscriptBox[\(C\), \(~\)]\)\), \(0\)]\)"},
 		PlotRange->{{-0.01,1/min+0.01},All}
@@ -44,7 +44,10 @@ plotCoupling=GraphicsColumn[{
 		List/@({1/data[[All,1]],(data/exact)[[All,2]]}\[Transpose]),
 		PlotStyle->colors,
 		PlotRange->{{-0.01,1/min+0.01},All},
-		FrameLabel->{"1/\!\(\*SubscriptBox[\(N\), \(x\)]\)","-\!\(\*FractionBox[SubscriptBox[\(\!\(\*OverscriptBox[\(C\), \(~\)]\)\), \(0\)], \(2  \[Pi]\)]\) log \!\(\*FractionBox[SuperscriptBox[\(e\), \(\[Gamma]\)], \(2\)]\)\!\(\*SubscriptBox[\(N\), \(x\)]\)\!\(\*OverscriptBox[\(a\), \(~\)]\)"}
+		FrameLabel->{
+			"1/\!\(\*SubscriptBox[\(N\), \(x\)]\)",
+			"-\!\(\*FractionBox[SubscriptBox[OverscriptBox[\(C\), \(~\)], \(0\)], \(2  \[Pi]\)]\)(log\!\(\*OverscriptBox[\(a\), \(~\)]\)\!\(\*SubscriptBox[\(N\), \(x\)]\)-\!\(\*FractionBox[\(2\), \(\[Pi]\)]\)G)"
+			}
 		]
 	}]
 
