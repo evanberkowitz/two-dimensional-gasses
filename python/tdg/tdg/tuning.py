@@ -301,6 +301,125 @@ class Tuning(H5able):
         # da_dloga = 1/(dloga_da) = 1/(1/a) = a
         return self.dC_dERE[:,0] * self.ere.a
 
+class AnalyticTuning(H5able):
+    r'''
+    In the case where the :class:`~.EffectiveRangeExpansion` of interest is described entirely by a scattering length,
+    we can construct a tuning with analytic methods rather than by the brute force leveraged in :class:`~.Tuning`,
+    so long as we are satisfied with tuning a single :class:`~.LegoSphere` with radius (0,0) only.
+
+    In fact, because the Hamiltonian converges to the continuum like :math:`N_x^{-2}` and there is *magic*,
+    the brute force method almost exactly reproduces the analytic determination.
+
+    Parameters
+    ----------
+        ere:        :class:`~.EffectiveRangeExpansion`
+                    Describes the two-body physics of interest, and only contains a scattering length.
+                    Further momentum dependence raises a ValueException.
+        lattice:    :class:`~.Lattice`
+                    Describe the lattice on which we wish to tune the interaction.
+    '''
+    # It might be better to implement this by inheriting from Tuning,
+    # since some of the methods are exactly reproduced.
+    def __init__(self, ere, lattice):
+
+        if len(ere.parameters) > 1:
+            raise ValueError("An AnalyticTuning can only be constructed for an EffectiveRangeExpansion if it has no parameters beyond the scattering length." +
+                            f"Cannot construct an AnalyticTuning for an EffectiveRangeExpansion with parameters={ere.parameters} since there " +
+                            (   "is 1 shape parameter" if len(ere.parameters) == 2 else
+                                f"are {len(ere.parameters)-1} shape parameters"
+                                ) +
+                            " too many.")
+
+        self.ere = ere
+        self.Lattice = lattice
+
+        self.CatalanG = torch.tensor(0.9159655941772190)
+        self.radii = [[0,0]]
+
+    @cached_property
+    def C(self): 
+        r'''
+        We use the result from summing bubble diagrams,
+
+        .. math ::
+            \tilde{C}_0 = - \frac{2\pi}{\log(\tilde{a} N_x) - \frac{2}{\pi}G}
+
+        where :math:`G=0.9159655941772190\cdots` is Catalan's constant.
+        '''
+        return torch.tensor((- 2*torch.pi / (torch.log(self.ere.a * self.Lattice.nx) - 2 * self.CatalanG / torch.pi),))
+    #
+    # We can use this C to construct a potential,
+    #
+    @cached_property
+    def Potential(self):
+        r'''
+        A potential constructed from the LegoSphere with radius :math:`(0,0)` the tuned Wilson coefficients :func:`~.C`.
+        '''
+        return tdg.Potential(*[c*tdg.LegoSphere(r) for c, r in zip(self.C, self.radii)])
+    #
+    # and, with additional information, an action.
+    #
+    def Action(self, nt, beta, mu=torch.tensor(0.), h=torch.zeros(3), fermionMatrix=tdg.fermionMatrix.FermionMatrix):
+        r'''
+        An action with a :class:`~.Spacetime` given by the provided ``nt`` and the tuning's `Lattice`, a potential given by :attr:`~.Potential`, and other :class:`~.Action` parameters.
+
+        Parameters
+        ----------
+            nt:     int
+                Timeslices.
+            others:
+                Forwarded to :class:`~.Action` as expected.
+
+        Returns
+        -------
+            :class:`~.Action` with ``.Tuning`` set.
+        '''
+        A = tdg.Action(
+                tdg.Spacetime(nt, self.Lattice),
+                self.Potential,
+                beta,
+                mu=mu,
+                h=h,
+                fermion=fermionMatrix
+                )
+        # additionally store the tuning itself.
+        A.Tuning= self
+        return A
+    #
+    # Since we have the analytic expression for C we can differentiate.
+    #
+    @cached_property
+    def dC_dERE(self):
+        r'''
+        The derivative of the Wilson coefficients :attr:`~.C` with respect to ``ere.a``,
+        
+        .. math::
+            \frac{2\pi}{a\left(\log a N_x + \frac{2}{\pi}G\right)^2}
+
+        Packaged as a 1×1 matrix for compatibility with :class:`~.Tuning`.
+        '''
+        return torch.tensor(((2 * torch.pi / (self.ere.a * (torch.log(self.ere.a * self.Lattice.nx) - 2 * self.CatalanG / torch.pi)**2),),))
+    #
+    # To calculate the contact we will want the derivative of the Wilson coefficients with respect
+    # to the LOG of the scattering length only.
+    #
+    # This is just a straightforward extension of the derivative we've already computed via the chain rule!
+    #
+    @cached_property
+    def dC_dloga(self):
+        r'''
+        The derivative of the Wilson coefficients :attr:`~.C` with respect to ``log(ere.a)``,
+        
+        .. math::
+            \frac{2\pi}{\left(\log a N_x + \frac{2}{\pi}G\right)^2}
+        
+        Packaged as a 1-entry one-dimensional array for compatibility with :class:`~.Tuning`.
+        '''
+        # We can compute dC_dERE, which includes dC_da
+        # using the chain rule we need to multiply by
+        # da_dloga = 1/(dloga_da) = 1/(1/a) = a
+        return self.dC_dERE[:,0] * self.ere.a
+
 ####
 #### DEMO!
 ####
