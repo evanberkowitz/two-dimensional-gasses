@@ -26,7 +26,7 @@ tuning = tdg.Tuning(
         lattice =   lattice,
         radii   =   radii,
         # from prior computation:
-        starting_guess = torch.tensor([-5.05630981,  +1.66827162], dtype=torch.float64),
+        starting_guess = torch.tensor([-4.7341,  1.9069], dtype=torch.float64),
         )
 
 print(f"We start by tuning a starting set of Wilson coefficients C that correspond to")
