@@ -294,7 +294,7 @@ class GrandCanonical(H5able):
     @cached
     def contact(self, method='bosonic'):
         r'''
-        The `contact`, :math:`\frac{dH}{d\log a}`.
+        The `contact`, :math:`C\Delta x^2 = 2\pi\frac{d\tilde{H}}{d\log a}`.
 
         The ``bosonic`` method uses automatic differentiation to compute :math:`dH/dC_R` and the ensemble's :class:`Tuning` to compute :math:`dC_R / d\log a`.
         Just as the `bosonic` method for :func:`~.n` is extremely noisy compared to the ``fermionic`` method, so too is the ``bosonic`` action noisy.
