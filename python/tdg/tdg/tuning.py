@@ -344,7 +344,9 @@ class AnalyticTuning(H5able):
         .. math ::
             \tilde{C}_0 = - \frac{2\pi}{\log(\tilde{a} N_x) - \frac{2}{\pi}G}
 
-        where :math:`G=0.9159655941772190\cdots` is Catalan's constant.
+        where :math:`G=0.9159655941772190\cdots` is `Catalan's constant`_.
+
+        .. _Catalan's constant: https://en.wikipedia.org/wiki/Catalan%27s_constant
         '''
         return torch.tensor((- 2*torch.pi / (torch.log(self.ere.a * self.Lattice.nx) - 2 * self.CatalanG / torch.pi),))
     #
