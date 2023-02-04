@@ -26,6 +26,10 @@ class Tuning(H5able):
     you can save a lot of computational time by passing them at construction as ``C``;
     you can still calculate their derivative with respect to the ERE parameters.
 
+    .. note::
+        If you want to tune an on-site interaction to the analytic result of the bubble sum,
+        you can skip all of the numerical steps involved in tuning by using :class:`~.AnalyticTuning` instead!
+
     Parameters
     ----------
         ere:        :class:`~.EffectiveRangeExpansion`
