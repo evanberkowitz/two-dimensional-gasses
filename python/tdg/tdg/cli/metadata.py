@@ -22,6 +22,7 @@ def print_and_exit(description, data):
             print(data)
             exit()
 
+    # Return a dictionary which can be **unpacked.
     return {
             'help':   f'Exit after printing {description}.',
             'action': anonymous,
