@@ -14,8 +14,10 @@ We will not provide details in this documentation about how these are implemente
 
 .. automodule:: tdg.cli.log
    :members: defaults
+   :no-special-members:
 
 .. automodule:: tdg.cli.metadata
    :members: defaults
+   :no-special-members:
 
 .. _ArgumentParser: https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser
