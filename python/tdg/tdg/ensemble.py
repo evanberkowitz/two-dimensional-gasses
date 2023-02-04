@@ -16,15 +16,17 @@ def _no_op(x):
     return x
 
 class GrandCanonical(H5able):
-    r''' A grand-canonical ensemble of configurations and associated observables, importance-sampled according to :attr:`~.Action`.
+    r''' A grand-canonical ensemble of configurations and associated observables, importance-sampled according to :attr:`~.GrandCanonical.Action`.
 
     Parameters
     ----------
         Action: tdg.Action
+            An action which describes a Euclidean path integral equal to a Trotterization of the physics of interest.
     '''
     
     def __init__(self, Action):
         self.Action = Action
+        r'''The action with which the ensemble was constructed.'''
 
     def from_configurations(self, configurations):
         r'''
