@@ -124,8 +124,16 @@ class GrandCanonical(H5able):
         return GrandCanonical(self.Action).from_configurations(self.configurations[::frequency], self.weights[::frequency])
 
     def binned(self, width=1):
-        if width == 1:
-            return self
+        r'''
+        Parameters
+        ----------
+            width: int
+                The width of the bins over which to average.
+
+        Returns
+        -------
+            :class:`~.Binning` with the width specified, unless :code:`width` is 1.
+        '''
         return tdg.analysis.Binning(self, width)
 
     def __len__(self):
