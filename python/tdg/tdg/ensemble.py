@@ -123,6 +123,11 @@ class GrandCanonical(H5able):
         '''
         return GrandCanonical(self.Action).from_configurations(self.configurations[::frequency], self.weights[::frequency])
 
+    def binned(self, width=1):
+        if width == 1:
+            return self
+        return tdg.analysis.Binning(self, width)
+
     def __len__(self):
         r'''
         Returns

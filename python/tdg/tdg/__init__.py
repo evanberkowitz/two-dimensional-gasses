@@ -1,5 +1,6 @@
 from . import meta
 import tdg.cli as cli
+import tdg.analysis as analysis
 
 from .pauli import *
 from .epsilon import epsilon as epsilon

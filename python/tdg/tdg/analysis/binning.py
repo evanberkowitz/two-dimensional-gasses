@@ -28,6 +28,9 @@ class Binning:
         self.bins  = (cfgs - self.drop) // self.width
         r'''How many bins are in the binning.'''
 
+    def __len__(self):
+        return self.bins
+
     def _bin(self, obs):
         O = obs[self.drop:].split(self.width, dim=0)
         averaged = torch.stack([o.mean(axis=0) for o in O])
