@@ -141,9 +141,9 @@ class MarkovChain(H5able):
         dH = H_f - H_i
 
         if torch.exp(-dH.real) > self.metropolis_hastings():
-            return x_f
+            return x_f, 1.
         else:
-            return x_i
+            return x_i, 1.
 
 class LeapFrog(H5able):
     r"""The LeapFrog integrator integrates Hamilton's equations of motion for a total of :math:`\tau` molecular dynamics time `md_time` in a reversible, symplectic way.
