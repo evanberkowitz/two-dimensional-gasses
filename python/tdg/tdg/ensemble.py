@@ -208,7 +208,7 @@ class GrandCanonical(H5able):
         return self.n(method).sum(1)
     
     @cached_property
-    def spin(self):
+    def _spin(self):
         r'''
         The local spin density.
         Direction slowest, then configurations, then sites.  That makes it easy to do something with ``ensemble.s[1]``.
@@ -240,14 +240,37 @@ class GrandCanonical(H5able):
         Pspin = torch.einsum('ik,kab->iab', Pspin, tdg.PauliMatrix)
         
         return torch.einsum('cxxab,iba->icx', self._matrix_to_tensor(self._UUPlusOneInverseUU), Pspin)
-        
-    @cached_property
-    def Spin(self):
+
+    def spin(self, direction):
         r'''
-        The total spin, summed over all sites.
-        Direction slowest, then configurations.
+        The local spin density.  Configurations, then sites.
+        
+        Parameters
+        ----------
+            direction: int
+                An integer indexing the spin direction, which matches the index of :data:`tdg.PauliMatrix`.  :code:`0` is equal to :code:`n('fermionic')`.
+        
+        Returns
+        -------
+            torch.tensor
         '''
-        return self.spin.sum(-1)
+        return self._spin[direction]
+        
+    @cached
+    def Spin(self, direction):
+        r'''
+        The total spin, summed over sites.  One per configuration.
+        
+        Parameters
+        ----------
+            direction: int
+                An integer indexing the spin direction, which matches the index of :data:`tdg.PauliMatrix`.  :code:`0` is equal to :code:`N('fermionic')`.
+        
+        Returns
+        -------
+            torch.tensor
+        '''
+        return self.spin(direction).sum(-1)
     
     @cached_property
     def S(self):
@@ -627,7 +650,9 @@ class Sector(H5able):
         '''
         return self._reweight(
             self._grid(lambda n, s:
-                       torch.einsum('sc,s->c', self.Canonical._term(n,s).Spin[1:], self.Canonical.hhat)
+                       torch.einsum('sc,s->c',
+                                    torch.stack((self.Canonical._term(n,s).Spin(i) for i in [1,2,3])),
+                                    self.Canonical.hhat)
                       ))
 
     # It may make sense to cache, but since the underlying terms cache this may be overkill.
@@ -695,7 +720,8 @@ def _demo(steps=100, **kwargs):
 
 if __name__ == '__main__':
     from tqdm import tqdm
+    torch.set_default_dtype(torch.float64)
     ensemble = _demo(progress=tqdm)
     print(f"The fermionic estimator for the total particle number is {ensemble.N('fermionic').mean():+.4f}")
     print(f"The bosonic   estimator for the total particle number is {ensemble.N('bosonic'  ).mean():+.4f}")
-    print(f"The Spin[0]   estimator for the total particle number is {ensemble.Spin[0].mean()       :+.4f}")
+    print(f"The Spin(0)   estimator for the total particle number is {ensemble.Spin(0).mean()       :+.4f}")
