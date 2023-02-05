@@ -28,18 +28,26 @@ class GrandCanonical(H5able):
         self.Action = Action
         r'''The action with which the ensemble was constructed.'''
 
-    def from_configurations(self, configurations):
+    def from_configurations(self, configurations, weights=None):
         r'''
         Parameters
         ----------
             configurations: torch.tensor
                 A set of pre-computed configurations.
+            weights: torch.tensor
+                Weights for each configuration.
 
         Returns
         -------
             the ensemble itself, so that one can do ``ensemble = GrandCanonical(action).from_configurations(phi)``.
+            If :code:`weights` is :code:`None`, the weights are all 1.
         '''
         self.configurations = configurations
+        if weights is None:
+            self.weights = torch.ones(self.configurations.shape[0])
+        else:
+            self.weights = weights
+        assert self.configurations.shape[0] == len(self.weights)
         return self
         
     def generate(self, steps, generator, start='hot', progress=_no_op):
@@ -67,18 +75,25 @@ class GrandCanonical(H5able):
         .. _tqdm.notebook: https://tqdm.github.io/docs/notebook/
         '''
         self.configurations = self.Action.Spacetime.vector(steps) + 0j
+        self.weights = torch.zeros(steps) + 0j
         
         if start == 'hot':
-            self.configurations[0] = self.Action.quenched_sample()
+            seed = self.Action.quenched_sample()
         elif start == 'cold':
-            pass
+            seed = self.Action.Spacetime.vector()
         elif (type(start) == torch.Tensor) and (start.shape == self.configurations[0].shape):
-            self.configurations[0] = start
+            seed = start
         else:
             raise NotImplemented(f"start must be 'hot', 'cold', or a configuration in a torch.tensor.")
             
+        configuration, weight = generator.step(seed)
+        self.configurations[0] = configuration.real
+        self.weights[0] = weight
+
         for mcmc_step in progress(range(1,steps)):
-            self.configurations[mcmc_step] = generator.step(self.configurations[mcmc_step-1]).real
+            configuration, weight = generator.step(self.configurations[mcmc_step-1])
+            self.configurations[mcmc_step] = configuration.real
+            self.weights[mcmc_step] = weight
 
         return self
     
@@ -93,7 +108,7 @@ class GrandCanonical(H5able):
         -------
             :class:`~.GrandCanonical` without some configurations at the start.  Useful for performing a thermalization cut.
         '''
-        return GrandCanonical(self.Action).from_configurations(self.configurations[start:])
+        return GrandCanonical(self.Action).from_configurations(self.configurations[start:], self.weights[start:])
 
     def every(self, frequency):
         r'''
@@ -106,7 +121,20 @@ class GrandCanonical(H5able):
         -------
             :class:`~.GrandCanonical` with configurations reduced in size by a factor of the frequency.  Useful for Markov Chain decorrelation.
         '''
-        return GrandCanonical(self.Action).from_configurations(self.configurations[::frequency])
+        return GrandCanonical(self.Action).from_configurations(self.configurations[::frequency], self.weights[::frequency])
+
+    def binned(self, width=1):
+        r'''
+        Parameters
+        ----------
+            width: int
+                The width of the bins over which to average.
+
+        Returns
+        -------
+            :class:`~.Binning` with the width specified, unless :code:`width` is 1.
+        '''
+        return tdg.analysis.Binning(self, width)
 
     def __len__(self):
         r'''
