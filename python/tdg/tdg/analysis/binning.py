@@ -6,6 +6,8 @@ class Binning:
 
     If the width does not evenly divide the length of the ensemble, some configurations are dropped from the front of the ensemble.
 
+    For samples with weights :math:`w`, the new weights are given by the mean weight of the bin, while the new observable value is given by the weighted mean.
+
     Parameters
     ----------
         ensemble: :class:`~.ensemble.GrandCanonical`
@@ -27,12 +29,17 @@ class Binning:
         r'''How many configurations are dropped from the start of the ensemble.'''
         self.bins  = (cfgs - self.drop) // self.width
         r'''How many bins are in the binning.'''
+        self.weights = torch.stack([w.mean(axis=0) for w in self.Ensemble.weights[self.drop:].split(self.width, dim=0)])
+        r'''The weight of each bin.'''
 
     def __len__(self):
         return self.bins
 
     def _bin(self, obs):
-        O = obs[self.drop:].split(self.width, dim=0)
+        O = torch.einsum('c,c...->c...',
+                         self.Ensemble.weights[self.drop:],
+                         obs[self.drop:]
+                         ).split(self.width, dim=0)
         averaged = torch.stack([o.mean(axis=0) for o in O])
         return averaged
 
