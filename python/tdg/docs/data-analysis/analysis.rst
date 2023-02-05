@@ -30,5 +30,17 @@ Another strategy is to *bin*: average observable values over consecutive configu
    :undoc-members:
    :show-inheritance:
 
+The Bootstrap
+-------------
+
+Bootstrap resampling, `bootstrapping`_, or "the bootstrap" is a resampling method used for uncertainty estimation.  One draws, with replacement, from a sample.
+
+.. autoclass:: tdg.analysis.Bootstrap
+   :members:
+   :undoc-members:
+
+
+
 .. _autocorrelation: https://en.wikipedia.org/wiki/Autocorrelation
 .. _python built-in: https://docs.python.org/3/library/functions.html?highlight=bin#bin
+.. _bootstrapping: https://en.wikipedia.org/wiki/Bootstrapping_(statistics)
