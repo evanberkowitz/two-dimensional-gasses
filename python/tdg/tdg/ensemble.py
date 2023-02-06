@@ -28,18 +28,35 @@ class GrandCanonical(H5able):
         self.Action = Action
         r'''The action with which the ensemble was constructed.'''
 
-    def from_configurations(self, configurations):
+    def from_configurations(self, configurations, weights=None, index=None):
         r'''
         Parameters
         ----------
             configurations: torch.tensor
                 A set of pre-computed configurations.
+            weights: torch.tensor
+                Weights for each configuration.
+            index:   torch.tensor
+                Where in Markov chain time did each configuration come from.
 
         Returns
         -------
             the ensemble itself, so that one can do ``ensemble = GrandCanonical(action).from_configurations(phi)``.
+            If :code:`weights` is :code:`None`, the weights are all 1.  If :code:`index` is :code:`None`, the index counts up from 0.
         '''
         self.configurations = configurations
+        if weights is None:
+            self.weights = torch.ones(self.configurations.shape[0])
+        else:
+            self.weights = weights
+        assert self.configurations.shape[0] == len(self.weights)
+
+        if index is None:
+            self.index = torch.arange(self.configurations.shape[0])
+        else:
+            self.index = index
+        assert self.configurations.shape[0] == len(self.index)
+
         return self
         
     def generate(self, steps, generator, start='hot', progress=_no_op):
@@ -63,22 +80,33 @@ class GrandCanonical(H5able):
         -------
             the ensemble itself, so that one can do ``ensemble = GrandCanonical(action).generate(...)``.
 
+        Populates the :code:`index` attribute, a torch tensor counting up from 0, once for each call to the generator, so that each configuration has an index.
+        This index is kept track of through :func:`cut`, :func:`every`, :func:`binned` (by the :class:`~.Binning`).
+
         .. _tqdm.tqdm: https://pypi.org/project/tqdm/
         .. _tqdm.notebook: https://tqdm.github.io/docs/notebook/
         '''
         self.configurations = self.Action.Spacetime.vector(steps) + 0j
+        self.weights = torch.zeros(steps) + 0j
+        self.index   = torch.arange(steps)
         
         if start == 'hot':
-            self.configurations[0] = self.Action.quenched_sample()
+            seed = self.Action.quenched_sample()
         elif start == 'cold':
-            pass
+            seed = self.Action.Spacetime.vector()
         elif (type(start) == torch.Tensor) and (start.shape == self.configurations[0].shape):
-            self.configurations[0] = start
+            seed = start
         else:
             raise NotImplemented(f"start must be 'hot', 'cold', or a configuration in a torch.tensor.")
             
+        configuration, weight = generator.step(seed)
+        self.configurations[0] = configuration.real
+        self.weights[0] = weight
+
         for mcmc_step in progress(range(1,steps)):
-            self.configurations[mcmc_step] = generator.step(self.configurations[mcmc_step-1]).real
+            configuration, weight = generator.step(self.configurations[mcmc_step-1])
+            self.configurations[mcmc_step] = configuration.real
+            self.weights[mcmc_step] = weight
 
         return self
     
@@ -93,7 +121,11 @@ class GrandCanonical(H5able):
         -------
             :class:`~.GrandCanonical` without some configurations at the start.  Useful for performing a thermalization cut.
         '''
-        return GrandCanonical(self.Action).from_configurations(self.configurations[start:])
+        return GrandCanonical(self.Action).from_configurations(
+                self.configurations[start:],
+                self.weights[start:],
+                self.index[start:],
+                )
 
     def every(self, frequency):
         r'''
@@ -106,7 +138,37 @@ class GrandCanonical(H5able):
         -------
             :class:`~.GrandCanonical` with configurations reduced in size by a factor of the frequency.  Useful for Markov Chain decorrelation.
         '''
-        return GrandCanonical(self.Action).from_configurations(self.configurations[::frequency])
+        return GrandCanonical(self.Action).from_configurations(
+                self.configurations[::frequency],
+                self.weights[::frequency],
+                self.index[::frequency]
+                )
+
+    def binned(self, width=1):
+        r'''
+        Parameters
+        ----------
+            width: int
+                The width of the bins over which to average.
+
+        Returns
+        -------
+            :class:`~.Binning` of the ensemble, with the width specified.
+        '''
+        return tdg.analysis.Binning(self, width)
+
+    def bootstrapped(self, draws=100):
+        r'''
+        Parameters
+        ----------
+            draws: int
+                Resamples for uncertainty estimation; see :class:`~.Bootstrap` for details.
+
+        Returns
+        -------
+            :class:`~.Bootstrap` built from the ensemble, with the draws specified.
+        '''
+        return tdg.analysis.Bootstrap(self, draws)
 
     def __len__(self):
         r'''
@@ -208,7 +270,7 @@ class GrandCanonical(H5able):
         return self.n(method).sum(1)
     
     @cached_property
-    def spin(self):
+    def _spin(self):
         r'''
         The local spin density.
         Direction slowest, then configurations, then sites.  That makes it easy to do something with ``ensemble.s[1]``.
@@ -240,14 +302,37 @@ class GrandCanonical(H5able):
         Pspin = torch.einsum('ik,kab->iab', Pspin, tdg.PauliMatrix)
         
         return torch.einsum('cxxab,iba->icx', self._matrix_to_tensor(self._UUPlusOneInverseUU), Pspin)
-        
-    @cached_property
-    def Spin(self):
+
+    def spin(self, direction):
         r'''
-        The total spin, summed over all sites.
-        Direction slowest, then configurations.
+        The local spin density.  Configurations, then sites.
+        
+        Parameters
+        ----------
+            direction: int
+                An integer indexing the spin direction, which matches the index of :data:`tdg.PauliMatrix`.  :code:`0` is equal to :code:`n('fermionic')`.
+        
+        Returns
+        -------
+            torch.tensor
         '''
-        return self.spin.sum(-1)
+        return self._spin[direction]
+        
+    @cached
+    def Spin(self, direction):
+        r'''
+        The total spin, summed over sites.  One per configuration.
+        
+        Parameters
+        ----------
+            direction: int
+                An integer indexing the spin direction, which matches the index of :data:`tdg.PauliMatrix`.  :code:`0` is equal to :code:`N('fermionic')`.
+        
+        Returns
+        -------
+            torch.tensor
+        '''
+        return self.spin(direction).sum(-1)
     
     @cached_property
     def S(self):
@@ -627,7 +712,9 @@ class Sector(H5able):
         '''
         return self._reweight(
             self._grid(lambda n, s:
-                       torch.einsum('sc,s->c', self.Canonical._term(n,s).Spin[1:], self.Canonical.hhat)
+                       torch.einsum('sc,s->c',
+                                    torch.stack((self.Canonical._term(n,s).Spin(i) for i in [1,2,3])),
+                                    self.Canonical.hhat)
                       ))
 
     # It may make sense to cache, but since the underlying terms cache this may be overkill.
@@ -695,7 +782,8 @@ def _demo(steps=100, **kwargs):
 
 if __name__ == '__main__':
     from tqdm import tqdm
+    torch.set_default_dtype(torch.float64)
     ensemble = _demo(progress=tqdm)
     print(f"The fermionic estimator for the total particle number is {ensemble.N('fermionic').mean():+.4f}")
     print(f"The bosonic   estimator for the total particle number is {ensemble.N('bosonic'  ).mean():+.4f}")
-    print(f"The Spin[0]   estimator for the total particle number is {ensemble.Spin[0].mean()       :+.4f}")
+    print(f"The Spin(0)   estimator for the total particle number is {ensemble.Spin(0).mean()       :+.4f}")
