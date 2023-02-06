@@ -80,6 +80,9 @@ class GrandCanonical(H5able):
         -------
             the ensemble itself, so that one can do ``ensemble = GrandCanonical(action).generate(...)``.
 
+        Populates the :code:`index` attribute, a torch tensor counting up from 0, once for each call to the generator, so that each configuration has an index.
+        This index is kept track of through :func:`cut`, :func:`every`, :func:`binned` (by the :class:`~.Binning`).
+
         .. _tqdm.tqdm: https://pypi.org/project/tqdm/
         .. _tqdm.notebook: https://tqdm.github.io/docs/notebook/
         '''
