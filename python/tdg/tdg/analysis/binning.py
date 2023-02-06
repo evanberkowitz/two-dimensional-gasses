@@ -1,4 +1,5 @@
 import torch
+import tdg
 
 class Binning:
     r'''
@@ -32,6 +33,19 @@ class Binning:
         self.weights = torch.stack([w.mean(axis=0) for w in self.Ensemble.weights[self.drop:].split(self.width, dim=0)])
         r'''The weight of each bin.'''
         self.index = torch.stack([(0.+i).mean(axis=0) for i in self.Ensemble.index[self.drop:].split(self.width, dim=0)])
+
+    def bootstrapped(self, draws=100):
+        r'''
+        Parameters
+        ----------
+            draws: int
+                Resamples for uncertainty estimation; see :class:`~.Bootstrap` for details.
+
+        Returns
+        -------
+            :class:`~.Bootstrap` built from the ensemble, with the draws specified.
+        '''
+        return tdg.analysis.Bootstrap(self, draws)
 
     def __len__(self):
         return self.bins

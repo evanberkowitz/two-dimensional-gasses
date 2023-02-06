@@ -153,9 +153,22 @@ class GrandCanonical(H5able):
 
         Returns
         -------
-            :class:`~.Binning` with the width specified, unless :code:`width` is 1.
+            :class:`~.Binning` of the ensemble, with the width specified.
         '''
         return tdg.analysis.Binning(self, width)
+
+    def bootstrapped(self, draws=100):
+        r'''
+        Parameters
+        ----------
+            draws: int
+                Resamples for uncertainty estimation; see :class:`~.Bootstrap` for details.
+
+        Returns
+        -------
+            :class:`~.Bootstrap` built from the ensemble, with the draws specified.
+        '''
+        return tdg.analysis.Bootstrap(self, draws)
 
     def __len__(self):
         r'''
