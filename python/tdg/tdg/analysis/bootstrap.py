@@ -1,6 +1,8 @@
 import torch
 from tdg.h5 import H5able
 
+from functools import lru_cache as cached
+
 class Bootstrap(H5able):
     r'''
     The bootstrap is a resampling technique for estimating uncertainties.
@@ -49,12 +51,14 @@ class Bootstrap(H5able):
         w = self.Ensemble.weights[self.indices]
         return torch.einsum('cd,cd...->cd...', w, obs[self.indices]).mean(axis=0) / w.mean(axis=0)
     
+    @cached
     def __getattr__(self, name):
         
         try:    forward = self.Ensemble.__getattribute__(name)
         except: forward = self.Ensemble.__getattr__(name)
         
         if callable(forward):
+            @cached
             def curry(*args, **kwargs):
                 return self._resample(forward(*args, **kwargs))
             return curry
