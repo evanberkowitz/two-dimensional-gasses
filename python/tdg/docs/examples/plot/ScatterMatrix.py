@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tdg.plot as visualize
 
-sm = visualize.ScatterMatrix(3)
+sm = visualize.ScatterMatrix(3, labels=('Uniform', 'Gaussian', 'Two Gaussians'))
 
 # First ensemble
 uniform = np.random.rand(1000)-0.5

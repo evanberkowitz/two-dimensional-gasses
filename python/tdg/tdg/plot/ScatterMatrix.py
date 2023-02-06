@@ -15,6 +15,8 @@ class ScatterMatrix:
     ----------
         fields: int
             Number of rows and columns.
+        labels: iterable of strings of length :code:`fields`
+            Names for the different axes that will correspond to the plotted fields.
         wspace, hspace: float [inches]
             White space between panels.
         kwargs:
@@ -26,6 +28,7 @@ class ScatterMatrix:
     '''
     def __init__(self,
                  fields=2,
+                 labels=None,
                  wspace=0.05, hspace=0.05,
                  **kwargs
                 ):
@@ -55,11 +58,18 @@ class ScatterMatrix:
                 grid[i,j].sharex(grid[0,j])
                 grid[i,j].sharey(grid[i,0])
 
-            # Only allow labels on the left, bottom frames.
+            # Only allow ticks on the left, bottom frames.
             if j != 0:
                 [label.set_visible(False) for label in grid[i,j].get_yticklabels()]
             if i != fields-1:
                 [label.set_visible(False) for label in grid[i,j].get_xticklabels()]
+
+            # Labels
+            if labels is not None and len(labels) == fields:
+                if j == 0:
+                    grid[i,j].set_ylabel(labels[i])
+                if i == fields-1:
+                    grid[i,j].set_xlabel(labels[j])
 
     def plot(self, data, label=None, density=True, scatter_alpha=0.1, histogram_alpha=0.5, bins=31, **kwargs):
         r'''
@@ -141,7 +151,7 @@ class ScatterTriangle:
                 grid[i,j].sharex(grid[0,j])
                 grid[i,j].sharey(grid[i,0])
 
-            # Only allow labels on the left, bottom frames.
+            # Only allow ticks on the left, bottom frames.
             if j != 0:
                 [label.set_visible(False) for label in grid[i,j].get_yticklabels()]
             if i < fields-1 or j == fields-1:
