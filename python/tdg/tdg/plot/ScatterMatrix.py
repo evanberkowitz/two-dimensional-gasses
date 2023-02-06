@@ -107,6 +107,7 @@ class ScatterTriangle:
     '''
     def __init__(self,
                  fields=2,
+                 labels=None,
                  wspace=0.05, hspace=0.05,
                  **kwargs
                 ):
@@ -146,6 +147,13 @@ class ScatterTriangle:
             if i < fields-1 or j == fields-1:
                 [label.set_visible(False) for label in grid[i,j].get_xticklabels()]
             grid[0,0].set_yticks([])
+
+            # Labels
+            if labels is not None and len(labels) == fields:
+                if j == 0 and i > 0:
+                    grid[i,j].set_ylabel(labels[i])
+                if i == fields-1 and j < i:
+                    grid[i,j].set_xlabel(labels[j])
 
     def plot(self, data, label=None, density=True, scatter_alpha=0.1, histogram_alpha=0.5, bins=31, **kwargs):
         r'''
