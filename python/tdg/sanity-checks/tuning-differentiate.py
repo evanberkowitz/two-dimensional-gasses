@@ -26,7 +26,7 @@ tuning = tdg.Tuning(
         lattice =   lattice,
         radii   =   radii,
         # from prior computation:
-        starting_guess = torch.tensor([-5.05630981,  +1.66827162], dtype=torch.float64),
+        starting_guess = torch.tensor([-4.7341,  1.9069], dtype=torch.float64),
         )
 
 print(f"We start by tuning a starting set of Wilson coefficients C that correspond to")
@@ -42,7 +42,7 @@ print(f"The first column is the derivative with respect to the (dimensionless) s
 print(f"\n\nNow we attempt to confirm these derivatives by finite differencing.")
 
 print(f"\n\nFirst we detune the scattering length only, changing the ERE parameters by")
-da = torch.tensor([0.01, 0.])
+da = torch.tensor([0.001, 0.])
 print(f"{da=}")
 print(f"The a-detuned coefficients are...")
 a_detuned = tdg.Tuning(
@@ -60,7 +60,7 @@ ratio_a = tuning.dC_dERE[:,0] / finite_difference_a
 print(ratio_a)
 
 print(f"\n\nNext we detune the range only, changing the ERE parameters by")
-dr = torch.tensor([0., 0.01])
+dr = torch.tensor([0., 0.001])
 print(f"{dr=}")
 print(f"The r-detuned coefficients are...")
 r_detuned = tdg.Tuning(

@@ -58,7 +58,7 @@ class History:
             d = data.clone().detach().numpy()
         else:
             d = data
-        self._plot_history  (d, row=row, frequency=frequency, **kwargs)
+        self._plot_history  (d, row=row, x=x, frequency=frequency, **kwargs)
         self._plot_histogram(d, row=row, **kwargs)
         
     def _plot_history(self, data, row=0, x=None, label=None, frequency=1, **kwargs):
