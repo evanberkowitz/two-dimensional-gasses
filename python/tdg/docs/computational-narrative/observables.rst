@@ -67,7 +67,7 @@ For example, here is the actual implementation of :func:`~.average_field`
 
 .. literalinclude:: ../../tdg/observable/field.py
 
-Writing a callable observable is much the same, but rather than just a single :code`ensemble` argument, the :code:`@observable` should take additional parameters.
+Writing a callable observable is much the same, but rather than just a single :code:`ensemble` argument, the :code:`@observable` should take additional parameters.
 See `the implementation`_ of :func:`~.number.n` for an example implementation of a callable :code:`@observable` which caches under the hood.
 
 Naming collisions are a risk.  Only the name of the actual function is used for the :class:`~.GrandCanonical` attribute/method.
