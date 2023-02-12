@@ -1,5 +1,5 @@
 import torch
-from tdg.observable import observable, callable_observable
+from tdg.observable import observable
 
 import logging
 logger = logging.getLogger(__name__)
@@ -87,7 +87,7 @@ def _Contact_bosonic(ensemble):
         s_dual  = functorch.vmap(S_dual)(ensemble.configurations)
         return  (2*torch.pi / ensemble.Action.beta)* torch.autograd.forward_ad.unpack_dual(s_dual).tangent
 
-@callable_observable
+@observable
 def Contact(ensemble, method='fermionic'):
     r'''
     The `contact`, :math:`C\Delta x^2 = 2\pi\frac{d\tilde{H}}{d\log a}`.

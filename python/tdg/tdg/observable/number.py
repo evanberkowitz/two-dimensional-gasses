@@ -1,5 +1,5 @@
 import torch
-from tdg.observable import observable, callable_observable
+from tdg.observable import observable
 
 @observable
 def _n_fermionic(ensemble):
@@ -24,7 +24,7 @@ def _N_fermionic(ensemble):
 def _N_bosonic(ensemble):
     return ensemble._n_bosonic.sum(1)
 
-@callable_observable
+@observable
 def n(ensemble, method='fermionic'):
     r'''
     The local number density, one per site per configuration.
@@ -50,7 +50,7 @@ def n(ensemble, method='fermionic'):
         return ensemble._n_bosonic
     raise NotImplemented()
 
-@callable_observable
+@observable
 def N(ensemble, method='fermionic'):
     r'''
     The total number, one per configuration.

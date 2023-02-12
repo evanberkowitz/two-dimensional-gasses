@@ -1,6 +1,6 @@
 import torch
 import tdg
-from tdg.observable import observable, callable_observable
+from tdg.observable import observable
 
 ####
 #### Intensive
@@ -40,7 +40,7 @@ def _spin(ensemble):
     
     return torch.einsum('cxxab,iba->icx', ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU), Pspin)
 
-@callable_observable
+@observable
 def spin(ensemble, direction):
     r'''
     The local spin density.  Configurations, then sites.
@@ -64,7 +64,7 @@ def spin(ensemble, direction):
 def _Spin(ensemble):
     return ensemble._spin.sum(-1)
 
-@callable_observable
+@observable
 def Spin(ensemble, direction):
     r'''
     The total spin, summed over sites.  One per configuration.
