@@ -18,6 +18,9 @@ def _no_op(x):
 class GrandCanonical(H5able):
     r''' A grand-canonical ensemble of configurations and associated observables, importance-sampled according to :attr:`~.GrandCanonical.Action`.
 
+    .. note::
+        :class:`~GrandCanonical` also supports :ref:`a large number of observables <observables>`.
+
     Parameters
     ----------
         Action: tdg.Action
