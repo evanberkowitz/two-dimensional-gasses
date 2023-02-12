@@ -9,6 +9,7 @@ Computational Narrative
    many-body
    grand-canonical
    monte-carlo
+   observables
    D4
    miscellanea
 
