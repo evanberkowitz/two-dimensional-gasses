@@ -1,5 +1,5 @@
 import torch
-from tdg.observable import observable
+from tdg.observable import observable, callable_observable
 
 import logging
 logger = logging.getLogger(__name__)
