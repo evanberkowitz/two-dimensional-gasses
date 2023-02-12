@@ -42,6 +42,8 @@ def observable(func):
         def measure(self, ensemble):
             return func(ensemble)
 
+    return func # This is a hack to get sphinx to document observables sensibly.
+
 ####
 #### Callable observable interface
 ####
@@ -72,6 +74,8 @@ def callable_observable(func):
 
         def measure(self, ensemble, *args, **kwargs):
             return func(ensemble, *args, **kwargs)
+
+    return func # This is a hack to get sphinx to document observables sensibly.
 
 import tdg.observable.field
 import tdg.observable.action
