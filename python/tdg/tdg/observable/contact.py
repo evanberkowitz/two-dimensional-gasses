@@ -24,7 +24,7 @@ def doubleOccupancy(ensemble):
     # where the lower indices are spatial and the upper indices are spin.
     #
     # The first term is the square of the contraction of the fermionic n operator.
-    first = ensemble.n**2
+    first = ensemble.n('fermionic')**2
     # The second term is a bit more annoying;
     UUPlusOneInverseUU = ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
     second = torch.einsum('caast,caats->ca',
@@ -43,7 +43,52 @@ def DoubleOccupancy(ensemble):
     return ensemble.doubleOccupancy.sum(axis=1)
 
 @observable
-def contact(ensemble, method='bosonic'):
+def _Contact_fermionic(ensemble):
+    # For the on-site interaction we have a shortcut, which is a good acceleration because the LegoSphere is a delta function
+    # and thus we can do contractions that don't cost volume^2 but simply volume.
+    if len(ensemble.Action.Tuning.radii) == 1 and all(r==0 for r in ensemble.Action.Tuning.radii[0]):
+        # This shortcut was implemented and tested AFTER the remaining portion of this routine was,
+        # so that what is below was checked to be correct for the on-site interaction.
+        logger.info('Calculating the fermionic Contact via the double occupancy.')
+        return 2*torch.pi * ensemble.Action.Tuning.dC_dloga[0] * ensemble.DoubleOccupancy
+
+    logger.info('Using the general form of the fermionic Contact.')
+
+    L = ensemble.Action.Spacetime.Lattice
+    S = torch.stack(tuple(tdg.LegoSphere(r, c).spatial(L) for c,r in zip(ensemble.Action.Tuning.dC_dloga, ensemble.Action.Tuning.radii) )).sum(axis=0).to(ensemble._UUPlusOneInverseUU.dtype)
+
+    # The contractions looks just like the doubleOccupancy contractions, but with two spatial indices tied together just like the spins are,
+    # and then summed with the derivative LegoSphere stencil.
+    UUPlusOneInverseUU = ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
+    first = torch.einsum(
+            'ab,caass,cbbtt->c',
+            S,
+            UUPlusOneInverseUU,
+            UUPlusOneInverseUU,
+            )
+    second = torch.einsum(
+            'ab,cbats,cabst->c',
+            S,
+            UUPlusOneInverseUU,
+            UUPlusOneInverseUU,
+            )
+    return torch.pi * (first-second)
+
+@observable
+def _Contact_bosonic(ensemble):
+    # This is a "straightforward" application of differentiating Z with respect to log a.
+    # We implement it using forward-mode automatic differentiation, promoting the LegoSphere
+    # coefficients to dual numbers whose derivatives are given by the derivative of the tuning.
+    with torch.autograd.forward_ad.dual_level():
+        C0_dual = torch.autograd.forward_ad.make_dual(ensemble.Action.Tuning.C, ensemble.Action.Tuning.dC_dloga)
+        V_dual  = tdg.Potential(*[c * tdg.LegoSphere(r) for c,r in zip(C0_dual, ensemble.Action.Tuning.radii)])
+        S_dual  = tdg.Action(ensemble.Action.Spacetime, V_dual, ensemble.Action.beta, ensemble.Action.mu, ensemble.Action.h, ensemble.Action.fermion)
+
+        s_dual  = functorch.vmap(S_dual)(ensemble.configurations)
+        return  (2*torch.pi / ensemble.Action.beta)* torch.autograd.forward_ad.unpack_dual(s_dual).tangent
+
+@callable_observable
+def Contact(ensemble, method='fermionic'):
     r'''
     The `contact`, :math:`C\Delta x^2 = 2\pi\frac{d\tilde{H}}{d\log a}`.
 
@@ -73,43 +118,7 @@ def contact(ensemble, method='bosonic'):
         Therefore the ``ensemble.Action`` must have a tuning!
 
     '''
-    # For the on-site interaction we have a shortcut, which is a good acceleration because the LegoSphere is a delta function
-    # and thus we can do contractions that don't cost volume^2 but simply volume.
-    if len(ensemble.Action.Tuning.radii) == 1 and all(r==0 for r in ensemble.Action.Tuning.radii[0]):
-        # This shortcut was implemented and tested AFTER the remaining portion of this routine was,
-        # so that what is below was checked to be correct for the on-site interaction.
-        logger.info('Calculating the contact via the double occupancy.')
-        return 2*torch.pi * ensemble.Action.Tuning.dC_dloga[0] * ensemble.DoubleOccupancy
-
-    logger.info('Using the general form of the fermionic contact.')
-
-    L = ensemble.Action.Spacetime.Lattice
-    S = torch.stack(tuple(tdg.LegoSphere(r, c).spatial(L) for c,r in zip(ensemble.Action.Tuning.dC_dloga, ensemble.Action.Tuning.radii) )).sum(axis=0).to(ensemble._UUPlusOneInverseUU.dtype)
-
-    # The contractions looks just like the doubleOccupancy contractions, but with two spatial indices tied together just like the spins are,
-    # and then summed with the derivative LegoSphere stencil.
-    UUPlusOneInverseUU = ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
-    first = torch.einsum(
-            'ab,caass,cbbtt->c',
-            S,
-            UUPlusOneInverseUU,
-            UUPlusOneInverseUU,
-            )
-    second = torch.einsum(
-            'ab,cbats,cabst->c',
-            S,
-            UUPlusOneInverseUU,
-            UUPlusOneInverseUU,
-            )
-    return torch.pi * (first-second)
-
-@observable
-def contact_bosonic(ensemble):
-    with torch.autograd.forward_ad.dual_level():
-        C0_dual = torch.autograd.forward_ad.make_dual(ensemble.Action.Tuning.C, ensemble.Action.Tuning.dC_dloga)
-        V_dual  = tdg.Potential(*[c * tdg.LegoSphere(r) for c,r in zip(C0_dual, ensemble.Action.Tuning.radii)])
-        S_dual  = tdg.Action(ensemble.Action.Spacetime, V_dual, ensemble.Action.beta, ensemble.Action.mu, ensemble.Action.h, ensemble.Action.fermion)
-
-        s_dual  = functorch.vmap(S_dual)(ensemble.configurations)
-        return  (2*torch.pi / ensemble.Action.beta)* torch.autograd.forward_ad.unpack_dual(s_dual).tangent
-
+    if method == 'fermionic':
+        return ensemble._Contact_fermionic
+    if method == 'bosonic':
+        return ensemble._Contact_bosonic
