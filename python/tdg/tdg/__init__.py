@@ -15,3 +15,4 @@ from .fermionMatrix import FermionMatrix as FermionMatrix
 from .action import Action as Action
 from .tuning import Tuning as Tuning, AnalyticTuning as AnalyticTuning
 import tdg.ensemble as ensemble
+import tdg.observable
