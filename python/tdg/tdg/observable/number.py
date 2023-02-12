@@ -53,22 +53,16 @@ def n(ensemble, method='fermionic'):
 @callable_observable
 def N(ensemble, method='fermionic'):
     r'''
-    The local number density, one per site per configuration.
+    The total number, one per configuration.
 
     Parameters
     ----------
         method: str
-            The approach for calculating the local number densities, ``'fermionic'`` or ``'bosonic'``.
+            The approach for calculating the number, as in :func:`~.number.n`.
 
     Returns
     -------
         torch.tensor
-            Configurations slowest, then sites.
-
-    .. note ::
-        The ``'fermionic'`` method computes a derivative of the fermion determinant, and seems to be positive-(semi?)definite.
-        The ``'bosonic'`` method computes the derivative of the gauge action and is not positive-definite.
-
     '''
     if method == 'fermionic':
         return ensemble._N_fermionic
