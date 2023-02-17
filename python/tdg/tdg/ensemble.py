@@ -4,7 +4,6 @@ from functools import cached_property
 from functools import lru_cache as cached
 
 import torch
-import functorch
 
 import tdg
 from tdg.h5 import H5able
