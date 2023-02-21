@@ -40,29 +40,27 @@ class Zeta2D(H5able):
 
         super(Zeta2D,self).__init__()
 
-        self.N = N
+        self.N = torch.tensor(N)
 
-        max_n = np.ceil((N+1)/2)
-        squares = np.arange(-max_n, max_n+1)**2
+        max_n = torch.ceil((self.N+1)/2).int()
+        squares = torch.arange(-max_n,max_n+1)**2
 
         # A naive method quadratic in N that finds all the poles and their multiplicities.
         # Mathematica seems to have a more direct method called SquaresR.
         # I'm not sure how much number theory is required for a faster implementation.
 
         # Here are all possible combinations of squares.
-        points = np.array([[i+j for i in squares] for j in squares])
-        points, multiplicity = np.unique(points.flat, return_counts=True)
+        points = torch.tensor([[i+j for i in squares] for j in squares])
+        points, multiplicity = points.flatten().unique(return_counts=True)
 
         # Ensure we've regulated so that every included pole has |n| <= N/2
-        pm = np.array([[p, m] for p, m in zip(points, multiplicity) if 4*p <= N**2]).transpose()
-        points = pm[0]
-        multiplicity = pm[1]
+        pm = torch.tensor([[p, m] for p, m in zip(points, multiplicity) if 4*p <= self.N**2]).transpose(0,1)
 
-        self.poles = torch.from_numpy(points)
-        self.multiplicity = torch.from_numpy(multiplicity)
+        self.poles = pm[0]
+        self.multiplicity = pm[1]
 
         # With the 2-norm regulation the counterterm is simple.
-        self.counterterm = torch.tensor(2*np.pi * np.log(self.N/2))
+        self.counterterm = 2*np.pi * torch.log(self.N/2)
 
     def __call__(self, x):
         r'''
@@ -89,7 +87,7 @@ class Zeta2D(H5able):
         if isinstance(x, (float, complex)):
             return self(torch.tensor([x]))[0]
         if isinstance(x, np.ndarray):
-            return self(torch.tensor(x)).to_numpy()
+            return self(torch.tensor(x)).cpu().to_numpy()
         if isinstance(x, torch.Tensor):
             return torch.sum(self.multiplicity / (self.poles -x[:, None]), dim=1) - self.counterterm
         raise TypeError("Zeta2D must be evaluated on a scalar, numpy array, or torch tensor.")
@@ -133,6 +131,7 @@ class Zeta2D(H5able):
         else:
             poles = []
         poles += [p for p in self.poles if low < p and p < high]
+        poles = torch.tensor(poles)
 
         if 'color' in kwargs:
             color = kwargs['color']
@@ -143,10 +142,10 @@ class Zeta2D(H5able):
         for l, h in zip(poles, poles[1:]):
             X = torch.tensor([xi for xi in x if l < xi and xi < h])
             Z = self(X) / torch.pi**2
-            ax.plot(X, Z, color=color, **kwargs)
+            ax.plot(X.cpu(), Z.cpu(), color=color, **kwargs)
 
         for p in poles:
-            ax.axvline(p, color=asymptote_color, alpha=asymptote_alpha, linestyle=asymptote_linestyle)
+            ax.axvline(p.cpu(), color=asymptote_color, alpha=asymptote_alpha, linestyle=asymptote_linestyle)
 
         if xlabel:
             ax.set_xlabel(xlabel)
