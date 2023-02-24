@@ -711,17 +711,17 @@ Then, the partition function
 which counts all the possible states, and is what you expect from a direct evaluation of $\lim_{\beta\goesto0}\tr{e^{-\beta H}}$.
 The simplicity of this limit can provide a good sanity check.
 
-\subsection{Hamiltonian, Continuum, Infinite-Volume, and Zero-Temperature Limits}
+\subsection{Hamiltonian and Continuum Limits}\label{sec:continuum limit}
 
 We might like to think about fixing physical parameters $M$, $a$, $L$, $\beta$, $\mu$, and $\vec{h}$, though we perform simulations with $N_x$ sites with
 \begin{align}
-    \tilde{a} &= \frac{2\pi a}{N_x \Delta x} = \frac{2\pi a}{L}
+    \tilde{a} &= \frac{2\pi a}{L} = \frac{2\pi a}{N_x \Delta x}
     &
-    \tilde{\beta} &= \frac{\beta}{M \Delta x^2} = \frac{\beta}{ML^2} N_x^2
+    \tilde{\beta} &= \frac{\beta}{M L^2} = \frac{\beta}{M(\Delta x N_x)^2}
     \nonumber\\
-    \tilde{\mu} &= \mu M \Delta x^2 = \mu ML^2 N_x^{-2}
+    \tilde{\mu} &= \mu M L^2 = \mu M (\Delta x N_x)^2
     &
-    \tilde{\vec{h}} &= \vec{h} M \Delta x^2 = \vec{h} ML^2 N_x^{-2}
+    \tilde{\vec{h}} &= \vec{h} M L^2 = \vec{h} ML^2 (\Delta x N_x)^2
     \\\nonumber
     \tilde{C}_0 &
         = - \frac{2\pi}{\log \frac{2\pi a}{\Delta x} - \frac{2}{\pi} G}
@@ -731,27 +731,105 @@ We might like to think about fixing physical parameters $M$, $a$, $L$, $\beta$, 
 \end{align}
 and $N_t$ timeslices discretizing $\Delta\tilde{t} = \tilde{\beta}/N_t$.
 For all quantities above we write, when possible, expressions that make it clear how the continuum limit and infinite lattice limits are taken.
+A partition function with physical parameters is estimated by a particular lattice partition function
+\begin{align}
+    Z\left(M, a, L, \beta, \mu, \vec{h}\right) \approx Z\left(\tilde{a} = \frac{2\pi a}{L}, \tilde{\beta} = \frac{\beta}{ML^2}, \tilde{\mu} = \mu ML^2, \tilde{\vec{h}} = \vec{h}ML^2, N_x, N_t \right)
+\end{align}
 
-The \emph{Hamiltonian limit} is the limit in which $N_t\goesto\infty$ holding $\tilde{a}$, $\tilde{\beta}$, $\tilde{\mu}$, and $\tilde{h}$ fixed, so that the Trotterization error disappears.
+The \emph{Hamiltonian limit} is the limit in which $N_t\goesto\infty$ holding $\tilde{a}$, $\tilde{\beta}$, $\tilde{\mu}$, and $\tilde{h}$ fixed, so that the Trotterization error disappears,
+\begin{align}
+    \lim_{N_t\goesto\infty} Z(\tilde{a}, \tilde{\beta}, \tilde{\mu}, \tilde{\vec{h}}, N_x, N_t)
+    =
+    Z(\tilde{a}, \tilde{\beta}, \tilde{\mu}, \tilde{\vec{h}}, N_x)
+    \label{eq:hamiltonian limit}
+\end{align}
 From our careful tracking of the Trotterization \eqref{trotterization} things should go to their time-continuum values with $\Delta{\tilde{t}}^2 \sim N_t^{-2}$.
 This limit is particularly easy to understand as none of the above dimensionless simulation parameters depend on $N_t$; it should be taken first.
 
+The \emph{continuum limit} holds the physical parameters fixed and sends $N_x \goesto \infty$ as $\Delta x\goesto 0$ so that $L=N_x \Delta x$ is fixed.
+Since $\tilde{a}$ is fixed but $N_x$ increases, $\tilde{C}_0$ decreases.
+\begin{align}
+    \lim_{N_x\goesto\infty} Z(\tilde{a}, \tilde{\beta}, \tilde{\mu}, \tilde{\vec{h}}, N_x) = Z(\tilde{a}, \tilde{\beta}, \tilde{\mu}, \tilde{\vec{h}})
+\end{align}
+which demonstrates that the six-parameter partition function is only truly a function of four parameters.
+Since in a non-relativistic theory mass dimensions count separately from length, and we only have one mass scale, we already knew that $M$ could be scaled out.
+However, that would leave 5 parameters, not 4.
+The further reduction is a repercussion of the magic in \Secref{magic}.
+
+\subsection{Infinite Volume and Zero-Temperature Limits}\label{sec:thermodynamic limit}
+
 Other limits are a bit more delicate, as the dimensionless simulation parameters required may vary with $N_x$ or $\Delta x$.
-To simplify the other limits of interest we trade $\mu$ and $\vec{h}$ for fugacities $z$ and $\vec{z}_h$,
+To simplify the other limits of interest we trade $\mu$ and $\vec{h}$ for fugacities,
 \begin{align}
     \log z &= \beta \mu = \tilde{\beta} \tilde{\mu} = \log \tilde{z}
     &
     \widevec{\log z_h} &= \beta \vec{h} = \tilde{\beta}\tilde{\vec{h}} = \widevec{\log \tilde{z}_h}
 \end{align}
 (the vector goes outside of the log to indicate how rotational transformations act).
-What's nice about $\log \tilde{z}$ and $\log \tilde{z}_h$ is that they take the same values no matter $L$ or $N_x$; they're intrinsic, dimensionless, and scale-independent, free from $N_x$ or $\Delta x$.
+What's nice about $\log \tilde{z}$ and $\log \tilde{z}_h$ is that they take the same values no matter $L$; they're intrinsic, dimensionless, and scale-independent, free from $N_x$ or $\Delta x$.
 
-The \emph{infinite lattice limit} holds $\Delta x$ fixed and sends $L$ and $N_x$ to infinity with $L/N_x = \Delta x$ fixed, a sort of infinite volume limit; imagine a very large square crystal.
-While $\tilde{a}$ goes to 0, $\tilde{C}_0$ remains fixed.
-Dimensionless $\tilde{\beta}$, $\log \tilde{z}$, $\widevec{\log \tilde{z}_h}$, \emph{all} stay fixed: all that changes is $N_x$.
+The \emph{zero temperature} and \emph{infinite volume} limits are tricky to disentangle, exactly because, by magic, there are fewer parameters than we need to make independent adjustments.
+It seems as though it is only possible to take one or the other.
+For example, suppose you take the infinite volume limit first, holding physical $a$, $\beta$, $\mu$, and $\vec{h}$ fixed.
+Given the functional dependence of the dimensionless parameters on $L$, the infinite volume limit leaves
+\begin{align}
+    \frac{\tilde{\beta}}{\tilde{a}^2} = \frac{\beta}{(2\pi a)^2 M}
+\end{align}
+fixed.
+Therefore the resulting partition function is
+\begin{align}
+    \lim_{L\goesto\infty} Z(\tilde{a}, \tilde{\beta}, \log\tilde{z}, \widevec{\log \tilde{z}_h})
+    =
+    Z\left(
+        \tilde{\beta}\tilde{a}^{-2} = \frac{\beta}{(2\pi a)^2 M},
+        \log\tilde{z} = \beta \mu,
+        \widevec{\log \tilde{z}_h} = \beta \vec{h}
+        \right)
+    \label{eq:infinite volume}
+\end{align}
 
-The \emph{continuum limit} holds $a$, $L$, $\beta$, $\mu$, and $\vec{h}$ fixed and sends $N_x \goesto \infty$ as $\Delta x\goesto 0$ so that $L=N_x \Delta x$ is fixed.
-Since $\tilde{a}$ is fixed but $N_x$ increases, $\tilde{C}_0$ decreases.
-The continuum limit holds $\tilde{a}$, $\log \tilde{z}$ and $\widevec{\log \tilde{z}_h}$ fixed while scaling $\tilde{\beta}$ with $N_x^2$ and decreasing $\tilde{C}_0$.
+Now we may take the zero-temperature limit $\beta\goesto\infty$.
+All three remaining dimensionless parameters diverge together, in proportion.
+The result is therefore
+\begin{align}
+    \lim_{\beta\goesto\infty} Z(\tilde{\beta}\tilde{a}^{-2}, \log\tilde{z}, \widevec{\log \tilde{z}_h})
+    =
+    Z\left( \tilde{a}^2\tilde{\mu} = (2\pi a)^2 M \mu, \tilde{a}^2 \tilde{\vec{h}} = (2\pi a)^2 M \vec{h} \right).
+    \label{eq:volume then temperature}
+\end{align}
+If we start with $\mu=0$ and $\vec{h}=0$, the result is universal, indepdendent of $a$!
 
-The \emph{zero temperature} and \emph{infinite volume} limits are tricky to disentangle.
+We should carefully consider how observables go to these limits.
+
+What if we take the zero-temperature limit before the infinite volume?
+Then $\tilde{\beta}$, $\log\tilde{z}$ and $\widevec{\log\tilde{z}_h}$ diverge in proportion, and 
+\begin{align}
+    \lim_{\beta\goesto0} Z(\tilde{a}, \tilde{\beta}, \log\tilde{z}, \widevec{\log \tilde{z}_h})
+    =
+    Z(\tilde{a}, \tilde{\mu}, \tilde{\vec{h}})
+\end{align}
+since the chemical potential and external fields are left fixed even as their respective fugacities diverge.
+If we now take the infinite-volume limit $L\goesto\infty$ we wind up with a function of the same arguments as before,
+\begin{align}
+    \lim_{L\goesto\infty}
+    Z(\tilde{a}, \tilde{\mu}, \tilde{\vec{h}})
+    =
+    Z( \tilde{a}^2\tilde{\mu}, \tilde{a}^2 \tilde{\vec{h}} )
+    \label{eq:temperature then volume}
+\end{align}
+though whether the zero-temperature and infinite-volume limits commute is not demonstrated here, or known to me.
+In other words, the two partition functions \eqref{volume then temperature} and \eqref{temperature then volume} might differ, though it seems plausible to me that they should be equal when $\mu$ and $\vec{h}$ vanish at the very least.
+
+\subsection{The Infinite-Lattice limit}
+
+We also may take another route and consider the \emph{infinite lattice limit} after the Hamiltonian limit \eqref{hamiltonian limit}, holding $a$ and $\Delta x$ fixed and sending $L$ and $N_x$ to infinity together, a sort of infinite volume limit; imagine a very large square crystal.
+Dimensionless $\log \tilde{z}$ and $\widevec{\log \tilde{z}_h}$ stay fixed.
+While $\tilde{\beta}$ goes to zero like $N_x^{-2}$, $\tilde{a}$ goes like $N_x^{-1}$ and $\tilde{C}_0$ remains fixed (which distinguishes it the usual infinite-volume limit, executed after the continuum limit),
+\begin{align}
+    \lim_{\text{infinite lattice}} Z(\tilde{a}, \tilde{\beta}, \log\tilde{z}, \widevec{\log\tilde{z}_h}, N_x) 
+    =
+    Z(\tilde{\beta}\tilde{a}^{-2}, \log\tilde{z}, \widevec{\log\tilde{z}_h}, \tilde{C}_0)
+\end{align}
+This seemingly has a well-defined continuum limit: just send $\tilde{C}_0$ to zero along the tuning, as expected, holding $a$ fixed and sending $\Delta x\goesto 0$.
+An important question for practical purposes is: is the resulting function the same as the usual continuum-first infinite-volume limit \eqref{infinite volume}?
+If so we can perform simultaneous extrapolations, for example, and the zero temperature limit will follow as above.
