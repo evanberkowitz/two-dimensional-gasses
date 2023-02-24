@@ -172,7 +172,7 @@ The `$S$-wave' is the $A_1$ representation.
 Translationally invariant potentials $\tilde{V}_{ab}$ can be expressed as $\tilde{V}_{a,a+r} = \tilde{V}_{0,r}$  in terms of the relative lattice coordinate $r$.
 We can construct `rotationally'-invariant (meaning: transforms like the $A_1$ representation of $D_4$) interaction potentials $V^R_{0,r}$ out of `Lego spheres' \LegoSphere{R} that are obviously $A_1$ interactions that depend on a `radius' $R$,
 \begin{align}
-	\tilde{V}_{0,r} &= \sum_{R} \tilde{C}_R \LegoSphere{R}_{0,r}
+	\tilde{V}_{0,r} &= \Volume \sum_{R} \tilde{C}_R \LegoSphere{R}_{0,r}
     &
     \LegoSphere{R}_{0,r} &= \oneover{\shell{R}^2}\sum_{g \in D_4} \delta_{r, gR}
     &
@@ -187,8 +187,9 @@ So, we can conventionally pick one representative radius vector with non-decreas
 
 We can therefore write a fully general translationally-invariant $A_1$ potential as
 \begin{align}
-	\tilde{V}_{ab} &= \sum_{R} \tilde{C}_R \LegoSphere{R}_{ab}.
+	\tilde{V}_{ab} &= \Volume \sum_{R} \tilde{C}_R \LegoSphere{R}_{ab}.
 \end{align}
 The simplest choice is $\tilde{C}_{\vec{0}} = gM$ and all other $\tilde{C}_R=0$.
 In 3D we observe that this choice gets linear discretization errors (presumably in this case that means linear in $N_x\inverse$).
 With additional supported Lego spheres presumably this improves.
+Below we will show that the simplest choice gives two-body discretization errors that scale like $N_x^{-2}$, one better than 3D.
