@@ -44,21 +44,21 @@ We can isolate the dimensionful quantities
 \begin{align}
 	Z
 	&=
-	\tr{e^{-\left(\frac{\beta}{M\Delta x^2}\right)(HM\Delta x^2 -M \Delta x^2 \mu N - M \Delta x^2 \vec{h} \cdot \vec{S})}}
+	\tr{e^{-\left(\frac{\beta}{ML^2}\right)(HML^2 -M L^2 \mu N - M L^2 \vec{h} \cdot \vec{S})}}
 \\
 	&=
 	\tr{e^{-\tilde{\beta}(\tilde{K}+\tilde{V}-\tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}}
 	&
-	\tilde{\beta} &= \frac{\beta}{M \Delta x^2}
+	\tilde{\beta} &= \frac{\beta}{M L^2}
 	&
-	\tilde{\mu}   &= M \Delta x^2 \mu
+	\tilde{\mu}   &= M L^2 \mu
 	&
-	\tilde{\vec{h}} &= M \Delta x^2 \vec{h}
+	\tilde{\vec{h}} &= M L^2 \vec{h}
 	\label{eq:dimensionless}
 \end{align}
 where $\tilde{\beta}$, $\tilde{\mu}$, and $\tilde{\vec{h}}$ are dimensionless, and $\tilde{K}$ and $\tilde{V}$ are the dimensionless kinetic and potential operators in the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}.
 
-Let us Trotterize $\tilde{\beta}$ into $N_t$ time slices so that $\Delta \tilde{t} = \tilde{\beta}/N_t = \beta/M \Delta x^2 N_t$, which exactly matches $\hat{\gamma}$ in our prior work.
+Let us Trotterize $\tilde{\beta}$ into $N_t$ time slices so that $\Delta \tilde{t} = \tilde{\beta}/N_t = \beta/M L^2 N_t$, which differs from $\hat{\gamma}$ in our prior work by $N_x^2$.
 We begin with the identity
 \begin{equation}
 	e^{-\Delta \tilde{t}(\tilde{H} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}
@@ -106,7 +106,7 @@ Recall that the potential operator can be expressed as a sum of Lego spheres \eq
 	&
 	\tilde{V}_{ab}
 	&=
-	\sum_{\vec{R}} \tilde{C}_{\vec{R}} \LegoSphere{\vec{R}}_{ab}
+	\Volume \sum_{\vec{R}} \tilde{C}_{\vec{R}} \LegoSphere{\vec{R}}_{ab}
 \end{align}
 where $\tilde{V}_{ab}$ is a symmetric matrix and the radii $\vec{R}$ can be chosen however we like.
 If $\tilde{V}$ has purely real negative eigenvalues (which imposes conditions on the bare coupling constants), then the following \emph{exact} Hubbard-Stratanovich transformation holds:
@@ -184,14 +184,14 @@ to carefully evaluate $\matrixElement{\eta}{ e^{-\Delta \tilde{t}\tilde{K}} }{\e
 \begin{align}
 		\matrixElement{\eta}{ e^{-\Delta \tilde{t} \tilde{K}} }{\eta'}
 	&= 
-		\matrixElement{\eta}{ \exp\left(-\Delta \tilde{t} \sum_{ab \sigma} \tilde{\psi}^{\dagger}_{\sigma a} \tilde{\kappa}_{ab} \tilde{\psi}_{\sigma b} \right)}{\eta'}
+		\matrixElement{\eta}{ \exp\left(-\Delta \tilde{t} \sum_{ab \sigma} \tilde{\psi}^{\dagger}_{\sigma a} (\tilde{\kappa}_{ab} - \Volume \tilde{C}_0 / 2) \tilde{\psi}_{\sigma b} \right)}{\eta'}
 	\nonumber\\
 	&=
 		\matrixElement{\eta}{ \exp\left(
 			\begin{bmatrix} \tilde{\psi}^{\dagger}_{\up} &  \tilde{\psi}^{\dagger}_{\down}  \end{bmatrix} 
 			\begin{bmatrix}
-				-\Delta \tilde{t} \tilde{\kappa}	& 0 \\
-				0 									& -\Delta \tilde{t} \tilde{\kappa} 
+				-\Delta \tilde{t} (\tilde{\kappa}_{ab} - \Volume \tilde{C}_0 / 2)	& 0 \\
+				0 									& -\Delta \tilde{t} (\tilde{\kappa}_{ab} - \Volume \tilde{C}_0 / 2) 
 			\end{bmatrix} 
 			\begin{bmatrix} \tilde{\psi}_{\up} \\  \tilde{\psi}_{\down}  \end{bmatrix}
 		\right) }{\eta'}
@@ -200,8 +200,8 @@ to carefully evaluate $\matrixElement{\eta}{ e^{-\Delta \tilde{t}\tilde{K}} }{\e
 		\exp\left( 
 			\begin{bmatrix} {\eta}^{\dagger}_{\up} &  {\eta}^{\dagger}_{\down}  \end{bmatrix} 
 			\exp\begin{pmatrix}
-				-\Delta \tilde{t} \tilde{\kappa} + \Delta\tilde{t} \frac{\tilde{C}_0}{2} \one & 0 \\
-				0 									& -\Delta \tilde{t} \tilde{\kappa} + \Delta\tilde{t} \frac{\tilde{C}_0}{2} \one
+				-\Delta \tilde{t} \tilde{\kappa} + \Delta\tilde{t} \Volume \frac{\tilde{C}_0}{2} \one & 0 \\
+				0 									& -\Delta \tilde{t} \tilde{\kappa} + \Delta\tilde{t} \Volume \frac{\tilde{C}_0}{2} \one
 			\end{pmatrix} 
 			\begin{bmatrix} {\eta}_{\up}' \\  {\eta}_{\down}'  \end{bmatrix}
 		\right)
@@ -235,18 +235,18 @@ So, we can rewrite the Hilbert space trace in the bilinearized Trotterization \e
 	=& \int D\eta\adjoint D\eta \exp\left( - \sum_{t=1}^{2N_t}\sum_{a\sigma} \eta\adjoint_{\sigma a t} \eta_{\sigma a t}\right)~ \times
 	\nonumber\\
 	&
-		\exp\left[ \sum_{ab\sigma} (-\eta_{\sigma a\;1})\adjoint \left(e^{-\Delta \tilde{t} (\tilde{\kappa}-\tilde{C}_0/2)}\right)_{ab} \eta_{\sigma b\;2N_t} \right]
+		\exp\left[ \sum_{ab\sigma} (-\eta_{\sigma a\;1})\adjoint \left(e^{-\Delta \tilde{t} (\tilde{\kappa}-\Volume\tilde{C}_0/2)}\right)_{ab} \eta_{\sigma b\;2N_t} \right]
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2N_t} \left(e^{A_{N_t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma} }\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;2N_t-1}\right] ~ \times
 	\nonumber\\
 	&
 		\cdots
 	\nonumber\\
 	&
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;5} \left(e^{-\Delta \tilde{t} (\tilde{\kappa}-\tilde{C}_0/2)}\right)_{ab} \eta_{\sigma b\;4} \right]
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;5} \left(e^{-\Delta \tilde{t} (\tilde{\kappa}-\Volume\tilde{C}_0/2)}\right)_{ab} \eta_{\sigma b\;4} \right]
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;4} \left(e^{A_{2}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;3}\right] ~ \times
 	\nonumber\\
 	&
-		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;3} \left(e^{-\Delta \tilde{t} (\tilde{\kappa}-\tilde{C}_0/2)}\right)_{ab} \eta_{\sigma b\;2} \right]
+		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;3} \left(e^{-\Delta \tilde{t} (\tilde{\kappa}-\Volume\tilde{C}_0/2)}\right)_{ab} \eta_{\sigma b\;2} \right]
 		\exp\left[ \sum_{ab\sigma} \eta\adjoint_{\sigma a\;2} \left(e^{A_{1}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)_{ab}^{\sigma\sigma'} \eta_{\sigma' b\;1}\right]
 	\label{eq:grassmann integral}
 \end{align}
@@ -280,7 +280,7 @@ Writing
 \begin{align}
 	\BB &= B \otimes \one
 	&
-	B &= \exp \Delta\tilde{t} \left(\tilde{\kappa} - \half \tilde{C}_0\right)
+	B &= \exp \Delta\tilde{t} \left(\tilde{\kappa} - \half \Volume\tilde{C}_0\right)
 	\label{eq:BB with C0}\\
 	\FF_t &= \left(e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)
 	\label{eq:FF with C0}
@@ -350,7 +350,7 @@ Using the Shur complement, one has
 	\label{eq:sausage}
 \end{align}
 The sausage $\UU$ is (2 spins)$\times \Volume$ on a side.
-Since the $\tilde{C}_0$ piece is diagonal in space we can pull it out of $B$ and think of it as offsetting $\tilde{\mu}\goesto \tilde{\mu} + \half \tilde{C}_0$; this reorganization can even be seen naturally at the Hamiltonian \eqref{dimensionless hamiltonian} level, as the $\tilde{C}_0$ term can be reexpressed as a number operator term $- \tilde{C}_0 \tilde{N}/2$.
+Since the $\tilde{C}_0$ piece is diagonal in space we can pull it out of $B$ and think of it as offsetting $\tilde{\mu}\goesto \tilde{\mu} + \half \Volume \tilde{C}_0$; this reorganization can even be seen naturally at the Hamiltonian \eqref{dimensionless hamiltonian} level, as the $\tilde{C}_0$ term can be reexpressed as a number operator term $- \tilde{C}_0 \tilde{N}/2$.
 When we \incode{tdg/action.py\#L73}{construct the auxiliary field action} \eqref{computational partition function} we incorporate this shift in $\tilde{\mu}$ and henceforth use
 \begin{align}
 	\BB &= B \otimes \one
@@ -359,7 +359,7 @@ When we \incode{tdg/action.py\#L73}{construct the auxiliary field action} \eqref
 	\label{eq:BB}\\
 	\FF_t &= \left(e^{A_{t}+\Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}}\right)
 	&
-	\tilde{\mu} &= M \Delta x^2 \mu +\tilde{C}_0/2
+	\tilde{\mu} &= M L^2 \mu +\Volume\tilde{C}_0/2
 	\label{eq:FF}
 \end{align}
 
