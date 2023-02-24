@@ -35,25 +35,25 @@ to find
 		+   \oneover{N_x^2} \sum_{abb'} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \tilde{\kappa}_{b'b}\ket{a,b'}
     \nonumber\\
     =&
-			\oneover{N_x^2} \sum_{aa'p'b} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \frac{(2\pi p')^2}{2\Volume^2} e^{-2\pi i p'\cdot(a'-a)/N_x}\ket{a',b}
+			\oneover{N_x^2} \sum_{aa'p'b} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \frac{(2\pi p')^2}{2\Volume} e^{-2\pi i p'\cdot(a'-a)/N_x}\ket{a',b}
 			\nonumber\\&
-		+   \oneover{N_x^2} \sum_{abb'q'} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \frac{(2\pi q')^2}{2\Volume^2} e^{-2\pi i q'\cdot(b'-b)/N_x}\ket{a,b'}
+		+   \oneover{N_x^2} \sum_{abb'q'} e^{-2\pi i(p\cdot a + q \cdot b)/N_x} \frac{(2\pi q')^2}{2\Volume} e^{-2\pi i q'\cdot(b'-b)/N_x}\ket{a,b'}
     \\
     =&
-			\oneover{N_x^6} \sum_{a'p'b} \frac{(2\pi p')^2}{2} e^{-2\pi i(p'a+qb)/N_x} \ket{a',b} \sum_{a} e^{-2\pi i(p-p')a/N_x}
+			\oneover{N_x^4} \sum_{a'p'b} \frac{(2\pi p')^2}{2} e^{-2\pi i(p'a+qb)/N_x} \ket{a',b} \sum_{a} e^{-2\pi i(p-p')a/N_x}
 			\nonumber\\&
-		+   \oneover{N_x^6} \sum_{ab'q'} \frac{(2\pi q')^2}{2} e^{-2\pi i(pa+q'b)/N_x} \ket{a,b'} \sum_{b} e^{-2\pi i(q-q')b/N_x}
+		+   \oneover{N_x^4} \sum_{ab'q'} \frac{(2\pi q')^2}{2} e^{-2\pi i(pa+q'b)/N_x} \ket{a,b'} \sum_{b} e^{-2\pi i(q-q')b/N_x}
     \\
     =&
-			\oneover{N_x^6} \sum_{a'p'b} \frac{(2\pi p')^2}{2} e^{-2\pi i(p'a'+qb)/N_x} \ket{a',b} \Volume \delta_{pp'}
-		+   \oneover{N_x^6} \sum_{ab'q'} \frac{(2\pi q')^2}{2} e^{-2\pi i(pa+q'b')/N_x} \ket{a,b'} \Volume \delta_{qq'}
+			\oneover{N_x^4} \sum_{a'p'b} \frac{(2\pi p')^2}{2} e^{-2\pi i(p'a'+qb)/N_x} \ket{a',b} \Volume \delta_{pp'}
+		+   \oneover{N_x^4} \sum_{ab'q'} \frac{(2\pi q')^2}{2} e^{-2\pi i(pa+q'b')/N_x} \ket{a,b'} \Volume \delta_{qq'}
     \\
     =&
-			\frac{(2\pi p/N_x)^2}{2} \oneover{N_x^2}\sum_{a'b} e^{-2\pi i(pa'+qb)/N_x} \ket{a',b}
-		+   \frac{(2\pi q/N_x)^2}{2} \oneover{N_x^2}\sum_{ab'} e^{-2\pi i(pa+qb')/N_x} \ket{a,b'}
+			\frac{(2\pi p)^2}{2} \oneover{N_x^2}\sum_{a'b} e^{-2\pi i(pa'+qb)/N_x} \ket{a',b}
+		+   \frac{(2\pi q)^2}{2} \oneover{N_x^2}\sum_{ab'} e^{-2\pi i(pa+qb')/N_x} \ket{a,b'}
     \\
     =&
-		\left(\frac{(2\pi p/N_x)^2}{2} + \frac{(2\pi q/N_x)^2}{2}\right) \ket{p,q}.
+		\left(\frac{(2\pi p)^2}{2} + \frac{(2\pi q)^2}{2}\right) \ket{p,q}.
 \end{align}
 
 Now consider the states with total momentum $P$ and a relative coordinate $r$,
@@ -150,13 +150,11 @@ In 3D we tune to the zeroes of the zeta function; in 3D the best we can do is tu
 The quantization condition \eqref{quantization condition} is phrased in terms of dimensionful variables $p=\sqrt{2ME}$ and $L$.
 Let's translate these into dimensionless quantities via
 \begin{align}
-    p^2 &= 2 \mu  E \Delta x^2 / \Delta x^2 = \tilde{E} / \Delta x^2
-	&
-	L &= N_x \Delta x
+    p^2 &= 2 \mu  E L^2 / L^2 = \tilde{E} / L^2
     &
-    \frac{pL}{2\pi} = \frac{\sqrt{\tilde{E}} N_x}{2\pi}
+    \frac{pL}{2\pi} = \frac{\sqrt{\tilde{E}}}{2\pi}
 \end{align}
-where $\tilde{E}$ is the dimensionless energy eigenvalue of the dimensionless two-body Schr\"{o}dinger equation \eqref{two-body schrodinger equation}.
+where $\tilde{E}$ is the dimensionless energy eigenvalue of the dimensionless two-body Schr\"{o}dinger equation \eqref{two-body schrodinger equation}, where the dimensionless Hamiltonian $\tilde{H}=H ML^2$ \eqref{dimensionless hamiltonian}.
 
 To actually do the tuning we need to evaluate things as a function of the dimensionless parameter $x$.
 The ERE \eqref{ere} should be rewritten
@@ -168,8 +166,8 @@ The ERE \eqref{ere} should be rewritten
     \left(\frac{2\pi r_e }{L}\right)^2 x
     +
     \cdots
-	&
-	x&=(pL/2\pi)^2=\tilde{E}N_x^2 / (2\pi)^2
+    &
+    x&=(pL/2\pi)^2=\tilde{E} / (2\pi)^2
     \label{eq:ere dimensionless}
 \end{align}
 which is written in entirely dimensionless variables and parameters.
