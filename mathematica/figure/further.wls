@@ -9,7 +9,7 @@ ere = ERE[a,0];
 
 
 e[nx_,ere_,levels_:10]:=e[nx,ere,levels]=LuescherTuningTargetEnergy[nx,ere]/@Range[levels];
-x[nx_,ere_,levels_:10]:=e[nx,ere,levels] nx^2/(2\[Pi])^2;
+x[nx_,ere_,levels_:10]:=e[nx,ere,levels]/(2\[Pi])^2;
 \[Zeta][nx_,ere_,levels_:10]:=1/\[Pi]^2 (LuescherZeta/@x[nx,ere,levels]);
 
 
@@ -26,7 +26,7 @@ C0[nx_,ere_:ere]:=tune[nx,ere][[1]]
 C1[nx_,ere_:ere]:=tune[nx,ere][[2]]
 C2[nx_,ere_:ere]:=tune[nx,ere][[3]]
 Energies[nx_,ere_:ere]:=Sort[Eigenvalues[H[nx,<|{0,0}->C0[nx,ere],{0,1}->C1[nx,ere],{1,1}->C2[nx,ere]|>]]]
-X[nx_,ere_:ere]:=Energies[nx,ere] nx^2/(2\[Pi])^2
+X[nx_,ere_:ere]:=Energies[nx,ere]/(2\[Pi])^2
 Z[nx_,ere_:ere]:=(LuescherZeta/@X[nx,ere])/\[Pi]^2
 
 
