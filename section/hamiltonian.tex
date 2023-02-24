@@ -99,14 +99,17 @@ If we fix $C$ and $N_x$, it does not matter what actual, physical $\Delta x$ is-
 In those cases, if you change $\Delta x$ while holding $g$ and $N_x$ fixed the spectra do not just perfectly scale.
 The difference is that in $d$ dimensions a contact interaction is like $\Delta x^{-d}$; in 3D this is \emph{more} divergent than the kinetic term, while in 2D it's a perfect match.
 
+However, on physical grounds, it'd be nicer to think about energies free from a UV scale.
+In the continuum limit, for example, $\Delta x\goesto 0$ and so all the eigenvalues of $MH \Delta x^2$ do too.
+Therefore we should multiply by $N_x^2$, and consider $H ML^2$, which knows only IR scales.
 So, we can work with the dimensionless
 \begin{align}
-	\tilde{H} = MH\Delta x^2 &= 
-		\sum_{ab} \tilde{\psi}\adjoint_a \left(
+	\tilde{H} = HML^2 &= 
+		\Volume \sum_{ab} \tilde{\psi}\adjoint_a \left(
 			\tilde{\kappa}_{ab}
 			- \frac{\tilde{C}_0}{2} \delta_{ab}
 			\right) \tilde{\psi}_b
-		+ \frac{1}{2} \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b
+		+ \frac{1}{2} \Volume \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b
 \label{eq:dimensionless hamiltonian}
 \\
 	\tilde{\kappa}_{ab} &=
@@ -130,7 +133,7 @@ According to \Ref{Korber:2019cuq} the continuum tuning is given by
 where $\tilde{a}$ is the dimensionless scattering length explained below, and $G=0.9159655941772190\cdots$ is Catalan's constant.
 The conclusion there is that strong coupling is $\tilde{a}\sim 1$.
 But the punchline is that indeed the tuning \emph{also} only depends on dimensionless things.
-So it's really true; our simulations's Hamiltonian can be entirely described in terms of the dimensionless $gM$ and $N_x$ and that is all.
+So it's really true; our simulations's Hamiltonian, appropriately rescaled by $ML^2$, can be entirely described in terms of the dimensionless $gM$ and $N_x$ and that is all.
 
 The tuning \eqref{tuning} is found by doing the `standard' bubble sum in 2 dimensions, but accounting for the cubic shape of the Brilloun zone / cutoff.
 There are momentum-dependent pieces not shown, but they only infect the higher order terms of the effective range expansion.
