@@ -206,7 +206,7 @@ As a reminder we know the lattice-native tuning \eqref{tuning} in the case where
 	\caption{
 		Two example dimensionless EREs with $\tilde{a}=1$; green circles have $\tilde{r}_e^2=1/16$, purple triangles have $\tilde{r}_e^2=0$.
 		The solid blue curves are given by the zeta function.
-		The points give the finite-volume $x = \tilde{E} N_x^2 / (2\pi)^2$ that dictate the targeted energy levels when tuning with a given $N_x$.
+		The points give the finite-volume $x = \tilde{E} / (2\pi)^2$ that dictate the targeted energy levels when tuning with a given $N_x$.
 	}
 	\label{fig:ere tuning}
 \end{figure}
@@ -297,10 +297,10 @@ This closely matches what I have in the 3D $A_{1g}$ case, except for (1) the nor
 
 Suppose we wish to tune to a dimensionless ERE \eqref{ere dimensionless} with only log momentum dependence (so that we expect to be able to tune just one parameter in an $A_1$ potential).
 We can pick a nonperturbative $\tilde{a} \sim 1$.
-This fixes, via the quantization condition \eqref{quantization condition dimensionless} a set of dimensionless $x$s, which can be turned into dimensionless energies via $x=\tilde{E}N_x^2/(2\pi)^2$.
+This fixes, via the quantization condition \eqref{quantization condition dimensionless} a set of dimensionless $x$s, which can be turned into dimensionless energies via $x=\tilde{E}/(2\pi)^2$.
 
 We take a potential with only the zero-radius Lego Sphere $\LegoSphere{0}$.
-We know then the value of the coupling analytically \eqref{coupling analytically}.
+We know then the value of the coupling analytically \eqref{tuning}.
 In \Figref{convergence contact} we show this analytic value plotted against $N_x$ and the value needed to tune the lowest finite-volume energy level correctly.
 We also show the convergence of the data to the effective range expansion.
 We see that at any finite $N_x$ we do not reproduce the desired ERE perfectly, though it is attained in the continuum (large-$N_x$) limit.
@@ -310,7 +310,7 @@ We see that at any finite $N_x$ we do not reproduce the desired ERE perfectly, t
 	\includegraphics[width=0.475\textwidth]{mathematica/figure/convergence-amplitude}
 	\caption{
 		Left:
-			(top) the solid curve is the analytic result \eqref{coupling analytically} while the points are the required coupling for tuning the finite-volume energy;
+			(top) the solid curve is the analytic result \eqref{tuning} while the points are the required coupling for tuning the finite-volume energy;
 			(bottom) the ratio of the fit coupling to the analytic result.
 		Right:
 			With the tunings shown at left, the finite-volume energies processsed through the quantization condtion \eqref{quantization condition dimensionless}; red circles correspond to $N_x=7$, orange triangles to $N_x=9$, and so on until $N_x=23$.
@@ -354,7 +354,7 @@ Presumably there is \emph{some} number of operators we can tune to get parametri
 
 \subsection{The Magic}
 
-The L\"{u}scher $x=\tilde{E} N_x^2 /(2\pi)^2$ is \emph{only} a function of $N_x$ and the set of dimensionless $\tilde{C}$s.
+The L\"{u}scher $x=\tilde{E}/(2\pi)^2$ is \emph{only} a function of $N_x$ and the set of dimensionless $\tilde{C}$s.
 Through the quantization condition \eqref{quantization condition dimensionless} and the ere \eqref{ere dimensionless} a fixed set of those parameters fixes the dimensionless ere parameters \eqref{dimensionless ere parameters}.
 \emph{This is magic.}
 Tuning to a fixed $\tilde{a}$ with a fixed $N_x$ requires the \textbf{same} $\tilde{C}$s, no matter $L$ (note that the dimensionless $\tilde{a}$ is normalized by $L$).
@@ -368,38 +368,17 @@ Make the box very small and $\tilde{a}$ becomes very big, and the energies go to
 \subsection{Pure Contact is already $\sim N_x^{-2}$!}
 \label{sec:automatic improvement}
 
-In the left panel of \Figref{convergence energies} we examine some contact-interaction energy levels to see how they depend on $N_x$.
+In \Figref{convergence energies} we examine some contact-interaction two-body energy levels to see how they depend on $N_x$.
 We see that the convergence towards the continuum (to the left) is like $N_x^{-2}$.
-More interestingly is that the energies \emph{go to zero in the continuum limit}.
-Why?
 
 \begin{figure}
 	\includegraphics[width=0.475\textwidth]{mathematica/figure/convergence-energies}
-	\includegraphics[width=0.475\textwidth]{mathematica/figure/convergence-x}
 	\caption{
-		Left: the ground state, 1st state, 2nd state, and so on through the 8th state, as a function of $N_x^{-2}$, normalized by the energy with $N_x=7$.
-		The normalization cancels $e^j$ \eqref{quadratic convergence}, so all the different states land on top of one another, up to effects down in $N_x$.
-		Right: the L\"{u}scher $x$ \eqref{ere dimensionless}, normalized by $N_x=7$.
-		If all subleading corrections vanished all the states would yield a line at $1$ (the lowest state is tuned by matching $x$, so it shows this behavior trivially).
+		The lowest $P=0$ $A_1$ two-body state, 1st state, 2nd state, and so on through the 8th state in that sector, as a function of $N_x^{-2}$, normalized by the energy with $N_x=7$.
+		If all subleading corrections vanished all the states would yield a line at $1$ (the lowest state is tuned, so it shows this behavior trivially).
 	}
 	\label{fig:convergence energies}
 \end{figure}
-
-Let us change our perspective.
-If instead of thinking that by sending $N_x\goesto\infty$ while holding the dimensionless ERE fixed, by the magic, we can instead think of holding the lattice spacing fixed and take the infinite volume limit (holding the dimensionless ERE parameter $\tilde{a}$ fixed).
-Then we expect the allowed momenta to become smaller and smaller, $p \sim 2\pi/L \goesto p\Delta x \sim  2\pi / N_x $.
-Because we have this second interpretation for the exact same simulation, via the magic, the physics of that interpretation should come in too!
-
-Or, the physical energies should go to some continuum limit but $\tilde{E} \sim E \Delta x^2$ which \emph{already} scales like $N_x^{-2}$.
-
-Taking these arguments seriously we have for energy level $j$,
-\begin{align}
-	\tilde{E}^j_{N_x} &= \oneover{N_x^2} \left(e^j + \order{\text{at least } N_x\inverse} \right)
-	&
-	x^j = \frac{\tilde{E}^j N_x^2}{(2\pi)^2} &= \frac{e^j}{(2\pi)^2} + \order{N_x^{-2\text{ by eye}}}
-	\label{eq:quadratic convergence}
-\end{align}
-where the dimensionless L\"{u}scher $x$ goes to $e^j/(2\pi)^2$ plus corrections and \Figref{convergence energies} provides evidence that the corrections are small and, by eye, quadratic!
 
 In 3D the corrections to the finite-volume energies is linear in $\Delta x \sim L/N_x$.
 Why the difference?
