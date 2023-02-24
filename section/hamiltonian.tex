@@ -105,27 +105,27 @@ Therefore we should multiply by $N_x^2$, and consider $H ML^2$, which knows only
 So, we can work with the dimensionless
 \begin{align}
 	\tilde{H} = HML^2 &= 
-		\Volume \sum_{ab} \tilde{\psi}\adjoint_a \left(
+		\sum_{ab} \tilde{\psi}\adjoint_a \left(
 			\tilde{\kappa}_{ab}
-			- \frac{\tilde{C}_0}{2} \delta_{ab}
+			- \Volume \frac{\tilde{C}_0}{2} \delta_{ab}
 			\right) \tilde{\psi}_b
-		+ \frac{1}{2} \Volume \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b
+		+ \frac{1}{2} \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b
 \label{eq:dimensionless hamiltonian}
 \\
 	\tilde{\kappa}_{ab} &=
-				\oneover{\Volume} \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
+				\sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
 \\
 	\tilde{V}_{ab} &= 
-				gM \LegoSphere{0}_{ab}
-				+ C_{\vec{R}} M \LegoSphere{\vec{R}}_{ab}.
+				\Volume(gM \LegoSphere{0}_{ab}
+				+ C_{\vec{R}} M \LegoSphere{\vec{R}}_{ab})
 				=
-				\tilde{C}_0 \LegoSphere{0}_{ab}
-				+ \tilde{C}_{\vec{R}} \LegoSphere{\vec{R}}_{ab};
+				\Volume(\tilde{C}_0 \LegoSphere{0}_{ab}
+				+ \tilde{C}_{\vec{R}} \LegoSphere{\vec{R}}_{ab});
 \label{eq:dimensionless potential}
 \end{align}
 and Newton's 3rd law means $\tilde{V}=\tilde{V}\transpose$.
 
-According to \Ref{Korber:2019cuq} the continuum tuning is given by
+According to \Ref{Korber:2019cuq} the tuning is given by
 \begin{align}
 	\tilde{C}_0 = gM &= - \frac{2\pi}{\log\left(\tilde{a} N_x\right) - \frac{2}{\pi}G}
 	\label{eq:tuning}
