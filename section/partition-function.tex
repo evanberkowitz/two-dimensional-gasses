@@ -710,3 +710,48 @@ Then, the partition function
 \end{align}
 which counts all the possible states, and is what you expect from a direct evaluation of $\lim_{\beta\goesto0}\tr{e^{-\beta H}}$.
 The simplicity of this limit can provide a good sanity check.
+
+\subsection{Hamiltonian, Continuum, Infinite-Volume, and Zero-Temperature Limits}
+
+We might like to think about fixing physical parameters $M$, $a$, $L$, $\beta$, $\mu$, and $\vec{h}$, though we perform simulations with $N_x$ sites with
+\begin{align}
+    \tilde{a} &= \frac{2\pi a}{N_x \Delta x} = \frac{2\pi a}{L}
+    &
+    \tilde{\beta} &= \frac{\beta}{M \Delta x^2} = \frac{\beta}{ML^2} N_x^2
+    \nonumber\\
+    \tilde{\mu} &= \mu M \Delta x^2 = \mu ML^2 N_x^{-2}
+    &
+    \tilde{\vec{h}} &= \vec{h} M \Delta x^2 = \vec{h} ML^2 N_x^{-2}
+    \\\nonumber
+    \tilde{C}_0 &
+        = - \frac{2\pi}{\log \frac{2\pi a}{\Delta x} - \frac{2}{\pi} G}
+        = - \frac{2\pi}{\log (\tilde{a} N_x) - \frac{2}{\pi} G}
+    &
+    (\Delta x &= L/N_x)
+\end{align}
+and $N_t$ timeslices discretizing $\Delta\tilde{t} = \tilde{\beta}/N_t$.
+For all quantities above we write, when possible, expressions that make it clear how the continuum limit and infinite lattice limits are taken.
+
+The \emph{Hamiltonian limit} is the limit in which $N_t\goesto\infty$ holding $\tilde{a}$, $\tilde{\beta}$, $\tilde{\mu}$, and $\tilde{h}$ fixed, so that the Trotterization error disappears.
+From our careful tracking of the Trotterization \eqref{trotterization} things should go to their time-continuum values with $\Delta{\tilde{t}}^2 \sim N_t^{-2}$.
+This limit is particularly easy to understand as none of the above dimensionless simulation parameters depend on $N_t$; it should be taken first.
+
+Other limits are a bit more delicate, as the dimensionless simulation parameters required may vary with $N_x$ or $\Delta x$.
+To simplify the other limits of interest we trade $\mu$ and $\vec{h}$ for fugacities $z$ and $\vec{z}_h$,
+\begin{align}
+    \log z &= \beta \mu = \tilde{\beta} \tilde{\mu} = \log \tilde{z}
+    &
+    \widevec{\log z_h} &= \beta \vec{h} = \tilde{\beta}\tilde{\vec{h}} = \widevec{\log \tilde{z}_h}
+\end{align}
+(the vector goes outside of the log to indicate how rotational transformations act).
+What's nice about $\log \tilde{z}$ and $\log \tilde{z}_h$ is that they take the same values no matter $L$ or $N_x$; they're intrinsic, dimensionless, and scale-independent, free from $N_x$ or $\Delta x$.
+
+The \emph{infinite lattice limit} holds $\Delta x$ fixed and sends $L$ and $N_x$ to infinity with $L/N_x = \Delta x$ fixed, a sort of infinite volume limit; imagine a very large square crystal.
+While $\tilde{a}$ goes to 0, $\tilde{C}_0$ remains fixed.
+Dimensionless $\tilde{\beta}$, $\log \tilde{z}$, $\widevec{\log \tilde{z}_h}$, \emph{all} stay fixed: all that changes is $N_x$.
+
+The \emph{continuum limit} holds $a$, $L$, $\beta$, $\mu$, and $\vec{h}$ fixed and sends $N_x \goesto \infty$ as $\Delta x\goesto 0$ so that $L=N_x \Delta x$ is fixed.
+Since $\tilde{a}$ is fixed but $N_x$ increases, $\tilde{C}_0$ decreases.
+The continuum limit holds $\tilde{a}$, $\log \tilde{z}$ and $\widevec{\log \tilde{z}_h}$ fixed while scaling $\tilde{\beta}$ with $N_x^2$ and decreasing $\tilde{C}_0$.
+
+The \emph{zero temperature} and \emph{infinite volume} limits are tricky to disentangle.
