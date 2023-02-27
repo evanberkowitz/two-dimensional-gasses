@@ -87,7 +87,7 @@ class ScatterMatrix:
             kwargs:
                 Currently ignored.
         '''
-        d = tuple(d.clone().detach().numpy() if isinstance(d, torch.Tensor) else d for d in data)
+        d = tuple(d.clone().detach().cpu().numpy() if isinstance(d, torch.Tensor) else d for d in data)
         for ((i, y), (j, x)) in product(enumerate(d), enumerate(d)):
             if i != j:
                 self.grid[i,j].scatter(x,y,
@@ -181,7 +181,7 @@ class ScatterTriangle:
             kwargs:
                 Currently ignored.
         '''
-        d = tuple(d.clone().detach().numpy() if isinstance(d, torch.Tensor) else d for d in data)
+        d = tuple(d.clone().detach().cpu().numpy() if isinstance(d, torch.Tensor) else d for d in data)
         for ((i, y), (j, x)) in product(enumerate(d), enumerate(d)):
             if j > i:
                 continue
