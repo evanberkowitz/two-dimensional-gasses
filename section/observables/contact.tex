@@ -4,7 +4,7 @@ The contact is given by~\cite{PhysRevA.86.013626}
 \begin{align}
 	\hat{C} &= \frac{2 \pi M}{\hbar^2} \frac{dH}{d\log a}
 	&
-	\hat{C}\Delta x^2 &= 2\pi \frac{d\tilde{H}}{d\log a} 
+	\hat{C}L^2 &= 2\pi \frac{d\tilde{H}}{d\log a} 
 	\label{eq:contact}
 \end{align}
 \Refs{Froehlich2011,PhysRevLett.109.130403} report a measurement of the contact.
@@ -15,25 +15,30 @@ I can't make heads or tails of the method; \Ref{doi:10.1063/1.443766} claims the
 
 We can use the chain rule to further expand the operator,
 \begin{align}
-    \hat{C}\Delta x^2 = 2\pi \frac{d\tilde{H}}{d C_R} \frac{d C_R}{d\log a} 
+    \hat{C}L^2 = 2\pi \frac{d\tilde{H}}{d C_R} \frac{d C_R}{d\log a} 
 \end{align}
 where the Wilson coefficients $C_R$ are those of the $A_1$ Lego sphere with radius $R$ described in \secref{Lego spheres}.
 The derivative of the coefficients is accessible from the tuning to the ERE; for details see the code \sourcefile{tdg/tuning.py}.
 So, the expectation value of the contact is
 \begin{align}
-    \expectation{\hat{C} \Delta x^2}
-    = 2 \pi \frac{d C_R}{d\log a} \tr{e^{-\beta H} \left(\frac{d\tilde{H}}{d C_R} = \half \LegoSphere{R}_{ab} (\tilde{n}_a \tilde{n}_b - \tilde{n}_a \delta_{ab}) \right)}
+    \expectation{\hat{C} L^2}
+    = 2 \pi \frac{d C_R}{d\log a} \tr{e^{-\beta H} \left(\frac{d\tilde{H}}{d C_R} = \half \Volume \LegoSphere{R}_{ab} (\tilde{n}_a \tilde{n}_b - \tilde{n}_a \delta_{ab}) \right)}
     \label{eq:contact generic}
 \end{align}
 where the regrouping of the contact interaction into the bilinear term yields the last piece.
 Following the same derivation as the double occupancy \eqref{double occupancy} one finds that the same-site terms conspire to yield
 \begin{align}
-    \expectation{\hat{C} \Delta x^2}
-    &= 2 \pi \frac{d C_R}{d\log a} \LegoSphere{R}_{ab} \half\expectation{\tr{(\one + \UU)\inverse \UU \PP_a}\tr{(\one + \UU)\inverse \UU \PP_b} - \tr{(\one+\UU)\inverse \UU \PP_a (\one+\UU)\inverse \UU \PP_b}}
+    \expectation{\hat{C} L^2}
+    &= 2 \pi \Volume \frac{d C_R}{d\log a} \LegoSphere{R}_{ab} \half\expectation{\tr{(\one + \UU)\inverse \UU \PP_a}\tr{(\one + \UU)\inverse \UU \PP_b} - \tr{(\one+\UU)\inverse \UU \PP_a (\one+\UU)\inverse \UU \PP_b}}
     \nonumber\\
-    &= \pi \expectation{\sum_{Rabst} \frac{d C_R}{d\log a} \LegoSphere{R}_{ab} \left\{[(\one+\UU)\inverse \UU]^{ss}_{aa} [(\one+\UU)\inverse \UU]^{tt}_{bb} - [(\one+\UU)\inverse \UU]^{st}_{ba} [(\one+\UU)\inverse \UU]^{ts}_{ab} \right\}}
+    &= \pi\Volume \expectation{\sum_{Rabst} \frac{d C_R}{d\log a} \LegoSphere{R}_{ab} \left\{[(\one+\UU)\inverse \UU]^{ss}_{aa} [(\one+\UU)\inverse \UU]^{tt}_{bb} - [(\one+\UU)\inverse \UU]^{st}_{ba} [(\one+\UU)\inverse \UU]^{ts}_{ab} \right\}}
 \end{align}
 which, in index notation, is easily programmable.
+We can also divide both sides by $\Volume$ to find
+\begin{align}
+    \expectation{\hat{C} \Delta x^2}
+    &= \pi \expectation{\sum_{Rabst} \frac{d C_R}{d\log a} \LegoSphere{R}_{ab} \left\{[(\one+\UU)\inverse \UU]^{ss}_{aa} [(\one+\UU)\inverse \UU]^{tt}_{bb} - [(\one+\UU)\inverse \UU]^{st}_{ba} [(\one+\UU)\inverse \UU]^{ts}_{ab} \right\}}
+\end{align}
 In the case when only the $R=0$ sphere is included,
 \begin{align}
     \expectation{\hat{C} \Delta x^2}
