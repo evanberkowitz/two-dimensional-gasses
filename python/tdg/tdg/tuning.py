@@ -93,7 +93,6 @@ class Tuning(H5able):
         # Caution: computationally intensive!
         # This solves an "inverse problem".
         return self.ere.target_energies(
-                self.Lattice,
                 len(self.ere.parameters),
                 zeta=self.zeta,
                 lr=1e-4, epochs=100000,
@@ -210,18 +209,18 @@ class Tuning(H5able):
     #
     # The finite-volume quantization condition passes through an intermediate quantity
     #
-    #   x = nx^2 E / (2π)^2
+    #   x = E / (2π)^2
     #
     @cached_property
     def _x(self):
-        return (self.Lattice.nx/(2*torch.pi))**2 * self._eigenenergies
+        return self._eigenenergies / (2*torch.pi)**2
     #
     # which corresponds to a simple numerical factor in the chain rule
     #
     @cached_property
     def _dE_dx(self):
         # just a number
-        return (2*torch.pi / self.Lattice.nx)**2
+        return (2*torch.pi)**2
     #
     # leaving us to calculate dx/dERE, which is nontrivial.
     #

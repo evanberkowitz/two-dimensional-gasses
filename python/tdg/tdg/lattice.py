@@ -383,7 +383,7 @@ class Lattice(H5able):
         '''
         # Makes an assumption that nx = ny
 
-        # We know kappa_ab = 1/V Σ(k) (2πk)^2/2V exp( -2πik•(a-b)/Nx )
+        # We know kappa_ab = Σ(k) (2πk)^2/2V exp( -2πik•(a-b)/Nx )
         # where a are spatial coordinates
         a = self.coordinates +0j # cast to complex for einsum
         # and k are also integer doublets;
@@ -393,19 +393,19 @@ class Lattice(H5able):
         U = torch.exp(torch.einsum('ax,kx->ak', a, p)) / np.sqrt(self.sites)
 
         # we can write isolate the eigenvalues
-        #   kappa_kq = δ_kq ( 2π k / Nx )^2 / 2
-        eigenvalues = ((2*torch.pi)**2 / self.sites) * self.ksq.flatten() / 2
+        #   kappa_kq = δ_kq ( 2π k )^2 / 2
+        eigenvalues = ((2*torch.pi)**2 ) * self.ksq.flatten() / 2
 
         # via the unitary transformation
         # kappa_ab = Σ(kq) U_ak kappa_kq U*_qb
-        #          = Σ(k)  U_ak [(2πk/Nx)^2/2] U_kb
+        #          = Σ(k)  U_ak [(2πk)^2/2] U_kb
         return torch.einsum('ak,k,kb->ab', U, eigenvalues, U.conj().transpose(0,1))
         #
         # Can be checked by eg.
         # ```
         # lattice = tdg.Lattice(11)
         # left = torch.linalg.eigvalsh(lattice.kappa).sort().values 
-        # right = torch.tensor(4*np.pi**2 * lattice.ksq.ravel() / lattice.sites / 2).sort().values
+        # right = torch.tensor(4*np.pi**2 * lattice.ksq.ravel() / 2).sort().values
         # (torch.abs(left-right) < 1e-6).all()
         # ```
 

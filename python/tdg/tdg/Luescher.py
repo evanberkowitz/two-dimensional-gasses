@@ -74,13 +74,13 @@ class Zeta2D(H5able):
         Returns
         -------
         torch.tensor:
-            :math:`S(x)`.  :math:`x = E N_x^2 / (2\pi)^2` where :math:`E` is the dimensionless energy of the dimensionless two-body Schrödinger equation :math:`S(x)` goes into the Lüscher quantization condition.
+            :math:`S(x)`.  :math:`x = E / (2\pi)^2` where :math:`E` is the dimensionless energy of the dimensionless two-body Schrödinger equation :math:`S(x)` goes into the Lüscher quantization condition.
         '''
         # This computes S(x) which satisfies the finite-volume formula
         #
         #   cot δ(p) - 2/π log√x = S(x) / π^2
         #
-        # when x = (pL/2π)^2 = E N^2 / (2π)^2
+        # when x = (pL/2π)^2 = E / (2π)^2
         # and E is the dimensionless energy of the dimensionless two-body Schrödinger equation.
 
         # TODO: there must be a smarter torch way to do this?

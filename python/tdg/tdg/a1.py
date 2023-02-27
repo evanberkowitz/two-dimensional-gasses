@@ -24,7 +24,7 @@ class ReducedTwoBodyA1Hamiltonian(H5able):
             +   V_{0,r} \left|0,r\right\rangle
         \end{align}
 
-    and the potential :math:`V = \sum_{\vec{R}} C_{\vec{R}}\mathcal{S}^{\vec{R}}` is a sum of LegoSpheres.
+    and the potential :math:`V = N_x^2 \sum_{\vec{R}} C_{\vec{R}}\mathcal{S}^{\vec{R}}` is a sum of LegoSpheres.
 
     The primary purpose of studying this two-body sector is to *tune* the Wilson coefficients :math:`C_{\vec{R}}` to produce a spectrum with desired features.
     If we match the two-body sector to the desired two-body scattering amplitudes (via the effective range expansion), we can take the resulting Wilson coefficients
@@ -142,9 +142,9 @@ class ReducedTwoBodyA1Hamiltonian(H5able):
         r'''
         A diagonal matrix which implements the kinetic energy in the :math:`A_1`-projected momentum basis ``states``.
         '''
-        # A diagonal matrix with entries = 2 (reduced mass) * 1/2 * (2π/nx)^2 * n^2
+        # A diagonal matrix with entries = 2 (reduced mass) * 1/2 * (2π)^2 * n^2
         # Don't bother computing 2 * 1/2 = 1.
-        return torch.diag((2*torch.pi/self.Lattice.nx)**2 * torch.einsum('np,np->n', self.states+0., self.states+0.))
+        return torch.diag((2*torch.pi)**2 * torch.einsum('np,np->n', self.states+0., self.states+0.))
         # See above re +0.
 
     def potential(self, C):
@@ -157,12 +157,12 @@ class ReducedTwoBodyA1Hamiltonian(H5able):
         Returns
         -------
             torch.tensor
-                A dense matrix, the sum of :math:`\sum_{\vec{R}} C_{\vec{R}} \mathcal{S}^{\vec{R}}`
+                A dense matrix, the sum of :math:`N_x^2 \sum_{\vec{R}} C_{\vec{R}} \mathcal{S}^{\vec{R}}`
         '''
 
         V = torch.zeros_like(self.spherical_operators[0])
         for c, o in zip(C, self.spherical_operators):
-            V += c * o
+            V += (self.Lattice.sites * c) * o
         return V
 
     def operator(self, C):

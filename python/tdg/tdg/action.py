@@ -69,11 +69,11 @@ class Action(H5able):
 
         # Recall that requiring the contact interaction
         # be written as the quadratic nVn induces a term in the Hamiltonian
-        # proportional to n itself; a chemical potential equal to - C0/2.
+        # proportional to n itself; a chemical potential equal to - volume * C0/2.
         #
         # Since we work with H-µN-hS this ADDS to the physical chemical potential.
         self.fermion = fermion
-        self.FermionMatrix = fermion(self.Spacetime, self.beta, mu=self.mu + potential.C0/2, h=self.h)
+        self.FermionMatrix = fermion(self.Spacetime, self.beta, mu=self.mu + self.Spacetime.Lattice.sites * potential.C0/2, h=self.h)
         r'''The fermion matrix that gives the discretization.
 
         .. note::
@@ -81,10 +81,10 @@ class Action(H5able):
 
             Recall that requiring the contact interaction be written as the quadratic :math:`nVn` induces
             a term in the Hamiltonian proportional to :math:`n` itself, which looks just like a chemical potential term.
-            This term comes with a coefficient equal to :math:`-C_0/2`.
+            This term comes with a coefficient equal to :math:`-N_x^2 C_0/2`.
 
             Our sign convention is that the free energy is :math:`H-\mu N - h\cdot S` so the the signs conspire.
-            The fermion matrix is constructed with the 'offset' chemical potential :math:`\mu + C_0/2`.
+            The fermion matrix is constructed with the 'offset' chemical potential :math:`\mu + N_x^2 C_0/2`.
         '''
 
         self.normalizing_offset = self.Spacetime.nt / 2 * torch.sum( torch.log(-2*torch.pi*self.dt * self.Potential.eigvals(self.Spacetime.Lattice)))
