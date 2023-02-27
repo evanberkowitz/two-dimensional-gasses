@@ -223,7 +223,7 @@ Of course: the kinetic energy is just the sum of the kinetic energy of each part
 
 Finally, we evaluate the (dimensionless) two-body potential energy; the remaining piece of the dimensionless Hamiltonian \eqref{dimensionless hamiltonian}
 \begin{align}
-    \tilde{V}_{a'b';ab}
+    \tilde{V}_{a'b';ab}/\Volume
     =& \matrixElement{a',b'}{
         -\sum_{cd} \tilde{\psi}\adjoint_c
             \frac{\tilde{C}_0}{2} \delta_{cd}
@@ -273,7 +273,7 @@ Finally, we evaluate the (dimensionless) two-body potential energy; the remainin
 \end{align}
 where the repeated indices on the Lego spheres are unsummed.  Since the spheres are symmetric, we can cancel the $\half$ and write
 \begin{align}
-    \tilde{V}_{a'b';ab}
+    \tilde{V}_{a'b';ab}/\Volume
     =&
     \delta_{a'a}\delta_{b'b} \left(
     + \tilde{C}_R \LegoSphere{R}_{aa} + \tilde{C}_R \LegoSphere{R}_{ab}
@@ -284,7 +284,7 @@ Note that $\LegoSphere{R}_{aa} = 0$ unless $R=0$.
 So, if the on-site interaction is included $\tilde{C}_0\neq 0$ the subtracted piece exactly cancels the first term, while if no on-site interaction is included $\tilde{C}_0=0$ the subtracted piece vanishes, but so does the first piece, independently.
 Therefore
 \begin{align}
-    \tilde{V}_{a'b';ab} = \delta_{a'a} \delta_{b'b} \; \tilde{C}_R \LegoSphere{R}_{ab},
+    \tilde{V}_{a'b';ab} = \Volume \delta_{a'a} \delta_{b'b} \; \tilde{C}_R \LegoSphere{R}_{ab},
     \label{eq:two-body potential energy}
 \end{align}
 the obvious answer.
