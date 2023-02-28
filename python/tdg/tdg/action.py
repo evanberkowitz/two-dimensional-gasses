@@ -43,19 +43,19 @@ class Action(H5able):
 
     def __init__(self, spacetime, potential, beta, mu=torch.tensor(0, dtype=torch.float), h=torch.tensor([0,0,0], dtype=torch.float), fermion=FermionMatrix):
         self.Spacetime = spacetime
-        r'''The spacetime on which the action is formulated.'''
+        r'''The :class:`~.Spacetime` on which the action is formulated.'''
         self.Potential = potential
-        r'''The potential :math:`V` with which the fermions interact.'''
+        r'''The :class:`~.Potential` :math:`V` with which the fermions interact.'''
 
         self.beta = beta
-        r''' The inverse temperature :math:`\beta`.'''
+        r''' The dimensionless inverse temperature :math:`\tilde{\beta} = \beta/ML^2`.'''
         self.dt = beta / self.Spacetime.nt
-        r''' The temporal discretization :math:`dt = \beta / N_t`.'''
+        r''' The temporal discretization :math:`dt = \texttt{beta} / N_t`.'''
 
         self.mu = mu
-        r''' The chemical potential :math:`\mu`.'''
+        r''' The chemical potential :math:`\tilde{\mu} = \mu ML^2`.'''
         self.h  = h
-        r''' The spin chemical potential :math:`\vec{h}`.'''
+        r''' The spin chemical potential :math:`\tilde{\vec{h}} = \vec{h} ML^2`.'''
         self.absh = torch.sqrt(torch.einsum('i,i->', self.h, self.h))
         if self.absh == 0.:
             self.hhat = torch.tensor([0,0,1.])
@@ -63,9 +63,9 @@ class Action(H5able):
             self.hhat = self.h / self.absh
 
         self.V = self.Potential.spatial(self.Spacetime.Lattice)
-        r'''The spatial representation of ``Potential`` on the ``Spacetime.Lattice``'''
+        r'''The spatial representation of :attr:`Potential` on the ``Spacetime.Lattice``'''
         self.Vinverse = self.Potential.inverse(self.Spacetime.Lattice)
-        r'''The inverse of ``Potential`` on the ``Spacetime.Lattice``'''
+        r'''The inverse of :attr:`Potential` on the ``Spacetime.Lattice``'''
 
         # Recall that requiring the contact interaction
         # be written as the quadratic nVn induces a term in the Hamiltonian
@@ -157,7 +157,7 @@ class Action(H5able):
         Provides sample auxiliary fields drawn from the gaussian
 
         .. math::
-            p(A) \propto \exp\left( - \frac{1}{2} \sum_t A_t (-\Delta t V)^{-1} A \right)
+            p(A) \propto \exp\left( - \frac{1}{2} \sum_t A_t (-\Delta t V)^{-1} A_t \right)
 
         Parameters
         ----------

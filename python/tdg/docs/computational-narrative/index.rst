@@ -6,7 +6,6 @@ Computational Narrative
 
    setup
    tuning
-   many-body
    grand-canonical
    monte-carlo
    observables
