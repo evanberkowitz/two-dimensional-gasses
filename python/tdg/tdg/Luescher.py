@@ -48,6 +48,8 @@ class Zeta2D(H5able):
         # A naive method quadratic in N that finds all the poles and their multiplicities.
         # Mathematica seems to have a more direct method called SquaresR.
         # I'm not sure how much number theory is required for a faster implementation.
+        # A004018 https://oeis.org/A004018 is almost what is needed; but it counts for radii
+        # rather than for orbits.
 
         # Here are all possible combinations of squares.
         points = torch.tensor([[i+j for i in squares] for j in squares])
