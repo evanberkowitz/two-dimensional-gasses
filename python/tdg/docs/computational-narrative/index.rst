@@ -7,6 +7,7 @@ Computational Narrative
    setup
    tuning
    grand-canonical
+   canonical-projection
    monte-carlo
    observables
    D4

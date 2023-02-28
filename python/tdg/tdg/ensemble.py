@@ -208,6 +208,10 @@ class Canonical(H5able):
         \end{align}
     
     where the subscripted expectation values are canonical, the unsubscripted ones are grand-canonical, and :math:`P` operators are projectors of the respective quantum number to the subscript's value.
+
+    Note that the chemical potential :math:`\mu` and external field :math:`\vec{h}` do not in principle alter canonical expectation values.
+    However, in practice, if the grand canonical ensemble being projected has a expectation values very different from the sectors of interest you may encounter a numerical overlap problem, where the denominator is very small and noisy.
+    In that sense, well-chosen :math:`\mu` and :math:`\vec{h}` can provide numerical stabilization.
     '''
     def __init__(self, grandCanonical):
         self.GrandCanonical = grandCanonical
@@ -261,7 +265,9 @@ class Canonical(H5able):
         Parameters
         ----------
             Particles: int or None
+                The baryon number :math:`N`.
             Spin: half-integer or None
+                The spin projection :math:`S_h` along the GrandCanonical :attr:`Action.h` (or :math:`\hat{z}` if :math:`\vec{h}=0`).
 
         Returns
         -------
@@ -419,7 +425,7 @@ class Sector(H5able):
     @cached_property
     def weight(self):
         r'''
-        The operator :math:`\mathbb{P}` evaluated on each configuration.  The exepectation
+        The projection operator :math:`\mathbb{P}` evaluated on each configuration.  The exepectation
         value goes downstairs in the grand-canonical formulation of the :class:`~.Canonical` expectation value.
 
         If you wish to perform a resampling analysis (like bootstrap or jackknife) these must
