@@ -36,6 +36,14 @@ if __name__ == '__main__':
     parser.add_argument('--threshold', type=float, default=small)
     args = parser.parse_args()
 
-    do, DO = beta0doubleOccupancy(tdg.Lattice(args.nx), args.nt, args.C0, args.beta)
+    import logging
+    logger = logging.getLogger(__name__)
+
+    do, DO = beta0doubleOccupancy(tdg.Lattice(args.nx), args.nt, args.C0, args.beta / args.nx**2)
+    logger.debug(f'nx={args.nx}')
+    logger.debug(f'{DO=}')
+    logger.debug(f'DO / site = {DO / args.nx**2}')
+    logger.debug(f'difference = {DO / args.nx**2 - 0.25}')
+    logger.debug(f'threshold = {args.threshold}')
 
     assert (torch.abs((DO / args.nx**2) - 0.25)) < args.threshold
