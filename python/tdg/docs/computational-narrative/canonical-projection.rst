@@ -16,7 +16,7 @@ A :class:`~.Sector` is a choice of for the conserved quantities; one may constru
 .. warning::
    Canonical projection is *very* expensive.
    In addition to the normal measurement cost, the cost scales with an *extra* factor the spatial volume for every quantum number projected.
-   Constructing multiple :class:`~.Sector` s from a :class:`~.Canonical` ensemble shares work under the hood and amortizes these costs over the sectors.
+   Constructing multiple :class:`~.Sector`\ s from a :class:`~.Canonical` ensemble shares work under the hood and amortizes these costs over the sectors.
    Accelerated techniques exist :cite:`Gilbreth20151` but are not (yet?) implemented here, and offer better, but still large, costs!
 
 tdg.ensemble.Canonical
