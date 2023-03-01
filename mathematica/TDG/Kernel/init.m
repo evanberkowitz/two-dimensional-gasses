@@ -602,7 +602,7 @@ VisualizeA1[nx_][\[Psi]A1_]:=Graphics[
 
 (* ::Input::Initialization:: *)
 pSquared[nx_]:=(*ComputeOnce[nx]["pSquared"]@*)DiagonalMatrix@Map[Dot[#,#]&,states[nx]]
-T[nx_]:=2(* <-- reduced mass *) 1/2  ((2\[Pi])/nx)^2 pSquared[nx]
+T[nx_]:=2(* <-- reduced mass *) 1/2  ((2\[Pi])/nx)^2 pSquared[nx] nx^2
 
 
 (* ::Title::Closed:: *)
@@ -616,7 +616,7 @@ T[nx_]:=2(* <-- reduced mass *) 1/2  ((2\[Pi])/nx)^2 pSquared[nx]
 Clear[LegoSphereOperatorSlow]
 LegoSphereOperatorSlow[nx_, R_]:=LegoSphereOperatorSlow[nx,R]=With[{\[Psi]=states[nx]},
 	TABLE[
-		1/Sqrt[statesInShell[nx][m]statesInShell[nx][np]] 1/(nx^2 statesInShell[nx][R]) Sum[Exp[2\[Pi] I (gpnp-gn) . hr / nx],{gpnp,shell[m]},{gn,shell[np]}, {hr,shell[R]}],
+		nx^2/Sqrt[statesInShell[nx][m]statesInShell[nx][np]] 1/(nx^2 statesInShell[nx][R]) Sum[Exp[2\[Pi] I (gpnp-gn) . hr / nx],{gpnp,shell[m]},{gn,shell[np]}, {hr,shell[R]}],
 		{m, \[Psi]},{np, \[Psi]}]
 ];
 
@@ -632,7 +632,7 @@ rString[rprime_]:=StringJoin[Riffle[ToString/@Abs[rprime],"-"]]
 LegoSphereOperator[nx_,R_]:=LegoSphereOperator[nx,R]=(*ComputeOnce[nx][rString[R]]@*)With[
 {\[Psi]=states[nx]},
 With[{
-		norm=1/nx^2 Outer[Times,#,#]&@(1/Sqrt[MAP[statesInShell[nx],\[Psi]]]),
+		norm=Outer[Times,#,#]&@(1/Sqrt[MAP[statesInShell[nx],\[Psi]]]),
 		expdot=MAP[Exp[2\[Pi] I shell[#] . R/nx]&,\[Psi]]
 	},
 	norm*TABLE[Total[Outer[Times,m,n],2],{m,expdot},{n,Conjugate[expdot]}]
@@ -730,12 +730,12 @@ LuescherPlot[{min_,max_},OptionsPattern[]]:=Block[{x},Plot[
 (*ere[a_,re2_][x_]:= 2/\[Pi] Log[a Sqrt[x]] + re2 x *)  (* you can add/parameterize higher powers, as long as you wind up with a function of x with a leading log. *)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Match*)
 
 
 LuescherTuningTargetEnergy[nx_,ere_][level_]:=Block[{x},
-	(2\[Pi])^2 x /(nx^2)/.Chop@FindRoot[
+	(2\[Pi])^2 x /.Chop@FindRoot[
 		ere[x]-2/\[Pi] Log[Sqrt[x]]==1/\[Pi]^2 LuescherZeta[x],
 		{x}~Join~LuescherZetaDomainBound[level],
 		MaxIterations->10000

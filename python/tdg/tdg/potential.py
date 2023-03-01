@@ -11,7 +11,10 @@ class Potential(H5able):
     A potential encodes a term in the many-body Hamiltonian like :math:`nVn`, where :math:`n` are number operators and :math:`V` can connect
     different sites.
 
-    A potential is built up from one or more LegoSpheres :math:`\mathcal{S}^{\vec{R}}`, each which carries its own Wilson coefficient :math:`C_\vec{R}`.
+    A potential is built up from one or more LegoSpheres :math:`\mathcal{S}^{\vec{R}}`, each which carries its own Wilson coefficient :math:`C_\vec{R}`,
+
+    .. math::
+        \tilde{V} = N_x^2 \sum_R C_R \mathcal{S}^R
     '''
 
     def __init__(self, *spheres):
@@ -33,9 +36,9 @@ class Potential(H5able):
         Returns
         -------
             torch.tensor:
-                A matrix encoding :math:`V` on the given lattice.  The two axes of the matrix are in the order of `lattice.coordinates`.
+                A matrix encoding :math:`V` on the given lattice.  The two axes of the matrix are in the order of the lattice :attr:`~.Lattice.coordinates`.
         '''
-        return torch.sum(torch.stack([s.spatial(lattice) for s in self.spheres]), axis=0)
+        return lattice.sites * torch.sum(torch.stack([s.spatial(lattice) for s in self.spheres]), axis=0)
 
     @cached
     def inverse(self, lattice):
@@ -47,7 +50,7 @@ class Potential(H5able):
         Returns
         -------
             torch.tensor:
-                The inverse matrix of ``spatial(spatial)``.
+                The inverse matrix of ``spatial(lattice)``.
         '''
         return torch.linalg.inv(self.spatial(lattice))
 

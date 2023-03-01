@@ -43,19 +43,19 @@ class Action(H5able):
 
     def __init__(self, spacetime, potential, beta, mu=torch.tensor(0, dtype=torch.float), h=torch.tensor([0,0,0], dtype=torch.float), fermion=FermionMatrix):
         self.Spacetime = spacetime
-        r'''The spacetime on which the action is formulated.'''
+        r'''The :class:`~.Spacetime` on which the action is formulated.'''
         self.Potential = potential
-        r'''The potential :math:`V` with which the fermions interact.'''
+        r'''The :class:`~.Potential` :math:`V` with which the fermions interact.'''
 
         self.beta = beta
-        r''' The inverse temperature :math:`\beta`.'''
+        r''' The dimensionless inverse temperature :math:`\tilde{\beta} = \beta/ML^2`.'''
         self.dt = beta / self.Spacetime.nt
-        r''' The temporal discretization :math:`dt = \beta / N_t`.'''
+        r''' The temporal discretization :math:`dt = \texttt{beta} / N_t`.'''
 
         self.mu = mu
-        r''' The chemical potential :math:`\mu`.'''
+        r''' The chemical potential :math:`\tilde{\mu} = \mu ML^2`.'''
         self.h  = h
-        r''' The spin chemical potential :math:`\vec{h}`.'''
+        r''' The spin chemical potential :math:`\tilde{\vec{h}} = \vec{h} ML^2`.'''
         self.absh = torch.sqrt(torch.einsum('i,i->', self.h, self.h))
         if self.absh == 0.:
             self.hhat = torch.tensor([0,0,1.])
@@ -63,17 +63,17 @@ class Action(H5able):
             self.hhat = self.h / self.absh
 
         self.V = self.Potential.spatial(self.Spacetime.Lattice)
-        r'''The spatial representation of ``Potential`` on the ``Spacetime.Lattice``'''
+        r'''The spatial representation of :attr:`Potential` on the ``Spacetime.Lattice``'''
         self.Vinverse = self.Potential.inverse(self.Spacetime.Lattice)
-        r'''The inverse of ``Potential`` on the ``Spacetime.Lattice``'''
+        r'''The inverse of :attr:`Potential` on the ``Spacetime.Lattice``'''
 
         # Recall that requiring the contact interaction
         # be written as the quadratic nVn induces a term in the Hamiltonian
-        # proportional to n itself; a chemical potential equal to - C0/2.
+        # proportional to n itself; a chemical potential equal to - volume * C0/2.
         #
         # Since we work with H-µN-hS this ADDS to the physical chemical potential.
         self.fermion = fermion
-        self.FermionMatrix = fermion(self.Spacetime, self.beta, mu=self.mu + potential.C0/2, h=self.h)
+        self.FermionMatrix = fermion(self.Spacetime, self.beta, mu=self.mu + self.Spacetime.Lattice.sites * potential.C0/2, h=self.h)
         r'''The fermion matrix that gives the discretization.
 
         .. note::
@@ -81,10 +81,10 @@ class Action(H5able):
 
             Recall that requiring the contact interaction be written as the quadratic :math:`nVn` induces
             a term in the Hamiltonian proportional to :math:`n` itself, which looks just like a chemical potential term.
-            This term comes with a coefficient equal to :math:`-C_0/2`.
+            This term comes with a coefficient equal to :math:`-N_x^2 C_0/2`.
 
             Our sign convention is that the free energy is :math:`H-\mu N - h\cdot S` so the the signs conspire.
-            The fermion matrix is constructed with the 'offset' chemical potential :math:`\mu + C_0/2`.
+            The fermion matrix is constructed with the 'offset' chemical potential :math:`\mu + N_x^2 C_0/2`.
         '''
 
         self.normalizing_offset = self.Spacetime.nt / 2 * torch.sum( torch.log(-2*torch.pi*self.dt * self.Potential.eigvals(self.Spacetime.Lattice)))
@@ -157,7 +157,7 @@ class Action(H5able):
         Provides sample auxiliary fields drawn from the gaussian
 
         .. math::
-            p(A) \propto \exp\left( - \frac{1}{2} \sum_t A_t (-\Delta t V)^{-1} A \right)
+            p(A) \propto \exp\left( - \frac{1}{2} \sum_t A_t (-\Delta t V)^{-1} A_t \right)
 
         Parameters
         ----------

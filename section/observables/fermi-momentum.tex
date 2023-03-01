@@ -1,0 +1,45 @@
+\subsection{Fermi Momentum and Friends}\label{sec:kF}
+
+The \emph{Fermi momentum} $k_F$ in two spatial dimensions is given by
+\begin{align}
+    k_F^2 = \frac{4\pi}{g} \expectation{n} = 2\pi \frac{N}{L^2}
+    \label{eq:kF}
+\end{align}
+where $g$ is the degeneracy (in our case, $g=2$) \cite{Beane:2022wcn}.
+To avoid requiring $L$ it is common to compute $k_F a$,
+\begin{align}
+    (k_F a)^2 = \oneover{2\pi} N \left(\frac{2\pi a}{L}\right)^2 = \oneover{2\pi} \expectation{N} \tilde{a}^2.
+    \label{eq:kF a}
+\end{align}
+The natural power-counting scheme requires\cite{Beane:2022wcn}
+\begin{align}
+    \alpha = - \oneover{\log k_F a}.
+    \label{eq:alpha}
+\end{align}
+Note that these are \emph{not} observables that make sense configuration-by-configuration, but only as expectation values.
+
+The \emph{Fermi energy} $E_F$ is given by the non-relativistic
+\begin{align}
+    E_F &= \frac{k_F^2}{2M}
+    &
+    ML^2 E_F &= \half (k_F L)^2 = \pi N
+    &
+    ME_F a^2 &= \half (k_F a)^2.
+\end{align}
+The \emph{Fermi temperature} $T_F=E_F$, up to Boltzmann's constant, which we set to 1.
+The dimensionless $T/T_F$ is given by
+\begin{align}
+    \frac{T}{T_F} = \oneover{\beta}\oneover{\frac{k_F^2}{2M}} = \oneover{\frac{\beta}{ML^2}} \oneover{\half (k_F L)^2} = \oneover{\tilde{\beta}} \oneover{\pi N}
+    \label{eq:TF}
+\end{align}
+
+The dimer is bound, even with a repulsive interaction, due to the strong infrared quantum effects~\cite{Beane:2022wcn}.
+The \emph{binding momentum} $\gamma=1/a$; the dimensionless $\gamma/k_F = (k_F a)^{-1}$.
+The \emph{binding energy} \binding
+\begin{align}
+    \binding &= - \oneover{Ma^2}
+    &
+    ML^2 \binding &= - \oneover{\tilde{a}^2}
+    &
+    \binding / E_F &= - \frac{2}{(k_F a)^2}.
+\end{align}

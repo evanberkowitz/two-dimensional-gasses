@@ -99,30 +99,33 @@ If we fix $C$ and $N_x$, it does not matter what actual, physical $\Delta x$ is-
 In those cases, if you change $\Delta x$ while holding $g$ and $N_x$ fixed the spectra do not just perfectly scale.
 The difference is that in $d$ dimensions a contact interaction is like $\Delta x^{-d}$; in 3D this is \emph{more} divergent than the kinetic term, while in 2D it's a perfect match.
 
+However, on physical grounds, it'd be nicer to think about energies free from a UV scale.
+In the continuum limit, for example, $\Delta x\goesto 0$ and so all the eigenvalues of $MH \Delta x^2$ do too.
+Therefore we should multiply by $N_x^2$, and consider $H ML^2$, which knows only IR scales.
 So, we can work with the dimensionless
 \begin{align}
-	\tilde{H} = MH\Delta x^2 &= 
+	\tilde{H} = HML^2 &= 
 		\sum_{ab} \tilde{\psi}\adjoint_a \left(
 			\tilde{\kappa}_{ab}
-			- \frac{\tilde{C}_0}{2} \delta_{ab}
+			- \Volume \frac{\tilde{C}_0}{2} \delta_{ab}
 			\right) \tilde{\psi}_b
 		+ \frac{1}{2} \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b
 \label{eq:dimensionless hamiltonian}
 \\
 	\tilde{\kappa}_{ab} &=
-				\oneover{\Volume} \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
+				\sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(a-b)/N_x} 
 \\
 	\tilde{V}_{ab} &= 
-				gM \LegoSphere{0}_{ab}
-				+ C_{\vec{R}} M \LegoSphere{\vec{R}}_{ab}.
+				\Volume(gM \LegoSphere{0}_{ab}
+				+ C_{\vec{R}} M \LegoSphere{\vec{R}}_{ab})
 				=
-				\tilde{C}_0 \LegoSphere{0}_{ab}
-				+ \tilde{C}_{\vec{R}} \LegoSphere{\vec{R}}_{ab};
+				\Volume(\tilde{C}_0 \LegoSphere{0}_{ab}
+				+ \tilde{C}_{\vec{R}} \LegoSphere{\vec{R}}_{ab});
 \label{eq:dimensionless potential}
 \end{align}
 and Newton's 3rd law means $\tilde{V}=\tilde{V}\transpose$.
 
-According to \Ref{Korber:2019cuq} the continuum tuning is given by
+According to \Ref{Korber:2019cuq} the tuning is given by
 \begin{align}
 	\tilde{C}_0 = gM &= - \frac{2\pi}{\log\left(\tilde{a} N_x\right) - \frac{2}{\pi}G}
 	\label{eq:tuning}
@@ -130,7 +133,7 @@ According to \Ref{Korber:2019cuq} the continuum tuning is given by
 where $\tilde{a}$ is the dimensionless scattering length explained below, and $G=0.9159655941772190\cdots$ is Catalan's constant.
 The conclusion there is that strong coupling is $\tilde{a}\sim 1$.
 But the punchline is that indeed the tuning \emph{also} only depends on dimensionless things.
-So it's really true; our simulations's Hamiltonian can be entirely described in terms of the dimensionless $gM$ and $N_x$ and that is all.
+So it's really true; our simulations's Hamiltonian, appropriately rescaled by $ML^2$, can be entirely described in terms of the dimensionless $gM$ and $N_x$ and that is all.
 
 The tuning \eqref{tuning} is found by doing the `standard' bubble sum in 2 dimensions, but accounting for the cubic shape of the Brilloun zone / cutoff.
 There are momentum-dependent pieces not shown, but they only infect the higher order terms of the effective range expansion.
@@ -169,7 +172,7 @@ The `$S$-wave' is the $A_1$ representation.
 Translationally invariant potentials $\tilde{V}_{ab}$ can be expressed as $\tilde{V}_{a,a+r} = \tilde{V}_{0,r}$  in terms of the relative lattice coordinate $r$.
 We can construct `rotationally'-invariant (meaning: transforms like the $A_1$ representation of $D_4$) interaction potentials $V^R_{0,r}$ out of `Lego spheres' \LegoSphere{R} that are obviously $A_1$ interactions that depend on a `radius' $R$,
 \begin{align}
-	\tilde{V}_{0,r} &= \sum_{R} \tilde{C}_R \LegoSphere{R}_{0,r}
+	\tilde{V}_{0,r} &= \Volume \sum_{R} \tilde{C}_R \LegoSphere{R}_{0,r}
     &
     \LegoSphere{R}_{0,r} &= \oneover{\shell{R}^2}\sum_{g \in D_4} \delta_{r, gR}
     &
@@ -184,8 +187,9 @@ So, we can conventionally pick one representative radius vector with non-decreas
 
 We can therefore write a fully general translationally-invariant $A_1$ potential as
 \begin{align}
-	\tilde{V}_{ab} &= \sum_{R} \tilde{C}_R \LegoSphere{R}_{ab}.
+	\tilde{V}_{ab} &= \Volume \sum_{R} \tilde{C}_R \LegoSphere{R}_{ab}.
 \end{align}
 The simplest choice is $\tilde{C}_{\vec{0}} = gM$ and all other $\tilde{C}_R=0$.
 In 3D we observe that this choice gets linear discretization errors (presumably in this case that means linear in $N_x\inverse$).
 With additional supported Lego spheres presumably this improves.
+Below we will show that the simplest choice gives two-body discretization errors that scale like $N_x^{-2}$, one better than 3D.

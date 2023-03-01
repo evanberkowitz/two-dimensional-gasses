@@ -20,6 +20,18 @@ yields a Hamiltonian
    \end{align}
 
 invariant under scale and nonrelativistic-conformal transformations :cite:`Jackiw:1991je`.
+We can rescale our Hamiltonian by :math:`ML^2`, which removes the dimensions.
+With a lattice regulation, the result is
+
+.. math::
+   \begin{align}
+    \tilde{H}
+    = HML^2
+    = \sum_{ab} \tilde{\psi}^\dagger_a\left(\kappa_{ab} - \mathcal{V} \frac{\tilde{C}_0}{2} \delta_{ab} \right) \tilde{\psi}_b
+    + \frac{1}{2} \sum_{ab} \tilde{n} \tilde{V}_{ab} \tilde{n}_b
+   \end{align}
+
+where :math:`\tilde{\psi} = \psi/\Delta x` so that :math:`\{\tilde{\psi}_{a\sigma}, \tilde{\psi}^\dagger_{b\tau}\} = \delta_{ab}\delta_{\sigma\tau}`, :math:`\kappa` is a lattice dispersion relation we are free to pick so long as it goes to the correct continuum limit, and :math:`\tilde{V}` is a lattice-regularized interaction written as sums of terms, each a :class:`~.LegoSphere` interaction.
 
 The purpose of the tdg library is to compute observables of many-body systems in thermodynamic equilibrium governed by this Hamiltonian.
 We pursue a lattice field theory-like approach, discretizing the two-dimensional space via a regular square lattice with periodic boundary conditions.

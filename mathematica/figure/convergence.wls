@@ -9,7 +9,7 @@ ere = ERE[a,0];
 
 
 e[nx_,ere_,levels_:10]:=e[nx,ere,levels]=LuescherTuningTargetEnergy[nx,ere]/@Range[levels];
-x[nx_,ere_,levels_:10]:=e[nx,ere,levels] nx^2/(2\[Pi])^2;
+x[nx_,ere_,levels_:10]:=e[nx,ere,levels]/(2\[Pi])^2;
 \[Zeta][nx_,ere_,levels_:10]:=1/\[Pi]^2 (LuescherZeta/@x[nx,ere,levels]);
 
 
@@ -21,7 +21,7 @@ tune[nx_,ere_]:=Block[{c0},c0/.FindRoot[
 
 C0[nx_,ere_:ere]:=C0[nx,ere]=tune[nx,ere]
 Energies[nx_,ere_:ere]:=Sort[Eigenvalues[H[nx,<|{0,0}->C0[nx,ere]|>]]]
-X[nx_,ere_:ere]:=Energies[nx,ere] nx^2/(2\[Pi])^2
+X[nx_,ere_:ere]:=Energies[nx,ere]/(2\[Pi])^2
 Z[nx_,ere_:ere]:=(LuescherZeta/@X[nx,ere])/\[Pi]^2
 
 
@@ -70,7 +70,6 @@ reliable = Table[Energies[nx,ere][[;;-2]],{nx,NX}];
 reliable = Map[#[[1;;Min[Length/@reliable]]]&,reliable]\[Transpose];
 
 plotEnergy=Show[
-Plot[min^2 x,{x,0,1/min^2},PlotStyle->{LightGray}],
 ListPlot[
 	Table[{1/NX^2,r/r[[1]]}\[Transpose],{r,reliable}]
 	],

@@ -28,7 +28,10 @@ class Observable:
             cls.name = cls.__name__
         else:
             cls.name = name
-        logger.info(f'Observable registered: {cls.name}')
+        if cls.name[0] == '_':
+            logger.debug(f'Observable registered: {cls.name}')
+        else:
+            logger.info(f'Observable registered: {cls.name}')
         setattr(tdg.ensemble.GrandCanonical, cls.name, cls())
 
     def __set_name__(self, owner, name):
@@ -74,7 +77,10 @@ class CallableObservable:
             cls.name = cls.__name__
         else:
             cls.name = name
-        logger.info(f'Observable registered: {cls.name}')
+        if cls.name[0] == '_':
+            logger.debug(f'Observable registered: {cls.name}')
+        else:
+            logger.info(f'Observable registered: {cls.name}')
         setattr(tdg.ensemble.GrandCanonical, cls.name, cls())
 
     def __set_name__(self, owner, name):

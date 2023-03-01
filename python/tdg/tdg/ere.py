@@ -19,7 +19,7 @@ class EffectiveRangeExpansion(H5able):
     rather than the hard-disk geometric convention of :cite:`Adhikari:1986a,Adhikari:1986b,Khuri:2008ib,Galea:2017jhe`.
 
     Because we are in 2D and there is an inescapable log, it is profitable to convert the momentum dependence into
-    dependence on dimensionless :math:`x=(pL/2\pi)^2 = \tilde{E}N_x^2 / (2\pi)^2`.
+    dependence on dimensionless :math:`x=(pL/2\pi)^2 = \tilde{E} / (2\pi)^2`.
     Then the effective range expansion is
 
     .. math::
@@ -100,7 +100,7 @@ class EffectiveRangeExpansion(H5able):
         '''
         return 2/torch.pi * torch.log(torch.sqrt(x)) + self.analytic(x)
 
-    def target_energies(self, lattice, levels, zeta=Zeta2D(), lr = 0.001, epochs=10000):
+    def target_energies(self, levels, zeta=Zeta2D(), lr = 0.001, epochs=10000):
         r'''
         Given the ERE, we can use the Lüscher quantization condition to find the values of :math:`x`
         that correspond to that ERE.  Then, those :math:`x` can be transformed into dimensionless
@@ -108,8 +108,6 @@ class EffectiveRangeExpansion(H5able):
         
         Parameters
         ----------
-            lattice: tdg.Lattice
-                the lattice
             levels: int
                 how many energies to find
             zeta: callable
@@ -119,7 +117,6 @@ class EffectiveRangeExpansion(H5able):
             epochs: int
                 the number of minimization steps
         '''
-        nx = lattice.nx
         # We need to find x that satisfy
         #     self(x) - 2/π log(√x) == zeta(x) / π^2
         # One way to do that is to simply rearrange to get
@@ -150,7 +147,7 @@ class EffectiveRangeExpansion(H5able):
             optimizer.step()
 
         # and return the energies
-        return (2*torch.pi/nx)**2 * X
+        return (2*torch.pi)**2 * X
 
 def _demo(parameters=None):
     if not parameters:

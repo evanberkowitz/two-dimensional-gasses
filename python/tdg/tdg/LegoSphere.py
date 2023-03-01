@@ -10,7 +10,7 @@ class LegoSphere(H5able):
     .. math::
         \begin{align}
             \tilde{V}_{a,a+r} &= \tilde{V}_{0,r}
-        &   \tilde{V}_{0,r} &= \sum_R \tilde{C}_R \mathcal{S}^R_{0,r}
+        &   \tilde{V}_{0,r} &= \mathcal{V} \sum_R \tilde{C}_R \mathcal{S}^R_{0,r}
         \end{align}
 
     where each LegoSphere :math:`\mathcal{S}` has a radius :math:`R`.

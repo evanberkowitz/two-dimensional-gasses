@@ -4,6 +4,14 @@ from functools import cached_property
 import torch
 from tdg.h5 import H5able
 
+# On adding zero:    +0.
+# While trying to check GPU capability, CUDA 11.7 on JURECA complained about
+# a lack of some long integer einsum routines.
+#
+# In order to promote to an appropriate float type while respecting the user's
+# chosen torch.set_default_tensor_type, simply at 0. (or 0.j if complex numbers
+# are needed).
+
 class ReducedTwoBodyA1Hamiltonian(H5able):
     r'''
     We can project our Hamiltonian to the two-body sector.  If we project to total momentum 0 we need only track the relative coordinate :math:`r`,
@@ -16,7 +24,7 @@ class ReducedTwoBodyA1Hamiltonian(H5able):
             +   V_{0,r} \left|0,r\right\rangle
         \end{align}
 
-    and the potential :math:`V = \sum_{\vec{R}} C_{\vec{R}}\mathcal{S}^{\vec{R}}` is a sum of LegoSpheres.
+    and the potential :math:`V = N_x^2 \sum_{\vec{R}} C_{\vec{R}}\mathcal{S}^{\vec{R}}` is a sum of LegoSpheres.
 
     The primary purpose of studying this two-body sector is to *tune* the Wilson coefficients :math:`C_{\vec{R}}` to produce a spectrum with desired features.
     If we match the two-body sector to the desired two-body scattering amplitudes (via the effective range expansion), we can take the resulting Wilson coefficients
@@ -59,9 +67,10 @@ class ReducedTwoBodyA1Hamiltonian(H5able):
         A list of matrix representations of the LegoSpheres themselves, with no Wilson coefficients.
         '''
 
-        norms = 1/(torch.sqrt(torch.einsum('i,j->ij',self.shellSizes, self.shellSizes))*self.Lattice.nx**2)
+        # See above re +0.
+        norms = 1/(torch.sqrt(torch.einsum('i,j->ij',self.shellSizes+0.j, self.shellSizes+0.j))*self.Lattice.nx**2)
         for sphere in self.LegoSpheres:
-            expdot = [torch.exp(2j*torch.pi/self.Lattice.nx * torch.einsum('sx,x->s',shell,sphere.r)) for shell in self.shells]
+            expdot = [torch.exp(2j*torch.pi/self.Lattice.nx * torch.einsum('sx,x->s',shell+0.,sphere.r+0.)) for shell in self.shells]
             operator = torch.tensor([[torch.sum(torch.outer(m,torch.conj(n))) for n in expdot] for m in expdot])*norms
             self.spherical_operators+=[operator]
 
@@ -133,9 +142,10 @@ class ReducedTwoBodyA1Hamiltonian(H5able):
         r'''
         A diagonal matrix which implements the kinetic energy in the :math:`A_1`-projected momentum basis ``states``.
         '''
-        # A diagonal matrix with entries = 2 (reduced mass) * 1/2 * (2π/nx)^2 * n^2
+        # A diagonal matrix with entries = 2 (reduced mass) * 1/2 * (2π)^2 * n^2
         # Don't bother computing 2 * 1/2 = 1.
-        return torch.diag((2*torch.pi/self.Lattice.nx)**2 * torch.einsum('np,np->n', self.states, self.states))
+        return torch.diag((2*torch.pi)**2 * torch.einsum('np,np->n', self.states+0., self.states+0.))
+        # See above re +0.
 
     def potential(self, C):
         r'''
@@ -147,12 +157,12 @@ class ReducedTwoBodyA1Hamiltonian(H5able):
         Returns
         -------
             torch.tensor
-                A dense matrix, the sum of :math:`\sum_{\vec{R}} C_{\vec{R}} \mathcal{S}^{\vec{R}}`
+                A dense matrix, the sum of :math:`N_x^2 \sum_{\vec{R}} C_{\vec{R}} \mathcal{S}^{\vec{R}}`
         '''
 
         V = torch.zeros_like(self.spherical_operators[0])
         for c, o in zip(C, self.spherical_operators):
-            V += c * o
+            V += (self.Lattice.sites * c) * o
         return V
 
     def operator(self, C):

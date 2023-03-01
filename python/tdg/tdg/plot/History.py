@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import numpy as np
 import torch
 from itertools import product
 
@@ -55,7 +54,7 @@ class History:
                 To reduce the number of points in the temporal history, only plot once per frequency.
         '''
         if isinstance(data, torch.Tensor):
-            d = data.clone().detach().numpy()
+            d = data.clone().detach().cpu().numpy()
         else:
             d = data
         self._plot_history  (d, row=row, x=x, frequency=frequency, **kwargs)
@@ -63,8 +62,8 @@ class History:
         
     def _plot_history(self, data, row=0, x=None, label=None, frequency=1, **kwargs):
         if x is None:
-            x = np.arange(0, len(data), frequency)
-        self.ax[row,0].plot(x[::frequency], data[::frequency], label=label)
+            x = torch.arange(0, len(data), frequency)
+        self.ax[row,0].plot(x[::frequency].cpu(), data[::frequency], label=label)
         
     def _plot_histogram(self, data, row=0, label=None, density=True, alpha=0.5, bins=31, **kwargs):
         self.ax[row,1].hist(

@@ -1,4 +1,7 @@
 import torch
+import functorch
+
+import tdg
 from tdg.observable import observable
 
 import logging
@@ -50,7 +53,7 @@ def _Contact_fermionic(ensemble):
         # This shortcut was implemented and tested AFTER the remaining portion of this routine was,
         # so that what is below was checked to be correct for the on-site interaction.
         logger.info('Calculating the fermionic Contact via the double occupancy.')
-        return 2*torch.pi * ensemble.Action.Tuning.dC_dloga[0] * ensemble.DoubleOccupancy
+        return 2*torch.pi * ensemble.Action.Spacetime.Lattice.sites * ensemble.Action.Tuning.dC_dloga[0] * ensemble.DoubleOccupancy
 
     logger.info('Using the general form of the fermionic Contact.')
 
@@ -72,7 +75,7 @@ def _Contact_fermionic(ensemble):
             UUPlusOneInverseUU,
             UUPlusOneInverseUU,
             )
-    return torch.pi * (first-second)
+    return torch.pi * L.sites * (first-second)
 
 @observable
 def _Contact_bosonic(ensemble):
@@ -90,7 +93,7 @@ def _Contact_bosonic(ensemble):
 @observable
 def Contact(ensemble, method='fermionic'):
     r'''
-    The `contact`, :math:`C\Delta x^2 = 2\pi\frac{d\tilde{H}}{d\log a}`.
+    The `contact`, :math:`C\Delta L^2 = 2\pi\frac{d\tilde{H}}{d\log a}`.
 
     The ``bosonic`` method uses automatic differentiation to compute :math:`dH/dC_R` and the ensemble's :class:`Tuning` to compute :math:`dC_R / d\log a`.
     Just as the `bosonic` method for :func:`~.n` is extremely noisy compared to the ``fermionic`` method, so too is the ``bosonic`` action noisy.
@@ -102,10 +105,15 @@ def Contact(ensemble, method='fermionic'):
     The ``fermionic`` method is much less noisy by comparison, computing tensor contractions.
     In the case where the only :class:`~.LegoSphere` in the interaction is the on-site interaction, the ``fermionic`` method is accelerated by computing the :func:`~.DoubleOccupancy`.
 
+    .. note::
+        The contact :math:`C` is extensive, and :math:`L^2` is extensive, so this observable is *doubly extensive*!
+        You may want to compute something intensive, such as the contact density :math:`c` normalized by :math:`k_F^4` :cite:`Beane:2022wcn`,
+        :math:`c/k_F^4 = \texttt{Contact} / (2\pi \texttt{N})^2`, where this observable is divided by two powers of an extensive observable!
+
     Parameters
     ----------
         method: str
-            The approach for calculating the number densities ``fermionic`` or ``bosonic``.
+            The approach for calculating the contact;``fermionic`` uses direct tensor contractions while ``bosonic`` use automatic differentiation.
 
     Returns
     -------

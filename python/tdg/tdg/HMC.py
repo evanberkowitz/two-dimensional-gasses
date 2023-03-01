@@ -129,6 +129,8 @@ class MarkovChain(H5able):
             torch.tensor:
                 a similar configuration; a new configuration if the proposal was accepted, or the original if the proposal is rejected.
                 
+            jacobian:
+                The Jacobian of the integration.  Currently hard-coded to 1, but may be needed for other integration schemes.
         """
         p_i = self.refresh_momentum().reshape(*x.shape).requires_grad_(True)
         x_i = x.clone().requires_grad_(True)
