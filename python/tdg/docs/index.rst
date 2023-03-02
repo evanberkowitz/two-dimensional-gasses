@@ -43,6 +43,11 @@ Version Information
 License
 =======
 
+.. toctree::
+   contributors
+   license
+
 .. literalinclude:: ../tdg/license.py
    :language: none
-   :lines: 4-22
+   :lines: 4-23
+
