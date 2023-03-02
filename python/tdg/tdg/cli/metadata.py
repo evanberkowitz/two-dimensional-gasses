@@ -34,6 +34,7 @@ def defaults():
     Returns an ``ArgumentParser`` which includes
     
     * ``--version``
+    * ``--copyright``
     * ``--license``
 
     These options print some information about tdg itself and then cause the program to exit.

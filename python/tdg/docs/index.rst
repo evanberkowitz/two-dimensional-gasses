@@ -39,3 +39,10 @@ Version Information
     :commit:
     :uncommitted:
     :untracked:
+
+License
+=======
+
+.. literalinclude:: ../tdg/license.py
+   :language: none
+   :lines: 2-20
