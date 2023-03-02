@@ -1,5 +1,5 @@
 import tdg.meta
-from tdg.license import license
+from tdg.license import copyright, license
 import argparse
 
 # Every metadata flag will print something and then cause the program to exit.
@@ -40,6 +40,7 @@ def defaults():
     '''
     meta_arguments = argparse.ArgumentParser(add_help=False)
     meta_arguments.add_argument('--version', **print_and_exit("the version", tdg.meta.version))
+    meta_arguments.add_argument('--copyright', **print_and_exit("copyright information", copyright))
     meta_arguments.add_argument('--license', **print_and_exit("the license", license))
 
     return meta_arguments
