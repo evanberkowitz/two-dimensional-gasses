@@ -45,4 +45,4 @@ License
 
 .. literalinclude:: ../tdg/license.py
    :language: none
-   :lines: 2-20
+   :lines: 4-22

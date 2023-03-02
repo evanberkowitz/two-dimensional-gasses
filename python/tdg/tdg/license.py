@@ -1,3 +1,5 @@
+# If you edit the copyright information, also edit docs/index.rst
+# so that the literalinclude sees the right lines!
 copyright='''
     tdg
     Copyright (C) 2023
