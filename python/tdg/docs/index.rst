@@ -39,3 +39,15 @@ Version Information
     :commit:
     :uncommitted:
     :untracked:
+
+License
+=======
+
+.. toctree::
+   contributors
+   license
+
+.. literalinclude:: ../tdg/license.py
+   :language: none
+   :lines: 4-23
+
