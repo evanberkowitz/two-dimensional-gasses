@@ -168,6 +168,7 @@ Using the conventions of M\"{u}nster Ch. 4~\cite{munster},
 	&
 		\matrixElement{ \eta_3 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2}}
 		\matrixElement{ \eta_2 }{ e^{ \tilde{\psi}\adjoint (A_{1} + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_1}
+	\label{eq:coherent state trace}
 \end{align}
 where the coherent states
 \begin{equation*}
@@ -264,17 +265,30 @@ Written with the Grassmann fields the action is
 \begin{align}
 	S &= 
 	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
+	+	\sum_{a \alpha t} \eta\adjoint_{\alpha a t} \eta_{\alpha a t}
 +	\sum_{\substack{ab \alpha\alpha' \\ t\text{ even}}} \eta\adjoint_{\alpha a t+1} \BB^{\alpha\alpha'}_{ab} \eta_{\alpha' b t}
 -	\sum_{\substack{ab \alpha\alpha' \\ t\text{ odd}}}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{tab} \eta_{\alpha' b t}
 \nonumber\\
 	&=
 	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
++	\sum_{a \alpha t} \eta\adjoint_{\alpha a t} \eta_{\alpha a t}
 +	\sum_{\substack{ab \alpha \\ t\text{ even}}} \eta\adjoint_{\alpha a t} B_{ab} \eta_{\alpha b t}
 -	\sum_{\substack{a \alpha\alpha' \\ t\text{ odd}}}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{ta} \eta_{\alpha' a t}
+	\label{eq:grassmann action}
 \end{align}
-where we leverage the fact that the hopping in $\BB$ does not mix spins and $\FF$ does not mix sites.
+where we include the gaussian Grassmann contribution from the coherent-state resolution of the identity required for the trace \eqref{coherent state trace} and leverage the fact that the hopping in $\BB$ does not mix spins and $\FF$ does not mix sites.
+Using this action we may write
+\begin{align}
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t}(\tilde{V} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})} }
+	= 
+	\frac{  
+		\int DA\; D\eta\adjoint D\eta\; e^{-S\text{ in \eqref{grassmann action}}}
+	}{ 
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}
+\end{align}
 
-Performing the Grassmannian integration yields a fermion determinant,
+Performing the Grassmannian integration yields a fermion determinant for the Hubbard-Stratonovich trace,
 \begin{align}
 	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}} e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }
 	=
@@ -345,7 +359,7 @@ or in index notation (letting $\delta_{1,N_t+1}=1$)
 \begin{align}
 	\dd_{\alpha a t, \alpha' a' t'} &= (-1)^{[t'=N_t]} [\BB\inverse]^{\alpha\alpha''}_{aa''}\FF_{t' a''a'}^{\alpha''\alpha'} \delta_{t,t'+1} - \delta_{\alpha\alpha'} \delta_{aa'} \delta_{tt'}
 	\\
-	&= (-1)^{[t'=N_t]} [B\inverse]_{aa''}\FF_{t' a''a'}^{\alpha'\alpha'} \delta_{t,t'+1} - \delta_{\alpha\alpha'} \delta_{aa'} \delta_{tt'}
+	&= (-1)^{[t'=N_t]} [B\inverse]_{aa''}\FF_{t' a''a'}^{\alpha\alpha'} \delta_{t,t'+1} - \delta_{\alpha\alpha'} \delta_{aa'} \delta_{tt'}
 \end{align}
 which actually has $\det \DD = \det \dd$ and the way the sausage appears is apparent.
 Using the Shur complement, one has
