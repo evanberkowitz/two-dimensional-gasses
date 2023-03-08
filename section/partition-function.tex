@@ -709,6 +709,53 @@ Finally, note that if we take the inner product of the matrix element \eqref{dFd
 \end{align}
 as expected.
 
+\subsection{Wick's Theorem and Tensor Contractions}\label{sec:contractions}
+
+A common approach for translating operator observables into computational observables is to leverage Wick's theorem.
+For equal-time observables we can introduce an extra, fictitious timeslice into our Trotterization \eqref{trotterization bilinearized} that sources the fermion operators,
+\begin{align}
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }}
+	\goesto
+	\tr{\left(\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }\right) e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}}
+\end{align}
+where $\chi\adjoint$ and $\chi$ are independent Grassmann sources.
+We can functionally differentiate with respect to these sources and finally set them to 0, just as we might with $\delta\tilde{\mu}$.
+
+We can now follow the steps in \secref{fermion matrix} but with an extra set of $\eta$s to resolve this additional `timeslice'.
+\begin{align}
+	\tr{\left(\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }\right) e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}}
+	=& \int \prod_{t=0}^{2N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times
+	\nonumber\\
+	&
+		\matrixElement{ -\eta_0 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2 N_t}}
+		\matrixElement{ \eta_{2 N_t} }{ e^{ \tilde{\psi}\adjoint (A_{N_t} + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi} } }{\eta_{2 N_t-1}} ~ \times
+	\nonumber\\
+	&
+		\cdots
+	\nonumber\\
+	&
+		\matrixElement{ \eta_3 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2}}
+		\matrixElement{ \eta_2 }{ e^{ \tilde{\psi}\adjoint (A_{1} + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_1} \times
+	\nonumber\\
+	&
+		\matrixElement{ \eta_1 }{ e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} }{ \eta_0 }
+\end{align}
+where the measure starts at 0, one extra timeslice compared to the usual trace \eqref{coherent state trace}.
+The new matrix element may be evaluated simply,
+\begin{align}
+	\matrixElement{ \eta_1 }{ e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} }{ \eta_0 }
+	&=
+	\matrixElement{ 0 }{ e^{\eta\adjoint_1 \tilde{\psi}} e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} e^{\tilde{\psi}\adjoint \eta_0}}{ 0 }
+	\nonumber\\
+	&=
+	\matrixElement{ 0 }{ e^{(\eta_1+\chi)\adjoint \tilde{\psi} + \tilde{\psi}\adjoint (\eta_0 \chi)} }{ 0 }
+	=
+	\bracket{\eta_1 + \chi}{\eta_0 + \chi}
+	=
+	e^{(\eta_1+\chi)\adjoint (\eta_0+\chi)}
+\end{align}
+using the coherent state definition \eqref{coherent state} and the inner product given by M\"{u}nster (4.31)~\cite{munster}.
+
 \subsection{The Infinite-Temperature Limit}\label{sec:infinite temperature}
 
 One particularly simple limit is $\beta\goesto0$, where the normalized gaussian in the partition function
