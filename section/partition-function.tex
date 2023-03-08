@@ -264,13 +264,13 @@ Written with the Grassmann fields the action is
 \begin{align}
 	S &= 
 	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
-+	\sum_{ab t \alpha\alpha'} \eta\adjoint_{\alpha a t} \BB^{\alpha\alpha'}_{ab} \eta_{\alpha' b t}
--	\sum_{ab t \alpha\alpha'}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{tab} \eta_{\alpha' b t}
++	\sum_{\substack{ab \alpha\alpha' \\ t\text{ even}}} \eta\adjoint_{\alpha a t+1} \BB^{\alpha\alpha'}_{ab} \eta_{\alpha' b t}
+-	\sum_{\substack{ab \alpha\alpha' \\ t\text{ odd}}}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{tab} \eta_{\alpha' b t}
 \nonumber\\
 	&=
 	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
-+	\sum_{ab t \alpha} \eta\adjoint_{\alpha a t} B_{ab} \eta_{\alpha b t}
--	\sum_{a t \alpha\alpha'}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{ta} \eta_{\alpha' a t}
++	\sum_{\substack{ab \alpha \\ t\text{ even}}} \eta\adjoint_{\alpha a t} B_{ab} \eta_{\alpha b t}
+-	\sum_{\substack{a \alpha\alpha' \\ t\text{ odd}}}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{ta} \eta_{\alpha' a t}
 \end{align}
 where we leverage the fact that the hopping in $\BB$ does not mix spins and $\FF$ does not mix sites.
 
