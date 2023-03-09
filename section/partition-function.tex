@@ -769,6 +769,131 @@ The new matrix element may be evaluated simply,
 \end{align}
 using the coherent state definition \eqref{coherent state} and the inner product given by M\"{u}nster (4.31)~\cite{munster}.
 
+The resulting action is close to the original Grassmann action \eqref{grassmann action}.
+Incorporating the normalizing offset as in \eqref{computational partition function},
+\begin{align}
+	S =&
+	\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
++	\sum_{\substack{a \alpha \\ t \in [0, 2N_t]}} \eta\adjoint_{\alpha a t} \eta_{\alpha a t}
+\nonumber\\
+	&
+-	\sum_{\substack{ab \alpha\alpha' \\ t\text{ even, not 0}}} \eta\adjoint_{\alpha a t+1} (-1)^{[t=2N_t]}\left[\BB\inverse\right]^{\alpha\alpha'}_{ab} \eta_{\alpha' b t}
+-	\sum_{\substack{ab \alpha\alpha' \\ t\text{ odd}}}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{tab} \eta_{\alpha' b t}
+\nonumber\\
+	&
+-	(\eta_1+\chi)\adjoint (\eta_0+\chi)
+	&
+	Z[\chi\adjoint, \chi] = \int DA\; D\eta\adjoint D\eta\; e^{-S}.
+\end{align}
+We can rewrite this action with a fermion matrix with an extra timeslice,
+\begin{align}
+	S =&
+	\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
+	- \chi\adjoint \eta_0 - \eta_1\adjoint \chi - \chi\adjoint\chi
+\nonumber\\
+	&
+	+ \begin{bmatrix} \eta_1 \\ \eta_2 \\ \vdots \\ \eta_{2N_t} \\ \eta_0 \end{bmatrix}^\dagger
+	\left(
+	\MM =
+	\begin{bmatrix}
+		\one	&	&	\cdots	&		&	-\one	\\
+		-\FF_1	&	\one	&	\cdots	&	&	\\
+				&	-\BB\inverse	&	\ddots	&	&	\\
+				&		&	&	\one	&	\\
+				&		&	&	+\BB\inverse	&	\one
+	\end{bmatrix}
+	\right)
+	\begin{bmatrix} \eta_1 \\ \eta_2 \\ \vdots \\ \eta_{2N_t} \\ \eta_0 \end{bmatrix}
+	\nonumber\\
+	&
+\nonumber\\
+	=&
+	\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
+	+ \eta\adjoint \MM \eta
+	- \chi\adjoint \PP_0 \eta - \eta\adjoint \PP_1 \chi - \chi\adjoint\chi
+\end{align}
+where we define this extended fermion matrix $\MM$ and write the $\chi$-sensitive terms as talking to a timeslice projection of the full vector of $\eta$s.
+Now we may complete the square, shifting
+\begin{align}
+	\eta &= \tilde{\eta} + \MM\inverse \PP_1 \chi
+	&
+	\eta\adjoint = \tilde{\eta}\adjoint + \chi\adjoint \PP_0 \MM\inverse
+\end{align}
+which has a Jacobian of 1, so the partition function integrating over all $\eta\adjoint$ and $\eta$ is equally well an integral over all $\tilde{\eta}\adjoint$ and $\tilde{\eta}$, which we immediately rename to be tilde-free.
+This shift was carefully chosen to decouple $\eta$ and $\chi$, 
+\begin{align}
+	S
+	=&
+	\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
+	+ \eta\adjoint \MM \eta
+	- \chi\adjoint \left(\one - \PP_0 \MM\inverse \PP_1\right)\chi
+\end{align}
+so that we may now execute the fermionic gaussian integral to get
+\begin{align}
+	Z[\chi\adjoint, \chi]
+	&=
+	\int DA \det{\MM} \exp\left\{-\left(
+		\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
+		- \chi\adjoint \left(\one - \PP_0 \MM\inverse \PP_1\right)\chi
+	\right)\right\}
+\end{align}
+which, with malice of forethought we could have read from M\"{u}nster (4.24).
+As before \eqref{sausage} we leverage the Schur complement to find $\det{\MM} = \det{\dd} = \det( \one + \UU )$.
+In other words, our computational partition function \eqref{computational partition function} is exactly as before, simply with a $\chi\adjoint(\one - \PP_0 \MM\inverse \PP_1)\chi$ included,
+\begin{align}
+	Z[\chi\adjoint, \chi]
+	&=
+	\int DA\; e^{-S \text{ as in \eqref{computational partition function}}}
+		e^{ \chi\adjoint \left(\one - \PP_0 \MM\inverse \PP_1\right)\chi }.
+\end{align}
+Now we should calculate the rather unfortunate looking $\PP_0 \MM\inverse \PP_1$.
+
+The simplest way is to permute the (block) rows and columns of $\MM$ so that the $\eta$ vector goes $2,\, 3,\, \cdots,\, 2N_t, 0, 1$.
+Then we may repeatedly use the Schur inverse formula
+\begin{align}
+	M
+	&=
+	\begin{pmatrix} A & B \\ C & D \end{pmatrix}
+	&
+	(M/A)
+	&=
+	D-CA\inverse B
+	&
+	M\inverse
+	&=
+	\begin{pmatrix}
+		A\inverse + A\inverse B (M/A)\inverse C A\inverse & - A\inverse B (M/A)\inverse \\
+		- (M/A)\inverse C A\inverse & (M/A)\inverse
+	\end{pmatrix},
+\end{align}
+descending down into the lower right corner (to find the (0,1) block).
+Ultimately, the $2\times2$ block structure in that corner is
+\begin{align}
+	\begin{bmatrix}
+		\one & + \BB\inverse \FF_{N_t} \cdots \BB\inverse \FF_1
+		\\
+		-\one & \one
+	\end{bmatrix}^{-1}
+	&=
+	\begin{bmatrix}
+		\cdot & - \UU (\one + \UU)\inverse \\
+		\cdot & \cdot
+	\end{bmatrix}
+\end{align}
+at which point we need the upper-right block to get $\PP_0 \MM\inverse \PP_1$.
+Remarkably,
+\begin{align}
+	\PP_0 \MM\inverse \PP_1 &= -\UU (\one+\UU)\inverse!
+\end{align}
+Therefore, we find
+\begin{align}
+	Z[\chi\adjoint, \chi]
+	&=
+	\int DA\; e^{-S }
+		e^{ \chi\adjoint \left(\one + \UU (\one+\UU)\inverse\right)\chi }.
+\end{align}
+
+
 \subsection{The Infinite-Temperature Limit}\label{sec:infinite temperature}
 
 One particularly simple limit is $\beta\goesto0$, where the normalized gaussian in the partition function
