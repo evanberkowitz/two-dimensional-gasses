@@ -725,6 +725,7 @@ We add into our Trotterization \eqref{trotterization} a source of fermion number
 		e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}
 	}
 	+ \order{\Delta \tilde{t}^2}.
+	\label{eq:fermionic generating function}
 \end{align}
 which we can functionally differentiate with respect to the Grassmann $\chi\adjoint$ and $\chi $ to pull down fermionic operators, and then set $\chi\adjoint, \chi \goesto 0$, just as we do for the sources $\delta\tilde{\mu}$ \eqref{functionally differentiate} and $\delta \tilde{\vec{h}}$ \eqref{dFdh factor}.
 This introduces an extra fictitious timeslice into our Trotterization \eqref{trotterization bilinearized} that sources the fermion operators,
@@ -893,6 +894,76 @@ Therefore, we find
 		e^{ \chi\adjoint \left(\one + \UU (\one+\UU)\inverse\right)\chi }.
 \end{align}
 
+As a demonstration of how to use this expression, let us now differentiate the fermionic generating function \eqref{fermionic generating function} to try and reproduce the already-known fermionic particle number \eqref{fermionic particle number}.
+As a notational convenience, let
+\begin{align}
+	\partial_x &= \frac{\overleftarrow{\partial}}{\partial \chi_x}
+	&
+	\partial\adjoint_x &= \frac{\partial}{\partial \chi\adjoint_x}
+\end{align}
+where $\partial_x$ acts to the left.
+Then
+\begin{align}
+	\expectation{\tilde{n}_x}
+	=
+	\expectation{\tilde{\psi}\adjoint_x \tilde{\psi}_x}
+	&=
+	\left.\oneover{Z[\chi\adjoint, \chi]} \tr{
+		\left(
+		\prod_{t=1}^{N_t}
+		e^{-\Delta \tilde{t}\tilde{K}}
+		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
+		\right)
+		e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}
+		\tilde{\psi}\adjoint_x \tilde{\psi}_x
+	}\right|_{\chi\adjoint, \chi\goesto 0}
+	\nonumber\\
+	&=
+	\left.\oneover{Z[\chi\adjoint, \chi]} \tr{
+		\left(
+		\prod_{t=1}^{N_t}
+		e^{-\Delta \tilde{t}\tilde{K}}
+		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
+		\right)
+		e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}
+		\left(\delta_{xx} - \tilde{\psi}_x \tilde{\psi}\adjoint_x\right)
+	}\right|_{\chi\adjoint, \chi\goesto 0}
+	\nonumber\\
+	&=
+	\left. \delta_{xx} - \oneover{Z[\chi\adjoint, \chi]} \partial\adjoint_x Z[\chi\adjoint, \chi]\partial_x \right|_{\chi\adjoint, \chi\goesto0}
+\end{align}
+Now we replace $Z$ with the computational generating function,
+\begin{align}
+	\expectation{\tilde{n}_x} - \delta_{xx}
+	&=
+	- \oneover{Z[\chi\adjoint, \chi]} \partial\adjoint_x \left. \left(
+		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one + \UU (\one+\UU)\inverse\right)\chi }
+	\right) \partial_x \right|_{\chi\adjoint, \chi\goesto0}
+	\nonumber\\
+	&=
+	- \oneover{Z[\chi\adjoint, \chi]} \partial\adjoint_x \left.\left(
+		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one + \UU (\one+\UU)\inverse\right)\chi }
+		\chi\adjoint_y (\one + \UU (\one+\UU)\inverse)_{yx}
+	\right) \right|_{\chi\adjoint, \chi\goesto0}
+	\nonumber\\
+	&=
+	- \oneover{Z[\chi\adjoint, \chi]} \Bigg(
+		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one + \UU (\one+\UU)\inverse\right)\chi }
+		\Big[
+			(\one + \UU(\one+\UU)\inverse)_{xz} \chi_z \chi\adjoint_y (\one + \UU (\one+\UU)\inverse)_{yx}
+			\nonumber\\
+			&\hspace{1in}
+			+ (\one + \UU (\one+\UU)\inverse)_{xx}
+		\Big]
+	\Bigg) \Bigg|_{\chi\adjoint, \chi\goesto0}
+	\nonumber\\
+	&=
+	- \oneover{Z} \int DA\; e^{-S }
+		(\one + \UU (\one+\UU)\inverse)_{xx}
+	\nonumber\\
+	\expectation{\tilde{n}_x} &= -\expectation{ \UU (\one+\UU)\inverse}
+\end{align}
+\todo{exactly the OPPOSITE of \eqref{fermionic particle number} :(}.
 
 \subsection{The Infinite-Temperature Limit}\label{sec:infinite temperature}
 
