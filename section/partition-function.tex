@@ -171,9 +171,10 @@ Using the conventions of M\"{u}nster Ch. 4~\cite{munster},
 	\label{eq:coherent state trace}
 \end{align}
 where the coherent states
-\begin{equation*}
+\begin{equation}
 	\ket{\eta_t} = \exp\left( \sum_{\sigma a} \tilde{\psi}^{\dagger}_{\sigma a} \eta_{\sigma a t} \right) \ket{0}
-\end{equation*}
+	\label{eq:coherent state}
+\end{equation}
 are spatial vectors and spin doublets on a single timeslice.
 To proceed we leverage the exponential identity (4.33) of Munster~\cite{munster},
 \begin{equation}
@@ -617,9 +618,10 @@ For example
 	\nonumber\\
 	&=
 	\left.\oneover{Z} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
-	\label{eq:functionally differentiate}\\
+	\nonumber\\
 	&=\oneover{Z} \tr{\left(\prod_{t=1}^{N_t}e^{-\Delta\tilde{t} \tilde{K}} e^{-\Delta\tilde{t}(\tilde{V} -\tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}\right) \tilde{n}_a} 
 	= \expectation{\tilde{n}_a}.
+	\label{eq:functionally differentiate}
 \end{align}
 where in the last line we specialized to differentiating with respect to a fluctuation on timeslice 1; functionally differentiating with respect to a fluctuation on a different timeslice simply inserts $\tilde{n}_a$ in the middle of the Trotterized product but by time translation invariance (or the cyclicity of the trace) we can bring the trace into a similar form with the operator rightmost.
 
