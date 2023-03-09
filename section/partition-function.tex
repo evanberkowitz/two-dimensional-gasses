@@ -714,14 +714,25 @@ as expected.
 \subsection{Wick's Theorem and Tensor Contractions}\label{sec:contractions}
 
 A common approach for translating operator observables into computational observables is to leverage Wick's theorem.
-For equal-time observables we can introduce an extra, fictitious timeslice into our Trotterization \eqref{trotterization bilinearized} that sources the fermion operators,
+We add into our Trotterization \eqref{trotterization} a source of fermion number,
+\begin{align}
+	Z[\chi\adjoint, \chi] = \tr{
+		\left(
+		\prod_{t=1}^{N_t}
+		e^{-\Delta \tilde{t}\tilde{K}}
+		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
+		\right)
+		e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}
+	}
+	+ \order{\Delta \tilde{t}^2}.
+\end{align}
+which we can functionally differentiate with respect to the Grassmann $\chi\adjoint$ and $\chi $ to pull down fermionic operators, and then set $\chi\adjoint, \chi \goesto 0$, just as we do for the sources $\delta\tilde{\mu}$ \eqref{functionally differentiate} and $\delta \tilde{\vec{h}}$ \eqref{dFdh factor}.
+This introduces an extra fictitious timeslice into our Trotterization \eqref{trotterization bilinearized} that sources the fermion operators,
 \begin{align}
 	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }}
 	\goesto
-	\tr{\left(\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }\right) e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}}
+	\tr{\left(\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }\right) e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}}.
 \end{align}
-where $\chi\adjoint$ and $\chi$ are independent Grassmann sources.
-We can functionally differentiate with respect to these sources and finally set them to 0, just as we might with $\delta\tilde{\mu}$.
 
 We can now follow the steps in \secref{fermion matrix} but with an extra set of $\eta$s to resolve this additional `timeslice'.
 \begin{align}
