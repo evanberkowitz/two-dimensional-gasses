@@ -827,15 +827,16 @@ This shift was carefully chosen to decouple $\eta$ and $\chi$,
 	=&
 	\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
 	+ \eta\adjoint \MM \eta
-	- \chi\adjoint \left(\one - \PP_0 \MM\inverse \PP_1\right)\chi
+	- \chi\adjoint \left(\one + \PP_0 \MM\inverse \PP_1\right)\chi;
 \end{align}
+(one positive $\chi\PP_0 \MM\inverse \PP_1 \chi$ comes from the $\eta\adjoint\MM\eta$ term and two negative copies come from the mixed $\eta\adjoint\chi$ and $\chi\adjoint\eta$)
 so that we may now execute the fermionic gaussian integral to get
 \begin{align}
 	Z[\chi\adjoint, \chi]
 	&=
 	\int DA \det{\MM} \exp\left\{-\left(
 		\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
-		- \chi\adjoint \left(\one - \PP_0 \MM\inverse \PP_1\right)\chi
+		- \chi\adjoint \left(\one + \PP_0 \MM\inverse \PP_1\right)\chi
 	\right)\right\}
 \end{align}
 which, with malice of forethought we could have read from M\"{u}nster (4.24).
@@ -845,7 +846,7 @@ In other words, our computational partition function \eqref{computational partit
 	Z[\chi\adjoint, \chi]
 	&=
 	\int DA\; e^{-S \text{ as in \eqref{computational partition function}}}
-		e^{ \chi\adjoint \left(\one - \PP_0 \MM\inverse \PP_1\right)\chi }.
+		e^{ \chi\adjoint \left(\one + \PP_0 \MM\inverse \PP_1\right)\chi }.
 \end{align}
 Now we should calculate the rather unfortunate looking $\PP_0 \MM\inverse \PP_1$.
 
@@ -891,7 +892,7 @@ Therefore, we find
 	Z[\chi\adjoint, \chi]
 	&=
 	\int DA\; e^{-S }
-		e^{ \chi\adjoint \left(\one + \UU (\one+\UU)\inverse\right)\chi }.
+		e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }.
 \end{align}
 
 As a demonstration of how to use this expression, let us now differentiate the fermionic generating function \eqref{fermionic generating function} to try and reproduce the already-known fermionic particle number \eqref{fermionic particle number}.
@@ -937,33 +938,33 @@ Now we replace $Z$ with the computational generating function,
 	\expectation{\tilde{n}_x} - \delta_{xx}
 	&=
 	- \oneover{Z[\chi\adjoint, \chi]} \partial\adjoint_x \left. \left(
-		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one + \UU (\one+\UU)\inverse\right)\chi }
+		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }
 	\right) \partial_x \right|_{\chi\adjoint, \chi\goesto0}
 	\nonumber\\
 	&=
 	- \oneover{Z[\chi\adjoint, \chi]} \partial\adjoint_x \left.\left(
-		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one + \UU (\one+\UU)\inverse\right)\chi }
-		\chi\adjoint_y (\one + \UU (\one+\UU)\inverse)_{yx}
+		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }
+		\chi\adjoint_y (\one - \UU (\one+\UU)\inverse)_{yx}
 	\right) \right|_{\chi\adjoint, \chi\goesto0}
 	\nonumber\\
 	&=
 	- \oneover{Z[\chi\adjoint, \chi]} \Bigg(
-		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one + \UU (\one+\UU)\inverse\right)\chi }
+		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }
 		\Big[
-			(\one + \UU(\one+\UU)\inverse)_{xz} \chi_z \chi\adjoint_y (\one + \UU (\one+\UU)\inverse)_{yx}
+			(\one - \UU(\one+\UU)\inverse)_{xz} \chi_z \chi\adjoint_y (\one - \UU (\one+\UU)\inverse)_{yx}
 			\nonumber\\
 			&\hspace{1in}
-			+ (\one + \UU (\one+\UU)\inverse)_{xx}
+			+ (\one - \UU (\one+\UU)\inverse)_{xx}
 		\Big]
 	\Bigg) \Bigg|_{\chi\adjoint, \chi\goesto0}
 	\nonumber\\
 	&=
 	- \oneover{Z} \int DA\; e^{-S }
-		(\one + \UU (\one+\UU)\inverse)_{xx}
+		(\one - \UU (\one+\UU)\inverse)_{xx}
 	\nonumber\\
-	\expectation{\tilde{n}_x} &= -\expectation{ \UU (\one+\UU)\inverse}
+	\expectation{\tilde{n}_x} &= \expectation{ \UU (\one+\UU)\inverse}
 \end{align}
-\todo{exactly the OPPOSITE of \eqref{fermionic particle number} :(}.
+exactly as before \eqref{fermionic particle number}!
 
 \subsection{The Infinite-Temperature Limit}\label{sec:infinite temperature}
 
