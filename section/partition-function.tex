@@ -969,6 +969,16 @@ Now we replace $Z$ with the computational generating function,
 \end{align}
 exactly as before \eqref{fermionic particle number}!
 
+The generic lesson is that we may perform Wick contractions on normal-ordered operators, replacing
+\begin{align}
+	\contraction{}{\tilde{\psi}\adjoint_{x\sigma}}{}{\tilde{\psi}_{y\tau}}
+	\tilde{\psi}\adjoint_{x\sigma}\tilde{\psi}_{y\tau}
+	\goesto
+	\left[\UU (\one+\UU)\inverse\right]_{xy}^{\sigma\tau}
+\end{align}
+as long as we track the number of minus signs that come from `crossing' in the contraction.
+For an example, see the double occupancy \Secref{double occupancy}.
+
 \subsection{The Infinite-Temperature Limit}\label{sec:infinite temperature}
 
 One particularly simple limit is $\beta\goesto0$, where the normalized gaussian in the partition function

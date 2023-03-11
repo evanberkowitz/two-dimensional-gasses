@@ -62,6 +62,49 @@ We can rewrite these projected traces if we leverage the simple properties of th
 \end{align}
 where $s,t$ are spin indices; this form is easily amenable to programming via \href{https://pytorch.org/docs/stable/generated/torch.einsum.html}{\texttt{einsum}}.
 
+We can also proceed via Wick contractions.
+Start with the operator definition and get it into normal order,
+\begin{align}
+	2\doubleOccupancy = n^2 - n
+	&=
+	\tilde{\psi}\adjoint_{xs}\tilde{\psi}_{xs}
+	\tilde{\psi}\adjoint_{xt}\tilde{\psi}_{xt}
+	-
+	\tilde{\psi}\adjoint_{xs}\tilde{\psi}_{xs}
+	\nonumber\\
+	&=
+	\tilde{\psi}\adjoint_{xs}
+	\left( \delta_{xx}\delta_{st} - \tilde{\psi}\adjoint_{xt}\tilde{\psi}_{xs} \right)
+	\tilde{\psi}_{xt}
+	-
+	\tilde{\psi}\adjoint_{xs}\tilde{\psi}_{xs}
+	\nonumber\\
+	&=
+	-\tilde{\psi}\adjoint_{xs}\tilde{\psi}\adjoint_{xt}\tilde{\psi}_{xs}\tilde{\psi}_{xt}
+	\nonumber\\
+	&=
+	\tilde{\psi}\adjoint_{xt}\tilde{\psi}\adjoint_{xs}\tilde{\psi}_{xs}\tilde{\psi}_{xt}
+\end{align}
+Now we perform Wick contractions,
+\begin{align}
+	2\doubleOccupancy_a &= 
+	\contraction[1em]{}{\tilde{\psi}\adjoint_{at}}{\tilde{\psi}\adjoint_{as}\tilde{\psi}_{as}}{\tilde{\psi}_{at}}
+	\contraction[0.75em]{\tilde{\psi}\adjoint_{at}}{\tilde{\psi}\adjoint_{as}}{}{\tilde{\psi}_{as}}
+	\tilde{\psi}\adjoint_{at}\tilde{\psi}\adjoint_{as}\tilde{\psi}_{as}\tilde{\psi}_{at}
+	+
+	\contraction[1em]{}{\tilde{\psi}\adjoint_{at}}{\tilde{\psi}\adjoint_{as}}{\tilde{\psi}_{as}}
+	\contraction[0.75em]{\tilde{\psi}\adjoint_{at}}{\tilde{\psi}\adjoint_{as}}{\tilde{\psi}_{as}}{\tilde{\psi}_{at}}
+	\tilde{\psi}\adjoint_{at}\tilde{\psi}\adjoint_{as}\tilde{\psi}_{as}\tilde{\psi}_{at}
+	\nonumber\\
+	&=
+	[ \UU (\one+\UU\inverse) ]^{tt}_{aa}
+	[ \UU (\one+\UU\inverse) ]^{ss}_{aa} 
+	-
+	[ \UU (\one+\UU\inverse) ]^{ts}_{aa}
+	[ \UU (\one+\UU\inverse) ]^{st}_{aa} 
+\end{align}
+which matches the other derivation \eqref{double occupancy}.
+The minus sign on the second term comes from the crossing in the second contraction.
 
 \subsubsection{The $\beta\goesto0$ Limit}
 
