@@ -962,7 +962,10 @@ Now we replace $Z$ with the computational generating function,
 	- \oneover{Z} \int DA\; e^{-S }
 		(\one - \UU (\one+\UU)\inverse)_{xx}
 	\nonumber\\
-	\expectation{\tilde{n}_x} &= \expectation{ \left[\UU (\one+\UU)\inverse\right]_{xx}}
+	&=
+	-\expectation{ \delta_{xx} - \left[\UU (\one+\UU)\inverse\right]_{xx}}
+	\nonumber\\
+	\expectation{\tilde{n}_x} &= \expectation{ \left[\UU (\one+\UU)\inverse\right]_{xx}} = \expectation{ \tr{ \left(\UU (\one+\UU)\inverse\right) \PP_x }}
 \end{align}
 exactly as before \eqref{fermionic particle number}!
 
