@@ -1,0 +1,242 @@
+\subsection{Current}\label{sec:current}
+
+Currents describe how quantities flow from place to place.
+When the quantity $q$ is conserved it obeys the \emph{continuity equation},
+\begin{align}
+	\grad \cdot \vec{j} = - \partial_t q.
+	\label{eq:continuity}
+\end{align}
+Integrating over the whole space yields the global current on the left and the temporal change of the global $Q$, which is zero.
+Therefore we expect the spatial sum of the divergence of local currents to be 0.
+
+To find the lattice-native current that satisfies the continuity equation \eqref{continuity} we compute the time derivative of $q$ as a commutator,
+\begin{align}
+	ML^2\grad\cdot\vec{j}_z = -ML^2 \partial_t q_z = -i[ML^2H, q_z].
+\end{align}
+
+Let us first consider the flow of particle number.
+Because the interaction and $g$-dependent bilinear terms depend only on $n$s, which commute, we find
+\begin{align}
+	\grad\cdot\tilde{j}_z = -ML^2 \partial_t \tilde{n}_x = -i[\tilde{H}, \tilde{n}_z]
+	&=
+		-i \left[
+			\sum_{xy} \tilde{\psi}\adjoint_x \tilde{\kappa}_{xy} \tilde{\psi}_y,
+		\tilde{n}_z\right]
+	\nonumber\\
+	&=
+		i \sum_{xy} \tilde{\kappa}_{xy} \left[ \tilde{n}_z, \tilde{\psi}\adjoint_x \tilde{\psi}_y\right]
+	\nonumber\\
+	&=
+		i \sum_{xy} \tilde{\kappa}_{xy} \left(
+			\left[ \tilde{n}_z, \tilde{\psi}\adjoint_x \right]\tilde{\psi}_y
+			+
+			\tilde{\psi}\adjoint_x \left[ \tilde{n}_z, \tilde{\psi}_y\right]
+		\right)
+	\nonumber\\
+	&=
+		i \sum_{xy} \tilde{\kappa}_{xy} \left(
+			+ \delta_{zx} \tilde{\psi}\adjoint_x \tilde{\psi}_y
+			-
+			\tilde{\psi}\adjoint_x \delta_{zy} \tilde{\psi}_y
+		\right)
+	\nonumber\\
+	&=
+		i \sum_{y} \left(
+			\tilde{\psi}\adjoint_z \tilde{\kappa}_{zy} \tilde{\psi}_y
+		-	\tilde{\psi}\adjoint_y \tilde{\kappa}_{yz} \tilde{\psi}_z
+		\right)
+\end{align}
+Expressing $j$ in terms of its Fourier modes,
+\begin{align}
+	\grad\cdot \tilde{j}_z
+	=
+	\grad \cdot \oneover{\Volume}\sum_k \tilde{j}_k e^{+2\pi i k z/N_x}
+	=
+	\oneover{\Volume}\sum_k \tilde{j}_k \cdot \frac{2\pi i k}{N_x} e^{+2\pi i k z/N_x}
+	=
+	\oneover{\Volume}\sum_k \left( \frac{2\pi i k}{N_x} \cdot \tilde{j}_k \right) e^{+2\pi i k z/N_x}.
+	\label{eq:divergence of j}
+\end{align}
+Substituting the dimensionless kinetic matrix \eqref{dimensionless hamiltonian} one finds
+\begin{align}
+	i \sum_{y} \left(
+		\tilde{\psi}\adjoint_z \tilde{\kappa}_{zy} \tilde{\psi}_y
+	-	\tilde{\psi}\adjoint_y \tilde{\kappa}_{yz} \tilde{\psi}_z
+	\right)
+	&=
+	i \sum_{y} \left(
+		\tilde{\psi}\adjoint_z \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(z-y)/N_x} \tilde{\psi}_y
+	-	\tilde{\psi}\adjoint_y \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(y-z)/N_x} \tilde{\psi}_z
+	\right)
+	\nonumber\\
+	&=
+	i \sum_{y} \left(
+		\tilde{\psi}\adjoint_z \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{+2\pi i k \cdot(z-y)/N_x} \tilde{\psi}_y
+	-	\tilde{\psi}\adjoint_y \sum_{k} \frac{(2\pi k)^2}{2 \Volume} e^{-2\pi i k \cdot(y-z)/N_x} \tilde{\psi}_z
+	\right)
+	\nonumber\\
+	&=
+	i\sum_k e^{+2\pi i k z / N_x}\left(
+		\frac{(2\pi k)^2}{2\Volume} \sum_y e^{-2\pi i k \cdot y / N_x} i \left(\tilde{\psi}\adjoint_z \tilde{\psi}_y  - \tilde{\psi}\adjoint_y \tilde{\psi}_z \right)
+	\right)
+	\label{eq:current operator intermediate}
+\end{align}
+where after the first line we send $k\goesto-k$ in the first term.
+Identifying these two results \eqref{divergence of j} and \eqref{current operator intermediate} we find
+\begin{align}
+	\sum_{z} e^{-2\pi i p z / N_x} \oneover{V} \sum_k \left(\frac{2\pi i k}{N_x} \cdot \tilde{j}_k \right) e^{+2\pi i k z / N_x}
+	&=
+	\sum_{z} e^{-2\pi i p z / N_x} i\sum_k e^{+2\pi i k z / N_x} \left(
+		\half \left(\frac{2\pi k}{N_x}\right)^2 \sum_y e^{-2\pi i k \cdot y / N_x} i \left(\tilde{\psi}\adjoint_z \tilde{\psi}_y  - \tilde{\psi}\adjoint_y \tilde{\psi}_z \right)
+	\right)
+	\nonumber\\
+	\oneover{\Volume} \sum_k \left( \frac{2\pi i k}{N_x} \cdot \tilde{j}_k \right) \Volume \delta_{k,p}
+	&=
+	\frac{i}{2}\sum_k
+		\left(\frac{2\pi k}{N_x}\right)^2 \sum_{yz} e^{-2\pi i [k \cdot (y-z) + p \cdot z] / N_x} \left(\tilde{\psi}\adjoint_z \tilde{\psi}_y  - \tilde{\psi}\adjoint_y \tilde{\psi}_z \right)
+	\nonumber\\
+	\frac{2\pi i p}{N_x} \cdot \tilde{j}_p
+	&=
+	\frac{i}{2} \sum_k
+		\left(\frac{2\pi k}{N_x}\right)^2 \sum_{yz} e^{-2\pi i [k \cdot y - (k-p) \cdot z] / N_x} \left(\tilde{\psi}\adjoint_z \tilde{\psi}_y  - \tilde{\psi}\adjoint_y \tilde{\psi}_z \right)
+	\nonumber\\
+	\frac{2\pi p}{N_x} \cdot \tilde{j}_p
+	&=
+	\frac{1}{2} \sum_k \left(\frac{2\pi k}{N_x}\right)^2 \left( \tilde{\psi}\adjoint_{k-p} \tilde{\psi}_k - \tilde{\psi}\adjoint_{-k} \tilde{\psi}_{p-k} \right)
+	\nonumber\\
+	&=
+	\frac{1}{2} \sum_k \left(\frac{2\pi k}{N_x}\right)^2 \left( \tilde{\psi}\adjoint_{k-p} \tilde{\psi}_k - \tilde{\psi}\adjoint_{k} \tilde{\psi}_{p+k} \right)
+\end{align}
+where, in the last step, we again send $k\goesto-k$.
+Now we shift $k$ (mod the Brillouin zone) in the second term to match the first,
+\begin{align}
+	\frac{2\pi p}{N_x} \cdot \tilde{j}_p
+	&=
+	\frac{1}{2} \sum_k \left(\frac{2\pi k}{N_x}\right)^2 \tilde{\psi}\adjoint_{k-p} \tilde{\psi}_k - \left(\frac{2\pi k}{N_x}\right)^2 \tilde{\psi}\adjoint_{k} \tilde{\psi}_{p+k}
+	\nonumber\\
+	&=
+	\frac{1}{2} \sum_k \left(\frac{2\pi k}{N_x}\right)^2 \tilde{\psi}\adjoint_{k-p} \tilde{\psi}_k - \left(\frac{2\pi (k-p)}{N_x}\right)^2 \tilde{\psi}\adjoint_{k-p} \tilde{\psi}_{k}
+	\nonumber\\
+	&=
+	\frac{1}{2} \sum_k \left[\left(\frac{2\pi k}{N_x}\right)^2 - \left(\frac{2\pi (k-p)}{N_x}\right)^2 \right] \tilde{\psi}\adjoint_{k-p} \tilde{\psi}_{k}
+	\nonumber\\
+	&=
+	\frac{1}{2} \sum_k \left(\frac{2\pi}{N_x}\right)^2\left[ 2pk - p^2 \right] \tilde{\psi}\adjoint_{k-p} \tilde{\psi}_{k}
+	\nonumber\\
+	&=
+	\frac{2\pi p}{N_x} \cdot \left(\frac{1}{2} \sum_k \left(\frac{2\pi}{N_x}\right)\left[ 2k - p \right] \tilde{\psi}\adjoint_{k-p} \tilde{\psi}_{k} \right)
+	\nonumber\\
+	\tilde{j}_p
+	&=
+	\frac{1}{2} \sum_k \left(\frac{2\pi [ 2k-p ]}{N_x}\right) \tilde{\psi}\adjoint_{k-p} \tilde{\psi}_{k}
+	=
+	\frac{1}{2} \sum_k \left(\frac{2\pi [ 2k+p ]}{N_x}\right) \tilde{\psi}\adjoint_{k} \tilde{\psi}_{k+p}
+	\label{eq:current in momentum space}
+\end{align}
+to find the current in momentum space.
+
+We can now Fourier transform back to position space and express the momentum-basis ladder operators in position space
+\begin{align}
+	\tilde{j}_x
+	=
+	\oneover{\Volume} \sum_p e^{+2\pi i p \cdot x / N_x} \tilde{j}_p 
+	&=
+	\oneover{\Volume} \sum_p e^{+2\pi i p \cdot x / N_x} 
+	\frac{1}{2} \sum_k \left(\frac{2\pi [ 2k+p ]}{N_x}\right) \tilde{\psi}\adjoint_{k} \tilde{\psi}_{k+p}
+	\nonumber\\
+	&=
+	\oneover{2\Volume} \sum_p e^{+2\pi i p \cdot x / N_x} 
+	\sum_k \left(\frac{2\pi [ 2k+p ]}{N_x}\right) \sum_{yz} \tilde{\psi}\adjoint_{y} e^{2\pi i (ky - (k+p)z) / N_x} \tilde{\psi}_{z}
+	\nonumber\\
+	&=
+	\oneover{2\Volume}
+	\sum_{yz} \tilde{\psi}\adjoint_{y}  \tilde{\psi}_{z}
+	\sum_{pk} e^{+2\pi i [ k (y-z) + p  (x-z) ]  / N_x} \left(\frac{2\pi [ 2k+p ]}{N_x}\right)
+\end{align}
+Since $p$ is summed we can shift $q=p+k$ to get
+\begin{align}
+	\tilde{j}_x
+	&=
+	\oneover{2\Volume}
+	\sum_{yz} \tilde{\psi}\adjoint_{y}  \tilde{\psi}_{z}
+	\sum_{qk} e^{+2\pi i [ k (y-z) + (q-k)  (x-z) ]  / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
+	\nonumber\\
+	&=
+	\oneover{2\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
+	\sum_{yz} e^{+2\pi i ky / N_x} \tilde{\psi}\adjoint_{y} \tilde{\psi}_{z} e^{-2\pi i q z / N_x}
+	\label{eq:current contractible}\\
+	&=
+	\oneover{2\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\label{eq:current hermitian}
+\end{align}
+from which it is straightforward to show $\tilde{j}\adjoint_x = \tilde{j}_x$ so that $\tilde{j}_x$ is observable.
+
+Starting from the Wick-contractible \eqref{current contractible}
+\begin{align}
+	\expectation{\tilde{j}_x}
+	&=
+	\expectation{
+		\oneover{2\Volume} \sum_{pkq} \delta_{q,k+p} e^{+2\pi i px / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
+		\left( [\UU (\one+\UU)\inverse]_{kq} = \sum_{yz} e^{2\pi i [ ky - zq ] / N_x}
+		\left[\UU (\one+\UU)\inverse\right]_{yz}
+		\right)
+	}
+	\nonumber\\
+	&=
+	\expectation{
+		\oneover{2\Volume} \sum_{kq} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
+		 [\UU (\one+\UU)\inverse]_{kq}
+	}
+\end{align}
+where we define $[\UU (\one+\UU)\inverse]_{kq}$ to be a double Fourier transform of the space-labeled equivalent.
+A reasonable algorithm to compute this is to construct a tensor $T_{kq}^i = 2\pi(k+q)^i/N_x$ and do element-wise multiplication,
+\begin{align}
+	\expectation{\tilde{j}_x}
+	&=
+	\expectation{
+		\frac{1}{2\Volume} \sum_{kq} e^{2\pi i(q-k) x / N_x} \left[ T^i \UU (\one+\UU)\inverse\right]_{kq}
+	}
+	\nonumber\\
+	&=
+	\expectation{
+		\frac{\Volume}{2\Volume^2} \sum_{ykq} \delta_{xy} e^{2\pi i(qx-ky) / N_x} \left[ T^i \UU (\one+\UU)\inverse\right]_{kq}
+	}
+	\nonumber\\
+	&=
+	\expectation{
+		\frac{\Volume}{2} \sum_{yz} \delta_{xy} \delta_{xz} \oneover{\Volume^2}\sum_{kq} e^{2\pi i(qz-ky) / N_x} \left[ T^i \UU (\one+\UU)\inverse\right]_{kq}
+	}
+	\nonumber\\
+	&=
+	\expectation{
+		\diag{
+			\frac{\Volume}{2} \oneover{\Volume^2}\sum_{kq} e^{2\pi i(qz-ky) / N_x} \left[ T^i \UU (\one+\UU)\inverse\right]_{kq}
+		}_x
+	}
+\end{align}
+which are the diagonal elements of a double Fourier transform; we can also express $\tilde{j}_x$ as a trace with a projector.
+Because of the Fourier transforms we can compute $\expectation{\tilde{j}_x}$ at $\order{\Volume^2 \log^2 \Volume}$ cost.
+
+Of course, by rotational symmetry, the average $\expectation{\tilde{j}}=0$ and so we are already guaranteed that the continuity equation \eqref{continuity} is satisfied on average.
+Let us check that this $\tilde{j}$ satisfies the continuity equation \eqref{continuity} measurement-by-measurement.
+We take the divergence of $\tilde{j}$,
+\begin{align}
+	-\partial_t N = \sum_x (\grad\cdot \tilde{j})_x
+	&=
+	\sum_x \oneover{2\Volume} \sum_{kq} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi i(q-k)}{N_x}\right) \cdot \left(\frac{2\pi [ k+q ]}{N_x}\right)
+		[\UU (\one+\UU)\inverse]_{kq}
+	\nonumber\\
+	&=
+	\frac{4\pi^2i}{2\Volume^2} \sum_{kq}  (q^2-k^2)
+		[\UU (\one+\UU)\inverse]_{kq} \sum_x e^{+2\pi i (q-k) x / N_x}
+	\nonumber\\
+	&=
+	\frac{4\pi^2i}{2\Volume^2} \sum_{kq}  (q^2-k^2)
+		[\UU (\one+\UU)\inverse]_{kq} \Volume \delta_{kq} = 0
+\end{align}
+and so this current indeed corresponds to the lattice-exact conservation of $N$, which is true as an operator and therefore configuration-by-configuration.
+
+Computing the spin current proceeds similarly, but the propagator gets a $\half \sigma$, and we also should add a contribution from the commutator of $\tilde{\vec{h}}\cdot\tilde{\vec{S}}$ with the local $s$.
