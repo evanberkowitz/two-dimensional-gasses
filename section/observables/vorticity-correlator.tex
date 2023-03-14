@@ -68,21 +68,46 @@ This vanishes exactly because of the periodic boundary conditions; the boundary-
 
 Instead of the total vorticity \eqref{net vorticity}, which must vanish by periodic boundary conditions, consider the vorticity-vorticity two-point correlation
 \begin{align}
-	\Omega_{\delta x} &= \oneover{\Volume \Delta x^2} \sum_x \Delta x^2 \Omega_{x,x-\delta x}
-&	\Omega_{xy} &= \omega\adjoint_x \omega_y.
+	\tilde{\Omega}_{r} &= \oneover{\Volume \Delta x^2} \sum_x \Delta x^2 \tilde{\Omega}_{x,x-r}
+	&	\tilde{\Omega}_{xy} &= \tilde{\omega}\adjoint_x \tilde{\omega}_y.
 \end{align}
 If there were one vortex/antivortex pair that were well-separated the correlations would reach far as a function of the separation $\delta$.
 But when there are very many vortices and antivortices $\Omega$ should decay quickly.
-Evaluated via convolution, one finds
 \begin{align}
-	\Omega_{\delta x}
-	= \oneover{M^2}\left(\oneover{\Volume \Delta x^2}\right)^2 \sum_p e^{-ip \cdot \delta x} \omega\adjoint_p \omega_p
-	= \oneover{M^2}\left(\oneover{\Volume \Delta x^2}\right)^4 \sum_{pkq} e^{-ip \cdot \delta x} (\vec{p}\times\vec{q})\cdot(\vec{p}\times\vec{k}) \psi\adjoint_{p+q}\psi_q\psi\adjoint_k\psi_{p+k}
+	\tilde{\Omega}_{r}
+	&=
+	\oneover{\Volume} \sum_{x}
+	\oneover{\Volume^2} \sum_{q'k'qk}
+		e^{-2\pi i(q'-k')x/N_x} \left(\frac{2\pi}{N_x}\right)^2 (q' \cross k')\, \tilde{\psi}\adjoint_{q'} \tilde{\psi}_{k'}
+		e^{+2\pi i(q-k)(x-r)/N_x} \left(\frac{2\pi}{N_x}\right)^2 (q \cross k)\, \tilde{\psi}\adjoint_{k} \tilde{\psi}_q
+	\nonumber\\
+	&=
+	\oneover{\Volume^2} \sum_{q'k'qk}
+		e^{-2\pi i(q-k)r/N_x} \left(\frac{2\pi}{N_x}\right)^4 (q' \cross k')\cdot(q \cross k)\,
+		\tilde{\psi}\adjoint_{q'} \tilde{\psi}_{k'}
+		\tilde{\psi}\adjoint_{k} \tilde{\psi}_q
+		\left(\oneover{\Volume} \sum_{x}
+			e^{+2\pi i(q-k-q'+k') x / N_x}
+			= \delta_{q-k,q'-k'}
+			\right)
 \end{align}
 where the dot product between the cross products arises naturally from considering $\omega\adjoint \cdot \omega$ (and we focus on the $z$ direction when the momenta are all confined to the plane).
-Using a vector identity one finds
+We now shift $q' = p+k'$, so that $p=q'-k'$ and $q'\cross k' = (p'+k')\cross k' = p' \cross k'$.
 \begin{align}
-	\Omega_{\delta x}
-	= \oneover{M^2}\left(\oneover{\Volume \Delta x^2}\right)^4 \sum_{pkq} e^{-ip \cdot \delta x} \left[p^2 (k\cdot q) - (p\cdot k)(p\cdot q)\right] \psi\adjoint_{p+q}\psi_q\psi\adjoint_k\psi_{p+k}
+	\tilde{\Omega}_{r}
+	&=
+	\oneover{\Volume^2} \sum_{pk'qk}
+		e^{-2\pi ipr/N_x} \left(\frac{2\pi}{N_x}\right)^4 (p \cross k')\cdot(q \cross k)\,
+		\tilde{\psi}\adjoint_{p+k'} \tilde{\psi}_{k'}
+		\tilde{\psi}\adjoint_{k} \tilde{\psi}_q
+		\delta_{q-k,p}
+	\nonumber\\
+	&=
+	\oneover{\Volume^2} \sum_{pk'k}
+		e^{-2\pi ipr/N_x} \left(\frac{2\pi}{N_x}\right)^4 (p \cross k')\cdot(p \cross k)\,
+		\tilde{\psi}\adjoint_{p+k'} \tilde{\psi}_{k'}
+		\tilde{\psi}\adjoint_{k} \tilde{\psi}_{p+k},
 \end{align}
-with no need to subtract a disconnected piece; that piece is 0 by translation invariance, since $\expectation{\omega_x} = \oneover{\Volume} \expectation{\sum_x \omega_x} = 0$.
+executing the sum over $q$ and using $(p+k)\cross k = p\cross k$.
+This may be reexpressed using a vector identity $(p \cross k')\cdot(p \cross k) = p^2 k' \cdot k - (p \cdot k')(p \cdot k)$ but need not be.
+The vortex susceptibility is $\tilde{\Omega}_0$, which should (presumably?) show the usual susceptibility behavior at the BKT transition.
