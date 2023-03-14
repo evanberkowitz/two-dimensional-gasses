@@ -66,11 +66,23 @@ if the current $j$ corresponds obeys a lattice continuity equation, since partic
 (The vorticity is entirely in the 3 direction, since the fermions are confined to 2D; in what follows we suppress the 3 superscript.)
 This vanishes exactly because of the periodic boundary conditions; the boundary-condition-dependence is a hint it's accessing something topological.
 
-Instead of the total vorticity \eqref{net vorticity}, which must vanish by periodic boundary conditions, consider the vorticity-vorticity two-point correlation
+Instead of the total vorticity \eqref{net vorticity}, which must vanish by periodic boundary conditions, we can consider the (local) square,
 \begin{align}
-	\tilde{\Omega}_{r} &= \oneover{\Volume \Delta x^2} \sum_x \Delta x^2 \tilde{\Omega}_{x,x-r}
-	&	\tilde{\Omega}_{xy} &= \tilde{\omega}\adjoint_x \tilde{\omega}_y.
+	\tilde{\omega}^2_x = \tilde{\omega}\adjoint_x \tilde{\omega}_x
+	=
+	\oneover{\Volume^2} \sum_{q'k'qk} e^{+2\pi i[ (q-k) - (q'-k') ] x / N_x}
+	\left(\frac{2\pi}{N_x}\right)^4 (q' \cross k') \cdot (q \cross k)\,
+	\tilde{\psi}\adjoint_{s'q'} \tilde{\psi}_{s'k'} \tilde{\psi}\adjoint_{sk} \tilde{\psi}_{sq}.
 \end{align}
+which is positive (semi)definite.
+
+We could also consider the vorticity-vorticity two-point correlation
+\begin{align}
+	\tilde{\Omega}_{r} &= \oneover{\Volume} \sum_x \tilde{\Omega}_{x,x-r}
+	&
+	\tilde{\Omega}_{xy} &= \tilde{\omega}\adjoint_x \tilde{\omega}_y,
+\end{align}
+which at zero displacement is the average square vorticity $\tilde{\Omega}_0 = \Volume\inverse \sum_x \tilde{\omega}^2_x$.
 If there were one vortex/antivortex pair that were well-separated the correlations would reach far as a function of the separation $\delta$.
 But when there are very many vortices and antivortices $\Omega$ should decay quickly.
 \begin{align}
