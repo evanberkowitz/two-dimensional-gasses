@@ -28,25 +28,34 @@ which we can simplify using a simple form of the current \eqref{current hermitia
 	&=
 	\frac{i}{\Volume}
 	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi}{N_x}\right)^2 (q \cross k)\,
-	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}.
 	\label{eq:vorticity}
 \end{align}
-By periodic boundary conditions the net vorticity vanishes
+The vorticity is Hermitian,
 \begin{align}
-	\sum_x \omega^3_x 
+	\tilde{\omega}^3\adjoint_x
 	&=
-	\frac{i}{\Volume}
-	\sum_{qk} \left(\frac{2\pi}{N_x}\right)^2
-	(q \cross k)\,
-	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
-	\sum_x e^{+2\pi i (q-k) x / N_x}
+	-\frac{i}{\Volume}
+	\sum_{qk} e^{-2\pi i (q-k) x / N_x} \left(\frac{2\pi}{N_x}\right)^2 (q \cross k)\,
+	\tilde{\psi}\adjoint_{q} \tilde{\psi}_{k}
 	\nonumber\\
 	&=
 	\frac{i}{\Volume}
+	\sum_{qk} e^{+2\pi i (k-q) x / N_x} \left(\frac{2\pi}{N_x}\right)^2 (-q \cross k = k \cross q)\,
+	\tilde{\psi}\adjoint_{q} \tilde{\psi}_{k}
+	=
+	\tilde{\omega}^3_x
+\end{align}
+and is a local observable.
+By periodic boundary conditions the net vorticity vanishes
+\begin{align}
+	\sum_x \tilde{\omega}^3_x 
+	&=
+	\frac{i}{\Volume}
 	\sum_{qk} \left(\frac{2\pi}{N_x}\right)^2
 	(q \cross k)\,
 	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
-	\Volume \delta_{kq}
+	\left(\sum_x e^{+2\pi i (q-k) x / N_x} = \Volume \delta_{kq}\right)
 	\propto
 	k \cross k
 	=
@@ -56,39 +65,6 @@ By periodic boundary conditions the net vorticity vanishes
 if the current $j$ corresponds obeys a lattice continuity equation, since particles cannot leave across a boundary without coming back `on the other side'.
 (The vorticity is entirely in the 3 direction, since the fermions are confined to 2D; in what follows we suppress the 3 superscript.)
 This vanishes exactly because of the periodic boundary conditions; the boundary-condition-dependence is a hint it's accessing something topological.
-
-We can now find $\omega$ as a function of momentum.
-Fourier transforming,
-\begin{align}
-	\omega^3_k
-	= \sum_x \Delta x^2 e^{-ikx} \omega^3_x
-	= \sum_x \Delta x^2 e^{-ikx} \grad \times \vec{j}_x
-	&= \sum_x \Delta x^2 e^{-ikx} \grad \times \oneover{\Volume \Delta x^2} \sum_p e^{+ipx} \vec{j}_p
-\nonumber\\
-	&= \sum_p i\vec{p} \times \vec{j}_p \oneover{\Volume} \sum_x e^{i(p-k)x}
-	= \sum_p i\vec{p} \times \vec{j}_p \delta_{pk}
-	= i \vec{k} \times \vec{j}_k
-\end{align}
-which shows that the total vorticity is 0.
-Moreover, when calculating the vorticity we can drop the piece proportional to the momentum itself,
-\begin{align}
-	\omega^3_k
-	= i \vec{k} \times \left(\vec{j}_k = \half\oneover{M \Volume\Delta x^2} \sum_q (\vec{k}+2\vec{q}) \psi\adjoint_{q} \psi_{k+q}\right)
-	= i \half\oneover{M \Volume\Delta x^2} \sum_q \left(\vec{k} \times (\vec{k}+2\vec{q})\right) \psi\adjoint_{q} \psi_{k+q}
-\nonumber\\
-	= \oneover{M \Volume\Delta x^2} \sum_q (i\vec{k} \times \vec{q}) \psi\adjoint_{q} \psi_{k+q}
-\end{align}
-
-Actually, $\omega_k$ is not an observable; only $\omega_0$ is Hermitian (and 0!):
-\begin{align}
-    M\Volume \Delta x^2 \omega\adjoint_k
-    &= \sum_q (-i) \vec{k} \times \vec{q} \psi\adjoint_{k+q} \psi_{q}
-    \nonumber\\
-    &= \sum_{q' = q+k} (-i) \vec{k} \times (\vec{q}' - \vec{k}) \psi\adjoint_{k+q'-k} \psi_{q'-k}
-    \nonumber\\
-    &= \sum_{q'} i (-i\vec{k}) \times \vec{q}' \psi\adjoint_{q'} \psi_{q'-k} = M \Volume \Delta x^2 \omega_{-k}.
-\end{align}
-Therefore, $\omega_{-k} \omega_{k} = \omega\adjoint_k \omega_k$ \emph{is} observable.
 
 Instead of the total vorticity \eqref{net vorticity}, which must vanish by periodic boundary conditions, consider the vorticity-vorticity two-point correlation
 \begin{align}
