@@ -5,11 +5,52 @@ The BKT transition is a transition between no vortices (at low temperature) and 
 This transition is topological, in the sense that there isn't a good local order parameter to capture the change we're talking about.
 Consider, for example, an observable that measures the local vorticity, like
 \begin{align}
-	\omega^3_x = \text{curl}(j)_x = \grad \times \vec{j}_x = \epsilon^{3mn} \partial^m j^n_x.
+	\tilde{\omega}^3_x = \text{curl}(\tilde{j})_x = \grad \times \tilde{j}_x = \epsilon^{3mn} \partial^m \tilde{j}^n_x
+\end{align}
+which we can simplify using a simple form of the current \eqref{current hermitian}
+\begin{align}
+	\tilde{\omega}^3_x
+	&=
+	\epsilon^{3mn} \partial^m \oneover{2\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi [ k+q ]^n}{N_x}\right)
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\nonumber\\
+	&=
+	\oneover{2\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} i \left(\frac{2\pi}{N_x}\right)^2 i \epsilon^{3mn} [q-k]^m[ k+q ]^n
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\nonumber\\
+	&=
+	\frac{i}{\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi}{N_x}\right)^2 \epsilon^{3mn} q^m k^n
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\nonumber\\
+	&=
+	\frac{i}{\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi}{N_x}\right)^2 (q \cross k)\,
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\label{eq:vorticity}
 \end{align}
 By periodic boundary conditions the net vorticity vanishes
 \begin{align}
-	\sum_x \omega^3_x = 0
+	\sum_x \omega^3_x 
+	&=
+	\frac{i}{\Volume}
+	\sum_{qk} \left(\frac{2\pi}{N_x}\right)^2
+	(q \cross k)\,
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\sum_x e^{+2\pi i (q-k) x / N_x}
+	\nonumber\\
+	&=
+	\frac{i}{\Volume}
+	\sum_{qk} \left(\frac{2\pi}{N_x}\right)^2
+	(q \cross k)\,
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\Volume \delta_{kq}
+	\propto
+	k \cross k
+	=
+	0
 	\label{eq:net vorticity}
 \end{align}
 if the current $j$ corresponds obeys a lattice continuity equation, since particles cannot leave across a boundary without coming back `on the other side'.
