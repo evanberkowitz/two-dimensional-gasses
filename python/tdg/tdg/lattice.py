@@ -409,6 +409,58 @@ class Lattice(H5able):
         # (torch.abs(left-right) < 1e-6).all()
         # ```
 
+    @cached_property
+    def convolver(self):
+        r'''
+        The convolution of two vectors :math:`u` and :math:`v` is :math:`u * v = \frac{1}{V} \sum_a u_a v_{a-r}`.
+
+        The convolution can be computed quickly using fast fourier transforms.  However, sometimes it is useful to implement
+        the convolution as part of a tensor contraction.
+
+        We can introduce this via the *convolver*, which satisfies
+
+        .. math::
+
+           \frac{1}{V} \sum_a u_a v_{a-r} = \sum_{ab} u_a\, v_b\, \texttt{convolver}_{bra} \text{ (note the order)}
+
+        which can be implemented via einsum,
+
+        .. code::
+
+           u * v = torch.einsum('a,b,bra->r', u, v, convolver) # order as above
+
+        where ``u`` and ``v`` have one linearized spatial index.
+
+        .. note::
+
+           This **includes** the factor of volume!
+        '''
+
+        # Here is an obviously-correct implementation.
+        #
+        # for i,r in enumerate(self.coordinates):
+        #     for j,a in enumerate(selself.coordinates):
+        #         diff = self.mod(a-r)
+        #         for k,b in enumerate(self.coordinates):
+        #             if (b==diff).all():
+        #                 direct[k,i,j] = 1./self.sites
+        #
+        # but we opt for a slightly more sophisticated and torch-native
+        normalized_identity = torch.eye(self.sites)/self.sites # include the 1/V factor
+
+        return torch.stack(
+            list(
+                self.linearize(
+                    self.coordinatize(
+                        normalized_identity,
+                        (0,)
+                        ).roll(shifts=tuple(r), dims=(0,1)),
+                    (0,)
+                )
+                for r in self.coordinates # r slowest
+            )
+        ).permute((2,0,1)) # (b=a-r) r a order
+
 def _demo(nx=7):
     return Lattice(nx)
 
