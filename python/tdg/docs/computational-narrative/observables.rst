@@ -25,6 +25,11 @@ The Action
 
 .. autofunction:: tdg.observable.action.S
 
+The Propagator
+--------------
+
+.. autofunction:: tdg.observable.UU.G
+
 Baryon Number
 -------------
 

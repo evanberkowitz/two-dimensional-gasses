@@ -23,21 +23,29 @@ def _UU(ensemble):
     # A matrix for each configuration.
     return functorch.vmap(ensemble.Action.FermionMatrix.UU)(ensemble.configurations)
 
-@observable
-def _UUPlusOne(ensemble):
-    # A matrix for each configuration.
-    return torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
-
-@observable
 def _detUUPlusOne(ensemble):
-    return torch.det(ensemble._UUPlusOne)
-
-@observable
-def _UUPlusOneInverse(ensemble):
-    # A matrix for each configuration.
-    return torch.linalg.inv(ensemble._UUPlusOne)
+    # One per configuration.
+    UUPlusOne = torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
+    return torch.det(UUPlusOne)
 
 @observable
 def _UUPlusOneInverseUU(ensemble):
     # A matrix for each configuration.
+    UUPlusOne = torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
+
+    # TODO: do this via a solve rather than a true inverse?
+    inverse = torch.linalg.inv(ensemble._UUPlusOne)
     return torch.matmul(ensemble._UUPlusOneInverse,ensemble._UU)
+
+@observable
+def G(ensemble):
+    r'''
+    The equal-time propagator that is the contraction of :math:`\psi^\dagger_{a\sigma} \psi_{b\tau}`
+    where :math:`a` and :math:`b` are sites and :math:`\sigma` and :math:`\tau` are spins.
+
+    .. math ::
+       \mathcal{G} = [ \mathbb{U} (\mathbb{1} + \mathbb{U})^{-1} ]_{ab}^{\sigma\tau}
+    
+    A five-axis tensor: configurations slowest, then :math:`a`, :math:`b`, :math:`\sigma`, and :math:`\tau`.
+    '''
+    return ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
