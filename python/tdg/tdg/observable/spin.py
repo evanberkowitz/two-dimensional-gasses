@@ -38,7 +38,7 @@ def _spin(ensemble):
     # and construct a vector of paulis.
     Pspin = torch.einsum('ik,kab->iab', Pspin, tdg.PauliMatrix)
     
-    return torch.einsum('cxxab,iba->icx', ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU), Pspin)
+    return torch.einsum('cxxab,iba->icx', ensemble.G, Pspin)
 
 @observable
 def spin(ensemble, direction):

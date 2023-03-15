@@ -4,7 +4,7 @@ from tdg.observable import observable
 @observable
 def _n_fermionic(ensemble):
     return torch.einsum('caass->ca',
-                        ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
+                        ensemble.G
     )
 
 @observable

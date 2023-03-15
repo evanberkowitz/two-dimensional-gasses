@@ -29,10 +29,9 @@ def doubleOccupancy(ensemble):
     # The first term is the square of the contraction of the fermionic n operator.
     first = ensemble.n('fermionic')**2
     # The second term is a bit more annoying;
-    UUPlusOneInverseUU = ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
     second = torch.einsum('caast,caats->ca',
-                            UUPlusOneInverseUU,
-                            UUPlusOneInverseUU,
+                            ensemble.G,
+                            ensemble.G,
                          )
 
     # To get the double occupancy itensemble, take half the difference.
@@ -58,22 +57,21 @@ def _Contact_fermionic(ensemble):
     logger.info('Using the general form of the fermionic Contact.')
 
     L = ensemble.Action.Spacetime.Lattice
-    S = torch.stack(tuple(tdg.LegoSphere(r, c).spatial(L) for c,r in zip(ensemble.Action.Tuning.dC_dloga, ensemble.Action.Tuning.radii) )).sum(axis=0).to(ensemble._UUPlusOneInverseUU.dtype)
+    S = torch.stack(tuple(tdg.LegoSphere(r, c).spatial(L) for c,r in zip(ensemble.Action.Tuning.dC_dloga, ensemble.Action.Tuning.radii) )).sum(axis=0).to(ensemble.G.dtype)
 
     # The contractions looks just like the doubleOccupancy contractions, but with two spatial indices tied together just like the spins are,
     # and then summed with the derivative LegoSphere stencil.
-    UUPlusOneInverseUU = ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
     first = torch.einsum(
             'ab,caass,cbbtt->c',
             S,
-            UUPlusOneInverseUU,
-            UUPlusOneInverseUU,
+            ensemble.G,
+            ensemble.G,
             )
     second = torch.einsum(
             'ab,cbats,cabst->c',
             S,
-            UUPlusOneInverseUU,
-            UUPlusOneInverseUU,
+            ensemble.G,
+            ensemble.G,
             )
     return torch.pi * L.sites * (first-second)
 
