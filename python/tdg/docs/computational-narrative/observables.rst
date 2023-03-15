@@ -8,8 +8,17 @@ Observables are physical quantities that can be measured on ensembles.
 They are smuggled into the :class:`~.GrandCanonical` ensemble as `descriptors`_, so that you may call :code:`ensemble.observable`.
 This allows you to :ref:`add custom observables <custom observables>`.
 
-Built-in Observables
-====================
+The Propagator
+==============
+
+Many observables are expectation values of fermionic operators.
+Once normal-ordered, those operators may be replaced by a sum of Wick contractions.
+Each pair of contracted fermionic operators yields a propagator.
+
+.. autofunction:: tdg.observable.UU.G
+
+Local and Global Observables
+============================
 
 We adopt a convention where local densities start with a lowercase letter and global quantities with an Uppercase.
 
@@ -24,11 +33,6 @@ The Action
 .. note:: *NOT* named :code:`.Action` because ensembles already have an :attr:`~.GrandCanonical.Action`.
 
 .. autofunction:: tdg.observable.action.S
-
-The Propagator
---------------
-
-.. autofunction:: tdg.observable.UU.G
 
 Baryon Number
 -------------
@@ -57,8 +61,8 @@ Tan's *contact* universally describes the large-momentum tails of certain correl
 
 .. _custom observables:
 
-Adding Observables
-==================
+Adding Custom Observables
+=========================
 
 Observables come in two types: *pure observables*, which need no parameters, and *callable observables* which are passed arguments.
 
