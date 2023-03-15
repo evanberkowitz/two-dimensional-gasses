@@ -34,8 +34,8 @@ def _UUPlusOneInverseUU(ensemble):
     UUPlusOne = torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
 
     # TODO: do this via a solve rather than a true inverse?
-    inverse = torch.linalg.inv(ensemble._UUPlusOne)
-    return torch.matmul(ensemble._UUPlusOneInverse,ensemble._UU)
+    inverse = torch.linalg.inv(UUPlusOne)
+    return torch.matmul(inverse, ensemble._UU)
 
 @observable
 def G(ensemble):
