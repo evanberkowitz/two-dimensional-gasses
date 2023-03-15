@@ -58,6 +58,13 @@ Tan's *contact* universally describes the large-momentum tails of certain correl
 .. autofunction:: tdg.observable.contact.DoubleOccupancy
 .. autofunction:: tdg.observable.contact.Contact
 
+Two-Point Correlations
+======================
+
+We can compute equal-time two-point correlation functions.
+By translation invariance these may be reduced to a function of one space variable.
+
+.. autofunction:: tdg.observable.nn.nn
 
 .. _custom observables:
 

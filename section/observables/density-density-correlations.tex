@@ -1,0 +1,61 @@
+\subsection{Density-Density Fluctuations}\label{sec:density fluctuations}
+
+Even in equilibrium quantum effects cause the density to fluctuate around its mean value.
+Of course, the linear fluctuations vanish $\expectation{n - \expectation{n}} = 0$ but correlated fluctuations need not.
+In fact,
+\begin{align}
+    \expectation{ (\tilde{n}-\expectation{\tilde{n}})_a (\tilde{n}-\expectation{\tilde{n}})_b }
+    =
+    \expectation{ \tilde{n}_a \tilde{n}_b } - \expectation{\tilde{n}_a} \expectation{\tilde{n}_b}
+\end{align}
+is positive semi-definite when $a=b$.
+The connected piece matches $n^2$ piece in the generic expression for the contact \eqref{contact generic}.
+The contractions go through the same, except that the piece cancelled by the linear term survives,
+\begin{align}
+    \expectation{n_a n_b}
+    =&
+    \expectation{
+        \tilde{\psi}\adjoint_{a\sigma} \tilde{\psi}_{a\sigma} \tilde{\psi}\adjoint_{b\tau} \tilde{\psi}_{b\tau}
+        }
+    \nonumber\\
+    =&
+    \expectation{
+        \tilde{\psi}\adjoint_{a\sigma} \left(\delta_{ab}^{\sigma\tau} - \tilde{\psi}\adjoint_{b\tau} \tilde{\psi}_{a\sigma}\right) \tilde{\psi}_{b\tau}
+        }
+    =
+    \expectation{
+        \tilde{\psi}\adjoint_{a\sigma} \tilde{\psi}_{a\sigma} \delta_{ab}
+    +   \tilde{\psi}\adjoint_{b\tau} \tilde{\psi}\adjoint_{a\sigma} \tilde{\psi}_{a\sigma} \tilde{\psi}_{b\tau}
+    }
+    \nonumber\\
+    =&
+    \expectation{\tilde{n}_a} \delta_{ab}
+    +
+    \expectation{
+        \G^{\sigma\sigma}_{aa} \G^{\tau\tau}_{bb}
+    -   \G^{\sigma\tau}_{ba} \G^{\tau\sigma}_{ab}
+    },
+\end{align}
+Wick contracting into propagators \eqref{propagator}.
+With translation invariance we can reduce to just a single relative coordinate
+\begin{align}
+    (\tilde{n}*\tilde{n})_r 
+    =&
+    \oneover{\Volume} \sum_a n_a n_{a-r}
+    =
+    \oneover{\Volume} \sum_a \tilde{n}_a \delta_{r,0}
+    +   \G^{\sigma\sigma}_{aa} \G^{\tau\tau}_{a-r,a-r}
+    -   \G^{\sigma\tau}_{a-r,a} \G^{\tau\sigma}_{a,a-r}
+\end{align}
+As a sanity check we may compare the $r=0$ piece of $\expectation{\tilde{n}\tilde{n}_r}$ to known observables,
+\begin{align}
+    (\tilde{n}*\tilde{n})_0 = \oneover{\Volume}\sum_a 2 \doubleOccupancy_a + \tilde{n}_a = \oneover{\Volume}\left( 2 \DoubleOccupancy + \tilde{N} \right)
+\end{align}
+where $\doubleOccupancy$ is the double occupancy (\Secref{double occupancy}) configuration-by-configuration.
+
+The density-density fluctuations are then
+\begin{align}
+    \text{density fluctuations}_r = \expectation{ (\tilde{n}*\tilde{n})_r } - (\expectation{\tilde{n}} * \expectation{\tilde{n}})_r
+\end{align}
+which is not a primary observable but must be computed bootstrap-by-bootstrap.
+The high-momentum tail of the fourier transform is universally controled by the contact (\Secref{contact}).
