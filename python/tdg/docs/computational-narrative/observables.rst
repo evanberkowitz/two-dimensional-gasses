@@ -65,6 +65,7 @@ We can compute equal-time two-point correlation functions.
 By translation invariance these may be reduced to a function of one space variable.
 
 .. autofunction:: tdg.observable.nn.nn
+.. autofunction:: tdg.observable.ss.ss
 
 .. _custom observables:
 
