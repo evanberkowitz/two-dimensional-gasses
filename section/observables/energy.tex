@@ -18,7 +18,7 @@ However, knowing that the contact \Secref{contact} computed that way has much gr
 As we already know how to compute the number \eqref{fermionic particle number} and spin, we will focus here on computing the Hamiltonian \eqref{dimensionless hamiltonian}.
 First let us compute the kinetic energy,
 \begin{align}
-	\expectation{K}
+	\expectation{\tilde{K}}
 	&=
 	\expectation{ \sum_{ab\sigma} \tilde{\psi}\adjoint_{a\sigma} \tilde{\kappa}_{ab} \tilde{\psi}_{b\sigma} }
 	=
@@ -26,7 +26,7 @@ First let us compute the kinetic energy,
 \end{align}
 The potential energy includes the bilinear offset by $\tilde{C}_0$,
 \begin{align}
-	\expectation{V}
+	\expectation{\tilde{V}}
 	&=
 	\expectation{ \half \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b - \frac{\Volume \tilde{C}_0}{2}\sum_{a} n_a }
 	\nonumber\\
@@ -39,8 +39,8 @@ where $\tilde{V}$ is a sum of Lego spheres \eqref{Lego sphere} and the $\expecta
 The potential is translationally invariant $\tilde{V}_{a,a+r} = \tilde{V}_{0,r}$ and we can shift the indices by equal amounts to find $\tilde{V}_{a,a+r}=\tilde{V}_{a-r,a}$.
 Let us now rephrase the sum over the first coordinate as a sum over a relative coordinate,
 \begin{align}
-	\expectation{V}
-	+ \frac{\Volume \tilde{C}_0}{2} \expectation{N}
+	\expectation{\tilde{V}}
+	+ \frac{\Volume \tilde{C}_0}{2} \expectation{\tilde{N}}
 	&=
 	\expectation{ \half \sum_{rb} \tilde{n}_{b-r} \tilde{V}_{b-r,b} \tilde{n}_b }
 	\nonumber\\
@@ -59,9 +59,18 @@ Let us now rephrase the sum over the first coordinate as a sum over a relative c
 where we can use the convolved density-density correlator \eqref{nn}.
 So, the potential energy is
 \begin{align}
-	\expectation{V}
+	\expectation{\tilde{V}}
 	&=
 	\frac{\Volume}{2} \sum_{r} \tilde{V}_{0,r} \expectation{ (\tilde{n}*\tilde{n})_r }
-	- \frac{\Volume \tilde{C}_0}{2} \expectation{N}.
+	- \frac{\Volume \tilde{C}_0}{2} \expectation{\tilde{N}}.
 \end{align}
-We can now evalute $F$!
+We can now evaluate $\tilde{F}$!
+
+Since the physical energies have dimension $[(ML^2)\inverse]$, the dimensionless energies are the physical ones times $ML^2$.
+Therefore, for example, $\tilde{F} = F ML^2$ it is doubly-extensive.
+To get an intensive quantity we can normalize by $k_F^4$, as is done for the contact to produce a density \eqref{contact density},
+\begin{align}
+	\frac{f}{k_F^4} = \frac{MF}{k_F^4 L^2} = \frac{FML^2}{(k_F L)^4} = \frac{FML^2}{(2\pi N)^2} = \frac{\tilde{F}}{(2\pi\tilde{N})^2}
+	\label{eq:free energy density}
+\end{align}
+where $f=MF/L^2$.  (The contact \eqref{contact} is also defined with an $M$ upstairs.)
