@@ -58,6 +58,13 @@ Tan's *contact* universally describes the large-momentum tails of certain correl
 .. autofunction:: tdg.observable.contact.DoubleOccupancy
 .. autofunction:: tdg.observable.contact.Contact
 
+Energies
+--------
+
+.. autofunction:: tdg.observable.energy.Kinetic
+.. autofunction:: tdg.observable.energy.Potential
+.. autofunction:: tdg.observable.energy.FreeEnergy
+
 Two-Point Correlations
 ======================
 

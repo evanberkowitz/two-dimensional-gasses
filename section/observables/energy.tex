@@ -1,0 +1,67 @@
+\subsection{The Kinetic, Potential, and Free Energies}\label{sec:energy}
+
+The free energy
+\begin{align}
+	\tilde{F} = - \partial_{\tilde{\beta}} \log Z = - \oneover{Z}  \partial_{\tilde{\beta}} Z
+\end{align}
+can be formulated as an expectation value using our partition function \eqref{dimensionless}
+\begin{align}
+	F
+	=
+	- \oneover{Z} \partial_{\tilde{\beta}} \tr{ e^{-\tilde{\beta}(\tilde{H}-\tilde{\mu} \tilde{N} - \tilde{h}\cdot \tilde{S})} }
+	=
+	\oneover{Z} \tr{ e^{-\tilde{\beta}(\tilde{H}-\tilde{\mu} \tilde{N} - \tilde{h}\cdot \tilde{S})} (\tilde{H}-\tilde{\mu} \tilde{N} - \tilde{h}\cdot \tilde{S})}
+\end{align}
+We may also think of differentiating our computational partition function \eqref{computational partition function}, which may be conveniently accomplished by automatic differentiation.
+However, knowing that the contact \Secref{contact} computed that way has much greater variance, we will compute this expectation value by converting the operator into Wick contractions.
+
+As we already know how to compute the number \eqref{fermionic particle number} and spin, we will focus here on computing the Hamiltonian \eqref{dimensionless hamiltonian}.
+First let us compute the kinetic energy,
+\begin{align}
+	\expectation{K}
+	&=
+	\expectation{ \sum_{ab\sigma} \tilde{\psi}\adjoint_{a\sigma} \tilde{\kappa}_{ab} \tilde{\psi}_{b\sigma} }
+	=
+	\expectation{ \sum_{ab\sigma} \G^{\sigma \sigma}_{ab} \tilde{\kappa}_{ab} }.
+\end{align}
+The potential energy includes the bilinear offset by $\tilde{C}_0$,
+\begin{align}
+	\expectation{V}
+	&=
+	\expectation{ \half \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b - \frac{\Volume \tilde{C}_0}{2}\sum_{a} n_a }
+	\nonumber\\
+	\expectation{V}
+	+ \frac{\Volume \tilde{C}_0}{2} \expectation{N}
+	&=
+	\expectation{ \half \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b }
+\end{align}
+where $\tilde{V}$ is a sum of Lego spheres \eqref{Lego sphere} and the $\expectation{N}$ is known.
+The potential is translationally invariant $\tilde{V}_{a,a+r} = \tilde{V}_{0,r}$ and we can shift the indices by equal amounts to find $\tilde{V}_{a,a+r}=\tilde{V}_{a-r,a}$.
+Let us now rephrase the sum over the first coordinate as a sum over a relative coordinate,
+\begin{align}
+	\expectation{V}
+	+ \frac{\Volume \tilde{C}_0}{2} \expectation{N}
+	&=
+	\expectation{ \half \sum_{rb} \tilde{n}_{b-r} \tilde{V}_{b-r,b} \tilde{n}_b }
+	\nonumber\\
+	&=
+	\expectation{ \half \sum_{rb} \tilde{n}_{b-r} \tilde{V}_{0,r} \tilde{n}_b }
+	\nonumber\\
+	&=
+	\expectation{ \half \sum_{r} \tilde{V}_{0,r} \sum_b \tilde{n}_b \tilde{n}_{b-r} }
+	\nonumber\\
+	&=
+	\expectation{ \frac{\Volume}{2} \sum_{r} \tilde{V}_{0,r} \oneover{\Volume} \sum_b \tilde{n}_b \tilde{n}_{b-r} }
+	\nonumber\\
+	&=
+	\frac{\Volume}{2} \sum_{r} \tilde{V}_{0,r} \expectation{ (\tilde{n}*\tilde{n})_r }
+\end{align}
+where we can use the convolved density-density correlator \eqref{nn}.
+So, the potential energy is
+\begin{align}
+	\expectation{V}
+	&=
+	\frac{\Volume}{2} \sum_{r} \tilde{V}_{0,r} \expectation{ (\tilde{n}*\tilde{n})_r }
+	- \frac{\Volume \tilde{C}_0}{2} \expectation{N}.
+\end{align}
+We can now evalute $F$!
