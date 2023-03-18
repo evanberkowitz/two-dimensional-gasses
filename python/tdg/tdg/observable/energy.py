@@ -36,7 +36,7 @@ def Potential(ensemble):
 
     return (
         torch.einsum('r,cr->c', 0.5 * L.sites * V.spatial(L)[0] + 0.j, ensemble.nn)
-      - L.sites * V.C0 * ensemble.N('fermionic')
+      - 0.5 * L.sites * V.C0 * ensemble.N('fermionic')
     )
 
 @observable
