@@ -980,6 +980,28 @@ The generic lesson is that we may perform Wick contractions on normal-ordered op
 as long as we track the number of minus signs that come from `crossing' in the contraction.
 For an example, see the double occupancy \Secref{double occupancy}.
 
+There is a conventional choice in defining the Fourier-space propagator: do we include factors of volume?
+In the Wick contraction \eqref{propagator} both the fermion operators are in  position space, and therefore, according to our table of Fourier transforms \Tabref{ft} we should get no explicit factors of volume.
+On the other hand, one of the fermions is conjugate and therefore should get an $\exp(+2\pi i k x  / N_x)$, with a $+$ sign, the sign of the transform that DOES include a $\Volume\inverse$ factor.\footnote{
+	If we had settled on the unitary convention for Fourier transforms, each transform would have come with $\Volume^{-1/2}$ and there'd be no question.
+}
+Looking at position-space operators expressed in Fourier space, however, such as the current \eqref{current hermitian}, vorticity \eqref{vorticity}, and the vorticity correlator \eqref{vorticity-vorticity}, shows that for every pair of momentum-space fermions we get a factor of $\Volume\inverse$.
+Therefore, it is natural to define
+\begin{align}
+	\contraction{}{\tilde{\psi}\adjoint_{k\sigma}}{}{\tilde{\psi}_{q\tau}}
+	\tilde{\psi}\adjoint_{k\sigma}\tilde{\psi}_{q\tau}
+	&\goesto
+	\Volume \G^{\sigma\tau}_{kq} 
+	&\text{or}&&
+	\oneover{\Volume} 
+	\contraction{}{\tilde{\psi}\adjoint_{k\sigma}}{}{\tilde{\psi}_{q\tau}}
+	\tilde{\psi}\adjoint_{k\sigma}\tilde{\psi}_{q\tau}
+	&\goesto
+	\G^{\sigma\tau}_{kq} = \oneover{\Volume} \sum_{xy} e^{+2\pi i k x / N_x} \left(\G^{\sigma\tau}_{xy} = \left[\UU (\one+\UU)\inverse\right]_{xy}^{\sigma\tau} \right) e^{-2\pi i q y / N_x}
+\end{align}
+which may be implemented via one forward and one inverse Fourier transform regardless of convention.
+
+
 \subsection{The Infinite-Temperature Limit}\label{sec:infinite temperature}
 
 One particularly simple limit is $\beta\goesto0$, where the normalized gaussian in the partition function
