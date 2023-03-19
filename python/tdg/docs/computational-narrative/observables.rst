@@ -16,6 +16,7 @@ Once normal-ordered, those operators may be replaced by a sum of Wick contractio
 Each pair of contracted fermionic operators yields a propagator.
 
 .. autofunction:: tdg.observable.UU.G
+.. autofunction:: tdg.observable.UU.G_momentum
 
 Local and Global Observables
 ============================

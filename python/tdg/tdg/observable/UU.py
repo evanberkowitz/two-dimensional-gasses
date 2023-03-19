@@ -49,3 +49,40 @@ def G(ensemble):
     A five-axis tensor: configurations slowest, then :math:`a`, :math:`b`, :math:`\sigma`, and :math:`\tau`.
     '''
     return ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
+
+@observable
+def G_momentum(ensemble):
+    r'''
+    The equal-time propagator that is the contraction of :math:`N_x^{-2} \psi^\dagger_{k\sigma} \psi_{q\tau}`
+    where :math:`k` and :math:`q` are integer momenta and :math:`\sigma` and :math:`\tau` are spins.
+
+    .. math ::
+       \mathcal{G}^{\sigma\tau}_{kq} = \frac{1}{N_x^2} \sum_{xy} e^{+2\pi i k x / N_x} \mathcal{G}^{\sigma\tau}_{xy} e^{-2\pi i q y / N_x}
+    
+    A five-axis tensor: configurations slowest, then :math:`k`, :math:`q`, :math:`\sigma`, and :math:`\tau`.
+    '''
+    
+    L = ensemble.Action.Spacetime.Lattice
+
+    # Checked via brute force:
+    #
+    #   # Warning: takes a long time even with this small ensemble!
+    #   ensemble = tdg.ensemble._demo(nx=5, steps=3) 
+    #   
+    #   G = ensemble.G
+    #   L = ensemble.Action.Spacetime.Lattice
+    #   gp = torch.zeros_like(G)
+    #   
+    #   for c, g in enumerate(G):
+    #       for a, k in enumerate(L.coordinates):
+    #           for b, q in enumerate(L.coordinates):
+    #               for i, x in enumerate(L.coordinates):
+    #                   for j,y in enumerate(L.coordinates):
+    #                       gp[c,a,b] += 1 / L.sites * g[i,j] * torch.exp(+2j*torch.pi * ( torch.dot(k,x) - torch.dot(q, y)) / L.nx)
+    #   
+    #   (gp - ensemble.G_momentum).abs().sum() < 1.e-12
+    # 
+    # which yields tensor(True).
+    # However, because G is real in this test we may be tricking ourselves...
+
+    return L.ifft(L.fft(ensemble.G, axis=2), axis=1)
