@@ -315,7 +315,7 @@ class Lattice(H5able):
         '''
         return torch.zeros(self.sites).repeat(*dims, 1)
 
-    def fft(self, vector, axis=-1, norm='ortho'):
+    def fft(self, vector, axis=-1, norm='backward'):
         r'''The Fourier transform on a linearized axis.
 
         Parameters
@@ -326,6 +326,7 @@ class Lattice(H5able):
                 The axis along which to perform a 2D Fourier transform on the vector.
             norm:
                 A `convention for the Fourier transform`_, one of ``"forward"``, ``"backward"``, or ``"ortho"``.
+                The default is `"backward"`, to match our notes.
 
         Returns
         -------
@@ -337,7 +338,7 @@ class Lattice(H5able):
         fft_axes = (axis-1, axis) if axis < 0 else (axis, axis+1)
         return self.linearize(torch.fft.fft2(self.coordinatize(vector, dims=(axis,)), dim=fft_axes, norm=norm), dims=(axis,))
 
-    def ifft(self, vector, axis=-1, norm='ortho'):
+    def ifft(self, vector, axis=-1, norm='backward'):
         r'''The Fourier inverse transform on a linearized axis.
 
         Parameters
@@ -347,14 +348,15 @@ class Lattice(H5able):
             axis:
                 The axis along which to perform a 2D inverse Fourier transform on the vector.
             norm:
-                A `convention for the Fourier transform`_, one of ``"forward"``, ``"backward"``, or ``"ortho"``.
+                A `convention for the inverse Fourier transform`_, one of ``"forward"``, ``"backward"``, or ``"ortho"``.
+                The default is `"backward"`, to match our notes.
 
         Returns
         -------
             torch.tensor:
                 Inverse[F](vector) with the same shape as the input vector, transformed along the axis.
 
-        .. _convention for the Fourier transform: https://pytorch.org/docs/stable/generated/torch.fft.fft2.html#torch.fft.fft2
+        .. _convention for the inverse Fourier transform: https://pytorch.org/docs/stable/generated/torch.fft.ifft2.html#torch.fft.ifft2
         '''
         fft_axes = (axis-1, axis) if axis < 0 else (axis, axis+1)
         return self.linearize(torch.fft.ifft2(self.coordinatize(vector, dims=(axis,)), dim=fft_axes, norm=norm), dims=(axis,))
