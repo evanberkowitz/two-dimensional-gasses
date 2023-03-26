@@ -165,7 +165,7 @@ Since $p$ is summed we can shift $q=p+k$ to get
 	\oneover{2\Volume}
 	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
 	\sum_{yz} e^{+2\pi i ky / N_x} \tilde{\psi}\adjoint_{y} \tilde{\psi}_{z} e^{-2\pi i q z / N_x}
-	\label{eq:current contractible}\\
+	\\
 	&=
 	\oneover{2\Volume}
 	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
@@ -174,47 +174,31 @@ Since $p$ is summed we can shift $q=p+k$ to get
 \end{align}
 from which it is straightforward to show $\tilde{j}\adjoint_x = \tilde{j}_x$ so that $\tilde{j}_x$ is observable.
 
-Starting from the Wick-contractible \eqref{current contractible}
+We can now Wick contract using the propagator in momentum space \eqref{propagator in momentum space}
 \begin{align}
 	\expectation{\tilde{j}_x}
 	&=
 	\expectation{
-		\oneover{2\Volume} \sum_{pkq} \delta_{q,k+p} e^{+2\pi i px / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
-		\left( [\UU (\one+\UU)\inverse]_{kq} = \sum_{yz} e^{2\pi i [ ky - zq ] / N_x}
-		\left[\UU (\one+\UU)\inverse\right]_{yz}
-		\right)
-	}
-	\nonumber\\
-	&=
-	\expectation{
-		\oneover{2\Volume} \sum_{kq} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
-		 [\UU (\one+\UU)\inverse]_{kq}
-	}
+		\oneover{2} \sum_{pkq} e^{+2\pi i (q-k)x / N_x} \left(\frac{2\pi [ k+q ]}{N_x}\right)
+		\G_{kq}
+		}
 \end{align}
-where we define $[\UU (\one+\UU)\inverse]_{kq}$ to be a double Fourier transform of the space-labeled equivalent summed over spins.
+where we sum over spins.
 A reasonable algorithm to compute this is to construct a tensor $T_{kq}^i = 2\pi(k+q)^i/N_x$ and do element-wise multiplication,
 \begin{align}
 	\expectation{\tilde{j}_x}
+	=
+	\expectation{
+		\frac{1}{2} \sum_{kq} e^{2\pi i(q-k) x / N_x} \left[ T^i \G\right]_{kq}
+	}
 	&=
 	\expectation{
-		\frac{1}{2\Volume} \sum_{kq} e^{2\pi i(q-k) x / N_x} \left[ T^i \UU (\one+\UU)\inverse\right]_{kq}
+		\frac{\Volume}{2\Volume} \sum_{yzkq} \delta_{xy}\delta_{xz} e^{2\pi i(qz-ky) / N_x} \left[ T^i \G\right]_{kq}
 	}
 	\nonumber\\
 	&=
 	\expectation{
-		\frac{\Volume}{2\Volume^2} \sum_{ykq} \delta_{xy} e^{2\pi i(qx-ky) / N_x} \left[ T^i \UU (\one+\UU)\inverse\right]_{kq}
-	}
-	\nonumber\\
-	&=
-	\expectation{
-		\frac{\Volume}{2} \sum_{yz} \delta_{xy} \delta_{xz} \oneover{\Volume^2}\sum_{kq} e^{2\pi i(qz-ky) / N_x} \left[ T^i \UU (\one+\UU)\inverse\right]_{kq}
-	}
-	\nonumber\\
-	&=
-	\expectation{
-		\diag{
-			\frac{\Volume}{2} \oneover{\Volume^2}\sum_{kq} e^{2\pi i(qz-ky) / N_x} \left[ T^i \UU (\one+\UU)\inverse\right]_{kq}
-		}_x
+		\frac{\Volume}{2} \sum_{yz} \delta_{xy} \delta_{xz} \oneover{\Volume}\sum_{kq} e^{2\pi i(qz-ky) / N_x} \left[ T^i \G\right]_{kq}
 	}
 \end{align}
 which are the diagonal elements of a double Fourier transform; we can also express $\tilde{j}_x$ as a trace with a projector.
@@ -227,15 +211,15 @@ We take the divergence of $\tilde{j}$,
 	-\partial_t N = \sum_x (\grad\cdot \tilde{j})_x
 	&=
 	\sum_x \oneover{2\Volume} \sum_{kq} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi i(q-k)}{N_x}\right) \cdot \left(\frac{2\pi [ k+q ]}{N_x}\right)
-		[\UU (\one+\UU)\inverse]_{kq}
+		\G_{kq}
 	\nonumber\\
 	&=
 	\frac{4\pi^2i}{2\Volume^2} \sum_{kq}  (q^2-k^2)
-		[\UU (\one+\UU)\inverse]_{kq} \sum_x e^{+2\pi i (q-k) x / N_x}
+		\G_{kq} \sum_x e^{+2\pi i (q-k) x / N_x}
 	\nonumber\\
 	&=
 	\frac{4\pi^2i}{2\Volume^2} \sum_{kq}  (q^2-k^2)
-		[\UU (\one+\UU)\inverse]_{kq} \Volume \delta_{kq} = 0
+		\G_{kq} \Volume \delta_{kq} = 0
 \end{align}
 and so this current indeed corresponds to the lattice-exact conservation of $N$, which is true as an operator and therefore configuration-by-configuration.
 
