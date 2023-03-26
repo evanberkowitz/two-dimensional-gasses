@@ -66,6 +66,13 @@ Energies
 .. autofunction:: tdg.observable.energy.Potential
 .. autofunction:: tdg.observable.energy.FreeEnergy
 
+Currents
+--------
+
+Currents tell you how conserved quantities flow from place to place.
+
+.. autofunction:: tdg.observable.current.current
+
 Two-Point Correlations
 ======================
 

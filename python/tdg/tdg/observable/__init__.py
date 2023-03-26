@@ -16,3 +16,4 @@ import tdg.observable.contact
 import tdg.observable.nn
 import tdg.observable.ss
 import tdg.observable.energy
+import tdg.observable.current
