@@ -43,7 +43,7 @@ class Lattice(H5able):
         r'''
         The dimension sizes in order.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.dims
         tensor([5, 5])
         '''
@@ -51,7 +51,7 @@ class Lattice(H5able):
         r'''
         The total number of sites.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.sites
         25
         '''
@@ -61,7 +61,7 @@ class Lattice(H5able):
         r'''
         The coordinates in the x direction.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.x
         tensor([ 0,  1,  2, -2, -1])
         '''
@@ -69,7 +69,7 @@ class Lattice(H5able):
         r'''
         The coordinates in the y direction.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.y
         tensor([ 0,  1,  2, -2, -1])
         '''
@@ -80,7 +80,7 @@ class Lattice(H5able):
         r'''
         A tensor of size ``dims`` with the x coordinate as a value.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.X
         tensor([[ 0,  0,  0,  0,  0],
                 [ 1,  1,  1,  1,  1],
@@ -92,7 +92,7 @@ class Lattice(H5able):
         r'''
         A tensor of size ``dims`` with the y coordinate as a value.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.Y
         tensor([[ 0,  1,  2, -2, -1],
                 [ 0,  1,  2, -2, -1],
@@ -115,7 +115,7 @@ class Lattice(H5able):
         '''
         A tensor of size ``[sites, len(dims)]``.  Each row contains a pair of coordinates.  The order matches ``{X,Y}.flatten()``.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.coordinates
         >>> lattice.coordinates
         tensor([[ 0,  0],
@@ -203,6 +203,64 @@ class Lattice(H5able):
             return torch.sum(d**2)
 
         return torch.sum(d**2, axis=(1,))
+
+    def cross(self, a, b):
+        r'''
+        The cross product of two vectors :math:`a \times b`.  In two dimensions this is a scalar value.
+        However, for compatibility with three dimensions we add an extra index.
+
+        Parameters
+        ----------
+            a: torch.tensor:
+                first vector
+            b: torch.tensor:
+                second vector
+
+        Returns
+        -------
+            torch.tensor
+
+        If ``a`` and ``b`` are single vectors, returns a single value in a one-dimensional torch.tensor.
+
+        >>> lattice = Lattice(5)
+        >>> x = lattice.coordinates
+        >>> lattice.cross(x[1], x[5])
+        tensor([-1])
+
+        If ``a`` is a single vector and ``b`` is two-dimensional (vector index last), returns a tensor of shape ``[b.shape[0], 1]``,
+
+        >>> lattice.cross(x[1], x[1:-1:5])
+        tensor([[ 0],
+                [-1],
+                [-2],
+                [ 2],
+                [ 1]])
+
+        Similarly, if ``a`` is two-dimensional (vector index last), returns a tensor of shape ``[a.shape[0], 1]``,
+
+        >>> lattice.cross(x[1:-1:5], x[2])
+        tensor([[ 0],
+                [ 2],
+                [ 4],
+                [-4],
+                [-2]])
+
+        Finally, if both ``a`` and ``b`` are two-dimensional (vector index last), returns a tensor of shape ``[a.shape[0], b.shape[0], 1]``,
+
+        >>> lattice.cross(x[:5], x[:7]).shape
+        torch.Size([5, 7, 1])
+
+        '''
+        if a.dim() == 1 and b.dim() == 1:
+            return torch.tensor([a[0] * b[1] - a[1] * b[0]])
+        if a.dim() == 1 and b.dim() == 2:
+            return (a[0] * b[:, 1] - a[1] * b[:, 0])[:,None]
+        if a.dim() == 2 and b.dim() == 1:
+            return (a[:, 0] * b[1] - a[:, 1] * b[0])[:,None]
+        if a.dim() == 2 and b.dim() == 2:
+            return (torch.outer(a[:,0], b[:, 1]) - torch.outer(a[:, 1], b[:, 0]))[:,:,None]
+
+        raise NotImplementedError(f"The cross product is only threaded once over each argument.  You tried {a.shape=} and {b.shape=}")
 
     def coordinatize(self, v, dims=(-1,)):
         r'''
