@@ -41,20 +41,20 @@ def _UUPlusOneInverseUU(ensemble):
 def G(ensemble):
     r'''
     The equal-time propagator that is the contraction of :math:`\psi^\dagger_{a\sigma} \psi_{b\tau}`
-    where :math:`a` and :math:`b` are sites and :math:`\sigma` and :math:`\tau` are spins.
+    where :math:`a` and :math:`b` are sites and :math:`\sigma` and :math:`\tau` are spin indices.
 
     .. math ::
-       \mathcal{G} = [ \mathbb{U} (\mathbb{1} + \mathbb{U})^{-1} ]_{ab}^{\sigma\tau}
+       \mathcal{G}^{\sigma\tau}_{ab} = [ \mathbb{U} (\mathbb{1} + \mathbb{U})^{-1} ]_{ba}^{\tau\sigma}
     
     A five-axis tensor: configurations slowest, then :math:`a`, :math:`b`, :math:`\sigma`, and :math:`\tau`.
     '''
-    return ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
+    return ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU).transpose(1,2).transpose(3,4)
 
 @observable
 def G_momentum(ensemble):
     r'''
     The equal-time propagator that is the contraction of :math:`N_x^{-2} \psi^\dagger_{k\sigma} \psi_{q\tau}`
-    where :math:`k` and :math:`q` are integer momenta and :math:`\sigma` and :math:`\tau` are spins.
+    where :math:`k` and :math:`q` are integer momenta and :math:`\sigma` and :math:`\tau` are spin indices.
 
     .. math ::
        \mathcal{G}^{\sigma\tau}_{kq} = \frac{1}{N_x^2} \sum_{xy} e^{+2\pi i k x / N_x} \mathcal{G}^{\sigma\tau}_{xy} e^{-2\pi i q y / N_x}

@@ -663,6 +663,7 @@ The simplest is
 	&
 	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{1,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
 	&= \UU \PP_a
+	\label{eq:dmu replacement}
 \end{align}
 where $\PP_a$ is a spin-independent projector to site $a$.
 This derivative is simple because $\tilde{\mu}$ appears inside the matrix exponential $\FF$ \eqref{FF} coupled to the (spin) identity, and the identity commutes with all the Pauli matrices.
@@ -703,13 +704,39 @@ When $\vec{h}=0$ we have the simplification (by taking a careful limit, holding 
 	\label{eq:dFdh with h=0}
 \end{align}
 From the more explicit form \eqref{dFdh factor} we can see how the $\tilde{h}\goesto0$ limit \eqref{dFdh with h=0} emerges; the last term vanishes while the $\delta$ term survives and the $\hat{h}^i\hat{h}^k$ terms cancel.
-
-Finally, note that if we take the inner product of the matrix element \eqref{dFdh factor} with $\hat{h}$ one finds
+Note that if we take the inner product of the matrix element \eqref{dFdh factor} with $\hat{h}$ one finds
 \begin{align}
 	\hat{h}^i \left.\oneover{\Delta\tilde{t}}\frac{\partial}{\partial \delta \tilde{h}^i_{t,a}} \FF_{t'}\right|_{\delta\tilde{\mu} = 0, \delta \tilde{h}=0}
 	&= \delta_{tt'} \FF_{t'} \PP_a \half(\hat{h}\cdot\sigma)
 \end{align}
 as expected.
+
+Finally, note that the insertion \eqref{dFdh factor} contains terms of all orders in $\Delta \tilde{t}$.
+Since our Trotterization \eqref{trotterization} is only valid to $\order{\Delta \tilde{t}^2}$, most of that dependence is indistinguishable from discretization error.
+Why not jump straight to the discretization-independent observable?
+Just like the $\vec{h}\goesto0$ limit,
+\begin{align}
+	\lim_{\Delta\tilde{t}\goesto0} \left[
+		\half \hat{h}^i \hat{h}^k
+	+	\frac{\sinh \cosh}{\Delta\tilde{t} \abs{\tilde{h}}} \left(\delta^{ik}-\hat{h}^i\hat{h}^k\right)
+	+	\frac{i \sinh^2}{\Delta\tilde{t} \abs{h}} \epsilon_{ijk} \hat{h}^j
+	\right]\sigma_k
+	=
+	\half \sigma^i + \order{\Delta \tilde{t}}.
+\end{align}
+So, we can replace
+\begin{align}
+	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^{i}_{x}} \FF
+	&\rightsquigarrow
+	\FF \PP_x \half \sigma^i
+	&
+	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^{i}_{x}} \UU
+		&\rightsquigarrow
+	\UU \PP_x \half \sigma^i
+	\label{eq:dh replacement}
+\end{align}
+and we can check that the $\Delta\tilde{t}$-independent pieces of second derivatives (and beyond) all agree with this replacement rule.
+In a calculation of the spin similar to the number operator \eqref{fermionic particle number}, this goes inside the trace, giving $\tr{(1+\UU)\inverse \UU \PP_x \half \sigma^i}$.
 
 \subsection{Wick's Theorem and Tensor Contractions}\label{sec:contractions}
 
@@ -969,12 +996,52 @@ Now we replace $Z$ with the computational generating function,
 \end{align}
 exactly as before \eqref{fermionic particle number}!
 
+Let us repeat the above but for generic fermion operators differentiating $\partial\adjoint_{x\sigma} \log Z[\chi\adjoint, \chi] \partial_{y\tau}$,
+\begin{align}
+	\oneover{Z[\chi\adjoint,\chi]} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\tilde{\psi}_{x\sigma} e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} \tilde{\psi}\adjoint_{y\tau}
+	}
+	&=
+	\oneover{Z[\chi\adjoint,\chi]} \left(\int DA\; e^{-S} \left(\one - \UU (\one+\UU)\inverse \right)^{\sigma\upsilon}_{xz} \chi_{z\upsilon} e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi } \right)\partial_{y\tau}
+	\nonumber\\
+	\oneover{Z[\chi\adjoint,\chi]} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\tilde{\psi}_{x\sigma} e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} \tilde{\psi}\adjoint_{y\tau}
+	}
+	&=
+	\oneover{Z[\chi\adjoint,\chi]} \int DA\; e^{-S} \left(\one - \UU (\one+\UU)\inverse \right)^{\sigma\tau}_{xy} e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }
+	\nonumber\\
+	\oneover{Z} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\tilde{\psi}_{x\sigma} \tilde{\psi}\adjoint_{y\tau}
+	}
+	&=
+	\oneover{Z} \int DA\; e^{-S} \left(\one - \UU (\one+\UU)\inverse \right)^{\sigma\tau}_{xy}
+	\nonumber\\
+	\oneover{Z} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\left(\delta_{xy}^{\sigma\tau} - \tilde{\psi}\adjoint_{y\tau} \tilde{\psi}_{x\sigma}\right)
+	}
+	&=
+	\oneover{Z} \int DA\; e^{-S} \left(\one - \UU (\one+\UU)\inverse \right)^{\sigma\tau}_{xy}
+	\nonumber\\
+	\oneover{Z} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\tilde{\psi}\adjoint_{y\tau} \tilde{\psi}_{x\sigma}
+	}
+	&=
+	\oneover{Z} \int DA\; e^{-S} \left[\UU (\one+\UU)\inverse \right]^{\sigma\tau}_{xy}
+	\qquad\text{Note the index order!}
+\end{align}
+where in the third line we dropped terms that go to zero when we set the Grassmanns to zero.
+
 The generic lesson is that we may perform Wick contractions on normal-ordered operators, replacing the contraction with the equal-time \emph{propagator} $\G$,
 \begin{align}
 	\contraction{}{\tilde{\psi}\adjoint_{x\sigma}}{}{\tilde{\psi}_{y\tau}}
 	\tilde{\psi}\adjoint_{x\sigma}\tilde{\psi}_{y\tau}
 	\goesto
-	\G^{\sigma\tau}_{xy} = \left[\UU (\one+\UU)\inverse\right]_{xy}^{\sigma\tau}
+	\G^{\sigma\tau}_{xy} = \left[\UU (\one+\UU)\inverse\right]_{yx}^{\tau\sigma} \qquad\text{Note the index order!}
 	\label{eq:propagator}
 \end{align}
 as long as we track the number of minus signs that come from `crossing' in the contraction.
@@ -997,7 +1064,7 @@ Therefore, it is natural to define
 	\contraction{}{\tilde{\psi}\adjoint_{k\sigma}}{}{\tilde{\psi}_{q\tau}}
 	\tilde{\psi}\adjoint_{k\sigma}\tilde{\psi}_{q\tau}
 	&\goesto
-	\G^{\sigma\tau}_{kq} = \oneover{\Volume} \sum_{xy} e^{+2\pi i k x / N_x} \left(\G^{\sigma\tau}_{xy} = \left[\UU (\one+\UU)\inverse\right]_{xy}^{\sigma\tau} \right) e^{-2\pi i q y / N_x}
+	\G^{\sigma\tau}_{kq} = \oneover{\Volume} \sum_{xy} e^{+2\pi i k x / N_x} \left(\G^{\sigma\tau}_{xy} = \left[\UU (\one+\UU)\inverse\right]_{yx}^{\tau\sigma} \right) e^{-2\pi i q y / N_x}
 	\label{eq:propagator in momentum space}
 \end{align}
 which may be implemented via one forward and one inverse Fourier transform regardless of convention.

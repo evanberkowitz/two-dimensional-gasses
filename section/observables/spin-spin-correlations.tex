@@ -9,16 +9,11 @@ In fact,
     \expectation{ \tilde{s}^i_a \tilde{s}^j_b } - \expectation{\tilde{s}^i_a} \expectation{\tilde{s}^j_b}
 \end{align}
 is positive semi-definite when $a=b$ and $i=j$.
-The disconnected pieces are computed in \Secref{correlation functions},
-\begin{align}
-	\expectation{ \tilde{s}^i_a } = \expectation{ \G^{\sigma\tau}_{aa} \half \sigma^{i}_{\tau\sigma}},
-\end{align}
-though via Wick contractions one find
+The disconnected pieces may be computed via Wick contraction to find
 \begin{align}
 	\expectation{ \tilde{s}^i_a } = \expectation{ \G^{\sigma\tau}_{aa} \half \sigma^{i}_{\sigma\tau}}
 \end{align}
-(note the order of indices on the Pauli matrix).
-\todo{Sort this out!}
+which matches the result \eqref{dh replacement} computed in \Secref{correlation functions}, using the propagator \eqref{propagator}.
 
 We normal-order and then Wick contract,
 \begin{align}

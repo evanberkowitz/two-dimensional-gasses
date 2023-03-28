@@ -61,7 +61,7 @@ We can rewrite these projected traces if we leverage the simple properties of th
     \half\expectation{\sum_{st}\; [(\one + \UU)\inverse \UU]_{aa}^{ss} [(\one + \UU)\inverse \UU]_{aa}^{tt} - [(\one + \UU)\inverse \UU]_{aa}^{st} [(\one + \UU)\inverse \UU]_{aa}^{ts} }
     \nonumber\\
     &=
-    \half\expectation{\sum_{st}\; \G_{aa}^{ss} \G_{aa}^{tt} - \G_{aa}^{st} \G_{aa}^{ts} }
+    \half\expectation{\sum_{st}\; \G_{aa}^{ss} \G_{aa}^{tt} - \G_{aa}^{ts} \G_{aa}^{st} }
 \end{align}
 where $s,t$ are spin indices; this form is easily amenable to programming via \href{https://pytorch.org/docs/stable/generated/torch.einsum.html}{\texttt{einsum}}.
 
@@ -98,13 +98,6 @@ Now we perform Wick contractions,
 	\contraction[1em]{}{\tilde{\psi}\adjoint_{at}}{\tilde{\psi}\adjoint_{as}}{\tilde{\psi}_{as}}
 	\contraction[0.75em]{\tilde{\psi}\adjoint_{at}}{\tilde{\psi}\adjoint_{as}}{\tilde{\psi}_{as}}{\tilde{\psi}_{at}}
 	\tilde{\psi}\adjoint_{at}\tilde{\psi}\adjoint_{as}\tilde{\psi}_{as}\tilde{\psi}_{at}
-	\nonumber\\
-	&=
-	[ \UU (\one+\UU\inverse) ]^{tt}_{aa}
-	[ \UU (\one+\UU\inverse) ]^{ss}_{aa}
-	-
-	[ \UU (\one+\UU\inverse) ]^{ts}_{aa}
-	[ \UU (\one+\UU\inverse) ]^{st}_{aa}
 	\nonumber\\
 	&=
 	\G^{tt}_{aa}
