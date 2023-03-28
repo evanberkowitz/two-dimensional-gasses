@@ -23,6 +23,7 @@ def _UU(ensemble):
     # A matrix for each configuration.
     return functorch.vmap(ensemble.Action.FermionMatrix.UU)(ensemble.configurations)
 
+@observable
 def _detUUPlusOne(ensemble):
     # One per configuration.
     UUPlusOne = torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
