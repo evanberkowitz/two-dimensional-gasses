@@ -262,14 +262,20 @@ class Lattice(H5able):
 
         raise NotImplementedError(f"The cross product is only threaded once over each argument.  You tried {a.shape=} and {b.shape=}")
 
-    def coordinatize(self, v, dims=(-1,)):
+    def coordinatize(self, v, dims=(-1,), center_origin=False):
         r'''
         Unflattens all the dims from a linear superindex to one index for each dimension in ``.dims``.
         
         Parameters
         ----------
             v: torch.tensor
+                A tensor with at least one dimension linearized in space.
             dims: tuple of integers
+                The directions you wish to unflatten into a meaningful shape that matches the lattice.
+            center_origin: boolean
+                If true, each coordinatized dimension is rolled so that the origin is in the center of the two slices.  This is primarily good for making pictures.  :func:`~.linearize` does not provide an inverse of this, because you really should not do it in the middle of a calculation!
+
+                
             
         Returns
         -------
@@ -289,7 +295,17 @@ class Lattice(H5able):
                 torch.tensor([s]) if i not in to_reshape else self.dims
                 for i, s in enumerate(v.shape)) 
             ))
-        return v.reshape(new_shape)
+
+        reshaped = v.reshape(new_shape)
+        if not center_origin:
+            return reshaped
+        
+        axes = to_reshape + torch.arange(len(to_reshape))
+        shifts = (self.nx // 2, self.ny // 2)
+        for a in axes:
+            reshaped = reshaped.roll(shifts, dims=(a,a+1))
+
+        return reshaped
 
     def linearize(self, v, dims=(-1,)):
         r'''
