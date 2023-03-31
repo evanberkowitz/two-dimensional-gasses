@@ -1,7 +1,8 @@
 ####
-#### The Decorator
+#### The Decorators
 ####
 from tdg.observable.observable import observable
+from tdg.observable.derived import derived
 
 ####
 #### Observables
