@@ -8,6 +8,18 @@
 
 \newcommand{\repoURL}{https://github.com/evanberkowitz/two-dimensional-gasses}
 
+%%%%
+%%%%    lower-case caligraphic \mathpzc font
+%%%%
+
+\DeclareFontFamily{OT1}{pzc}{}
+\DeclareFontShape{OT1}{pzc}{m}{it}{<-> s * [1.10] pzcmi7t}{}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+%%%%
+%%%%    Some few-letter shortcuts
+%%%%
+
 \newcommand{\BB}{\ensuremath{\mathbb{B}}\xspace}
 \newcommand{\dd}{\ensuremath{\mathbbm{d}}\xspace}
 \newcommand{\DD}{\ensuremath{\mathbb{D}}\xspace}
@@ -15,6 +27,7 @@
 \newcommand{\G}{\ensuremath{\mathcal{G}\xspace}}
 \newcommand{\Ham}{\ensuremath{\mathcal{H}}\xspace}
 \newcommand{\MM}{\ensuremath{\mathbb{M}}\xspace}
+\newcommand{\p}{\ensuremath{\mathpzc{p}}\xspace}
 \newcommand{\PP}{\ensuremath{\mathbb{P}}\xspace}
 \newcommand{\uu}{\ensuremath{\mathbbm{u}}\xspace}
 \newcommand{\UU}{\ensuremath{\mathbb{U}}\xspace}

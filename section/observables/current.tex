@@ -224,3 +224,62 @@ We take the divergence of $\tilde{j}$,
 and so this current indeed corresponds to the lattice-exact conservation of $N$, which is true as an operator and therefore configuration-by-configuration.
 
 Computing the spin current proceeds similarly, but the propagator gets a $\half \sigma$, and we also should add a contribution from the commutator of $\tilde{\vec{h}}\cdot\tilde{\vec{S}}$ with the local $s$.
+
+We can compute a current-current two-point function or the local square of the current.
+Let's start with
+\begin{align}
+	\tilde{j}\adjoint_x \cdot \tilde{j}_y
+	&=
+	\oneover{4\Volume^2}\sum_{q'k'kq} e^{2\pi i[ -(q'-k')x + (q-k) y]/N_x} \left(\frac{2\pi}{N_x}\right)^2 (k'+q')\cdot(k+q)
+	\tilde{\psi}\adjoint_{q'\sigma} \tilde{\psi}_{k'\sigma} \tilde{\psi}\adjoint_{k\tau} \tilde{\psi}_{q\tau}
+\end{align}
+which we may then simplify by setting $y=x$ or convolving $y$ with $x$.
+Putting into normal order,
+\begin{align}
+	\tilde{j}\adjoint_x \cdot \tilde{j}_y
+	&=
+	\oneover{4}\sum_{q'k'kq} e^{2\pi i[ -(q'-k')x + (q-k) y]/N_x} \left(\frac{2\pi}{N_x}\right)^2 (k'+q')\cdot(k+q)
+	\left(\G^{\tau\tau}_{kq}\G^{\sigma\sigma}_{q'k'} - \G^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q} + \Volume \delta^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q}\right)
+\end{align}
+The naive algorithm for computing this would construct two tensors that require $\order{\Volume^4}$ memory (the dot product and the contractions), multiply them element-wise, and fourier transform.
+
+We can avoid the $\order{\Volume^4}$ footprint, however, if we are a bit clever.
+Let us construct three additional quantities,
+\begin{align}
+	[\p\G]^{\sigma\tau}_{kiq} &= \frac{2\pi}{N_x} k^i \G^{\sigma\tau}_{kq}
+	&
+	[\G \p]^{\sigma\tau}_{kqi} &= \frac{2\pi}{N_x} \G^{\sigma\tau}_{kq} q^i
+	&
+	[\p\G \p]^{\sigma\tau}_{kiqj} &= \left(\frac{2\pi}{N_x}\right)^2 k^i \G^{\sigma\tau}_{kq} q^j,
+\end{align}
+all of $\order{\Volume^2}$ memory and taking $\order{\Volume^{\text{3 or 4}}}$ to construct.
+\begin{align}
+	\tilde{j}\adjoint_x \cdot \tilde{j}_y
+	=&
+	\oneover{4}\sum_{q'k'kq} e^{2\pi i[ -(q'-k')x + (q-k) y]/N_x}
+	\nonumber\\
+	\Bigg\{&
+		[\p\G]^{\tau\tau}_{kiq} [\G\p]^{\sigma\sigma}_{q'k'i}
+	+	[\p\G]^{\tau\tau}_{kiq} [\p\G]^{\sigma\sigma}_{q'ik'}
+	+	[\G\p]^{\tau\tau}_{kqi} [\G\p]^{\sigma\sigma}_{q'k'i}
+	+	[\G\p]^{\tau\tau}_{kqi} [\p\G]^{\sigma\sigma}_{q'ik'}
+	\nonumber\\
+	&
+	-	[\p\G\p]^{\tau\sigma}_{kik'i} \G^{\sigma\tau}_{q'q}
+	-	[\G\p]^{\tau\sigma}_{kk'i} [\G\p]^{\sigma\tau}_{q'qi}
+	-	[\p\G]^{\tau\sigma}_{kik'} [\p\G]^{\sigma\tau}_{q'iq}
+	-	\G^{\tau\sigma}_{kk'} [\p\G\p]^{\sigma\tau}_{q'iqi}
+	\nonumber\\
+	&
+	+\left(
+		[\p\Volume\delta\p]^{\tau\sigma}_{kik'i} \G^{\sigma\tau}_{q'q}
+	+	[\Volume\delta\p]^{\tau\sigma}_{kk'i} [\G\p]^{\sigma\tau}_{q'qi}
+	+	[\p\Volume\delta]^{\tau\sigma}_{kik'} [\p\G]^{\sigma\tau}_{q'iq}
+	+	\Volume\delta^{\tau\sigma}_{kk'} [\p\G]^{\sigma\tau}_{q'iqi}
+	\right)
+	\Bigg\}
+\end{align}
+where we defined the momentum-multiplied $[\p\Volume\delta]$, $[\Volume\delta\p]$, and $[\p\Volume\delta\p]$ by analogy.
+We can now apply the fourier transformation term-by-term and indeed factor-by-factor, as long as we carefully pay attention to which resulting FTs are in $x$ and which are in $y$.
+Finally, we can do the sums on $i$, $\sigma$, and $\tau$.
+This is a substantially smarter algorithm, though it's much more annoying to code correctly.

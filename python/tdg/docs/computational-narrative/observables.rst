@@ -72,6 +72,7 @@ Currents
 Currents tell you how conserved quantities flow from place to place.
 
 .. autofunction:: tdg.observable.current.current
+.. autofunction:: tdg.observable.current.current_squared
 
 Vorticity
 ---------
@@ -87,6 +88,7 @@ By translation invariance these may be reduced to a function of one space variab
 
 .. autofunction:: tdg.observable.nn.nn
 .. autofunction:: tdg.observable.ss.ss
+.. autofunction:: tdg.observable.current.current_current
 .. autofunction:: tdg.observable.vorticity.vorticity_vorticity
 
 .. _custom observables:
