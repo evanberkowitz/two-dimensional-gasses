@@ -36,6 +36,8 @@ class Bootstrap(H5able):
     def __init__(self, ensemble, draws=100):
         self.Ensemble = ensemble
         r'''The ensemble from which to resample.'''
+        self.Action = ensemble.Action
+        r'''The action underlying the ensemble.'''
         self.draws = draws
         r'''The number of resamplings.'''
         cfgs = ensemble.configurations.shape[0]

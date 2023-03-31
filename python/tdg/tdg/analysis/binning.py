@@ -23,6 +23,8 @@ class Binning:
     def __init__(self, ensemble, width):
         self.Ensemble = ensemble
         r'''The ensemble underlying the binning.'''
+        self.Action = ensemble.Action
+        r'''The action underlying the binning.'''
         self.width = width
         r'''The width over which to average'''
         cfgs  = ensemble.configurations.shape[0]
