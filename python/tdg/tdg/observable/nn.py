@@ -1,5 +1,5 @@
 import torch
-from tdg.observable import observable
+from tdg.observable import observable, derived
 
 @observable
 def nn(ensemble):
@@ -22,3 +22,17 @@ def nn(ensemble):
                         L.convolver + 0.j
     )
 
+@derived
+def density_density_fluctuations(ensemble):
+    r'''
+    A derived quantity, :math:`\left\langle n*n \right\rangle - \left\langle n \right\rangle * \left\langle n \right\rangle`.
+
+    Bootstraps first, then relative coordinate.
+
+    .. todo::
+       The disconnected convolution may be fourier accelerated.
+    '''
+
+    L = ensemble.Action.Spacetime.Lattice
+
+    return ensemble.nn - torch.einsum('ca,cb,bra->cr', ensemble.n('fermionic'), ensemble.n('fermionic'), 0.j+L.convolver)
