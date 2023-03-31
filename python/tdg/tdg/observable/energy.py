@@ -58,7 +58,5 @@ def FreeEnergy(ensemble):
 
           - ensemble.Action.mu * ensemble.N('fermionic')
 
-          - ensemble.Action.h[0] * ensemble.Spin(1)
-          - ensemble.Action.h[1] * ensemble.Spin(2)
-          - ensemble.Action.h[2] * ensemble.Spin(3)
+          - torch.einsum('i,ci->c', 0.j+ensemble.Action.h, ensemble.Spin)
             )

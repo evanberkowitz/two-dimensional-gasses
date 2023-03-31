@@ -449,8 +449,8 @@ class Sector(H5able):
         '''
         return self._reweight(
             self._grid(lambda n, s:
-                       torch.einsum('sc,s->c',
-                                    torch.stack((self.Canonical._term(n,s).Spin(i) for i in [1,2,3])),
+                       torch.einsum('cs,s->c',
+                                    (self.Canonical._term(n,s).Spin),
                                     self.Canonical.hhat)
                       ))
 
@@ -502,6 +502,7 @@ class Sector(H5able):
 
 def _demo(steps=100, **kwargs):
 
+    import tdg.ensemble
     import tdg.action
     S = tdg.action._demo(**kwargs)
 
@@ -511,16 +512,16 @@ def _demo(steps=100, **kwargs):
     hmc = HMC.MarkovChain(H, integrator)
 
     try:
-        ensemble = GrandCanonical(S).generate(steps, hmc, progress=kwargs['progress'])
+        ensemble = tdg.ensemble.GrandCanonical(S).generate(steps, hmc, progress=kwargs['progress'])
     except:
-        ensemble = GrandCanonical(S).generate(steps, hmc)
+        ensemble = tdg.ensemble.GrandCanonical(S).generate(steps, hmc)
 
     return ensemble
 
 if __name__ == '__main__':
     from tqdm import tqdm
+    import tdg, tdg.observable
     torch.set_default_dtype(torch.float64)
     ensemble = _demo(progress=tqdm)
     print(f"The fermionic estimator for the total particle number is {ensemble.N('fermionic').mean():+.4f}")
     print(f"The bosonic   estimator for the total particle number is {ensemble.N('bosonic'  ).mean():+.4f}")
-    print(f"The Spin(0)   estimator for the total particle number is {ensemble.Spin(0).mean()       :+.4f}")
