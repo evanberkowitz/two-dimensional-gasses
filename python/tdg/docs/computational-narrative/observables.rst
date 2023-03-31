@@ -89,6 +89,7 @@ By translation invariance these may be reduced to a function of one space variab
 .. autofunction:: tdg.observable.nn.nn
 .. autofunction:: tdg.observable.nn.density_density_fluctuations
 .. autofunction:: tdg.observable.ss.ss
+.. autofunction:: tdg.observable.ss.spin_spin_fluctuations
 .. autofunction:: tdg.observable.current.current_current
 .. autofunction:: tdg.observable.vorticity.vorticity_vorticity
 
