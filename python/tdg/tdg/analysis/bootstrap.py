@@ -49,7 +49,11 @@ class Bootstrap(H5able):
         # Each observable should be multiplied by its respective weight.
         # Each draw should be divided by its average weight.
         w = self.Ensemble.weights[self.indices]
-        return torch.einsum('cd,cd...->cd...', w, obs[self.indices]).mean(axis=0) / w.mean(axis=0)
+
+        # This index ordering is needed to broadcast the weights division correctly.
+        # See https://github.com/evanberkowitz/two-dimensional-gasses/issues/55
+        # We return the bootstrap axis to the front to provide an analogous interface for Bootstrap and GrandCanonical quantities.
+        return torch.einsum('...d->d...', torch.einsum('cd,cd...->c...d', w, obs[self.indices]).mean(axis=0) / w.mean(axis=0))
     
     @cached
     def __getattr__(self, name):
