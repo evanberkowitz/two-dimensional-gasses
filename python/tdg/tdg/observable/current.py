@@ -123,10 +123,13 @@ def current_current(ensemble):
     The convolution of the dimensionless current with itself :math:`(\tilde{\jmath}^i*\tilde{\jmath}^i)_r`, with a dot product of the vector indices.
 
     Configurations slowest, then relative coordinate :math:`r`.
-
-    .. todo::
-       The convolution may be accelerated with fourier transformation.
     '''
 
     L = ensemble.Action.Spacetime.Lattice
-    return torch.einsum('cxy,yrx->cr', ensemble._current_current, 0.j+L.convolver)
+
+
+    # These two lines should differ only in speed:
+    #
+    #   return torch.einsum('cxy,yrx->cr', ensemble._current_current, 0.j+L.convolver)
+    #
+    return L.fft(torch.einsum('ckk->ck', L.fft(L.ifft(ensemble._current_current, axis=2), axis=1)), axis=1) / L.sites

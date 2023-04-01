@@ -8,9 +8,6 @@ def ss(ensemble):
     The (spatial) convolution of :math:`s^i * s^j`, which plays an important role in spin-spin fluctuation correlators.
 
     Configurations slowest, then (linearized) sites, then i, then j.
-
-    .. todo::
-       The convolution may be fourier accelerated.
     '''
 
     L = ensemble.Action.Spacetime.Lattice
@@ -33,10 +30,11 @@ def ss(ensemble):
     - torch.einsum('cabmp,cbaon,imn,jop->cabij', ensemble.G, ensemble.G, tdg.PauliMatrix[1:], tdg.PauliMatrix[1:]/4)
     )
 
-    return torch.einsum('cabij,bra->crij',
-                        c,
-                        L.convolver + 0.j
-    )
+    #   return torch.einsum('cabij,bra->crij',
+    #                       c,
+    #                       L.convolver + 0.j
+    #   )
+    return L.fft(torch.einsum('ckkij->ckij', L.fft(L.ifft(c, axis=2), axis=1)), axis=1) / L.sites
 
 @derived
 def spin_spin_fluctuations(ensemble):
@@ -44,12 +42,13 @@ def spin_spin_fluctuations(ensemble):
     A derived quantity, :math:`\left\langle (e^i*s^j)_r \right\rangle - \left(\left\langle s^i \right\rangle * \left\langle s^j \right\rangle\right)_r`.
 
     Bootstraps first, then relative coordinate :math:`r`.
-
-    .. todo::
-       The disconnected convolution may be fourier accelerated.
     '''
 
     L = ensemble.Action.Spacetime.Lattice
 
-    return ensemble.ss - torch.einsum('cai,cbj,bra->crij', ensemble.spin, ensemble.spin, 0.j+L.convolver)
+    # These two lines should differ only in speed:
+    #
+    # return ensemble.ss - torch.einsum('cai,cbj,bra->crij', ensemble.spin, ensemble.spin, 0.j+L.convolver)
+    #
+    return ensemble.ss - L.fft(torch.einsum('cki,ckj->ckij', L.fft(ensemble.spin, axis=1), L.ifft(ensemble.spin, axis=1)), axis=1) / L.sites
 
