@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     nn = ensemble.nn[:,0]
     DO = ensemble.DoubleOccupancy
-    N  = ensemble.N('fermionic')
+    N  = ensemble.N
 
     logger.debug(f'<nn(0)> = {nn.mean():.{digits}f}')
     logger.debug(f'<DO>    = {DO.mean():.{digits}f}')

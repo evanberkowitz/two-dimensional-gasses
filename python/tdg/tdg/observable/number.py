@@ -2,13 +2,18 @@ import torch
 from tdg.observable import observable
 
 @observable
-def _n_fermionic(ensemble):
-    return torch.einsum('caass->ca',
-                        ensemble.G
-    )
+def n_bosonic(ensemble):
+    r'''
+    Using Ward-Takahashi identities one finds the bosonic estimator
 
-@observable
-def _n_bosonic(ensemble):
+    .. math::
+       \left\langle\tilde{n} = - \frac{1}{\tilde{\beta}} \tilde{V}^{-1} \sum_t A_t\right\rangle
+
+    of the local number density, one per site per configuration.
+
+    .. note::
+       Has substantially greater variance than the fermionic estimator :func:`~.n`, especially at low particle numbers.
+    '''
     Vinv = ensemble.Action.Potential.inverse(ensemble.Action.Spacetime.Lattice)
     return -torch.einsum(
                 'ab,ctb->cta',
@@ -17,56 +22,30 @@ def _n_bosonic(ensemble):
                 ).mean(1)/ (ensemble.Action.beta/ensemble.Action.Spacetime.nt)
 
 @observable
-def _N_fermionic(ensemble):
-    return ensemble._n_fermionic.sum(1)
-
-@observable
-def _N_bosonic(ensemble):
-    return ensemble._n_bosonic.sum(1)
-
-@observable
-def n(ensemble, method='fermionic'):
-    r'''
-    The local number density, one per site per configuration.
-
-    Parameters
-    ----------
-        method: str
-            The approach for calculating the local number densities, ``'fermionic'`` or ``'bosonic'``.
-
-    Returns
-    -------
-        torch.tensor
-            Configurations slowest, then sites.
-
-    .. note ::
-        The ``'fermionic'`` method computes a derivative of the fermion determinant, and seems to be positive-(semi?)definite.
-        The ``'bosonic'`` method computes the derivative of the gauge action and is not positive-definite.
-
-    '''
-    if method == 'fermionic':
-        return ensemble._n_fermionic
-    if method == 'bosonic':
-        return ensemble._n_bosonic
-    raise NotImplemented()
-
-@observable
-def N(ensemble, method='fermionic'):
+def N_bosonic(ensemble):
     r'''
     The total number, one per configuration.
 
-    Parameters
-    ----------
-        method: str
-            The approach for calculating the number, as in :func:`~.number.n`.
-
-    Returns
-    -------
-        torch.tensor
+    The sum of :func:`n_bosonic` on sites.
     '''
-    if method == 'fermionic':
-        return ensemble._N_fermionic
-    if method == 'bosonic':
-        return ensemble._N_bosonic
-    raise NotImplemented()
+    return ensemble.n_bosonic.sum(1)
+
+@observable
+def n(ensemble):
+    r'''
+    The fermionic estimator of the local number density, one per site per configuration.
+
+    Seems to be positive (semi-)definite.
+    '''
+    return torch.einsum('caass->ca',
+                        ensemble.G
+    )
+
+@observable
+def N(ensemble):
+    r'''
+    The total number, one per configuration.
+    Computed via fermion contractions; the sum of :func:`~.n` on sites.
+    '''
+    return ensemble.n.sum(1)
 

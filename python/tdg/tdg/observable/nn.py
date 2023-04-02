@@ -14,7 +14,7 @@ def nn(ensemble):
     c = (
     + torch.einsum('caass,cbbtt->cab', ensemble.G, ensemble.G)
     - torch.einsum('cbats,cabst->cab', ensemble.G, ensemble.G)
-    + torch.einsum('c,ab->cab', ensemble.N('fermionic') / L.sites, torch.eye(L.sites))
+    + torch.einsum('c,ab->cab', ensemble.N / L.sites, torch.eye(L.sites))
     )
 
     # return torch.einsum('cab,bra->cr',
@@ -36,6 +36,6 @@ def density_density_fluctuations(ensemble):
 
     # These two lines differ only in speed:
     #
-    # return ensemble.nn - torch.einsum('ca,cb,bra->cr', ensemble.n('fermionic'), ensemble.n('fermionic'), 0.j+L.convolver)
+    # return ensemble.nn - torch.einsum('ca,cb,bra->cr', ensemble.n, ensemble.n, 0.j+L.convolver)
     #
-    return ensemble.nn - L.fft(L.fft(ensemble.n('fermionic'), axis=1) * L.ifft(ensemble.n('fermionic'), axis=1), axis=1) / L.sites
+    return ensemble.nn - L.fft(L.fft(ensemble.n, axis=1) * L.ifft(ensemble.n, axis=1), axis=1) / L.sites

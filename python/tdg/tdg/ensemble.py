@@ -523,5 +523,5 @@ if __name__ == '__main__':
     import tdg, tdg.observable
     torch.set_default_dtype(torch.float64)
     ensemble = _demo(progress=tqdm)
-    print(f"The fermionic estimator for the total particle number is {ensemble.N('fermionic').mean():+.4f}")
-    print(f"The bosonic   estimator for the total particle number is {ensemble.N('bosonic'  ).mean():+.4f}")
+    print(f"The fermionic estimator for the total particle number is {ensemble.N.mean():+.4f}")
+    print(f"The bosonic   estimator for the total particle number is {ensemble.N_bosonic.mean():+.4f}")
