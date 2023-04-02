@@ -16,5 +16,5 @@ Contact
 -------
 
 .. autofunction:: tdg.observable.contact.Contact
-
+.. autofunction:: tdg.observable.contact.Contact_bosonic
 
