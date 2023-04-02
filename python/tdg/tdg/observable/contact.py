@@ -27,7 +27,7 @@ def doubleOccupancy(ensemble):
     # where the lower indices are spatial and the upper indices are spin.
     #
     # The first term is the square of the contraction of the fermionic n operator.
-    first = ensemble.n('fermionic')**2
+    first = ensemble.n**2
     # The second term is a bit more annoying;
     second = torch.einsum('caast,caats->ca',
                             ensemble.G,

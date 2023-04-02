@@ -34,12 +34,12 @@ H = tdg.HMC.Hamiltonian(S)
 integrator = tdg.HMC.Omelyan(H, 20)
 ensemble.generate(100, tdg.HMC.MarkovChain(H, integrator), progress=tqdm)
 
-pre = ensemble.N('fermionic').mean()
+pre = ensemble.N.mean()
 
 with h5.File(args.storage, 'w') as f:
     ensemble.to_h5(f.create_group('Ensemble'))
 with h5.File(args.storage, 'r') as f:
     ENSEMBLE = tdg.ensemble.GrandCanonical.from_h5(f['Ensemble'])
 
-post = ENSEMBLE.N('fermionic').mean(axis=0)
+post = ENSEMBLE.N.mean(axis=0)
 assert pre == post

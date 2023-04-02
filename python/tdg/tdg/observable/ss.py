@@ -15,7 +15,7 @@ def ss(ensemble):
     c = (
     # 1/4 δ_ab δ^ij < n_a >
     # nb: this takes the spatial average, by translation invariance
-    + torch.einsum('c,ab,ij->cabij', ensemble.N('fermionic') , torch.eye(L.sites), torch.eye(3) / 4 / L.sites)
+    + torch.einsum('c,ab,ij->cabij', ensemble.N, torch.eye(L.sites), torch.eye(3) / 4 / L.sites)
 
     + (
     # i/2 δ_ab ε^ijk < s^k_a >

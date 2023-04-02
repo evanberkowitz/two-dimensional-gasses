@@ -36,7 +36,7 @@ def Potential(ensemble):
 
     return (
         torch.einsum('r,cr->c', 0.5 * L.sites * V.spatial(L)[0] + 0.j, ensemble.nn)
-      - 0.5 * L.sites * V.C0 * ensemble.N('fermionic')
+      - 0.5 * L.sites * V.C0 * ensemble.N
     )
 
 @observable
@@ -56,7 +56,7 @@ def FreeEnergy(ensemble):
 
           + ensemble.Potential
 
-          - ensemble.Action.mu * ensemble.N('fermionic')
+          - ensemble.Action.mu * ensemble.N
 
           - torch.einsum('i,ci->c', 0.j+ensemble.Action.h, ensemble.Spin)
             )
