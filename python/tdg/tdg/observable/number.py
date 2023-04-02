@@ -47,9 +47,5 @@ def N(ensemble):
     The total number, one per configuration.
     Computed via fermion contractions; the sum of :func:`~.n` on sites.
     '''
-    if method == 'fermionic':
-        return ensemble._N_fermionic
-    if method == 'bosonic':
-        return ensemble._N_bosonic
-    raise NotImplemented()
+    return ensemble.n_fermionic.sum(1)
 
