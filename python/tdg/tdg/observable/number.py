@@ -26,9 +26,9 @@ def N_bosonic(ensemble):
     r'''
     The total number, one per configuration.
 
-    The sum of :func:`n_bosonic`.
+    The sum of :func:`n_bosonic` on sites.
     '''
-    return ensemble._n_bosonic.sum(1)
+    return ensemble.n_bosonic.sum(1)
 
 @observable
 def n(ensemble):
@@ -47,5 +47,5 @@ def N(ensemble):
     The total number, one per configuration.
     Computed via fermion contractions; the sum of :func:`~.n` on sites.
     '''
-    return ensemble.n_fermionic.sum(1)
+    return ensemble.n.sum(1)
 
