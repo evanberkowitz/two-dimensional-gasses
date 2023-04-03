@@ -17,4 +17,4 @@ Contact
 
 .. autofunction:: tdg.observable.contact.Contact
 .. autofunction:: tdg.observable.contact.Contact_bosonic
-
+.. autofunction:: tdg.observable.contact.contact_by_kF4

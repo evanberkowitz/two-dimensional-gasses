@@ -2,7 +2,7 @@ import torch
 import functorch
 
 import tdg
-from tdg.observable import observable
+from tdg.observable import observable, derived
 
 import logging
 logger = logging.getLogger(__name__)
@@ -47,7 +47,7 @@ def DoubleOccupancy(ensemble):
 @observable
 def Contact(ensemble):
     r'''
-    The `contact`, :math:`C\Delta L^2 = 2\pi\frac{d\tilde{H}}{d\log a}`.
+    The `contact`, :math:`C L^2 = 2\pi\frac{d\tilde{H}}{d\log a}`.
 
     This observable is much less noisy than :func:`~.Contact_bosonic`.
 
@@ -55,7 +55,7 @@ def Contact(ensemble):
 
     .. note::
         The contact :math:`C` is extensive, and :math:`L^2` is extensive, so this observable is *doubly extensive*!
-        You may want to compute something intensive, such as the contact density :math:`c` normalized by :math:`k_F^4` :cite:`Beane:2022wcn`,
+        You may want to compute something intensive, such as the derived contact density :func:`~.contact_by_kF4` :cite:`Beane:2022wcn`,
         :math:`c/k_F^4 = \texttt{Contact} / (2\pi \texttt{N})^2`, where this observable is divided by two powers of an extensive observable!
 
     '''
@@ -109,4 +109,14 @@ def Contact_bosonic(ensemble):
 
         s_dual  = functorch.vmap(S_dual)(ensemble.configurations)
         return  (2*torch.pi / ensemble.Action.beta)* torch.autograd.forward_ad.unpack_dual(s_dual).tangent
+
+@derived
+def contact_by_kF4(ensemble):
+    r'''
+    The contact density normalized by :ref:`the Fermi momentum <fermi>`.
+    
+    .. math::
+       \frac{c}{k_F^4} = \frac{C}{k_F^4 L^2} = \frac{CL^2}{(k_F L)^4} = \frac{\texttt{Contact}}{(2\pi \texttt{N})^2}
+    '''
+    return ensemble.Contact / (2*torch.pi * ensemble.N)**2
 
