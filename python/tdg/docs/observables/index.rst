@@ -29,6 +29,7 @@ We adopt a convention where local densities start with a lowercase letter and gl
 
    propagator.rst
    action.rst
+   fermi.rst
    number.rst
    spin.rst
    energy.rst
