@@ -23,3 +23,26 @@ def alpha(ensemble):
     In the language of Ref. :cite:`Beane:2022wcn`, :math:`\alpha(k_F)` is a dimensionless coupling constant that is the natural expansion parameter of the two-dimensional EFT.
     '''
     return - 1 / torch.log(ensemble.kFa)
+
+@derived
+def binding_by_EF(ensemble):
+    r'''
+    The binding energy :math:`-(Ma^2)^{-1}` divided by the Fermi energy :math:`k_F^2/2M`,
+
+    .. math::
+       \frac{\mathcal{E}_B}{E_F} = - \frac{2}{(k_F a)^2}
+    '''
+    return - 2 / ensemble.kFa_squared
+
+@derived
+def T_by_TF(ensemble):
+    r'''
+    The temperature in proportion to the Fermi temperature,
+    
+    .. math::
+       \frac{T}{T_F} = \frac{1}{\pi \tilde{\beta} N}
+    '''
+
+    beta = ensemble.Action.beta
+
+    return 1./(beta * torch.pi * ensemble.N)

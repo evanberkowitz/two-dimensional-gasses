@@ -11,6 +11,16 @@ Fermi Momentum
 .. autofunction:: tdg.observable.fermi.kFa_squared
 .. autofunction:: tdg.observable.fermi.kFa
 
+Binding Energy
+--------------
+
+.. autofunction:: tdg.observable.fermi.binding_by_EF
+
+Temperature
+-----------
+
+.. autofunction:: tdg.observable.fermi.T_by_TF
+
 α
 -
 
