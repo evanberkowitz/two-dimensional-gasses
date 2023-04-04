@@ -239,7 +239,7 @@ Putting into normal order,
 	\tilde{j}\adjoint_x \cdot \tilde{j}_y
 	&=
 	\oneover{4}\sum_{q'k'kq} e^{2\pi i[ -(q'-k')x + (q-k) y]/N_x} \left(\frac{2\pi}{N_x}\right)^2 (k'+q')\cdot(k+q)
-	\left(\G^{\tau\tau}_{kq}\G^{\sigma\sigma}_{q'k'} - \G^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q} + \Volume \delta^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q}\right)
+	\left(\G^{\tau\tau}_{kq}\G^{\sigma\sigma}_{q'k'} - \G^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q} + \delta^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q}\right)
 \end{align}
 The naive algorithm for computing this would construct two tensors that require $\order{\Volume^4}$ memory (the dot product and the contractions), multiply them element-wise, and fourier transform.
 
@@ -272,14 +272,14 @@ all of $\order{\Volume^2}$ memory and taking $\order{\Volume^{\text{3 or 4}}}$ t
 	\nonumber\\
 	&
 	+\left(
-		[\p\Volume\delta\p]^{\tau\sigma}_{kik'i} \G^{\sigma\tau}_{q'q}
-	+	[\Volume\delta\p]^{\tau\sigma}_{kk'i} [\G\p]^{\sigma\tau}_{q'qi}
-	+	[\p\Volume\delta]^{\tau\sigma}_{kik'} [\p\G]^{\sigma\tau}_{q'iq}
-	+	\Volume\delta^{\tau\sigma}_{kk'} [\p\G]^{\sigma\tau}_{q'iqi}
+		[\p\delta\p]^{\tau\sigma}_{kik'i} \G^{\sigma\tau}_{q'q}
+	+	[\delta\p]^{\tau\sigma}_{kk'i} [\G\p]^{\sigma\tau}_{q'qi}
+	+	[\p\delta]^{\tau\sigma}_{kik'} [\p\G]^{\sigma\tau}_{q'iq}
+	+	\delta^{\tau\sigma}_{kk'} [\p\G]^{\sigma\tau}_{q'iqi}
 	\right)
 	\Bigg\}
 \end{align}
-where we defined the momentum-multiplied $[\p\Volume\delta]$, $[\Volume\delta\p]$, and $[\p\Volume\delta\p]$ by analogy.
+where we defined the momentum-multiplied $[\p\delta]$, $[\delta\p]$, and $[\p\delta\p]$ by analogy.
 We can now apply the fourier transformation term-by-term and indeed factor-by-factor, as long as we carefully pay attention to which resulting FTs are in $x$ and which are in $y$.
 Finally, we can do the sums on $i$, $\sigma$, and $\tau$.
 This is a substantially smarter algorithm, though it's much more annoying to code correctly.
