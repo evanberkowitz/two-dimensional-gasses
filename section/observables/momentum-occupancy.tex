@@ -1,0 +1,33 @@
+\subsection{Momentum Occupancy}
+
+Another fermion bilinear that looks just like the fermion number is the momentum occupancy
+\begin{align}
+	\tilde{n}_{k} = \tilde{\psi}\adjoint_k \tilde{\psi}_k
+\end{align}
+for a fixed momentum $k$.
+This operator is Wick-contracted \eqref{propagator in momentum space} to give
+\begin{align}
+	\expectation{\tilde{n}_k} = \expectation{ \Volume \G^{\sigma\sigma}_{kk}}
+\end{align}
+
+This is \emph{NOT} the fourier transform of $\tilde{n}$!
+To wit,
+\begin{align}
+	\sum_x e^{-2\pi i kx/N_x} \left(\tilde{n}_x = \tilde{\psi}\adjoint_x \tilde{\psi}_x\right)
+	&=
+	\oneover{\Volume^2}\sum_{xpq} e^{2\pi i (-px + qx - kx)/N_x} \tilde{\psi}\adjoint_p \tilde{\psi}_q
+	\nonumber\\
+	&=
+	\oneover{\Volume}\sum_{pq} \tilde{\psi}\adjoint_p \tilde{\psi}_q \left(\oneover{\Volume} \sum_x e^{2\pi i (q -p - k)x/N_x} = \delta_{q,p+k}\right)
+	\nonumber\\
+	&=
+	\oneover{\Volume}\sum_{p} \tilde{\psi}\adjoint_p \tilde{\psi}_{p+k}
+\end{align}
+
+We may also calculate the spin analog,
+\begin{align}
+	\tilde{s}^i_{k} &= \half \tilde{\psi}\adjoint_{k\alpha} \sigma^i_{\alpha\beta} \tilde{\psi}_{k\beta}
+	&
+	\expectation{\tilde{s}^i_k} &= \expectation{ \half \Volume G^{\alpha\beta}_{kk} \sigma^i_{\alpha\beta}},
+\end{align}
+also not the fourier transform of the spin operators $\tilde{s}$ \eqref{dh replacement}.

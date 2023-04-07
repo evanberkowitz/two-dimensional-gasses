@@ -32,6 +32,7 @@ We adopt a convention where local densities start with a lowercase letter and gl
    fermi.rst
    number.rst
    spin.rst
+   momentum_occupancy.rst
    energy.rst
    contact.rst
    currents.rst
