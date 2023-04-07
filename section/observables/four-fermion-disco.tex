@@ -1,0 +1,71 @@
+\subsection{The Four-Fermion Disconnected Piece}
+
+We can think of four-body operators that are not derivatives of the partition function with respect to $\tilde{\mu}$ or $\tilde{h}$ as derivatives of the partition function nevertheless, which may be useful in understanding thermodynamic properties.
+We can focus on a generic four-quark operator,
+\begin{align}
+	\O = \tilde{\psi}\adjoint_{q'\sigma'} \tilde{\psi}_{k'\tau'} \tilde{\psi}\adjoint_{k\tau} \tilde{\psi}_{q\sigma}
+\end{align}
+with four generic momenta and spins.
+We can think of many different observables as being matrix elements of this kind, with subsequent manipulation and tying together of the eight free indices.
+
+We have to use the fermionic derivatives \eqref{fermionic derivatives} of the fermionic generating function \eqref{fermionic generating function} to find the (quantum-average-)disconnected pieces that go along with our operator.
+Moving back to position space for simplicity,
+\begin{align}
+	\O &= \sum_{y'x'xy} e^{2\pi i [q'y' - k'x' + kx - qy]/N_x} \O'
+	&
+	\O' &= \tilde{\psi}\adjoint_{y'\sigma'} \tilde{\psi}_{x'\tau'} \tilde{\psi}\adjoint_{x\tau} \tilde{\psi}_{y\sigma}
+\end{align}
+So, we figure out the derivatives required in position space and Fourier transform to get the required momentum operators.
+
+Let us differentiate
+\begin{align}
+	\partial\adjoint_{x'\tau'} \partial_{y'\sigma'} \left[\log Z\right] \lpartial\adjoint_{y\sigma} \lpartial_{x\tau}
+	=&
+	\partial\adjoint_{x'\tau'} \left[\left(\partial_{y'\sigma'} Z\right) \oneover{Z} \right] \lpartial\adjoint_{y\sigma} \lpartial_{x\tau}
+	\nonumber\\
+	=&
+	\partial\adjoint_{x'\tau'} \left[
+		\left(\partial_{y'\sigma'} Z \lpartial\adjoint_{y\sigma}\right)\oneover{Z}
+	-	\left( \partial_{y'\sigma'} Z\right) \oneover{Z^2} \left( Z \lpartial\adjoint_{y\sigma} \right)
+	\right] \lpartial_{x\tau}
+	\nonumber\\
+	=&
+	\Bigg[
+	-	\left(\partial\adjoint_{x'\tau'} Z \right) \oneover{Z^2} \left(\partial_{y'\sigma'} Z \lpartial\adjoint_{y\sigma}\right)
+	+	\oneover{Z} \left(\partial\adjoint_{x'\tau'} \partial_{y'\sigma'} Z \lpartial\adjoint_{y\sigma}\right)
+	+	\frac{2}{Z^3} \left( \partial\adjoint_{x'\tau'} Z\right) \left(\partial_{y'\sigma'}Z \right)\left( Z \lpartial\adjoint_{y\sigma} \right)
+	\nonumber\\
+	&
+	-	\left(\partial\adjoint_{x'\tau'} \partial_{y'\sigma'} Z\right)\oneover{Z^2}\left(Z \lpartial\adjoint_{y\sigma}\right)
+	+	\left( \partial_{y'\sigma'} Z\right) \oneover{Z^2} \left( \partial\adjoint_{x'\tau'} Z \lpartial\adjoint_{y\sigma} \right)
+	\Bigg] \lpartial_{x\tau}
+\end{align}
+where we carefully preserve the order of terms when needed and introduce $(-1)$s when pushing derivatives past one another (in the product rule).
+We can now for simplicity drop terms that cannot possibly result in expectation values with equal creation and destruction operators and proceed without writing zero-expectation-value quantities,
+\begin{align}
+	\partial_{x'\tau'} \partial\adjoint_{y'\sigma'} \left[\log Z\right] \lpartial\adjoint_{y\sigma} \lpartial_{x\tau}
+	=&
+	\Bigg[
+	-	\left(\partial\adjoint_{x'\tau'} Z \right) \oneover{Z^2} \left(\partial_{y'\sigma'} Z \lpartial\adjoint_{y\sigma}\right)
+	+	\oneover{Z} \left(\partial\adjoint_{x'\tau'} \partial_{y'\sigma'} Z \lpartial\adjoint_{y\sigma}\right)
+	\nonumber\\
+	&
+	-	\left(\partial\adjoint_{x'\tau'} \partial_{y'\sigma'} Z\right)\oneover{Z^2}\left(Z \lpartial\adjoint_{y\sigma}\right)
+	\Bigg] \lpartial_{x\tau}
+	\nonumber\\
+	=&
+	-	\left(\partial\adjoint_{x'\tau'} Z \lpartial_{x\tau}\right) \oneover{Z^2} \left(\partial_{y'\sigma'} Z \lpartial\adjoint_{y\sigma}\right)
+	+	\oneover{Z} \left(\partial\adjoint_{x'\tau'} \partial_{y'\sigma'} Z \lpartial\adjoint_{y\sigma}\lpartial_{x\tau}\right)
+	\nonumber\\
+	&
+	-	\left(\partial\adjoint_{x'\tau'} \partial_{y'\sigma'} Z\right)\oneover{Z^2}\left(Z \lpartial\adjoint_{y\sigma}\lpartial_{x\tau}\right)
+\end{align}
+and now we use the fermionic generating function \eqref{fermionic generating function}
+\begin{align}
+	\partial_{x'\tau'} \partial\adjoint_{y'\sigma'} \left[\log Z\right] \lpartial\adjoint_{y\sigma} \lpartial_{x\tau}
+	=&
+	+\expectation{\O' = \tilde{\psi}\adjoint_{y'\sigma'} \tilde{\psi}_{x'\tau'} \tilde{\psi}\adjoint_{x\tau} \tilde{\psi}_{y\sigma}}
+	-\expectation{\tilde{\psi}_{x'\tau'} \tilde{\psi}\adjoint_{x\tau}} \expectation{\tilde{\psi}\adjoint_{y'\sigma'} \tilde{\psi}_{y\sigma}}
+	-\expectation{\tilde{\psi}\adjoint_{y'\sigma'} \tilde{\psi}_{x'\tau'}} \expectation{\tilde{\psi}\adjoint_{x\tau} \tilde{\psi}_{y\sigma}}
+\end{align}
+so that if we are interested in an observable $\O$ with fourier transform $\O'$ the disconnected pieces are as above, fourier transformed.
