@@ -1,5 +1,8 @@
 import argparse
 
+import logging
+logger = logging.getLogger(__name__)
+
 from .log import defaults as log_defaults
 from .metadata import defaults as meta_defaults
 
@@ -38,3 +41,16 @@ class ArgumentParser(argparse.ArgumentParser):
             k['parents'] = defaults()
         super().__init__(*args, **k)
 
+    def parse_args(self, args=None, namespace=None):
+        r'''
+        Forwards to the `standard library`_ but logs all the parsed values at the `DEBUG` level.
+
+        .. _standard library: https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args
+        '''
+
+        parsed = super().parse_args(args, namespace)
+
+        for arg in parsed.__dict__:
+            logger.debug(f'{arg}: {parsed.__dict__[arg]}')
+
+        return args
