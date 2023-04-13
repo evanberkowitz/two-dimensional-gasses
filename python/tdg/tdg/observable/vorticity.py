@@ -26,7 +26,7 @@ def vorticity(ensemble):
 # A generic two-vorticity correlator is 
 # The ω†x ωy operator can be written
 #
-#    volume^{-2} sum_{pj qk} e^{2πi[ (q-k)x - (p-j) y ]/Nx}
+#    volume^{-2} sum_{pj qk} e^{2πi[ (q-k)y - (p-j) x ]/Nx}
 #                           (2π/Nx)^4 (2π/Nx)^2 (p × j)^i (2π/Nx)^2 (q × k)^i
 #                           ψ†_{pτ} ψ_{jτ} ψ†_{kσ} ψ_{qσ}
 #
@@ -44,6 +44,13 @@ def _double_cross(ensemble):
     momenta = 2*torch.pi / L.nx * L.coordinates
     cross = L.cross(momenta, momenta) # the momenta contain the 2π/Nx factors
     return torch.einsum('qki,pji->qkpj', cross, cross)
+    # Equal to
+    #
+    # (
+    #     torch.einsum('pa,jb,qa,kb->qkpj', momenta, momenta, momenta, momenta)
+    #    -torch.einsum('pa,jb,qb,ka->qkpj', momenta, momenta, momenta, momenta)
+    # )
+    #
 
 # Next the two-propagator contractions.
 def _GG(ensemble):
@@ -55,14 +62,14 @@ def _GG(ensemble):
 
     L = ensemble.Action.Spacetime.Lattice
     return (
-            torch.einsum('ckqss,cpjtt->ckqpj', ensemble.G, ensemble.G)         # from the unmixed contraction
-          - torch.einsum('ckjst,cpqts->ckqpj', ensemble.G, ensemble.G)         # from the mixed contraction
-          + torch.einsum('cpqss,kj->ckqpj',    ensemble.G, torch.eye(L.sites)) # from the anticommutator
+            torch.einsum('ckqss,cpjtt->cpjkq', ensemble.G_momentum, ensemble.G_momentum)    # from the unmixed contraction
+          - torch.einsum('ckjst,cpqts->cpjkq', ensemble.G_momentum, ensemble.G_momentum)    # from the mixed contraction
+          + torch.einsum('cpqss,kj->cpjkq',    ensemble.G_momentum, torch.eye(L.sites))     # from the anticommutator
             )
 
 # Now we can do the element-wise multiplication
 def _TGG(ensemble):
-    return torch.einsum('qkpj,ckqpj->ckqpj', _double_cross(ensemble), _GG(ensemble))
+    return torch.einsum('pjqk,cpjkq->cpjkq', _double_cross(ensemble), _GG(ensemble))
 
 # Finally, to get a function of just x and y we need two double Fourier transforms.
 # Using our intermediate quantities the ω†x ωy operator is
@@ -75,16 +82,17 @@ def _vorticity_vorticity(ensemble):
 
     L = ensemble.Action.Spacetime.Lattice
 
+    # In the FT we have e^{2πi[ (q-k)y - (p-j) x ]/Nx}
     return torch.einsum('cxxyy->cxy',
-                            L.ifft(    # j
-                                L.fft( # p
-                                L.ifft(# q
+                            L.ifft(    # q
                                 L.fft( # k
+                                L.ifft(# j
+                                L.fft( # p
                                     _TGG(ensemble),
-                                axis=1),# k
-                                axis=2),# q
-                                axis=3),# p
-                            axis=4),    # j
+                                axis=1),# p
+                                axis=2),# j
+                                axis=3),# k
+                            axis=4),    # q
                         ) * L.sites**2
 
 @observable
