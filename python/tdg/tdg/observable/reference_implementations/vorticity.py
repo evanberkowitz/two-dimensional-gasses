@@ -8,69 +8,74 @@ logger = logging.getLogger(__name__)
 
 logger.info(f'Importing reference implementations in {__name__}.')
 
-# 
+# A generic two-vorticity correlator is 
+# The ω†x ωy operator can be written
+#
+#    volume^{-2} sum_{pj qk} e^{2πi[ (q-k)y - (p-j) x ]/Nx}
+#                           (2π/Nx)^4 (2π/Nx)^2 (p × j)^i (2π/Nx)^2 (q × k)^i
+#                           ψ†_{pτ} ψ_{jτ} ψ†_{kσ} ψ_{qσ}
+#
+# One way to compute this value is to see it as two independent double Fourier transforms of the last two lines element-wise multiplied,
+#
+#   TGG_{pj qk} =           (2π/Nx)^4 (2π/Nx)^2 (p × j)^i (2π/Nx)^2 (q × k)^i
+#                           volume^{-2} ψ†_{pτ} ψ_{jτ} ψ†_{kσ} ψ_{qσ}
+#
+# This is the strategy we will take here.
 
-# This was hoped to be the fast, memory-efficient implementation of ω†(x) ω(y).
-# It uses the trick of combining momenta with propagators to construct useful intermediate quantities,
-# like the production implementation of _current_current.
-@observable
-def _vorticity_vorticity(ensemble):
+# First, the cross product tensor
+def _double_cross(ensemble):
+    # _double_cross_{qkpj} = (2π/Nx)^4 (2π/Nx)^2 (p × j)^i (2π/Nx)^2 (q × k)^i
+    L = ensemble.Action.Spacetime.Lattice
+    momenta = 2*torch.pi / L.nx * L.coordinates
+    cross = L.cross(momenta, momenta) # the momenta contain the 2π/Nx factors
+    return torch.einsum('qki,pji->qkpj', cross, cross)
+    # Equal to
     #
-    # ω†(x)•ω(y) = 1/4 V^2 sum_{pjkq στ} e^{2πi[ -(p-j)x + (q-k) y]/Nx} (2π/Nx)^2 (p×j)•(q×k) ψ†(p,σ) ψ(j,σ) ψ†(k,τ) ψ(q,τ)
+    # (
+    #     torch.einsum('pa,jb,qa,kb->qkpj', momenta, momenta, momenta, momenta)
+    #    -torch.einsum('pa,jb,qb,ka->qkpj', momenta, momenta, momenta, momenta)
+    # )
     #
-    # where on the right-hand side k, q, p, and j are momenta, σ and τ are spin indices,
-    # and there's a dot product on the vector indices of the cross products.
-    #
-    # The leading 1/V^2 are absorbed by the contractions of the fermion operators into momentum-space propagators.
+
+# Next the two-propagator contractions.
+def _GG(ensemble):
+    # _GG = volume^{-2} ψ†_{pτ} ψ_{jτ} ψ†_{kσ} ψ_{qσ}
+
+    # The two-propagator contractions absorb two factors of inverse volume while the one-propagator
+    # contraction that comes from normal-ordering the operators ALSO absorbs two, because the anticommutator of momentum-space
+    # {ψ_{pσ}, ψ†_{kτ}} = V δ_{pk,στ}.
 
     L = ensemble.Action.Spacetime.Lattice
-    p = (2*torch.pi / L.nx) * L.coordinates + 0.j
-    
-    # Our strategy is to write the three contractions and expand the dot product into two terms,
-    #
-    #   (p•q)(j•k) - (p•k)(j•q)
-    #
-    # yielding six things that must be summed.
+    return (
+            torch.einsum('ckqss,cpjtt->cpjkq', ensemble.G_momentum, ensemble.G_momentum)    # from the unmixed contraction
+          - torch.einsum('ckjst,cpqts->cpjkq', ensemble.G_momentum, ensemble.G_momentum)    # from the mixed contraction
+          + torch.einsum('cpqss,kj->cpjkq',    ensemble.G_momentum, torch.eye(L.sites))     # from the anticommutator
+            )
 
-    # What is nice about this approach is that we can combine propagators and momenta into tensors
-    # that are not much bigger than a propagator, O(volume^2).
+# Now we can do the element-wise multiplication
+def _TGG(ensemble):
+    return torch.einsum('pjqk,cpjkq->cpjkq', _double_cross(ensemble), _GG(ensemble))
 
-    G  = ensemble.G_momentum
-    pGp= torch.einsum('ka,ckqst,qb->ckaqbst', p, G, p) 
-    
-    d  = torch.eye(L.sites)
-    pdp= torch.einsum('ka,kq,qb->kaqb', p, d, p)
-    
-    
-    # Unfortunately, unlike the current-current correlator, it seems we still have to construct
-    # an object of O(volume^4) in memory.  This stems from the fact that each momentum appears
-    # in each term of (p•q)(j•k) - (p•k)(j•q); in the current case the terms had only 2 momenta.
-    fouriered = (
-    +   torch.einsum('cpajbss,ckbqatt->cpjkq', pGp, pGp)
-    -   torch.einsum('cpajbss,ckaqbtt->cpjkq', pGp, pGp)
-    -   torch.einsum('cpaqast,ckbjbts->cpjkq', pGp, pGp)
-    +   torch.einsum('cpaqbst,ckajbts->cpjkq', pGp, pGp)
-    +   torch.einsum('cpaqast,kbjb->cpjkq'   , pGp, pdp)
-    -   torch.einsum('cpaqbst,kajb->cpjkq'   , pGp, pdp)
-    )
+# Finally, to get a function of just x and y we need two double Fourier transforms.
+# Using our intermediate quantities the ω†x ωy operator is
+#    sum_{pj qk} e^{2πi[ (q-k)x - (p-j) y ]/Nx} TGG_{kqpj}
+# 
+@observable
+def _vorticity_vorticity(ensemble):
+    # Each double FFT multiplies by a factor of 1/V.
+    # But we don't want them; we've got to multiply them back in.
 
-    # Now we can fourier back.  The left indices (which correspond to ψ†) always get an fft,
-    # the right indices always get an ifft. The fourier transform pairs ALSO have a 1/V;
-    # our results have two of them.  Therefore, we need to multiply back in two factors of the volume. However, to save
-    # on some arithmetic we delay these multiplications to the end.
+    L = ensemble.Action.Spacetime.Lattice
 
-    position = L.fft(L.ifft(
-                    L.fft(L.ifft(
-                        fouriered,
-                        axis=4), axis=3),
-                    axis=2), axis=1)
-    
-    # Now we've got something with four position indices.  We want to evaluate the piece that has 
-    # p, j talking to x and q, k talking to y.  We simply replace
-    #
-    #   k, q --> y
-    #   j, p --> x
-    #
-    # based on the fourier transform above.  Finally we multiply in the two factors of volume.
-    
-    return L.sites**2 * torch.einsum('cxxyy->cxy', position)
+    # In the FT we have e^{2πi[ (q-k)y - (p-j) x ]/Nx}
+    return torch.einsum('cxxyy->cxy',
+                            L.ifft(    # q
+                                L.fft( # k
+                                L.ifft(# j
+                                L.fft( # p
+                                    _TGG(ensemble),
+                                axis=1),# p
+                                axis=2),# j
+                                axis=3),# k
+                            axis=4),    # q
+                        ) * L.sites**2

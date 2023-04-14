@@ -23,77 +23,47 @@ def vorticity(ensemble):
     TiG = 1j*torch.einsum('qki,ckqss->ckqi', q_cross_k, ensemble.G_momentum)
     return L.sites * torch.einsum('cxxi->cxi', L.ifft(L.fft(TiG, axis=1), axis=2))
 
-# A generic two-vorticity correlator is 
-# The ω†x ωy operator can be written
-#
-#    volume^{-2} sum_{pj qk} e^{2πi[ (q-k)y - (p-j) x ]/Nx}
-#                           (2π/Nx)^4 (2π/Nx)^2 (p × j)^i (2π/Nx)^2 (q × k)^i
-#                           ψ†_{pτ} ψ_{jτ} ψ†_{kσ} ψ_{qσ}
-#
-# One way to compute this value is to see it as two independent double Fourier transforms of the last two lines element-wise multiplied,
-#
-#   TGG_{pj qk} =           (2π/Nx)^4 (2π/Nx)^2 (p × j)^i (2π/Nx)^2 (q × k)^i
-#                           volume^{-2} ψ†_{pτ} ψ_{jτ} ψ†_{kσ} ψ_{qσ}
-#
-# This is the strategy we will take here.
-
-# First, the cross product tensor
-def _double_cross(ensemble):
-    # _double_cross_{qkpj} = (2π/Nx)^4 (2π/Nx)^2 (p × j)^i (2π/Nx)^2 (q × k)^i
-    L = ensemble.Action.Spacetime.Lattice
-    momenta = 2*torch.pi / L.nx * L.coordinates
-    cross = L.cross(momenta, momenta) # the momenta contain the 2π/Nx factors
-    return torch.einsum('qki,pji->qkpj', cross, cross)
-    # Equal to
-    #
-    # (
-    #     torch.einsum('pa,jb,qa,kb->qkpj', momenta, momenta, momenta, momenta)
-    #    -torch.einsum('pa,jb,qb,ka->qkpj', momenta, momenta, momenta, momenta)
-    # )
-    #
-
-# Next the two-propagator contractions.
-def _GG(ensemble):
-    # _GG = volume^{-2} ψ†_{pτ} ψ_{jτ} ψ†_{kσ} ψ_{qσ}
-
-    # The two-propagator contractions absorb two factors of inverse volume while the one-propagator
-    # contraction that comes from normal-ordering the operators ALSO absorbs two, because the anticommutator of momentum-space
-    # {ψ_{pσ}, ψ†_{kτ}} = V δ_{pk,στ}.
-
-    L = ensemble.Action.Spacetime.Lattice
-    return (
-            torch.einsum('ckqss,cpjtt->cpjkq', ensemble.G_momentum, ensemble.G_momentum)    # from the unmixed contraction
-          - torch.einsum('ckjst,cpqts->cpjkq', ensemble.G_momentum, ensemble.G_momentum)    # from the mixed contraction
-          + torch.einsum('cpqss,kj->cpjkq',    ensemble.G_momentum, torch.eye(L.sites))     # from the anticommutator
-            )
-
-# Now we can do the element-wise multiplication
-def _TGG(ensemble):
-    return torch.einsum('pjqk,cpjkq->cpjkq', _double_cross(ensemble), _GG(ensemble))
-
-# Finally, to get a function of just x and y we need two double Fourier transforms.
-# Using our intermediate quantities the ω†x ωy operator is
-#    sum_{pj qk} e^{2πi[ (q-k)x - (p-j) y ]/Nx} TGG_{kqpj}
-# 
 @observable
 def _vorticity_vorticity(ensemble):
-    # Each double FFT multiplies by a factor of 1/V.
-    # But we don't want them; we've got to multiply them back in.
+    # This is the fast, memory-efficient implementation of ω†(x) ω(y).
+    # It can be compared to the reference implementation, which scales poorly.
+    #
+    # ω†(x)•ω(y) = 1/4 V^2 sum_{pjkq στ} e^{2πi[ -(p-j)x + (q-k) y]/Nx} (2π/Nx)^2 (p×j)•(q×k) ψ†(p,σ) ψ(j,σ) ψ†(k,τ) ψ(q,τ)
+    #
+    # where on the right-hand side k, q, p, and j are momenta, σ and τ are spin indices,
+    # and there's a dot product on the vector indices of the cross products.
+    #
+    # The leading 1/V^2 are absorbed by the contractions of the fermion operators into momentum-space propagators.
 
     L = ensemble.Action.Spacetime.Lattice
+    p = (2*torch.pi / L.nx) * L.coordinates + 0.j
+    
+    # Our strategy is to write the three contractions and expand the dot product into two terms,
+    #
+    #   (p•q)(j•k) - (p•k)(j•q)
+    #
+    # yielding six things that must be summed.
 
-    # In the FT we have e^{2πi[ (q-k)y - (p-j) x ]/Nx}
-    return torch.einsum('cxxyy->cxy',
-                            L.ifft(    # q
-                                L.fft( # k
-                                L.ifft(# j
-                                L.fft( # p
-                                    _TGG(ensemble),
-                                axis=1),# p
-                                axis=2),# j
-                                axis=3),# k
-                            axis=4),    # q
-                        ) * L.sites**2
+    # What is nice about this approach is that we can combine propagators and momenta into tensors
+    # that are not much bigger than a propagator, O(volume^2), and fourier back to position space.
+    # Each fft/ifft pair brings a factor of 1/volume which we need to restore, 
+    # but to save on arithmetic we delay until later.
+    G  = ensemble.G_momentum
+    xGx= L.ifft(L.fft(torch.einsum('ka,ckqst,qb->ckaqbst', p, G, p), axis=1), axis=3)
+    
+    d  = torch.eye(L.sites)
+    xdx= L.ifft(L.fft(torch.einsum('ka,kq,qb->kaqb', p, d, p), axis=0), axis=2)
+    
+    # Now we do the six (= 2 momentum structures * 3 Wick structures) tensor contractions
+    # and multiply back one factor of volume per fft/ifft pair.
+    return L.sites**2 * (
+    +   torch.einsum('cxaxbss,cybyatt->cxy', xGx, xGx) #   unmixed Wick (p•q)(j•k)
+    -   torch.einsum('cxaxbss,cyaybtt->cxy', xGx, xGx) #   unmixed Wick (p•k)(j•q)
+    -   torch.einsum('cxayast,cybxbts->cxy', xGx, xGx) #     mixed Wick (p•q)(j•k)
+    +   torch.einsum('cxaybst,cyaxbts->cxy', xGx, xGx) #     mixed Wick (p•k)(j•q)
+    +   torch.einsum('cxayast,ybxb->cxy'   , xGx, xdx) # anticommutator (p•q)(j•k)
+    -   torch.einsum('cxaybst,yaxb->cxy'   , xGx, xdx) # anticommutator (p•k)(j•q)
+    )
 
 @observable
 def vorticity_squared(ensemble):
