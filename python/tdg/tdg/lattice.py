@@ -436,6 +436,49 @@ class Lattice(H5able):
         return self.linearize(torch.fft.ifft2(self.coordinatize(vector, dims=(axis,)), dim=fft_axes, norm=norm), dims=(axis,))
 
     @cached_property
+    def _inversion(self):
+        inverter = torch.zeros(2*(self.sites,))
+        for i in range(self.sites):
+            for j in range(self.sites):
+                if (self.coordinates[i] == - self.coordinates[j]).all():
+                    inverter[i, j] = 1
+        inverter = inverter.to_sparse()
+        permutation = inverter.indices()[1]
+        return permutation
+
+    def inversion(self, vector, dims=(-1,)):
+        r'''
+        Reflect data across the origin for each dimension.
+
+        Parameters
+        ----------
+            vector: torch.tensor
+                A vector of data
+            dims:   iterable
+                Linearized dimensions apply the inversion to.
+
+        Returns
+        -------
+            torch.tensor:
+                Data with the same shape, but with the data at a given index is now at the index that corresponds to the reflected coordinate.
+                For example, 
+
+                >>> import torch
+                >>> torch.set_default_dtype(torch.float64)
+                >>> import tdg
+                >>> nx = 5
+                >>> L = tdg.Lattice(5)
+                >>> (L.inversion(L.coordinates, dims=(0,)) + L.coordinates).abs().sum() < 1e-14
+                tensor(True)
+
+        '''
+        reflected = vector.clone()
+        for d in dims:
+            reflected = reflected.transpose(0,d)[self._inversion].transpose(d,0)
+
+        return reflected
+
+    @cached_property
     def adjacency_tensor(self):
         r'''
         The `adjacency_matrix` but the two superindices are transformed into coordinate indices.
