@@ -53,4 +53,4 @@ class ArgumentParser(argparse.ArgumentParser):
         for arg in parsed.__dict__:
             logger.debug(f'{arg}: {parsed.__dict__[arg]}')
 
-        return args
+        return parsed
