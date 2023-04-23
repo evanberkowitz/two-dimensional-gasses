@@ -240,6 +240,7 @@ Putting into normal order,
 	&=
 	\oneover{4}\sum_{q'k'kq} e^{2\pi i[ -(q'-k')x + (q-k) y]/N_x} \left(\frac{2\pi}{N_x}\right)^2 (k'+q')\cdot(k+q)
 	\left(\G^{\tau\tau}_{kq}\G^{\sigma\sigma}_{q'k'} - \G^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q} + \delta^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q}\right)
+	\label{eq:jj normal order}
 \end{align}
 The naive algorithm for computing this would construct two tensors that require $\order{\Volume^4}$ memory (the dot product and the contractions), multiply them element-wise, and fourier transform.
 
@@ -283,3 +284,13 @@ where we defined the momentum-multiplied $[\p\delta]$, $[\delta\p]$, and $[\p\de
 We can now apply the fourier transformation term-by-term and indeed factor-by-factor, as long as we carefully pay attention to which resulting FTs are in $x$ and which are in $y$.
 Finally, we can do the sums on $i$, $\sigma$, and $\tau$.
 This is a substantially smarter algorithm, though it's much more annoying to code correctly.
+
+We can also consider $j\adjoint_x \cross j_y$, which obviously vanishes when $x=y$ but could be nonzero at a distance.
+We can just change the dot product \eqref{jj normal order} to a cross product
+\begin{align}
+	\tilde{j}\adjoint_x \cross \tilde{j}_y
+	&=
+	\oneover{4}\sum_{q'k'kq} e^{2\pi i[ -(q'-k')x + (q-k) y]/N_x} \left(\frac{2\pi}{N_x}\right)^2 (k'+q')\cross(k+q)
+	\left(\G^{\tau\tau}_{kq}\G^{\sigma\sigma}_{q'k'} - \G^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q} + \delta^{\tau\sigma}_{kk'} \G^{\sigma\tau}_{q'q}\right)
+\end{align}
+which can be implemented with the momentum-multiplied propagator $\p\G\p$ method as above.
