@@ -7,6 +7,7 @@ import torch
 
 import tdg
 from tdg.h5 import H5able
+from tdg.performance import Timer
 
 import logging
 logger = logging.getLogger(__name__)
@@ -25,6 +26,8 @@ class GrandCanonical(H5able):
         Action: tdg.Action
             An action which describes a Euclidean path integral equal to a Trotterization of the physics of interest.
     '''
+    
+    _observables = set()
     
     def __init__(self, Action):
         self.Action = Action
@@ -112,6 +115,37 @@ class GrandCanonical(H5able):
 
         return self
     
+    def measure(self, *observables):
+        r'''
+        Compute each :ref:`@observable <observables>` in `observables`; log an error for any :ref:`unregistered observable <custom observables>`.
+
+        Parameters
+        ----------
+            observables: strings
+
+        Returns
+        -------
+            :class:`~.GrandCanonical`; itself, now with some observables measured.
+
+        .. note::
+
+            If no `observables` are passed, evaluates **every** registered `@observable`.
+
+        '''
+        if not observables:
+            observables = self._observables
+
+        with Timer(logger.info, f'Measurement on {len(self)} configurations', per=len(self)):
+            for observable in observables:
+                if observable not in self._observables:
+                    logger.error(f'No registered observable "{observable}"')
+                    continue
+                try:
+                    getattr(self, observable)
+                except AttributeError as error:
+                    logger.error(str(error))
+        return self
+
     def cut(self, start):
         r'''
         Parameters

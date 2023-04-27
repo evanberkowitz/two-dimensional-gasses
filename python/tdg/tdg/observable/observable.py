@@ -1,5 +1,6 @@
 from inspect import signature
 import tdg.ensemble
+from tdg.performance import Timer
 
 import logging
 logger = logging.getLogger(__name__)
@@ -28,11 +29,12 @@ class Observable:
             cls.name = cls.__name__
         else:
             cls.name = name
-        if cls.name[0] == '_':
-            logger.debug(f'Observable registered: {cls.name}')
-        else:
-            logger.info(f'Observable registered: {cls.name}')
+
+        cls._logger = (logger.debug if cls.name[0] == '_' else logger.info)
+        cls._logger(f'Observable registered: {cls.name}')
+
         setattr(tdg.ensemble.GrandCanonical, cls.name, cls())
+        tdg.ensemble.GrandCanonical._observables.add(cls.name)
 
     def __set_name__(self, owner, name):
         self.name  = name
@@ -47,13 +49,14 @@ class Observable:
             # class level cache discussed in https://github.com/evanberkowitz/two-dimensional-gasses/issues/12
             # in that there's no extra reference to the object at all with this strategy.
             # So, when it goes out of scope with no reference, it will be deleted.
+            self._logger(f'{self.name} already cached.')
             return obj.__dict__[self.name]
 
         if objtype is tdg.ensemble.GrandCanonical:
             # Just call the measurement and cache the result.
-            result = self.measure(obj)
-            obj.__dict__[self.name] = result
-            return result
+            with Timer(self._logger, f'Measurement of {self.name}', per=len(obj)):
+                obj.__dict__[self.name]= self.measure(obj)
+            return obj.__dict__[self.name]
 
         # It may be possible to further generalize and implement the canonical projections
         # or data analysis like binning and bootstrapping by detecting the class here and

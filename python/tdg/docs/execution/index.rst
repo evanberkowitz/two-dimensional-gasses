@@ -6,5 +6,5 @@ Execution
 
    logging
    cli
-
+   timing
 
