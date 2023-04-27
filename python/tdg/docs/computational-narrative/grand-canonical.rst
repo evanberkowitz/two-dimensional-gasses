@@ -75,7 +75,7 @@ tdg.ensemble.GrandCanonical
 
 .. autoclass:: tdg.ensemble.GrandCanonical
    :no-special-members:
-   :members: Action, from_configurations, generate, cut, every, binned, bootstrapped
+   :members: Action, from_configurations, generate, measure, cut, every, binned, bootstrapped
    :show-inheritance:
 
 .. _grand canonical ensemble: https://en.wikipedia.org/wiki/Grand_canonical_ensemble
