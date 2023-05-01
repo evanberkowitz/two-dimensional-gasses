@@ -21,10 +21,10 @@ class Timer:
     For example,
     
     >>> with Timer(logger.debug, 'Task', per=10):
-    >>>     time.sleep(0.3)
+    >>>     time.sleep(0.3, time=time.process_time)
     2023-04-27 22:39:18,076 root      DEBUG Task ...
     2023-04-27 22:39:18,383 root      DEBUG ... Task [0.001954 seconds] (0.000195 seconds each)
-    >>> with Timer(logger.debug, 'Begin', 'End'):
+    >>> with Timer(logger.debug, 'Begin', 'End', time=time.process_time):
     >>>     time.sleep(0.3)
     2023-04-27 22:39:51,286 root      DEBUG Begin ...
     2023-04-27 22:39:51,604 root      DEBUG ... End [0.001070 seconds]
@@ -44,7 +44,7 @@ class Timer:
                  log, 
                  message, 
                  stop_message=None, 
-                 time=time.process_time,
+                 time=time.perf_counter,
                  per=1
                 ):
 
