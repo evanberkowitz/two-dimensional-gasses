@@ -17,7 +17,7 @@ def _baryon_number_current_tensor(ensemble):
     L = ensemble.Action.Spacetime.Lattice
     k = L.coordinates[None].expand(L.sites, L.sites, 2)
 
-    return 2*torch.pi * L.mod(k + k.transpose(1,0)).transpose(0,2) / L.nx
+    return 2*torch.pi * L.mod(k + k.transpose(1,0)) / L.nx
 
 
 @observable
