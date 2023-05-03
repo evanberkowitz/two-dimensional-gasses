@@ -580,6 +580,37 @@ class Lattice(H5able):
             )
         ).permute((2,0,1)) # (b=a-r) r a order
 
+    ####
+    #### VISUALIZATION
+    ####
+
+    def plot_2d_scalar(self, ax, data, center_origin=True, **kwargs):
+        r'''
+        Use `matshow`_ to plot the (linear) data as a function of space, using the lattice to coordinatize, centering the origin by default.
+
+        Parameters
+        ----------
+            ax: matplotlib axis
+                Where to draw the data.
+            data: torch.tensor
+                A single linearized spatial vector.
+            center_origin: True or False
+                If true the origin is centered in the figure.
+            **kwargs: `matshow`_ arguments
+                Simply forwarded. `origin` is fixed to be ``'lower'``
+
+        .. plot:: examples/plot/Lattice_plot_2d_scalar.py
+           :include-source:
+
+        .. _matshow: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.matshow.html#matplotlib.pyplot.matshow
+        '''
+
+        # We coordinatize to get a spatial layout, and transpose to get x going across.
+        # We put the origin='lower' because... obviously.
+        ax.matshow( self.coordinatize(data, center_origin=center_origin).transpose(0,1), origin='lower', **kwargs)
+        ax.set_xticks(torch.arange(self.nx), self.x.roll(self.nx//2).numpy() if center_origin else self.x.numpy())
+        ax.set_yticks(torch.arange(self.ny), self.y.roll(self.ny//2).numpy() if center_origin else self.y.numpy())
+
 def _demo(nx=7):
     return Lattice(nx)
 
