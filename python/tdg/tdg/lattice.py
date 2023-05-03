@@ -76,7 +76,7 @@ class Lattice(H5able):
 
         # These are chosen so that Lattice(nx, ny)
         # has coordinate matrices of size (nx, ny)
-        self.X = torch.tile( self.x, (self.ny, 1)).T
+        self.X = torch.tile( self.x, (self.ny, 1)).transpose(0,1)
         r'''
         A tensor of size ``dims`` with the x coordinate as a value.
 
@@ -111,7 +111,7 @@ class Lattice(H5able):
 
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
-        self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).T
+        self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).transpose(0,1)
         '''
         A tensor of size ``[sites, len(dims)]``.  Each row contains a pair of coordinates.  The order matches ``{X,Y}.flatten()``.
 
@@ -174,10 +174,14 @@ class Lattice(H5able):
                     self.y[torch.remainder(x[1],self.ny)],
                 ])
 
-        return torch.stack((
-            self.x[torch.remainder(x.T[0],self.nx)],
-            self.y[torch.remainder(x.T[1],self.ny)],
-            )).mT
+        coordinate_slowest = x.permute(*torch.arange(x.ndim - 1, -1, -1))
+        
+        modded = torch.stack((
+            self.x[torch.remainder(coordinate_slowest[0],self.nx)],
+            self.y[torch.remainder(coordinate_slowest[1],self.ny)],
+            ))
+        
+        return modded.permute(*torch.arange(modded.ndim -1, -1, -1))
 
     def distance_squared(self, a, b):
         r'''
