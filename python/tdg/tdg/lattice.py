@@ -76,7 +76,7 @@ class Lattice(H5able):
 
         # These are chosen so that Lattice(nx, ny)
         # has coordinate matrices of size (nx, ny)
-        self.X = torch.tile( self.x, (self.ny, 1)).T
+        self.X = torch.tile( self.x, (self.ny, 1)).transpose(0,1)
         r'''
         A tensor of size ``dims`` with the x coordinate as a value.
 
@@ -111,7 +111,7 @@ class Lattice(H5able):
 
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
-        self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).T
+        self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).transpose(0,1)
         '''
         A tensor of size ``[sites, len(dims)]``.  Each row contains a pair of coordinates.  The order matches ``{X,Y}.flatten()``.
 
@@ -174,10 +174,14 @@ class Lattice(H5able):
                     self.y[torch.remainder(x[1],self.ny)],
                 ])
 
-        return torch.stack((
-            self.x[torch.remainder(x.T[0],self.nx)],
-            self.y[torch.remainder(x.T[1],self.ny)],
-            )).mT
+        coordinate_slowest = x.permute(*torch.arange(x.ndim - 1, -1, -1))
+        
+        modded = torch.stack((
+            self.x[torch.remainder(coordinate_slowest[0],self.nx)],
+            self.y[torch.remainder(coordinate_slowest[1],self.ny)],
+            ))
+        
+        return modded.permute(*torch.arange(modded.ndim -1, -1, -1))
 
     def distance_squared(self, a, b):
         r'''
@@ -579,6 +583,37 @@ class Lattice(H5able):
                 for r in self.coordinates # r slowest
             )
         ).permute((2,0,1)) # (b=a-r) r a order
+
+    ####
+    #### VISUALIZATION
+    ####
+
+    def plot_2d_scalar(self, ax, data, center_origin=True, **kwargs):
+        r'''
+        Use `matshow`_ to plot the (linear) data as a function of space, using the lattice to coordinatize, centering the origin by default.
+
+        Parameters
+        ----------
+            ax: matplotlib axis
+                Where to draw the data.
+            data: torch.tensor
+                A single linearized spatial vector.
+            center_origin: True or False
+                If true the origin is centered in the figure.
+            **kwargs: `matshow`_ arguments
+                Simply forwarded. `origin` is fixed to be ``'lower'``
+
+        .. plot:: examples/plot/Lattice_plot_2d_scalar.py
+           :include-source:
+
+        .. _matshow: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.matshow.html#matplotlib.pyplot.matshow
+        '''
+
+        # We coordinatize to get a spatial layout, and transpose to get x going across.
+        # We put the origin='lower' because... obviously.
+        ax.matshow( self.coordinatize(data, center_origin=center_origin).transpose(0,1), origin='lower', **kwargs)
+        ax.set_xticks(torch.arange(self.nx), self.x.roll(self.nx//2).numpy() if center_origin else self.x.numpy())
+        ax.set_yticks(torch.arange(self.ny), self.y.roll(self.ny//2).numpy() if center_origin else self.y.numpy())
 
 def _demo(nx=7):
     return Lattice(nx)

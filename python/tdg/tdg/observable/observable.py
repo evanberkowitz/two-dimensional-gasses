@@ -31,6 +31,7 @@ class Observable:
             cls.name = name
 
         cls._logger = (logger.debug if cls.name[0] == '_' else logger.info)
+        cls._debug  = logger.debug
         cls._logger(f'Observable registered: {cls.name}')
 
         setattr(tdg.ensemble.GrandCanonical, cls.name, cls())
@@ -49,7 +50,7 @@ class Observable:
             # class level cache discussed in https://github.com/evanberkowitz/two-dimensional-gasses/issues/12
             # in that there's no extra reference to the object at all with this strategy.
             # So, when it goes out of scope with no reference, it will be deleted.
-            self._logger(f'{self.name} already cached.')
+            self._debug(f'{self.name} already cached.')
             return obj.__dict__[self.name]
 
         if objtype is tdg.ensemble.GrandCanonical:
