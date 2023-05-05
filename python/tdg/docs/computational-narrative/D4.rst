@@ -319,7 +319,7 @@ Symmetrization Utilities
 .. warning::
    What we currently have is extremely ad-hoc and not general.  Therefore this entire API may change in the future!
 
-.. autoclass:: tdg.symmetry.D4A1
+.. autoclass:: tdg.symmetry.D4
 
 
 .. _group orbits: https://mathworld.wolfram.com/GroupOrbit.html
