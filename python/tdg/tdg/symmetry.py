@@ -9,6 +9,8 @@ class D4:
     
     For functions of a relative coordinate (or of a total momentum), we can take a straight average over the whole group orbit of every point on the lattice (or Brillouin zone).
 
+    For other irreps we need a weighted average.
+
     Parameters
     ----------
         Lattice: tdg.Lattice
@@ -39,21 +41,29 @@ class D4:
             ((+1,0),(0,-1)), # reflect across x-axis
         ))
 
-        one_over_two_sqrt_two = torch.tensor(1/8).sqrt()
         self.weights = {
-            'A1': one_over_two_sqrt_two * torch.tensor((+1,+1,+1,+1,+1,+1,+1,+1)) + 0.j,
-            'A2': one_over_two_sqrt_two * torch.tensor((+1,-1,+1,-1,+1,-1,+1,-1)) + 0.j,
-            'B1': one_over_two_sqrt_two * torch.tensor((+1,-1,-1,+1,+1,-1,-1,+1)) + 0.j,
-            'B2': one_over_two_sqrt_two * torch.tensor((+1,+1,-1,-1,+1,+1,-1,-1)) + 0.j,
-            ("E", +1): one_over_two_sqrt_two * torch.tensor((+1,+1j,+1j,-1,-1,-1j,-1j,+1)),
-            ("E", -1): one_over_two_sqrt_two * torch.tensor((+1,-1j,-1j,-1,-1,+1j,+1j,+1)),
-            ("E'", +1): one_over_two_sqrt_two * torch.tensor((+1,-1j,+1j,+1,-1,+1j,-1j,-1)),
-            ("E'", -1): one_over_two_sqrt_two * torch.tensor((+1,+1j,-1j,+1,-1,-1j,+1j,-1)),
+            'A1': torch.tensor((+1,+1,+1,+1,+1,+1,+1,+1)) + 0.j,
+            'A2': torch.tensor((+1,-1,+1,-1,+1,-1,+1,-1)) + 0.j,
+            'B1': torch.tensor((+1,-1,-1,+1,+1,-1,-1,+1)) + 0.j,
+            'B2': torch.tensor((+1,+1,-1,-1,+1,+1,-1,-1)) + 0.j,
+            ("E", +1): torch.tensor((+1,+1j,+1j,-1,-1,-1j,-1j,+1)),
+            ("E", -1): torch.tensor((+1,-1j,-1j,-1,-1,+1j,+1j,+1)),
+            ("E'", +1): torch.tensor((+1,-1j,+1j,+1,-1,+1j,-1j,-1)),
+            ("E'", -1): torch.tensor((+1,+1j,-1j,+1,-1,-1j,+1j,-1)),
         }
 
         self.irreps = self.weights.keys()
 
         self.permutations = torch.stack(tuple(self._permutation(o) for o in self.operations))
+        self.norms = 1
+        self.orbit_lengths = 8 / (self(torch.eye(self.Lattice.sites))**2).sum(axis=1)
+        self.norms = 1./8
+        # Why isn't self.norms = 1/√8, or something that depends on orbit_lengths?
+        # The answer is that for each irrep we're still retaining the data in
+        # a tensor the same shape as the original data.  For each irrep we could go down
+        # to just the entries in the fundamental domain (a right triangle with 45˚ slope).
+        # The natural inner product on that fundamental domain is smaller by the length
+        # of the orbits.
 
     def _permutation(self, op):
         # Since the operations map lattice points to lattice points we know that they are a permutation
@@ -99,4 +109,4 @@ class D4:
                 ):
             temp += w * torch.index_select(data, axis, p)
 
-        return temp
+        return temp * self.norms
