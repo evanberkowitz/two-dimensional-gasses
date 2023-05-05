@@ -9,6 +9,8 @@ class D4:
     
     For functions of a relative coordinate (or of a total momentum), we can take a straight average over the whole group orbit of every point on the lattice (or Brillouin zone).
 
+    For other irreps we need a weighted average.
+
     Parameters
     ----------
         Lattice: tdg.Lattice
