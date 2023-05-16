@@ -167,6 +167,9 @@ class LeapFrog(H5able):
         self.md_steps = md_steps
         self.md_dt    = self.md_time / self.md_steps
         
+    def __str__(self):
+        return f'LeapFrog(H, md_steps={self.md_steps}, md_time={self.md_time})'
+
     def integrate(self, x_i, p_i):
         r"""Integrate an initial position and momentum.
 
