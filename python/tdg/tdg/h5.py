@@ -86,7 +86,7 @@ class H5Data:
             logger.debug(f"Reading {group.name} as {name}.")
             strategy = H5Data._strategies[name]
             H5Data._check_metadata(group, strategy, strict)
-            return strategy.read(group)
+            return strategy.read(group, strict)
         except KeyError:
             logger.debug(f"Reading {group.name} by unpickling.")
             return pickle.loads(group[()])
@@ -105,9 +105,9 @@ class H5ableStrategy(H5Data, name='h5able'):
         return isinstance(value, H5able)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         cls = pickle.loads(group.attrs['H5able_class'][()])
-        return cls.from_h5(group)
+        return cls.from_h5(group, strict)
 
     def write(group, key, value):
         g = group.create_group(key)
@@ -122,7 +122,7 @@ class IntegerStrategy(H5Data, name='integer'):
         return isinstance(value, int)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         return int(group[()])
 
     @staticmethod
@@ -137,7 +137,7 @@ class FloatStrategy(H5Data, name='float'):
         return isinstance(value, float)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         return float(group[()])
 
     @staticmethod
@@ -157,7 +157,7 @@ class NumpyStrategy(H5Data, name='numpy'):
         return isinstance(value, np.ndarray)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         return group[()]
 
     @staticmethod
@@ -178,7 +178,7 @@ class TorchStrategy(H5Data, name='torch'):
         return isinstance(value, torch.Tensor)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         data = group[()]
         # We would like to read directly onto the default device,
         # or, if there is a device context manager,
@@ -212,7 +212,7 @@ class TorchSizeStrategy(H5Data, name='torch.Size'):
         return isinstance(value, torch.Size)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         return torch.Size(group[()])
 
     @staticmethod
@@ -230,8 +230,8 @@ class DictionaryStrategy(H5Data, name='dict'):
         return isinstance(value, dict)
 
     @staticmethod
-    def read(group):
-        return {key: H5Data.read(group[key]) for key in group}
+    def read(group, strict):
+        return {key: H5Data.read(group[key], strict) for key in group}
 
     @staticmethod
     def write(group, key, value):
