@@ -160,7 +160,7 @@ class MarkovChain(H5able):
         self.dH.append(dH)
         self.acceptance_probability.append(acceptance_probability.clone().detach())
 
-        logger.info(f'HMC proposal {"accepted" if accept else "rejected"} with dH={dH.real:+} acceptance_probability={acceptance_probability.numpy()}')
+        logger.info(f'HMC proposal {"accepted" if accept else "rejected"} with dH={dH.real.cpu().detach().numpy():+} acceptance_probability={acceptance_probability.cpu().detach().numpy()}')
 
         self.steps += 1
         if accept:
