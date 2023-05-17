@@ -180,13 +180,25 @@ class TorchStrategy(H5Data, name='torch'):
     @staticmethod
     def read(group):
         data = group[()]
+        # We would like to read directly onto the default device,
+        # or, if there is a device context manager,
+        #   https://pytorch.org/tutorials/recipes/recipes/changing_default_device.html
+        # the correct device.  Even though there is a torch.set_default_device
+        #   https://pytorch.org/docs/stable/generated/torch.set_default_device.html
+        # there is no corresponding .get_default_device
+        # Instead we infer it
+        device = torch.tensor(0).device
+        # and ship the data to the device.
+        # TODO: Make the device detection as elegant as torch allows.
         if isinstance(data, np.ndarray):
-            return torch.from_numpy(data)
-        return torch.tensor(data)
+            return torch.from_numpy(data).to(device)
+        return torch.tensor(data).to(device)
 
     @staticmethod
     def write(group, key, value):
-        group[key] = value.detach().numpy()
+        # Move the data to the cpu to prevent pickling of GPU tensors
+        # and subsequent incompatibility with CPU-only machines.
+        group[key] = value.cpu().clone().detach().numpy()
         return group[key]
 
 class TorchSizeStrategy(H5Data, name='torch.Size'):
