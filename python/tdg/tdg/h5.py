@@ -240,6 +240,25 @@ class DictionaryStrategy(H5Data, name='dict'):
             H5Data.write(g, k, v)
         return g
 
+# A strategy for a python list.
+class ListStrategy(H5Data, name='list'):
+
+    @staticmethod
+    def applies(value):
+        return isinstance(value, list)
+
+    @staticmethod
+    def read(group, strict):
+        return [H5Data.read(group[str(i)], strict) for i in range(group.attrs['len'])]
+
+    @staticmethod
+    def write(group, key, value):
+        g = group.create_group(key)
+        g.attrs['len'] = len(value)
+        for i, v in enumerate(value):
+            H5Data.write(g, i, v)
+        return g
+
 ####
 #### H5able
 ####
