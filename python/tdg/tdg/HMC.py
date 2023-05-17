@@ -263,6 +263,9 @@ class Omelyan(H5able):
         if (zeta < 0) or (0.5 < zeta):
             raise ValueError("Second-order integrators need 0 <= zeta <= 0.5 for any hope of improvement over LeapFrog.")
 
+    def __str__(self):
+        return f'Omelyan(H, md_steps={self.md_steps}, md_time={self.md_time}, zeta={self.zeta})'
+
     def integrate(self, x_i, p_i):
         r"""Integrate an initial position and momentum.
 
