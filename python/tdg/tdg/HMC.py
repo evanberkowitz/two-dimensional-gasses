@@ -2,6 +2,10 @@
 
 import torch
 from tdg.h5 import H5able
+from collections import deque
+
+import logging
+logger = logging.getLogger(__name__)
 
 r'''
 
@@ -115,6 +119,11 @@ class MarkovChain(H5able):
         # And we do accept/reject sampling
         self.metropolis_hastings = torch.distributions.uniform.Uniform(0,1).sample
         
+        self.steps = 0
+        self.accepted = 0
+        self.rejected = 0
+        self.dH = deque()
+        self.acceptance_probability = deque()
         
     def step(self, x):
         r"""
@@ -140,11 +149,25 @@ class MarkovChain(H5able):
         x_f, p_f = self.integrator(x_i, p_i)
         
         H_f = self.H(x_f,p_f)
-        dH = H_f - H_i
+        dH = (H_f - H_i).detach()
 
-        if torch.exp(-dH.real) > self.metropolis_hastings():
+        if dH.isnan():
+            raise ValueError('HMC energy change is NaN.  {H_i=} {H_f=}')
+
+        acceptance_probability = torch.exp(-dH.real).clamp(max=1)
+        accept = (acceptance_probability > self.metropolis_hastings())
+
+        self.dH.append(dH)
+        self.acceptance_probability.append(acceptance_probability.clone().detach())
+
+        logger.info(f'HMC proposal {"accepted" if accept else "rejected"} with dH={dH.real:+} acceptance_probability={acceptance_probability.numpy()}')
+
+        self.steps += 1
+        if accept:
+            self.accepted += 1
             return x_f, 1.
         else:
+            self.rejected += 1
             return x_i, 1.
 
 class LeapFrog(H5able):
