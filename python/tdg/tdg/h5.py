@@ -171,7 +171,7 @@ class NumpyStrategy(H5Data, name='numpy'):
 class TorchStrategy(H5Data, name='torch'):
 
     metadata = {
-        'version': torch.__version__,
+        'version': torch.__version__.split('+')[0],
     }
 
     @staticmethod
@@ -205,7 +205,7 @@ class TorchStrategy(H5Data, name='torch'):
 class TorchSizeStrategy(H5Data, name='torch.Size'):
 
     metadata = {
-        'version': torch.__version__,
+        'version': torch.__version__.split('+')[0],
     }
 
     @staticmethod
@@ -224,7 +224,7 @@ class TorchSizeStrategy(H5Data, name='torch.Size'):
 class TorchObjectStrategy(H5Data, name='torch.object'):
 
     metadata = {
-        'version': torch.__version__,
+        'version': torch.__version__.split('+')[0],
     }
 
     @staticmethod
