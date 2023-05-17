@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import io
 import pickle
 import h5py as h5
 
@@ -72,8 +73,8 @@ class H5Data:
                     H5Data._mark_strategy(result, name)
                     H5Data._mark_metadata(result, strategy)
                     break
-            except:
-                continue
+            except Exception as e:
+                logger.error(str(e))
         else: # Wow, a real-life instance of for/else!
             logger.debug(f"Writing {group.name}/{key} by pickling.")
             group[key] = np.void(pickle.dumps(value))
@@ -220,6 +221,34 @@ class TorchSizeStrategy(H5Data, name='torch.Size'):
         group[key] = value
         return group[key]
 
+class TorchObjectStrategy(H5Data, name='torch.object'):
+
+    metadata = {
+        'version': torch.__version__,
+    }
+
+    @staticmethod
+    def applies(value):
+        return any(
+                isinstance(value, torchType)
+                for torchType in
+                (
+                    # Things we'd otherwise want to read and write with torch.save:
+                    torch.distributions.Distribution,
+                )
+                )
+
+    @staticmethod
+    def read(group, strict):
+        device = torch.tensor(0).device
+        return torch.load(io.BytesIO(group[()]), map_location=device)
+
+    @staticmethod
+    def write(group, key, value):
+        f = io.BytesIO()
+        torch.save(value, f)
+        group[key] = f.getbuffer()
+        return group[key]
 
 
 # A strategy for a python dictionary.
@@ -256,7 +285,7 @@ class ListStrategy(H5Data, name='list'):
         g = group.create_group(key)
         g.attrs['len'] = len(value)
         for i, v in enumerate(value):
-            H5Data.write(g, i, v)
+            H5Data.write(g, str(i), v)
         return g
 
 ####
