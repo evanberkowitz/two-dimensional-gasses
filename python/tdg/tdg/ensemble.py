@@ -5,15 +5,13 @@ from functools import lru_cache as cached
 
 import torch
 
+from tdg import _no_op
 import tdg
 from tdg.h5 import H5able
 from tdg.performance import Timer
 
 import logging
 logger = logging.getLogger(__name__)
-
-def _no_op(x):
-    return x
 
 class GrandCanonical(H5able):
     r''' A grand-canonical ensemble of configurations and associated observables, importance-sampled according to :attr:`~.GrandCanonical.Action`.
