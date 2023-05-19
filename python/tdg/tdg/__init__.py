@@ -1,4 +1,8 @@
 from . import meta
+
+def _no_op(x):
+    return x
+
 import tdg.cli as cli
 import tdg.analysis as analysis
 
@@ -16,3 +20,4 @@ from .action import Action as Action
 from .tuning import Tuning as Tuning, AnalyticTuning as AnalyticTuning
 import tdg.ensemble as ensemble
 import tdg.observable
+
