@@ -3,7 +3,8 @@
 import torch
 import pandas as pd
 import numpy as np
-import scipy
+import scipy.optimize, scipy.stats
+
 from tdg import _no_op
 from tdg.h5 import H5able
 import tdg.ensemble
@@ -508,15 +509,17 @@ class Autotuner:
 
         self._latest_ensemble = tdg.ensemble.GrandCanonical(self.H.V).generate(self.cfgs_per_estimate, hmc, start=start, progress=progress)
 
+        dH = torch.tensor(hmc.dH)
+
         this_step = pd.Series({
             'md_steps':   md_steps,
-            'dH':         torch.tensor(hmc.dH),
+            'dH':         dH.cpu().clone().detach().numpy(),
             'acceptance': hmc.accepted / hmc.steps,
             # We calculate N_bosonic specifically because it's already simple sums.
             # Anything else requires the propagator, which we don't want in this loop.
             'N_bosonic':  self._latest_ensemble.N_bosonic.cpu().clone().detach().numpy().real,
         })
-        this_step['acc'] = torch.exp(-this_step['dH'].real).clip(max=1).numpy()
+        this_step['acc'] = torch.exp(-dH.real).clip(max=1).cpu().clone().detach().numpy()
         this_step['<acc>'] = this_step['acc'].mean()
 
         self.measurements = pd.concat((self.measurements, this_step.to_frame().transpose()), axis=0, ignore_index=True)
@@ -561,7 +564,7 @@ class Autotuner:
         for (md_steps, rows) in self.measurements.groupby('md_steps'):
             # A simple bootstrap estimator for a very naive uncertainty on the acceptance probability:
             acc=np.concatenate(rows['acc'].values)
-            boot=acc[torch.randint(0, len(acc), (self._bootstraps, len(acc)))].mean(axis=1)
+            boot=acc[torch.randint(0, len(acc), (self._bootstraps, len(acc))).cpu()].mean(axis=1)
             points.append(pd.Series({'md_steps': md_steps, '<acc>': boot.mean(), 'd<acc>': boot.std()}))
 
         self.summary = pd.DataFrame(points)
