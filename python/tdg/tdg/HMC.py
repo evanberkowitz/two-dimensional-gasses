@@ -112,12 +112,12 @@ class MarkovChain(H5able):
         self.refresh_momentum = torch.distributions.multivariate_normal.MultivariateNormal(
             torch.zeros(H.V.Spacetime.sites), 
             torch.eye(H.V.Spacetime.sites), 
-        ).sample
+        )
         
         self.integrator = integrator
         
         # And we do accept/reject sampling
-        self.metropolis_hastings = torch.distributions.uniform.Uniform(0,1).sample
+        self.metropolis_hastings = torch.distributions.uniform.Uniform(0,1)
         
         self.steps = 0
         self.accepted = 0
@@ -141,7 +141,7 @@ class MarkovChain(H5able):
             jacobian:
                 The Jacobian of the integration.  Currently hard-coded to 1, but may be needed for other integration schemes.
         """
-        p_i = self.refresh_momentum().reshape(*x.shape).requires_grad_(True)
+        p_i = self.refresh_momentum.sample().reshape(*x.shape).requires_grad_(True)
         x_i = x.clone().requires_grad_(True)
         
         H_i = self.H(x_i,p_i)
@@ -155,10 +155,10 @@ class MarkovChain(H5able):
             raise ValueError('HMC energy change is NaN.  {H_i=} {H_f=}')
 
         acceptance_probability = torch.exp(-dH.real).clamp(max=1)
-        accept = (acceptance_probability > self.metropolis_hastings())
+        accept = (acceptance_probability > self.metropolis_hastings.sample())
 
-        self.dH.append(dH)
-        self.acceptance_probability.append(acceptance_probability.clone().detach())
+        self.dH.append(dH.cpu())
+        self.acceptance_probability.append(acceptance_probability.clone().detach().cpu())
 
         logger.info(f'HMC proposal {"accepted" if accept else "rejected"} with dH={dH.real.cpu().detach().numpy():+} acceptance_probability={acceptance_probability.cpu().detach().numpy()}')
 
