@@ -45,23 +45,13 @@ class Hamiltonian(H5able):
     Of course, these two applications are closely related, and in 'normal' circumstances we use the same Hamiltonian for both purposes.
     """
 
-    def __init__(self, S, massMatrix=None):
-        # massMatrix must be symmmetric.
+    def __init__(self, S):
 
         self.V = S
 
-        # The kinetic piece is p^2/2m
-        # but by default set m = 1 for each mode, in which case we get simplifications:
-        if massMatrix is None:
-            self.M = torch.eye(S.Spacetime.sites)
-            self.Minv = torch.eye(S.Spacetime.sites)
-            self.T = lambda p: torch.sum(p*p)/2
-            self._xdot = lambda p: p
-        else:
-            self.M = massMatrix.clone()
-            self.Minv = torch.linalg.matrix_power(self.M)
-            self.T = lambda p: torch.einsum('i,ij,j', p, Minv, p)/2
-            self._xdot = lambda p: torch.matmul(Minv, p) # relies on the symmetry of the massMatrix
+        # The kinetic piece could be 1/2 (p M^-1 p) for an arbitrary mass matrix.
+        # A generic M was supported through 1dce9a4 but the simplification M=1 keeps things simple and
+        # allows us to avoid constructing unpicklable lambdas that allow us to write an HMC Hamiltonian to_h5.
 
     def __call__(self, x, p):
         r"""
@@ -81,6 +71,9 @@ class Hamiltonian(H5able):
         """
         return self.T(p) + self.V(x)
 
+    def T(self, p):
+        return torch.sum(p*p)/2
+
     def velocity(self, p):
         r"""
         The velocity is needed to update the positions in Hamilton's equations of motions.
@@ -88,7 +81,7 @@ class Hamiltonian(H5able):
         .. math::
             \texttt{velocity(p)} = \left.\frac{\partial \mathcal{H}}{\partial p}\right|_p
         """
-        return self._xdot(p)
+        return p
 
     def force(self, x):
         r"""
@@ -118,7 +111,7 @@ class MarkovChain(H5able):
         
         self.refresh_momentum = torch.distributions.multivariate_normal.MultivariateNormal(
             torch.zeros(H.V.Spacetime.sites), 
-            self.H.M
+            torch.eye(H.V.Spacetime.sites), 
         ).sample
         
         self.integrator = integrator
@@ -322,7 +315,7 @@ class Omelyan(H5able):
         '''
         return self.integrate(x_i, p_i)
 
-class Autotuner:
+class Autotuner(H5able):
     r'''
     An Autotuner seeks for a molecular dynamics discretization, targeting a given acceptance rate.
     Based on the simple ideas explained in Reference :cite:`Krieg:2018pqh`.
@@ -407,7 +400,13 @@ class Autotuner:
             self.measurements['target'].iloc[-1] = target_acceptance
             self.md_steps = self._predict(target_acceptance)
 
-        return self.I(self.H, self.md_steps, md_time=md_time), self._latest_ensemble.configurations[-1]
+        integrator = self.I(self.H, self.md_steps, md_time=md_time)
+        integrator.Autotuner = self
+
+        start = self._latest_ensemble.configurations[-1].clone().detach()
+        del self._latest_ensemble # To avoid writing the ensemble to disk.
+
+        return integrator, start
 
     def plot_history(self, ax, **kwargs):
         '''

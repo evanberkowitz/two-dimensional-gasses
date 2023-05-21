@@ -111,6 +111,9 @@ class GrandCanonical(H5able):
             self.configurations[mcmc_step] = configuration.real
             self.weights[mcmc_step] = weight
 
+        self.start = start
+        self.generator = generator
+
         return self
     
     def measure(self, *observables):
