@@ -537,7 +537,7 @@ class Autotuner(H5able):
         return self._latest_ensemble.configurations[-1]
 
 
-    def _predict(self, target_acceptance=0.75, continuum=1000, maxfev=10000, uncertainty_floor=0.02):
+    def _predict(self, target_acceptance=0.75, continuum=1000, maxfev=10000, uncertainty_floor=0.005):
         '''
         Given all previous HMC steps, estimates the acceptance rate for every tried molecular dynamics discretization and
         fits a model to try and predict the number of molecular dynamics steps required to achieve the target acceptance rate.
