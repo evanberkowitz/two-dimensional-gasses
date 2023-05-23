@@ -607,13 +607,26 @@ class Autotuner(H5able):
             # If the fit errors we want to know, but often the fitter cannot determine the covariance, warning
             # OptimizeWarning: Covariance of the parameters could not be estimated
             # which we do not care about.
-            self._fit, cov = scipy.optimize.curve_fit(
-                scipy.stats.gamma.cdf,
-                points['md_steps'].values, points['<acc>'].values,
-                p0=previous,
-                sigma=points['d<acc>'].values,
-                maxfev=maxfev,
-            )
+
+            finished=False
+
+            while not finished:
+            
+                try:
+                    self._fit, cov = scipy.optimize.curve_fit(
+                        scipy.stats.gamma.cdf,
+                        points['md_steps'].values, points['<acc>'].values,
+                        p0=previous,
+                        sigma=points['d<acc>'].values,
+                        maxfev=maxfev,
+                    )
+                    finished=True
+                except RuntimeError as rte:
+                    if 'Optimal parameters not found:' in rte.args[0]:
+                        logger.info('No optimal parameters found in {maxfev=} evaluations.  Increasing uncertainties.')
+                        points['d<acc>'] = 1.5 * points['d<acc>']
+                    else:
+                        raise rte
 
         self.measurements['fit'].iloc[-1] = self._fit
         target = scipy.stats.gamma.ppf(target_acceptance, *self._fit)
