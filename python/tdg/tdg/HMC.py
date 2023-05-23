@@ -478,6 +478,7 @@ class Autotuner(H5able):
         ax.plot((0.2+s1['md_steps'],), (s1['<acc>'],), color=color, marker='<')
 
         ax.set_xlabel('Molecular dynamics steps')
+        ax.set_xticks(self.summary['md_steps'])
         ax.set_ylabel('Acceptance probability')
 
     def _step(self, md_steps, *, md_time=1, start, progress=_no_op):
