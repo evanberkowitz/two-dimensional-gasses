@@ -396,7 +396,16 @@ class Autotuner(H5able):
         ):
 
             logger.info(f'Computing trajectories with {self.md_steps} molecular dynamics steps per trajectory...')
-            start = self._step(self.md_steps, start=start, md_time=md_time, progress=progress)
+            
+            cfgs = self.cfgs_per_estimate
+
+            try:
+                cfgs *= 2**(self.measurements['md_steps'] == self.md_steps).replace(
+                        {True: 1, False: 0}).sum()
+            except KeyError:
+                pass
+                
+            start = self._step(self.md_steps, cfgs=cfgs, start=start, md_time=md_time, progress=progress)
             self.measurements['target'].iloc[-1] = target_acceptance
             self.md_steps = self._predict(target_acceptance)
 
@@ -481,7 +490,7 @@ class Autotuner(H5able):
         ax.set_xticks(self.summary['md_steps'])
         ax.set_ylabel('Acceptance probability')
 
-    def _step(self, md_steps, *, md_time=1, start, progress=_no_op):
+    def _step(self, md_steps, *, cfgs, md_time=1, start, progress=_no_op):
         '''
         This method performs a single step of the autotuning process with a specific number of molecular dynamics steps (md_steps).
         It initializes the molecular dynamics integrator and uses it for HMC evolution.  It evaluates acceptance rates,
@@ -507,7 +516,8 @@ class Autotuner(H5able):
         integrator = self.I(self.H, md_steps, md_time)
         hmc = MarkovChain(self.H, integrator)
 
-        self._latest_ensemble = tdg.ensemble.GrandCanonical(self.H.V).generate(self.cfgs_per_estimate, hmc, start=start, progress=progress)
+        logger.info(f'Generating {cfgs} configurations.')
+        self._latest_ensemble = tdg.ensemble.GrandCanonical(self.H.V).generate(cfgs, hmc, start=start, progress=progress)
 
         dH = torch.tensor(hmc.dH)
 
