@@ -569,10 +569,10 @@ class Autotuner(H5able):
 
         self.summary = pd.DataFrame(points)
 
+        points.append(pd.Series({'md_steps': 0, '<acc>': 0., 'd<acc>': 0.01}))
         if len(points) < 3:
-            # Add fictitious points to stabilize the fit when there have been too few iterations.
-            points.append(pd.Series({'md_steps': 0, '<acc>': 0., 'd<acc>': 0.01}))
-            points.append(pd.Series({'md_steps': continuum, '<acc>': 1., 'd<acc>': 0.01}))
+            # Add fictitious point to stabilize the fit when there have been too few iterations.
+            points.append(pd.Series({'md_steps': continuum, '<acc>': 1., 'd<acc>': uncertainty_floor}))
 
         points = pd.DataFrame(points)
 
