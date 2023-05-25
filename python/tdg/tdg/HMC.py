@@ -101,8 +101,21 @@ class MarkovChain(H5able):
     #.  Calculate :math:`\mathcal{H}` for the given :math:`x_i` and drawn :math:`p_i`.
     #.  Integrate Hamilton's equations of motion to generate a proposal for a new :math:`x_f` and :math:`p_f`.
     #.  Accept the proposal according to :math:`\exp[-(\Delta\mathcal{H} = \mathcal{H}_f - \mathcal{H}_i)]`
+
+    Parameters
+    ----------
+    H:  HMC.Hamiltonian
+        The Hamiltonian needed in the Metropolis-Hastings accept/reject step.
+    integrator: a molecular dynamics integrator
+        Integrates molecular dynamics trajectories to give a proposal.
+    retry_on_nan: boole
+        Sometimes if the action is too coarse we can encounter numerical under/overflow yielding NaNs; obvious nonsense.
+        At that point the *formally correct* thing to do is to terminate the Markov Chain and throw it away.
+        But... sometimes you want to press on anyway.  If `True` and NaN is detected in either the proposed
+        configuration or in the change in HMC energy, just take a fresh step with a different momentum,
+        rather than raising a ValueError.  The default, in contrast, is to raise a ValueError.
     """
-    def __init__(self, H, integrator):
+    def __init__(self, H, integrator, retry_on_nan = False):
         """
         H is used for accept-reject
         integrator is used for the molecular dynamics and need not use the same H.
@@ -124,7 +137,8 @@ class MarkovChain(H5able):
         self.rejected = 0
         self.dH = deque()
         self.acceptance_probability = deque()
-        
+        self.retry_on_nan = retry_on_nan
+
     def step(self, x):
         r"""
 
@@ -148,11 +162,24 @@ class MarkovChain(H5able):
         
         x_f, p_f = self.integrator(x_i, p_i)
         
+        if x_f.isnan().any():
+            if self.retry_on_nan:
+                logger.warning(f'Proposed configuration contains NaN.  Retrying.')
+                return self.step(x)
+            else:
+                logger.error(f'Proposed configuration contains NaN.')
+                raise ValueError(f'Proposed configuration contains NaN.')
+
         H_f = self.H(x_f,p_f)
         dH = (H_f - H_i).detach()
 
         if dH.isnan():
-            raise ValueError('HMC energy change is NaN.  {H_i=} {H_f=}')
+            if self.retry_on_nan:
+                logger.warning(f'HMC energy change is NaN. Retrying.')
+                return self.step(x)
+            else:
+                logger.error(f'HMC energy change is NaN.')
+                raise ValueError(f'HMC energy change is NaN.')
 
         acceptance_probability = torch.exp(-dH.real).clamp(max=1)
         accept = (acceptance_probability > self.metropolis_hastings.sample())
