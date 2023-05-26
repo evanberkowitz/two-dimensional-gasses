@@ -7,6 +7,7 @@ Comparing to Other References
    :maxdepth: 2
 
    PRA107043314
+   EPJST2013017639
    adding-a-reference
 
 

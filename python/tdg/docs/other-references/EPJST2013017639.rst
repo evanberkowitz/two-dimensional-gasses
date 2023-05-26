@@ -1,0 +1,8 @@
+
+Bertaina, EPJ Special Topics, 217(1):153–162, 2013
+==================================================
+
+Ref. :cite:`bertaina2013` provides some contact data.
+
+.. automodule:: tdg.others.EPJST2013017639
+   :members:

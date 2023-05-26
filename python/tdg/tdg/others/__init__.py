@@ -1,7 +1,9 @@
 import tdg.others.PRA107043314 as PRA107043314
+import tdg.others.EPJST2013017639 as EPJST2013017639
 
 REFERENCES = {
-        PRA107043314
+        PRA107043314,
+        EPJST2013017639,
 }
 r'''
 
@@ -13,7 +15,7 @@ This variable contains all available references.
 def contact_comparison(ax, *, references=REFERENCES, **kwargs):
     r'''contact_comparison(ax, references=REFERENCES, **kwargs)
 
-    Plots the values of :math:`c/k_F^4` provided by different references.
+    Plots the values of :math:`c/k_F^4` provided by different references for comparison with :func:`~.contact.contact_by_kF4`.
 
     Parameters
     ----------
