@@ -1,14 +1,9 @@
 import torch
 
-r'''
-These results are from Ref.~:cite:`bertaina2013`.
-'''
-
-import logging
-logger = logging.getLogger(__name__)
-
-name  = 'Bertaina, EPJ Special Topics 217, 153-162 (2013)'
-bibtex = '''@article{bertaina2013,
+from tdg.others.citation import Citation
+citation = Citation(
+    'Bertaina, EPJ Special Topics 217, 153-162 (2013)',
+    '''@article{bertaina2013,
     title={Two-dimensional short-range interacting attractive and repulsive Fermi gases at zero temperature},
     author={Bertaina, Gianluca},
     journal={The European Physical Journal Special Topics},
@@ -17,20 +12,14 @@ bibtex = '''@article{bertaina2013,
     pages={153--162},
     year={2013},
     publisher={Springer}
-}'''
+}''')
 
-_cited = False
-def _cite():
-    global _cited
-    if not _cited:
-        logger.info(f'Using a result from {name}.')
-        logger.debug(bibtex)
-        _cited = True
-    return
+def contact_by_kF4():
+    r'''
+    Returns (alpha, c/kF^4) pairs.
+    '''
 
-def _contact_by_kF4():
-
-    _cite()
+    citation()
     return torch.tensor([
         [0.561347, 0.070021],
         [0.473085, 0.051458],
@@ -48,10 +37,8 @@ def _contact_by_kF4():
 
 def contact_comparison(ax, **kwargs):
     r'''
-
+    Plots the data in :func:`contact_by_kF4` as points in a style that matches :cite:`Beane:2022wcn`.
     '''
-    
-    _cite()
 
     c_by_kF4 = _contact_by_kF4()
     positive = (c_by_kF4[:,0] > 0)

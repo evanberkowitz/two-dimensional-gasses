@@ -11,11 +11,32 @@ Bibliographic Information
 Each reference must emit a one-line logging info line the first time results from the reference are used.
 The logger must emit a full bibtex entry as a debug message the first time results from the reference are used.
 
-See, for example
+This can be easy if you use
 
-.. autofunction:: tdg.others.PRA107043314._cite
+.. autoclass:: tdg.others.citation.Citation
 
-Each reference must include a ``label`` variable that can be used in figure legends.
+In your reference you can do
+
+.. code::
+
+   from tdg.others.citation import Citation
+   citation = Citation(
+       'AUTHOR et al., JOURNAL ETC. (YEAR)',
+       '''@article{bibtex,
+           title={TITLE},
+           author={AUTHOR},
+           journal={JOURNAL},
+           volume={VOL},
+           number={N},
+           pages={100-200},
+           year={YEAR},
+           publisher={PUBLISHER}
+       }''')
+   
+   # ... and then inside a piece of code that, if it's running, the authors deserve a citation:
+   citation()
+
+Each reference should set the ``label`` argument in each plot.
 
 Results and Plotting
 --------------------
