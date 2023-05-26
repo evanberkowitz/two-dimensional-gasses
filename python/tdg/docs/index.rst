@@ -12,6 +12,7 @@ Two-Dimensional Gases
    computational-narrative/index.rst
    observables/index.rst
    data-analysis/index.rst
+   other-references/index.rst
    execution/index.rst
    bibliography
 
