@@ -19,6 +19,8 @@ We provide some utilities for drawing figures with data from the above sources.
 .. autodata:: tdg.others.REFERENCES
    :no-value:
 
+Some references have data that has been superseded by works from the same author, or are far outside the typical parameter range.  Pass a truthy ``include_all`` kwarg to include these in comparison figures. (For an example see :func:`PRL106110403 <tdg.others.PRL106110403.contact_comparison>`.)
+
 .. autofunction:: tdg.others.contact_comparison
 
 .. autofunction:: tdg.others.energy_comparison

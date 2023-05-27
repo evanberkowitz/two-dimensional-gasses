@@ -59,6 +59,49 @@ def conventional_table_I():
 
     return torch.stack([logkFa, E_by_FG, dE_by_FG, half_Eb])
 
+def figure_4():
+    r'''
+    Figure 4 of Ref. :cite:`PhysRevLett.106.110403` provides measurements of :func:`~.contact.contact_by_kF4` as a function of :math:`\log k_F a_{2D}`.
+
+    Returns the data from Figure 4, lifted by hand, in TWO tensors, the first with BCS data and the other with JS data.  Each tensor has :math:`\log k_F a_{2D}` in the first row and :math:`c/k_F^4` in the second.
+    '''
+
+    citation()
+
+    BCS = torch.tensor([
+        [ +1.00, +0.24 ],
+        [ +0.74, +0.35 ],
+        [ +0.49, +0.52 ],
+        [ +0.24, +0.81 ],
+        [ -0.00, +1.29 ],
+        [ -0.50, +3.45 ],
+        ]).T
+
+    JS = torch.tensor([
+        [ +4.37, +0.01 ],
+        [ +4.02, +0.01 ],
+        [ +3.34, +0.01 ],
+        [ +2.64, +0.03 ],
+        [ +2.15, +0.04 ],
+        [ +1.72, +0.07 ],
+        [ +1.43, +0.09 ],
+        [ +1.15, +0.15 ],
+        ]).T
+
+    return BCS, JS
+
+def conventional_figure_4():
+    r'''
+    The same data as :func:`figure_4` but with :math:`\log k_F a` rather than :math:`\log k_F a_{2D}`.
+    '''
+
+    BCS, JS = figure_4()
+
+    BCS[0] = tdg.conventions.from_geometric.log_ka(BCS[0])
+    JS [0] = tdg.conventions.from_geometric.log_ka(JS [0])
+
+    return BCS, JS
+
 def energy_comparison(ax, **kwargs):
     r'''
     The first column of Table I gives :math:`E/E_{FG}` .  To get a fair comparison we need to subtract :math:`E_{MF}/E_{FG} = (1+\alpha)`.
@@ -75,6 +118,40 @@ def energy_comparison(ax, **kwargs):
             difference,
             yerr = error,
             color='black',
+            marker='s',
+            linestyle='none',
+            label='Square Well JS-DMC [Bertaina and Giorgini (2011)]',
+            )
+
+def contact_comparison(ax, include_all=False, **kwargs):
+    r'''
+    Many of the points are off-scale compared to the contact comparison in Ref. :cite:`Beane:2022wcn`.
+
+    Plots the contact from Ref. :cite:`PhysRevLett.106.110403` on the axis ``ax`` only if ``include_all``.
+    '''
+
+
+    if ('include_all' not in kwargs) or (not kwargs['include_all']):
+        return
+
+    BCS, JS = conventional_figure_4()
+
+    alpha_BCS = -1. / BCS[0]
+    alpha_JS  = -1. / JS [0]
+
+    ax.plot(
+            alpha_BCS,
+            BCS[1],
+            color='black',
+            marker='s',
+            linestyle='none',
+            label='Square Well BCS-DMC [Bertaina and Giorgini (2011)]',
+            )
+
+    ax.plot(
+            alpha_JS,
+            JS[1],
+            color='gray',
             marker='s',
             linestyle='none',
             label='Square Well JS-DMC [Bertaina and Giorgini (2011)]',

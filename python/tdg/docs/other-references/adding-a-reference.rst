@@ -51,4 +51,6 @@ For example,
 
 requires the user to pass an ``alpha`` parameter to :func:`~.others.contact_comparison` and optionally understands the ``cutoff_variation``.
 
+Some references have data that has been superseded by works from the same author, or are far outside the typical parameter range.  The convention in this case is to only plot if the kwarg ``include_all=True``. (For an example see :func:`PRL106110403 <tdg.others.PRL106110403.contact_comparison>`.)
+
 But other references might only provide data points, or information about the critical temperature.
