@@ -1,0 +1,12 @@
+
+Bertaina and Giorgini, Phys. Rev. Lett. 106, 110403 (2011)
+==========================================================
+
+Ref. :cite:`PhysRevLett.106.110403` uses fixed-node diffusion Monte Carlo.
+
+Table I provides energies with uncertainties.
+
+Figure 4 shows the contact density :math:`c/k_F^4`.
+
+.. automodule:: tdg.others.PRL106110403
+   :members:

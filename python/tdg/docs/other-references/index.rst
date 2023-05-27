@@ -6,8 +6,11 @@ Comparing to Other References
 .. toctree::
    :maxdepth: 2
 
+   conventions
+   PRL106110403
    PRA107043314
    EPJST2013017639
+   PRA92033603
    adding-a-reference
 
 

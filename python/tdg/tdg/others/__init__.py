@@ -1,9 +1,13 @@
+import tdg.others.PRL106110403 as PRL106110403
 import tdg.others.PRA107043314 as PRA107043314
 import tdg.others.EPJST2013017639 as EPJST2013017639
+import tdg.others.PRA92033603 as PRA92033603
 
 REFERENCES = {
+        PRL106110403,
         PRA107043314,
         EPJST2013017639,
+        PRA92033603,
 }
 r'''
 
@@ -13,7 +17,7 @@ This variable contains all available references.
 '''
 
 def contact_comparison(ax, *, references=REFERENCES, **kwargs):
-    r'''contact_comparison(ax, references=REFERENCES, **kwargs)
+    r'''contact_comparison(ax, *, references=REFERENCES, **kwargs)
 
     Plots the values of :math:`c/k_F^4` provided by different references for comparison with :func:`~.contact.contact_by_kF4`.
 
@@ -40,7 +44,7 @@ def contact_comparison(ax, *, references=REFERENCES, **kwargs):
     ax.set_ylabel(r'$c/k_F^4$')
 
 def energy_comparison(ax, *, references=REFERENCES, **kwargs):
-    r'''energy_comparison(ax, references=REFERENCES, **kwargs)
+    r'''energy_comparison(ax, *, references=REFERENCES, **kwargs)
 
     Plots the difference between the Fermi Liquid and Mean Field energies normalized by the energy of the free Fermi Gas, :math:`(E_{FL}-E_{MF})/E_{FG}`.
 
