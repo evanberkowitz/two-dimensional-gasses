@@ -16,7 +16,7 @@ citation = Citation(
 
 def contact_by_kF4():
     r'''
-    Returns (alpha, c/kF^4) pairs.
+    Returns a tensor whose rows are :math:`\alpha` and :math:`c/kF^4`.
     '''
 
     citation()
@@ -33,27 +33,27 @@ def contact_by_kF4():
         [-0.309663, 0.019606],
         [-0.255783, 0.014222],
         [-0.234334, 0.012622]
-        ])
+        ]).T
 
 def contact_comparison(ax, **kwargs):
     r'''
     Plots the data in :func:`contact_by_kF4` as points in a style that matches :cite:`Beane:2022wcn`.
     '''
 
-    c_by_kF4 = _contact_by_kF4()
-    positive = (c_by_kF4[:,0] > 0)
-    negative =  (c_by_kF4[:,0] < 0)
+    alpha, c_by_kF4 = contact_by_kF4()
+    positive = (alpha > 0)
+    negative =  (alpha < 0)
 
     ax.plot(
-            c_by_kF4[negative,0],
-            c_by_kF4[negative,1],
+            alpha[negative],
+            c_by_kF4[negative],
             color='gray', marker='o', linestyle='none',
             label='Square Well JS-DMC [Bertaina (2013)]',
             )
 
     ax.plot(
-            c_by_kF4[positive,0],
-            c_by_kF4[positive,1],
+            alpha[positive],
+            c_by_kF4[positive],
             color='blue', marker='v', linestyle='none',
             label='Hard Disk JS-DMC [Bertaina (2013)]',
             )
