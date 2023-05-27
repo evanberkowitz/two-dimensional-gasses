@@ -115,7 +115,7 @@ def Mean_Field_Energy_by_Fermi_Gas_Energy(alpha):
 
     return 1+alpha
 
-def contact_comparison(ax, *, alpha, cutoff_variation=0.05):
+def contact_comparison(ax, *, alpha, cutoff_variation=0.05, **kwargs):
     r'''
 
     Plots :func:`contact_by_kF4` as a function of alpha.
@@ -136,7 +136,7 @@ def contact_comparison(ax, *, alpha, cutoff_variation=0.05):
             alpha=0.2
             )
 
-def energy_comparison(ax, *, alpha, cutoff_variation=0.05):
+def energy_comparison(ax, *, alpha, cutoff_variation=0.05, **kwargs):
     r'''
 
     Plots the difference between :func:`Fermi_Liquid_Energy_by_Fermi_Gas_Energy` and :func:`Mean_Field_Energy_by_Fermi_Gas_Energy` as a function of alpha.
