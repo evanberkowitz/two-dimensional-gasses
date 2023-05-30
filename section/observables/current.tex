@@ -17,7 +17,7 @@ To find the lattice-native current that satisfies the continuity equation \eqref
 Let us first consider the flow of particle number.
 Because the interaction and $g$-dependent bilinear terms depend only on $n$s, which commute, we find
 \begin{align}
-	\grad\cdot\tilde{j}_z = -ML^2 \partial_t \tilde{n}_x = -i[\tilde{H}, \tilde{n}_z]
+	\tilde{\grad}\cdot\tilde{j}_z = -ML^2 \partial_t \tilde{n}_x = -i[\tilde{H}, \tilde{n}_z]
 	&=
 		-i \left[
 			\sum_{xy} \tilde{\psi}\adjoint_x \tilde{\kappa}_{xy} \tilde{\psi}_y,
@@ -46,11 +46,12 @@ Because the interaction and $g$-dependent bilinear terms depend only on $n$s, wh
 		-	\tilde{\psi}\adjoint_y \tilde{\kappa}_{yz} \tilde{\psi}_z
 		\right)
 \end{align}
-Expressing $j$ in terms of its Fourier modes,
+where $\tilde{\grad} = \Delta x \grad$ so that everything on both sides is completely dimensionless.
+Expressing $\tilde{j}$ in terms of its Fourier modes,
 \begin{align}
-	\grad\cdot \tilde{j}_z
+	\tilde{\grad}\cdot \tilde{j}_z
 	=
-	\grad \cdot \oneover{\Volume}\sum_k \tilde{j}_k e^{+2\pi i k z/N_x}
+	\tilde{\grad} \cdot \oneover{\Volume}\sum_k \tilde{j}_k e^{+2\pi i k z/N_x}
 	=
 	\oneover{\Volume}\sum_k \tilde{j}_k \cdot \frac{2\pi i k}{N_x} e^{+2\pi i k z/N_x}
 	=
@@ -173,6 +174,18 @@ Since $p$ is summed we can shift $q=p+k$ to get
 	\label{eq:current hermitian}
 \end{align}
 from which it is straightforward to show $\tilde{j}\adjoint_x = \tilde{j}_x$ so that $\tilde{j}_x$ is observable.
+
+In the continuum we wish to have $\nabla\cdot\vec{j} = - \partial_t n$ [dimensionful!].
+We can work in the continuum and then go to the finite-volume lattice to find
+\begin{align}
+	j(x) = \oneover{2M} \frac{\Delta x}{(N_x \Delta x)^4} \sum_{kq} e^{+2\pi i(q-k) x / N_x} \left(\frac{2\pi}{N_x}[ k+q ]\right) \tilde{\psi}\adjoint_k \tilde{\psi}_q
+\end{align}
+with integer-valued $k$, $q$, and $x$.
+Therefore, 
+\begin{align}
+	j(x) [\text{physical}] = \frac{\tilde{j}_x}{ML^2 \Delta x}
+\end{align}
+which ought to have a good continuum limit.
 
 We can now Wick contract using the propagator in momentum space \eqref{propagator in momentum space}
 \begin{align}
