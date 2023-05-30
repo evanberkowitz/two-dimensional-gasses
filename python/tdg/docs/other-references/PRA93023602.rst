@@ -1,0 +1,8 @@
+
+Galea
+=====
+
+Ref. :cite:`Galea:2015vdy`.
+
+.. automodule:: tdg.others.PRA93023602
+   :members:

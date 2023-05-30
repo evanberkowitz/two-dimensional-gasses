@@ -10,6 +10,7 @@ Comparing to Other References
    PRL106110403
    PRA107043314
    EPJST2013017639
+   PRA93023602
    PRA92033603
    adding-a-reference
 
