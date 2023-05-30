@@ -27,3 +27,9 @@ class from_geometric:
         '''
         return geometric + Euler_Mascheroni - torch.tensor(2.).log()
 
+    @staticmethod
+    def alpha(geometric):
+
+        logkFa = from_geometric.log_ka(-1./geometric)
+        return -1./logkFa
+
