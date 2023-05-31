@@ -47,14 +47,14 @@ def _GG(ensemble):
 
     L = ensemble.Action.Spacetime.Lattice
     return (
-            torch.einsum('ckqss,cpjtt->cpjkq', ensemble.G_momentum, ensemble.G_momentum)    # from the unmixed contraction
-          - torch.einsum('ckjst,cpqts->cpjkq', ensemble.G_momentum, ensemble.G_momentum)    # from the mixed contraction
-          + torch.einsum('cpqss,kj->cpjkq',    ensemble.G_momentum, torch.eye(L.sites))     # from the anticommutator
+            torch.einsum('ckqss,cpjtt->cpjqk', ensemble.G_momentum, ensemble.G_momentum)    # from the unmixed contraction
+          - torch.einsum('ckjst,cpqts->cpjqk', ensemble.G_momentum, ensemble.G_momentum)    # from the mixed contraction
+          + torch.einsum('cpqss,kj->cpjqk',    ensemble.G_momentum, torch.eye(L.sites))     # from the anticommutator
             )
 
 # Now we can do the element-wise multiplication
 def _TGG(ensemble):
-    return torch.einsum('pjqk,cpjkq->cpjkq', _double_cross(ensemble), _GG(ensemble))
+    return torch.einsum('pjqk,cpjqk->cpjqk', _double_cross(ensemble), _GG(ensemble))
 
 # Finally, to get a function of just x and y we need two double Fourier transforms.
 # Using our intermediate quantities the ω†x ωy operator is
@@ -69,13 +69,13 @@ def _vorticity_vorticity(ensemble):
 
     # In the FT we have e^{2πi[ (q-k)y - (p-j) x ]/Nx}
     return torch.einsum('cxxyy->cxy',
-                            L.ifft(    # q
-                                L.fft( # k
-                                L.ifft(# j
-                                L.fft( # p
+                            L.fft(      # k
+                                L.ifft( # q
+                                L.ifft( # j
+                                L.fft(  # p
                                     _TGG(ensemble),
                                 axis=1),# p
                                 axis=2),# j
-                                axis=3),# k
-                            axis=4),    # q
+                                axis=3),# q
+                            axis=4),    # k
                         ) * L.sites**2
