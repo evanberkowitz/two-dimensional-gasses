@@ -23,3 +23,6 @@ We define moments :math:`B`,
 So, :math:`M^2 L^{6-n} B_n(k)` is dimensionless.  We can divide by appropriate powers of :math:`2\pi N = k_F^2 L^2` to eliminate :math:`L`.
 
 .. autofunction:: tdg.observable.vorticity.b2_by_kF4
+.. autofunction:: tdg.observable.vorticity.b4_by_kF2
+.. autofunction:: tdg.observable.vorticity.b6
+

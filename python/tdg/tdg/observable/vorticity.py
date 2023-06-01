@@ -143,3 +143,25 @@ def b2_by_kF4(ensemble):
 
     return torch.einsum('br,r->b', Omega, rsq) / (2*torch.pi * ensemble.N)**2
 
+@derived
+def b4_by_kF2(ensemble):
+    r'''
+    :math:`M^2 B_4(k=0) / k_F^2`.
+    '''
+    L     = ensemble.Action.Spacetime.Lattice
+    r2    = 0.j+L.linearize(L.rsq)
+    Omega = ensemble.vorticity_vorticity
+
+    return torch.einsum('br,r->b', Omega, r2**2) / (2*torch.pi*ensemble.N)**1 / L.nx**2
+
+@observable
+def b6(ensemble):
+    r'''
+    :math:`M^2 B_6(k=0)`.
+    '''
+
+    L     = ensemble.Action.Spacetime.Lattice
+    r2    = 0.j+L.linearize(L.rsq)
+    Omega = ensemble.vorticity_vorticity
+
+    return torch.einsum('br,r->b', Omega, r2**3) / L.nx**4

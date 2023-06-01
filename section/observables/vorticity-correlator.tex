@@ -149,3 +149,17 @@ Because $\Omega(r=0)$ diverges and $\Omega(k=0)=0$ we define
 	B_n(k) = \int d^2r\; e^{-i k r} \abs{r}^n \Omega(r) 
 \end{align}
 Periodic boundary conditions guarantees that $B_0(0) = 0$.
+The dimensions of $B_n$ are $[M^{-2} L^{-(6-n)}]$, and we can eliminate $L$ dependence with appropriate powers of $k_F$.
+We write the $k=0$ values as lower case.
+So 
+\begin{align}
+	\frac{M^2 b_2}{k_F^4} &= \frac{\sum_r r^2 \tilde{\Omega}_r}{(2\pi N)^2}
+	&
+	\frac{M^2 b_4}{k_F^2} &= \oneover{\Volume} \frac{\sum_r r^4 \tilde{\Omega}_r}{(2\pi N)}
+	&
+	M^2 b_6 &= \oneover{\Volume^2}\sum_r r^6 \tilde{\Omega}_r,
+	\label{eq:voricity moments}
+\end{align}
+where $r$ are integer pairs, all have good continuum limits.
+The third nonzero even moment $b_6$ requires no powers of $k_F^4$ and therefore feels mysterious.
+We give an example calculation of \incode{docs/sanity-checks/free-theorty-vorticity-continuum-limit.ipynb}{the free-theory continuum extrapolation}, which shows a staggered behavior based on $N_x\mod{4}$.
