@@ -29,9 +29,8 @@ def current(ensemble):
 
     Configurations slowest, then space `x`, then direction `i`.
 
-    .. todo::
-       The expectation value is 0 by translational and rotational invariance.
-       However, the real (observable) part is zero configuration-by-configuration, currently a mystery.
+    The expectation value is 0 by translational and rotational invariance.
+    But, more is true: the real part is zero configuration-by-configuration, and the imaginary part sums to zero.
     '''
 
     L = ensemble.Action.Spacetime.Lattice
