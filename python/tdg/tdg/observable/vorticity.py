@@ -1,7 +1,7 @@
 import torch
 
 import tdg
-from tdg.observable import observable
+from tdg.observable import observable, derived
 
 import logging
 logger = logging.getLogger(__name__)
@@ -90,6 +90,8 @@ def vorticity_vorticity(ensemble):
     r'''
     The (dimensionless) spatial convolution of the vorticity, :math:`\tilde{\Omega}_r = (\tilde{\omega}^i * \tilde{\omega}^i)_r` summed over :math:`i`.
 
+    By periodic boundary conditions, should vanish when summed on the radial coordinate.
+
     Configurations slowest, then the relative coordinate :math:`r`.
     '''
 
@@ -125,3 +127,19 @@ def vorticity_vorticity(ensemble):
     # = 1/V sum_{xy} T_{xy} 1/V V δ_{y,x-r}
     # = 1/V sum_{xy} T_{xy} δ_{y,x-r}
     # = 1/V sum_{xy} T_{x,x-r}
+
+@derived
+def b2_by_kF4(ensemble):
+    r'''
+    :math:`M^2 B_2(k=0) / k_F^4` which is a non-zero low-energy moment of :math:`\Omega`;
+
+    .. math::
+        
+    '''
+
+    L = ensemble.Action.Spacetime.Lattice
+    rsq =   0.j + L.linearize(L.rsq)
+    Omega = ensemble.vorticity_vorticity
+
+    return torch.einsum('br,r->b', Omega, rsq) / (2*torch.pi * ensemble.N)**2
+

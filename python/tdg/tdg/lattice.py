@@ -100,6 +100,7 @@ class Lattice(H5able):
                 [ 0,  1,  2, -2, -1],
                 [ 0,  1,  2, -2, -1]])
         '''
+        self.rsq= self.X**2 + self.Y**2
 
         # Wavenumbers are the same
         self.kx = self.x
