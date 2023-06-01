@@ -53,6 +53,17 @@ def _vorticity_vorticity(ensemble):
     
     d  = torch.eye(L.sites)
     xdx= L.ifft(L.fft(torch.einsum('ka,kq,qb->kaqb', p, d, p), axis=0), axis=2)
+
+    # THERE IS AN EXTRAORDINARY SUBTLETY HERE
+    # =======================================
+    # | By Fourier transforming into position space first we mod all the momenta into the BZ.
+    # | Therefore, for cross products of sums of vectors that could land outside of the BZ,
+    # | this mods the sums into the BZ first, and then cross-multiplying.
+    # |
+    # | In constrast, if you do not mod first, you will find different answers.  In particular,
+    # | in the free theory we can compute both ways and explicitly get different answers.
+    # | However, this is an irrelevant UV choice: these differences vanish in the spatial continuum limit.
+    # =======================================
     
     # Now we do the six (= 2 momentum structures * 3 Wick structures) tensor contractions
     # and multiply back one factor of volume per fft/ifft pair.
