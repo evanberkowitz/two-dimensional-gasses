@@ -5,19 +5,19 @@ The BKT transition is a transition between no vortices (at low temperature) and 
 This transition is topological, in the sense that there isn't a good local order parameter to capture the change we're talking about.
 Consider, for example, an observable that measures the local vorticity, like
 \begin{align}
-	\tilde{\omega}^3_x = \text{curl}(\tilde{j})_x = \grad \times \tilde{j}_x = \epsilon^{3mn} \partial^m \tilde{j}^n_x
+	\tilde{\omega}^3_x = \text{curl}(\tilde{j})_x = \tilde{\grad} \times \tilde{j}_x = \epsilon^{3mn} \tilde{\partial}^m \tilde{j}^n_x
 \end{align}
 which we can simplify using a simple form of the current \eqref{current hermitian}
 \begin{align}
 	\tilde{\omega}^3_x
 	&=
-	\epsilon^{3mn} \partial^m \oneover{2\Volume}
+	\epsilon^{3mn} \tilde{\partial}^m \oneover{2\Volume}
 	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi [ k+q ]^n}{N_x}\right)
 	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
 	\nonumber\\
 	&=
 	\oneover{2\Volume}
-	\sum_{qk} e^{+2\pi i (q-k) x / N_x} i \left(\frac{2\pi}{N_x}\right)^2 i \epsilon^{3mn} [q-k]^m[ k+q ]^n
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} i \left(\frac{2\pi}{N_x}\right)^2 \epsilon^{3mn} [q-k]^m[ k+q ]^n
 	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
 	\nonumber\\
 	&=
@@ -31,6 +31,12 @@ which we can simplify using a simple form of the current \eqref{current hermitia
 	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}.
 	\label{eq:vorticity}
 \end{align}
+The physical $\omega = \grad \cross j$ [both physical] and therefore trading the physical $j$ for $\tilde{j}$ \eqref{j physical} and using $\tilde{\grad} = \Delta x \grad$ we immediately have
+\begin{align}
+	\omega = \frac{(\tilde{\grad} \cross \tilde{j} = \tilde{\omega})}{ML^2 \Delta x^2}.
+	\label{eq:omega physical}
+\end{align}
+
 The vorticity is Hermitian,
 \begin{align}
 	\tilde{\omega}^3\adjoint_x
@@ -62,7 +68,7 @@ By periodic boundary conditions the net vorticity vanishes
 	0
 	\label{eq:net vorticity}
 \end{align}
-if the current $j$ corresponds obeys a lattice continuity equation, since particles cannot leave across a boundary without coming back `on the other side'.
+if the current $\tilde{j}$ corresponds obeys a lattice continuity equation, since particles cannot leave across a boundary without coming back `on the other side'.
 (The vorticity is entirely in the 3 direction, since the fermions are confined to 2D; in what follows we suppress the 3 superscript.)
 This vanishes exactly because of the periodic boundary conditions; the boundary-condition-dependence is a hint it's accessing something topological.
 
@@ -75,14 +81,27 @@ Instead of the total vorticity \eqref{net vorticity}, which must vanish by perio
 	\tilde{\psi}\adjoint_{s'q'} \tilde{\psi}_{s'k'} \tilde{\psi}\adjoint_{sk} \tilde{\psi}_{sq}.
 \end{align}
 which is positive (semi)definite.
+Unfortunately, it's EXTREMELY positive.
+In fact, according to an operator product expansion analysis, it is infinite and diverges in the continuum limit.
 
-We could also consider the vorticity-vorticity two-point correlation
+We could instead consider the vorticity-vorticity two-point correlation
 \begin{align}
 	\tilde{\Omega}_{r} &= \oneover{\Volume} \sum_x \tilde{\Omega}_{x,x-r}
 	&
 	\tilde{\Omega}_{xy} &= \tilde{\omega}\adjoint_x \tilde{\omega}_y,
 \end{align}
 which at zero displacement is the average square vorticity $\tilde{\Omega}_0 = \Volume\inverse \sum_x \tilde{\omega}^2_x$.
+In the continuum we would analogously define
+\begin{align}
+	\Omega(r) = \oneover{L^2} \int d^2x \left[\Omega(x,x-r) = \omega(x) \omega(x-r) \right]
+\end{align}
+using the physical $\omega$ \eqref{omega physical}.
+The lattice quantity $\tilde{\Omega}$ converges to the fixed-volume continuum limit according to
+\begin{align}
+	\lim_{\Delta x \goesto 0} \left(\oneover{ML^2 \Delta x^2}\right)^2 \tilde{\Omega}_r \goesto \Omega(r).
+\end{align}
+Because it matches the local square at $r=0$ its value there diverges according to the same OPE argument.
+
 If there were one vortex/antivortex pair that were well-separated the correlations would reach far as a function of the separation $\delta$.
 But when there are very many vortices and antivortices $\Omega$ should decay quickly.
 \begin{align}
@@ -124,3 +143,23 @@ We now shift $q' = p+k'$, so that $p=q'-k'$ and $q'\cross k' = (p'+k')\cross k' 
 executing the sum over $q$ and using $(p+k)\cross k = p\cross k$.
 This may be reexpressed using a vector identity $(p \cross k')\cdot(p \cross k) = p^2 k' \cdot k - (p \cdot k')(p \cdot k)$ but need not be.
 The vortex susceptibility is $\tilde{\Omega}_0$, which should (presumably?) show the usual susceptibility behavior at the BKT transition.
+
+Because $\Omega(r=0)$ diverges and $\Omega(k=0)=0$ we define
+\begin{align}
+	B_n(k) = \int d^2r\; e^{-i k r} \abs{r}^n \Omega(r) 
+\end{align}
+Periodic boundary conditions guarantees that $B_0(0) = 0$.
+The dimensions of $B_n$ are $[M^{-2} L^{-(6-n)}]$, and we can eliminate $L$ dependence with appropriate powers of $k_F$.
+We write the $k=0$ values with two powers of $M$ in lower case.
+So the first few nonzero even moments are
+\begin{align}
+	\frac{[b_2 = M^2 B_2(k=0)]}{k_F^4} &= \frac{\sum_r r^2 \tilde{\Omega}_r}{(2\pi N)^2}
+	&
+	\frac{[b_4 = M^2 B_4(k=0)]}{k_F^2} &= \oneover{\Volume} \frac{\sum_r r^4 \tilde{\Omega}_r}{(2\pi N)}
+	&
+	[b_6 = M^2 B_6(k=0)] &= \oneover{\Volume^2}\sum_r r^6 \tilde{\Omega}_r,
+	\label{eq:voricity moments}
+\end{align}
+where $r$ are integer pairs, all have good continuum limits.
+The third nonzero even moment $b_6$ requires no powers of $k_F^4$ and therefore feels mysterious.
+We give an example calculation of \incode{docs/sanity-checks/free-theorty-vorticity-continuum-limit.ipynb}{the free-theory continuum extrapolation}, which shows a staggered behavior based on $N_x\mod{4}$.

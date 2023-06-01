@@ -12,7 +12,7 @@ is positive semi-definite when $a=b$.
 The connected piece matches $n^2$ piece in the generic expression for the contact \eqref{contact generic}.
 The contractions go through the same, except that the piece cancelled by the linear term survives,
 \begin{align}
-    \expectation{n_a n_b}
+    \expectation{\tilde{n}_a \tilde{n}_b}
     =&
     \expectation{
         \tilde{\psi}\adjoint_{a\sigma} \tilde{\psi}_{a\sigma} \tilde{\psi}\adjoint_{b\tau} \tilde{\psi}_{b\tau}
@@ -41,7 +41,7 @@ With translation invariance we can reduce to just a single relative coordinate
 \begin{align}
     (\tilde{n}*\tilde{n})_r 
     =&
-    \oneover{\Volume} \sum_a n_a n_{a-r}
+    \oneover{\Volume} \sum_a \tilde{n}_a \tilde{n}_{a-r}
     =
     \oneover{\Volume} \sum_a \tilde{n}_a \delta_{r,0}
     +   \G^{\sigma\sigma}_{aa} \G^{\tau\tau}_{a-r,a-r}
