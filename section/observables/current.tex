@@ -299,6 +299,38 @@ We can now apply the fourier transformation term-by-term and indeed factor-by-fa
 Finally, we can do the sums on $i$, $\sigma$, and $\tau$.
 This is a substantially smarter algorithm, though it's much more annoying to code correctly.
 
+Assuming translation invariance we can reduce to a function of the relative coordinate
+\begin{align}
+	\tilde{J}_r &= \oneover{\Volume} \sum_x \tilde{J}_{x,x-r}
+	&
+	\tilde{J}_{x,x-r} &= \tilde{j}^a_{x} \tilde{j}^b_{x-r} \delta_{ab}.
+\end{align}
+In the continuum we would analogously define
+\begin{align}
+	J(r) = \oneover{L^2} \int d^2 x [ J(x,x-r) = j^a(x) j^b(x-r) \delta_{ab} ]
+\end{align}
+using the physical $j$ \eqref{j physical}.
+The lattice quantity $\tilde{J}$ converges to the fixed-volume continuum limit according to
+\begin{align}
+	\lim_{\Delta x \goesto 0} \left(\oneover{ML^2 \Delta x}\right)^2 \tilde{J}_r \goesto J(r).
+\end{align}
+Consider
+\begin{align}
+	W_n(k) &= \int d^2r e^{-ikr} \abs{r}^n J(r).
+\end{align}
+The $k=0$ value is the $n^{th}$ moment of $J$ which we expect to capture good low-energy physics.
+The dimensions of $W_n$ are $[M^{-2} L^{-(4-n)}]$.
+We write the $k=0$ values with two powers of M in lower case so that the first few nonzero even moments are
+\begin{align}
+	\frac{[w_0 = M^2 W_0(k=0)]}{k_F^4} &= \frac{\sum_r \tilde{J}_r}{(2\pi N)^2}
+	&
+	\frac{[w_2 = M^2 W_2(k=0)]}{k_F^2} &= \frac{\sum_r r^2 \tilde{J}_r}{(2\pi N) N_x^2}
+	&
+	[w_4 = M^2 W_4(k=0)] &= \frac{\sum_r r^4 \tilde{J}_r}{N_x^4}
+\end{align}
+with dimensionless integer $r$.
+We give an example calculation of \incode{docs/sanity-checks/free-theory-continuum-limit.ipynb}{the free-theory continuum extrapolation} ($w_{2}/k_F^2$ and $w_{4}$ show a staggered but converging limit) and \incode{docs/sanity-checks/free-theory-infinite-volume-limit.ipynb}{the free-theory infinite volume extrapolation} (at fixed lattice spacing) which shows that these $w_n/k_F^{4-n}$ are intensive.
+
 We can also consider $j\adjoint_x \cross j_y$, which obviously vanishes when $x=y$ but could be nonzero at a distance.
 We can just change the dot product \eqref{jj normal order} to a cross product
 \begin{align}

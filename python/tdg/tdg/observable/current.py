@@ -1,7 +1,7 @@
 import torch
 
 import tdg
-from tdg.observable import observable
+from tdg.observable import observable, derived
 
 import logging
 logger = logging.getLogger(__name__)
@@ -132,3 +132,33 @@ def current_current(ensemble):
     #   return torch.einsum('cxy,yrx->cr', ensemble._current_current, 0.j+L.convolver)
     #
     return L.fft(torch.einsum('ckk->ck', L.fft(L.ifft(ensemble._current_current, axis=2), axis=1)), axis=1) / L.sites
+
+@derived
+def w0_by_kF4(ensemble):
+    r'''
+    :math:`\frac{M^2 W_0(k=0)}{k_F^4}`
+   '''
+
+    return torch.einsum('br->b', ensemble.current_current) / (2*torch.pi*ensemble.N)**2
+
+@derived
+def w2_by_kF2(ensemble):
+    r'''
+    :math:`\frac{M^2 W_2(k=0)}{k_F^2}`
+    '''
+
+    L = ensemble.Action.Spacetime.Lattice
+    rsq = (0.j + L.linearize(L.rsq)) / L.sites
+
+    return torch.einsum('br,r->b', ensemble.current_current, rsq**1) / (2*torch.pi*ensemble.N)**1
+
+@observable
+def w4(ensemble):
+    r'''
+    :math:`M^2 W_4(k=0)`
+    '''
+
+    L = ensemble.Action.Spacetime.Lattice
+    rsq = (0.j + L.linearize(L.rsq)) / L.sites
+
+    return torch.einsum('br,r->b', ensemble.current_current, rsq**2)
