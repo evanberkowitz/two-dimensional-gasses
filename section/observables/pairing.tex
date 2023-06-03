@@ -2,26 +2,27 @@
 
 \Refs{PhysRevA.92.033603,PhysRevLett.123.136402,PhysRevLett.129.076403} give the zero-momentum (back-to-back) singlet pairing matrix
 \begin{align}
-	M_{kk'} &=
-	\expectation{\Delta\adjoint_k \Delta_{k'}}
-	-	\delta_{kk'}
-		\expectation{\tilde{\psi}\adjoint_{k\up} \tilde{\psi}_{k\up}}
-		\expectation{\tilde{\psi}\adjoint_{-k\dn} \tilde{\psi}_{-k\dn}}
-	&
-	\Delta\adjoint_k &= \tilde{\psi}\adjoint_{k\up} \tilde{\psi}\adjoint_{-k\dn}
+    M_{kk'} &=
+    \expectation{\Delta\adjoint_k \Delta_{k'}}
+    -   \delta_{kk'}
+        \expectation{\tilde{\psi}\adjoint_{k\up} \tilde{\psi}_{k\up}}
+        \expectation{\tilde{\psi}\adjoint_{-k\dn} \tilde{\psi}_{-k\dn}}
+    &
+    \Delta\adjoint_k &= \tilde{\psi}\adjoint_{k\up} \tilde{\psi}\adjoint_{-k\dn}
+    \label{eq:PRL129076403 pairing}
 \end{align}
 where the $\Delta$ operator is like a Cooper pair.
 In the free case
 \begin{align}
-	\expectation{\Delta\adjoint_k \Delta_{k'}}
-	=
-	\Volume^2\expectation{ \G^{\up\up}_{kk'} \G^{\dn\dn}_{-k',-k} }
-	=
-	\Volume^2\expectation{ \G^{\up\up}_{kk'} } \expectation{ \G^{\dn\dn}_{-k',-k} }
-	=
-	\delta_{kk'}
-	\expectation{\tilde{\psi}\adjoint_{k\up} \tilde{\psi}_{k\up}}
-	\expectation{\tilde{\psi}\adjoint_{-k\dn} \tilde{\psi}_{-k\dn}}
+    \expectation{\Delta\adjoint_k \Delta_{k'}}
+    =
+    \Volume^2\expectation{ \G^{\up\up}_{kk'} \G^{\dn\dn}_{-k',-k} }
+    =
+    \Volume^2\expectation{ \G^{\up\up}_{kk'} } \expectation{ \G^{\dn\dn}_{-k',-k} }
+    =
+    \delta_{kk'}
+    \expectation{\tilde{\psi}\adjoint_{k\up} \tilde{\psi}_{k\up}}
+    \expectation{\tilde{\psi}\adjoint_{-k\dn} \tilde{\psi}_{-k\dn}}
 \end{align}
 because the different spins' Hilbert spaces separate.
 This is subtracted so that everything in $M$ arises from interactions.
@@ -29,6 +30,64 @@ This is subtracted so that everything in $M$ arises from interactions.
 They say that the \emph{condensate fraction} $n_c$ is the `leading eigenvalue' of $M$ normalized by $N/2$; presumably the smallest eigenvalue.
 They identify the BKT transition temperature by finding the peak of
 \begin{align}
-	\frac{d n_c}{d(T/T_F)}
+    \frac{d n_c}{d(T/T_F)}
 \end{align}
 as a function of $T/T_F$ and extrapolating to the thermodynamic limit.
+
+We define four pairing operators
+\begin{align}
+    \tilde{\Delta}\adjoint_{S,m,k} &= \tilde{\psi}\adjoint_{\alpha,k} \left(P\adjoint_{S,m}\right)_{\alpha\beta} \tilde{\psi}\adjoint_{\beta,-k}
+    &
+    P_{0,0} &= \frac{-i \sigma_2}{\sqrt{2}}
+    &
+    P_{1,0} &= \frac{\sigma_1}{\sqrt{2}}
+    &
+    P_{1,\pm1} &= \oneover{2}\left( \one \pm \sigma_3 \right)
+\end{align}
+which have definite quantum numbers total spin $S$ and $S_z=m$.
+The pairing \eqref{PRL129076403 pairing} in \Refs{PhysRevA.92.033603,PhysRevLett.123.136402,PhysRevLett.129.076403} uses $P = (P_{0,0} + P_{1,0})/\sqrt{2}$.
+Just as the noninteracting piece is subtracted above \eqref{PRL129076403 pairing}, we do the same, defining
+\begin{align}
+    M^{S,m}_{k,k'} &= \expectation{ \tilde{\Delta}\adjoint_{S,m,k} \tilde{\Delta}_{S,m,k'} - \delta_{kk'} \tilde{\Delta}\adjoint_{S,m,k} \tilde{\Delta}_{S,m,k}}
+\end{align}
+According to the \R{leggett:2006}, a single extensive eigenvalue of this matrix corresponds indicates long-range order and according to \R{PhysRevLett.129.076403} the corresponding eigenvector is `the pairing wavefunction' in reciprocal space.
+Also according to \R{leggett:2006} more than one extensive eigenvalue indicates a `fractured condensate'.
+
+The Wick contractions of the more generic
+\begin{align}
+    \expectation{ \tilde{\Delta}\adjoint_{S,m,k} \tilde{\Delta}_{S,m,q} }
+    =&
+    \left(P\adjoint_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau} \expectation{ 
+        \tilde{\psi}\adjoint_{\alpha,k} \tilde{\psi}\adjoint_{\beta,-k}
+        \tilde{\psi}_{\sigma,q} \tilde{\psi}_{\tau,q} }
+    \nonumber\\
+    =&
+    \left(P\adjoint_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau}
+    \sum_{xyzw} e^{+i(kx-ky+qz-qw)}
+    \expectation{ 
+        \tilde{\psi}\adjoint_{\alpha,x} \tilde{\psi}\adjoint_{\beta,y}
+        \tilde{\psi}_{\sigma,z} \tilde{\psi}_{\tau,w}
+        }
+    \nonumber\\
+    =&
+    \left(P\adjoint_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau}
+    \sum_{xyzw} e^{+i(kx-ky+qz-qw)}
+    \expectation{ 
+            \G^{\alpha\tau}_{xw} \G^{\beta\sigma}_{yz}
+        -   \G^{\alpha\sigma}_{xz} \G^{\beta\tau}_{yw}
+        }
+    \nonumber\\
+    =&
+    \left(P\adjoint_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau}
+    N_x^4 \times
+    \\
+    &
+    \expectation{ 
+            (\texttt{ifft}_{x \goesto k} \texttt{fft}_{w \goesto q}\G^{\alpha\tau}_{xw})
+            (\texttt{fft}_{y \goesto k} \texttt{ifft}_{z \goesto q}\G^{\beta\sigma}_{yz})
+        -   (\texttt{ifft}_{x \goesto k} \texttt{ifft}_{z \goesto q}\G^{\alpha\sigma}_{xz})
+            (\texttt{fft}_{y \goesto k} \texttt{fft}_{w \goesto q} \G^{\beta\tau}_{yw})
+        }
+    \nonumber
+\end{align}
+using the Fourier transforms defined in \Tabref{ft} and the propagator contraction \eqref{propagator}.
