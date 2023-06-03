@@ -1155,9 +1155,17 @@ The \emph{zero temperature} and \emph{infinite volume} limits are tricky to dise
 Suppose you take the infinite volume limit first, holding physical $a$, $\beta$, $\mu$, and $\vec{h}$ fixed.
 Given the functional dependence of the dimensionless parameters on $L$, the infinite volume limit leaves
 \begin{align}
-    \frac{\tilde{\beta}}{\tilde{a}^2} = \frac{\beta}{(2\pi a)^2 M}
+    \frac{\tilde{\beta}}{\tilde{a}^2}
+    = \frac{\beta}{(2\pi a)^2 M}
+    = \frac{2\pi}{MT} \oneover{(2\pi)^3 a^2}
+    &= \oneover{(2\pi)^3} \left(\frac{\deBroglie}{a}\right)^2
+    &
+    \deBroglie^2 &\equiv \frac{2\pi}{MT}
+    \label{eq:aspect ratio}
 \end{align}
-fixed.
+fixed where \deBroglie is the thermal de Broglie wavelength.
+Some experiments~\cite{PhysRevLett.114.230401} quote $\beta\binding$ where $\binding=-1/Ma^2$ is the binding energy \eqref{binding energy}, which differs only from the aspect ratio by $(2\pi)^2$.
+
 Therefore the resulting partition function is
 \begin{align}
     \lim_{L\goesto\infty} Z(\tilde{a}, \tilde{\beta}, \log\tilde{z}, \widevec{\log \tilde{z}_h})
