@@ -11,6 +11,21 @@
 	\Delta\adjoint_k &= \tilde{\psi}\adjoint_{k\up} \tilde{\psi}\adjoint_{-k\dn}
 \end{align}
 where the $\Delta$ operator is like a Cooper pair.
+In the free case
+\begin{align}
+	\expectation{\Delta\adjoint_k \Delta_{k'}}
+	=
+	\Volume^2\expectation{ \G^{\up\up}_{kk'} \G^{\dn\dn}_{-k',-k} }
+	=
+	\Volume^2\expectation{ \G^{\up\up}_{kk'} } \expectation{ \G^{\dn\dn}_{-k',-k} }
+	=
+	\delta_{kk'}
+	\expectation{\tilde{\psi}\adjoint_{k\up} \tilde{\psi}_{k\up}}
+	\expectation{\tilde{\psi}\adjoint_{-k\dn} \tilde{\psi}_{-k\dn}}
+\end{align}
+because the different spins' Hilbert spaces separate.
+This is subtracted so that everything in $M$ arises from interactions.
+
 They say that the \emph{condensate fraction} $n_c$ is the `leading eigenvalue' of $M$ normalized by $N/2$; presumably the smallest eigenvalue.
 They identify the BKT transition temperature by finding the peak of
 \begin{align}
