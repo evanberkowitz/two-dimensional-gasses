@@ -48,8 +48,16 @@ which have definite quantum numbers total spin $S$ and $S_z=m$.
 The pairing \eqref{PRL129076403 pairing} in \Refs{PhysRevA.92.033603,PhysRevLett.123.136402,PhysRevLett.129.076403} uses $P = (P_{0,0} + P_{1,0})/\sqrt{2}$.
 Just as the noninteracting piece is subtracted above \eqref{PRL129076403 pairing}, we do the same, defining
 \begin{align}
-    M^{S,m}_{k,k'} &= \expectation{ \tilde{\Delta}\adjoint_{S,m,k} \tilde{\Delta}_{S,m,k'} - \delta_{kk'} \tilde{\Delta}\adjoint_{S,m,k} \tilde{\Delta}_{S,m,k}}
+    \tilde{M}^{S,m}_{k,q} =&
+      \left\langle \tilde{\Delta}^\dagger_{S,m,k} \tilde{\Delta}_{S,m,q} \right\rangle
+    - \left(P^\dagger_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau} \left\{
+            \left\langle \tilde{\psi}^\dagger_{\alpha, k} \tilde{\psi}_{\tau, q} \right\rangle \left\langle \tilde{\psi}^\dagger_{\beta, -k} \tilde{\psi}_{\sigma, -q} \right\rangle
+        -   \left\langle \tilde{\psi}^\dagger_{\alpha, k} \tilde{\psi}_{\sigma, -q} \right\rangle \left\langle \tilde{\psi}^\dagger_{\beta, -k} \tilde{\psi}_{\tau, q} \right\rangle
+    \right\}.
+    \label{eq:pairing matrix}
 \end{align}
+The pairing matrix $\tilde{M}$ is intentionally constructed to be zero in the free case, to ensure that it only encodes interactions.
+
 According to the \R{leggett:2006}, a single extensive eigenvalue of this matrix corresponds indicates long-range order and according to \R{PhysRevLett.129.076403} the corresponding eigenvector is `the pairing wavefunction' in reciprocal space.
 Also according to \R{leggett:2006} more than one extensive eigenvalue indicates a `fractured condensate'.
 
@@ -91,3 +99,14 @@ The Wick contractions of the more generic
     \nonumber
 \end{align}
 using the Fourier transforms defined in \Tabref{ft} and the propagator contraction \eqref{propagator}.
+
+The dimensionful $M$ is given by
+\begin{align}
+    M^{S,m}_{k,q} = \Delta x^4 \tilde{M}.
+\end{align}
+We find that the combination
+\begin{align}
+    \frac{k_F^4 M}{(N/2)} = 8\pi^2 \frac{N \tilde{M}}{N_x^4}
+\end{align}
+is dimensionless, has a good continuum limit, and is at worst intensive in the thermodynamic limit.
+
