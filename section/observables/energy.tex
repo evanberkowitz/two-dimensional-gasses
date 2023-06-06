@@ -1,16 +1,14 @@
-\subsection{The Kinetic, Potential, and Free Energies}\label{sec:energy}
+\subsection{The Kinetic, Potential, and Internal Energies}\label{sec:energy}
 
-The free energy
+The internal energy
 \begin{align}
-	\tilde{F} = - \partial_{\tilde{\beta}} \log Z = - \oneover{Z}  \partial_{\tilde{\beta}} Z
-\end{align}
-can be formulated as an expectation value using our partition function \eqref{dimensionless}
-\begin{align}
-	F
+	\tilde{U}
+	= - \partial_{\tilde{\beta}} \log Z
 	=
 	- \oneover{Z} \partial_{\tilde{\beta}} \tr{ e^{-\tilde{\beta}(\tilde{H}-\tilde{\mu} \tilde{N} - \tilde{h}\cdot \tilde{S})} }
 	=
 	\oneover{Z} \tr{ e^{-\tilde{\beta}(\tilde{H}-\tilde{\mu} \tilde{N} - \tilde{h}\cdot \tilde{S})} (\tilde{H}-\tilde{\mu} \tilde{N} - \tilde{h}\cdot \tilde{S})}
+	= + \expectation{\tilde{H} - \tilde{\mu} \tilde{N} - \tilde{h}\cdot \tilde{S}}
 \end{align}
 We may also think of differentiating our computational partition function \eqref{computational partition function}, which may be conveniently accomplished by automatic differentiation.
 However, knowing that the contact \Secref{contact} computed that way has much greater variance, we will compute this expectation value by converting the operator into Wick contractions.
@@ -30,12 +28,12 @@ The potential energy includes the bilinear offset by $\tilde{C}_0$,
 	&=
 	\expectation{ \half \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b - \frac{\Volume \tilde{C}_0}{2}\sum_{a} n_a }
 	\nonumber\\
-	\expectation{V}
-	+ \frac{\Volume \tilde{C}_0}{2} \expectation{N}
+	\expectation{\tilde{V}}
+	+ \frac{\Volume \tilde{C}_0}{2} \expectation{\tilde{N}}
 	&=
 	\expectation{ \half \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b }
 \end{align}
-where $\tilde{V}$ is a sum of Lego spheres \eqref{Lego sphere} and the $\expectation{N}$ is known.
+where $\tilde{V}_{ab}$ is a sum of Lego spheres \eqref{Lego sphere} and the $\expectation{\tilde{N}=N}$ is known.
 The potential is translationally invariant $\tilde{V}_{a,a+r} = \tilde{V}_{0,r}$ and we can shift the indices by equal amounts to find $\tilde{V}_{a,a+r}=\tilde{V}_{a-r,a}$.
 Let us now rephrase the sum over the first coordinate as a sum over a relative coordinate,
 \begin{align}
@@ -64,13 +62,13 @@ So, the potential energy is
 	\frac{\Volume}{2} \sum_{r} \tilde{V}_{0,r} \expectation{ (\tilde{n}*\tilde{n})_r }
 	- \frac{\Volume \tilde{C}_0}{2} \expectation{\tilde{N}}.
 \end{align}
-We can now evaluate $\tilde{F}$!
+We can now evaluate $\tilde{U}$!
 
 Since the physical energies have dimension $[(ML^2)\inverse]$, the dimensionless energies are the physical ones times $ML^2$.
-Therefore, for example, $\tilde{F} = F ML^2$ it is doubly-extensive.
+Therefore, for example, $\tilde{U} = U ML^2$ is dimensionless but doubly-extensive.
 To get an intensive quantity we can normalize by $k_F^4$, as is done for the contact to produce a density \eqref{contact density},
 \begin{align}
-	\frac{f}{k_F^4} = \frac{MF}{k_F^4 L^2} = \frac{FML^2}{(k_F L)^4} = \frac{FML^2}{(2\pi N)^2} = \frac{\tilde{F}}{(2\pi\tilde{N})^2}
-	\label{eq:free energy density}
+	\frac{u}{k_F^4} = \frac{MU}{k_F^4 L^2} = \frac{UML^2}{(k_F L)^4} = \frac{UML^2}{(2\pi N)^2} = \frac{\tilde{U}}{(2\pi\tilde{N})^2}
+	\label{eq:internal energy density}
 \end{align}
-where $f=MF/L^2$.  (The contact \eqref{contact} is also defined with an $M$ upstairs.)
+where $u=MU/L^2$.  (The contact \eqref{contact} is also defined with an $M$ upstairs.)

@@ -15,9 +15,9 @@ Potential Energy
 .. autofunction:: tdg.observable.energy.Potential
 .. autofunction:: tdg.observable.energy.potential_by_kF4
 
-Free Energy
------------
+Internal Energy
+---------------
 
-.. autofunction:: tdg.observable.energy.FreeEnergy
-.. autofunction:: tdg.observable.energy.freeEnergy_by_kF4
+.. autofunction:: tdg.observable.energy.InternalEnergy
+.. autofunction:: tdg.observable.energy.internalEnergy_by_kF4
 
