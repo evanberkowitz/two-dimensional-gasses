@@ -7,7 +7,6 @@ Baryon Number
 -------------
 
 These measure the local and global baryon number.
-Even though they are *callable*, under the hood they are cached.
 
 .. autofunction:: tdg.observable.number.n
 .. autofunction:: tdg.observable.number.N
