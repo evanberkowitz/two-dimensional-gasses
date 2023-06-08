@@ -6,6 +6,7 @@ Pairing
 The pairing matrix :cite:`PhysRevA.92.033603,PhysRevLett.123.136402,PhysRevLett.129.076403` gives access to the correlations of spin-singlet Cooper pairs.
 
 We define the back-to-back two-baryon operators as
+
 .. math::
    \tilde{\Delta}^\dagger_{S,m,k} = \tilde{\psi}^\dagger_{\alpha,k} \left(P^\dagger_{S,m}\right)_{\alpha\beta} \tilde{\psi}^\dagger_{\beta,-k}
 
@@ -44,7 +45,7 @@ We define pairing matrices of operators with good spin quantum numbers,
 .. note::
    :math:`\tilde{M}` is intentionally constructed to be zero in the free case, to ensure that it only encodes interactions.
 
-We find that :math:`\frac{k_F^4 [M=\Delta x^4 \tilde{M}]}{(N/2)}` is dimensionless and has good continuum and infinite-volume limits.
+We find that eigenvalues of :math:`\frac{\left\langle\Delta^\dagger_{S,m,k} \Delta_{S,m,q} \right\rangle}{L^4 (N/2)}` are dimensionless, have good continuum limits, and are at largest intensive.
 
 Each ``channel ∈ {singlet, triplet_plus, triplet_minus, triplet_minus}`` has the same observables.
 We present the documentation in a generic way; just replace ``channel`` appropriately.
@@ -54,6 +55,12 @@ We present the documentation in a generic way; just replace ``channel`` appropri
    :math:`\left\langle \tilde{\Delta}^\dagger_{S,m,k} \tilde{\Delta}_{S,m,q} \right\rangle`.
 
    Configurations first, then momenta :math:`k` and :math:`q`.
+
+.. py:function:: tdg.observable.pairing.pair_pair_eigenvalues_channel(ensemble)
+
+   Eigenvalues of :math:`\frac{\left\langle\Delta^\dagger_{S,m,k} \Delta_{S,m,q} \right\rangle}{L^4 (N/2)}`, which are dimensionless, have good continuum limits, and are at largest intensive.
+
+   Bootstraps first, then eigenvalues from least to greatest.  The eigenvalues are positive definite.
 
 .. py:function:: tdg.observable.pairing.pairing_channel(ensemble)
 

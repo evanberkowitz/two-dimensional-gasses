@@ -151,6 +151,13 @@ def pair_pair_singlet(ensemble):
     return _pairing_contraction(ensemble._cooper_pair_correlation, P_singlet)
 
 @derived
+def pair_pair_eigenvalues_singlet(ensemble):
+
+    L = ensemble.Action.Spacetime.Lattice
+
+    return torch.einsum('bl,b->bl', torch.linalg.eigvalsh(ensemble.pair_pair_singlet), 2./L.sites**2 / ensemble.N)
+
+@derived
 def pairing_singlet(ensemble):
     r'''
     Bootstraps first, then two momenta, k and q.
@@ -181,6 +188,13 @@ def pairing_wavefunction_singlet(ensemble):
 @observable
 def pair_pair_triplet_plus(ensemble):
     return _pairing_contraction(ensemble._cooper_pair_correlation, P_triplet_plus)
+
+@derived
+def pair_pair_eigenvalues_triplet_plus(ensemble):
+
+    L = ensemble.Action.Spacetime.Lattice
+
+    return torch.einsum('bl,b->bl', torch.linalg.eigvalsh(ensemble.pair_pair_triplet_plus), 2./L.sites**2 / ensemble.N)
 
 @derived
 def pairing_triplet_plus(ensemble):
@@ -217,6 +231,13 @@ def pair_pair_triplet_zero(ensemble):
     return _pairing_contraction(ensemble._cooper_pair_correlation, P_triplet_plus)
 
 @derived
+def pair_pair_eigenvalues_triplet_zero(ensemble):
+
+    L = ensemble.Action.Spacetime.Lattice
+
+    return torch.einsum('bl,b->bl', torch.linalg.eigvalsh(ensemble.pair_pair_triplet_zero), 2./L.sites**2 / ensemble.N)
+
+@derived
 def pairing_triplet_zero(ensemble):
     r'''
     :math:`P_{1,+1} = \frac{1}{2}\left( \sigma_0 + \sigma_3 \right)`.
@@ -249,6 +270,13 @@ def pairing_wavefunction_triplet_zero(ensemble):
 @observable
 def pair_pair_triplet_minus(ensemble):
     return _pairing_contraction(ensemble._cooper_pair_correlation, P_triplet_minus)
+
+@derived
+def pair_pair_eigenvalues_triplet_minus(ensemble):
+
+    L = ensemble.Action.Spacetime.Lattice
+
+    return torch.einsum('bl,b->bl', torch.linalg.eigvalsh(ensemble.pair_pair_triplet_minus), 2./L.sites**2 / ensemble.N)
 
 @derived
 def pairing_triplet_minus(ensemble):
@@ -288,6 +316,13 @@ P_up_down = 0.j + torch.tensor([[0., 1.], [0., 0.]])
 @observable
 def pair_pair_up_down(ensemble):
     return _pairing_contraction(ensemble._cooper_pair_correlation, P_up_down)
+
+@derived
+def pair_pair_eigenvalues_up_down(ensemble):
+
+    L = ensemble.Action.Spacetime.Lattice
+
+    return torch.einsum('bl,b->bl', torch.linalg.eigvalsh(ensemble.pair_pair_up_down), 2./L.sites**2 / ensemble.N)
 
 @derived
 def pairing_up_down(ensemble):
