@@ -64,18 +64,18 @@ We present the documentation in a generic way; just replace ``channel`` appropri
 
 .. py:function:: tdg.observable.pairing.pairing_channel(ensemble)
 
-   :math:`\frac{k_F^4 M}{(N/2)}`.
+   :math:`\frac{M}{L^4 (N/2)}`.
 
    Bootstraps first, then momenta :math:`k` and :math:`q`.
 
 .. py:function:: tdg.observable.pairing.condensate_fraction_channel(ensemble)
 
-   Largest eigenvalue of :math:`\frac{k_F^4 M}{(N/2)} = \texttt{pairing_channel}`.
+   Largest eigenvalue of :math:`\frac{M}{L^4 (N/2)} = \texttt{pairing_channel}`.
 
    One number per bootstrap.
 
 .. py:function:: tdg.observable.pairing.pairing_wavefunction_channel(ensemble)
 
-   Eigenvector of :math:`\frac{k_F^4 M}{(N/2)} = \texttt{pairing_channel}` that has eigenvalue :func:`condensate_fraction_channel`.
+   Eigenvector of :math:`\frac{M}{L^4 (N/2)} = \texttt{pairing_channel}` that has eigenvalue :func:`condensate_fraction_channel`.
 
    Bootstrap first, then momentum.

@@ -112,7 +112,7 @@ def _pairing_matrix(pair_pair, disconnected, N, L):
     r'''Generic :math:`k_F^4 M / (N/2)` '''
     return torch.einsum('bkq,b->bkq',
                         pair_pair - disconnected,
-                        (8*torch.pi**2 / L.sites**2 ) * N,
+                        2. / L.sites**2 / N
                         )
 
 
