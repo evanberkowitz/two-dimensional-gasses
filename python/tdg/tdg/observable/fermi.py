@@ -18,6 +18,18 @@ def kFa(ensemble):
     return ensemble.kFa_squared.sqrt()
 
 @derived
+def momentum_by_kF_squared(ensemble):
+    '''
+    :math:`(k/k_F)^2`, which is particularly useful for plotting as a function of momentum.
+
+    Bootstraps first, then linearized momentum index :math:`k`.
+    '''
+
+    L = ensemble.Action.Spacetime.Lattice
+
+    return torch.einsum('k,b->bk', 2*torch.pi * L.linearize(L.ksq), 1 / ensemble.N)
+
+@derived
 def alpha(ensemble):
     r'''
     In the language of Ref. :cite:`Beane:2022wcn`, :math:`\alpha(k_F)` is a dimensionless coupling constant that is the natural expansion parameter of the two-dimensional EFT.
