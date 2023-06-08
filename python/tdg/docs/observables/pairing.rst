@@ -5,10 +5,12 @@ Pairing
 
 The pairing matrix :cite:`PhysRevA.92.033603,PhysRevLett.123.136402,PhysRevLett.129.076403` gives access to the correlations of spin-singlet Cooper pairs.
 
-We define the back-to-back two-baryon operators as
+We define the back-to-back two-baryon operators
 
 .. math::
    \tilde{\Delta}^\dagger_{S,m,k} = \tilde{\psi}^\dagger_{\alpha,k} \left(P^\dagger_{S,m}\right)_{\alpha\beta} \tilde{\psi}^\dagger_{\beta,-k}
+
+where :math:`S` and :math:`m` are spin quantum numbers.
 
 Singlet Pairing
 ---------------
@@ -25,8 +27,8 @@ There are three possible triplet operators.  These correspond to two-fermion ope
 .. autodata:: tdg.observable.pairing.P_triplet_minus
 
 
-Pairing Matrix
---------------
+Pairing Matrices
+----------------
 
 We define pairing matrices of operators with good spin quantum numbers,
 
