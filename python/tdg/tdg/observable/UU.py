@@ -24,20 +24,66 @@ def _UU(ensemble):
     return functorch.vmap(ensemble.Action.FermionMatrix.UU)(ensemble.configurations)
 
 @observable
-def _UUPlusOne(ensemble):
-    # A matrix for each configuration.
-    return torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
-
-@observable
 def _detUUPlusOne(ensemble):
-    return torch.det(ensemble._UUPlusOne)
-
-@observable
-def _UUPlusOneInverse(ensemble):
-    # A matrix for each configuration.
-    return torch.linalg.inv(ensemble._UUPlusOne)
+    # One per configuration.
+    UUPlusOne = torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
+    return torch.det(UUPlusOne)
 
 @observable
 def _UUPlusOneInverseUU(ensemble):
     # A matrix for each configuration.
-    return torch.matmul(ensemble._UUPlusOneInverse,ensemble._UU)
+    UUPlusOne = torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
+
+    # TODO: do this via a solve rather than a true inverse?
+    inverse = torch.linalg.inv(UUPlusOne)
+    return torch.matmul(inverse, ensemble._UU)
+
+@observable
+def G(ensemble):
+    r'''
+    The equal-time propagator that is the contraction of :math:`\tilde{\psi}^\dagger_{a\sigma} \tilde{\psi}_{b\tau}`
+    where :math:`a` and :math:`b` are sites and :math:`\sigma` and :math:`\tau` are spin indices.
+
+    .. math ::
+       \mathcal{G}^{\sigma\tau}_{ab} = [ \mathbb{U} (\mathbb{1} + \mathbb{U})^{-1} ]_{ba}^{\tau\sigma}
+    
+    A five-axis tensor: configurations slowest, then :math:`a`, :math:`b`, :math:`\sigma`, and :math:`\tau`.
+    '''
+    return ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU).transpose(1,2).transpose(3,4)
+
+@observable
+def G_momentum(ensemble):
+    r'''
+    The equal-time propagator that is the contraction of :math:`N_x^{-2} \tilde{\psi}^\dagger_{k\sigma} \tilde{\psi}_{q\tau}`
+    where :math:`k` and :math:`q` are integer momenta and :math:`\sigma` and :math:`\tau` are spin indices.
+
+    .. math ::
+       \mathcal{G}^{\sigma\tau}_{kq} = \frac{1}{N_x^2} \sum_{xy} e^{+2\pi i k x / N_x} \mathcal{G}^{\sigma\tau}_{xy} e^{-2\pi i q y / N_x}
+    
+    A five-axis tensor: configurations slowest, then :math:`k`, :math:`q`, :math:`\sigma`, and :math:`\tau`.
+    '''
+    
+    L = ensemble.Action.Spacetime.Lattice
+
+    # Checked via brute force:
+    #
+    #   # Warning: takes a long time even with this small ensemble!
+    #   ensemble = tdg.ensemble._demo(nx=5, steps=3) 
+    #   
+    #   G = ensemble.G
+    #   L = ensemble.Action.Spacetime.Lattice
+    #   gp = torch.zeros_like(G)
+    #   
+    #   for c, g in enumerate(G):
+    #       for a, k in enumerate(L.coordinates):
+    #           for b, q in enumerate(L.coordinates):
+    #               for i, x in enumerate(L.coordinates):
+    #                   for j,y in enumerate(L.coordinates):
+    #                       gp[c,a,b] += 1 / L.sites * g[i,j] * torch.exp(+2j*torch.pi * ( torch.dot(k,x) - torch.dot(q, y)) / L.nx)
+    #   
+    #   (gp - ensemble.G_momentum).abs().sum() < 1.e-12
+    # 
+    # which yields tensor(True).
+    # However, because G is real in this test we may be tricking ourselves...
+
+    return L.ifft(L.fft(ensemble.G, axis=2), axis=1)

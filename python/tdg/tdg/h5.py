@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import io
 import pickle
 import h5py as h5
 
@@ -72,8 +73,8 @@ class H5Data:
                     H5Data._mark_strategy(result, name)
                     H5Data._mark_metadata(result, strategy)
                     break
-            except:
-                continue
+            except Exception as e:
+                logger.error(str(e))
         else: # Wow, a real-life instance of for/else!
             logger.debug(f"Writing {group.name}/{key} by pickling.")
             group[key] = np.void(pickle.dumps(value))
@@ -86,7 +87,7 @@ class H5Data:
             logger.debug(f"Reading {group.name} as {name}.")
             strategy = H5Data._strategies[name]
             H5Data._check_metadata(group, strategy, strict)
-            return strategy.read(group)
+            return strategy.read(group, strict)
         except KeyError:
             logger.debug(f"Reading {group.name} by unpickling.")
             return pickle.loads(group[()])
@@ -105,9 +106,9 @@ class H5ableStrategy(H5Data, name='h5able'):
         return isinstance(value, H5able)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         cls = pickle.loads(group.attrs['H5able_class'][()])
-        return cls.from_h5(group)
+        return cls.from_h5(group, strict)
 
     def write(group, key, value):
         g = group.create_group(key)
@@ -122,7 +123,7 @@ class IntegerStrategy(H5Data, name='integer'):
         return isinstance(value, int)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         return int(group[()])
 
     @staticmethod
@@ -137,7 +138,7 @@ class FloatStrategy(H5Data, name='float'):
         return isinstance(value, float)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         return float(group[()])
 
     @staticmethod
@@ -157,7 +158,7 @@ class NumpyStrategy(H5Data, name='numpy'):
         return isinstance(value, np.ndarray)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         return group[()]
 
     @staticmethod
@@ -170,7 +171,7 @@ class NumpyStrategy(H5Data, name='numpy'):
 class TorchStrategy(H5Data, name='torch'):
 
     metadata = {
-        'version': torch.__version__,
+        'version': torch.__version__.split('+')[0],
     }
 
     @staticmethod
@@ -178,21 +179,33 @@ class TorchStrategy(H5Data, name='torch'):
         return isinstance(value, torch.Tensor)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         data = group[()]
+        # We would like to read directly onto the default device,
+        # or, if there is a device context manager,
+        #   https://pytorch.org/tutorials/recipes/recipes/changing_default_device.html
+        # the correct device.  Even though there is a torch.set_default_device
+        #   https://pytorch.org/docs/stable/generated/torch.set_default_device.html
+        # there is no corresponding .get_default_device
+        # Instead we infer it
+        device = torch.tensor(0).device
+        # and ship the data to the device.
+        # TODO: Make the device detection as elegant as torch allows.
         if isinstance(data, np.ndarray):
-            return torch.from_numpy(data)
-        return torch.tensor(data)
+            return torch.from_numpy(data).to(device)
+        return torch.tensor(data).to(device)
 
     @staticmethod
     def write(group, key, value):
-        group[key] = value.detach().numpy()
+        # Move the data to the cpu to prevent pickling of GPU tensors
+        # and subsequent incompatibility with CPU-only machines.
+        group[key] = value.cpu().clone().detach().numpy()
         return group[key]
 
 class TorchSizeStrategy(H5Data, name='torch.Size'):
 
     metadata = {
-        'version': torch.__version__,
+        'version': torch.__version__.split('+')[0],
     }
 
     @staticmethod
@@ -200,7 +213,7 @@ class TorchSizeStrategy(H5Data, name='torch.Size'):
         return isinstance(value, torch.Size)
 
     @staticmethod
-    def read(group):
+    def read(group, strict):
         return torch.Size(group[()])
 
     @staticmethod
@@ -208,6 +221,34 @@ class TorchSizeStrategy(H5Data, name='torch.Size'):
         group[key] = value
         return group[key]
 
+class TorchObjectStrategy(H5Data, name='torch.object'):
+
+    metadata = {
+        'version': torch.__version__.split('+')[0],
+    }
+
+    @staticmethod
+    def applies(value):
+        return any(
+                isinstance(value, torchType)
+                for torchType in
+                (
+                    # Things we'd otherwise want to read and write with torch.save:
+                    torch.distributions.Distribution,
+                )
+                )
+
+    @staticmethod
+    def read(group, strict):
+        device = torch.tensor(0).device
+        return torch.load(io.BytesIO(group[()]), map_location=device)
+
+    @staticmethod
+    def write(group, key, value):
+        f = io.BytesIO()
+        torch.save(value, f)
+        group[key] = f.getbuffer()
+        return group[key]
 
 
 # A strategy for a python dictionary.
@@ -218,14 +259,33 @@ class DictionaryStrategy(H5Data, name='dict'):
         return isinstance(value, dict)
 
     @staticmethod
-    def read(group):
-        return {key: H5Data.read(group[key]) for key in group}
+    def read(group, strict):
+        return {key: H5Data.read(group[key], strict) for key in group}
 
     @staticmethod
     def write(group, key, value):
         g = group.create_group(key)
         for k, v in value.items():
             H5Data.write(g, k, v)
+        return g
+
+# A strategy for a python list.
+class ListStrategy(H5Data, name='list'):
+
+    @staticmethod
+    def applies(value):
+        return isinstance(value, list)
+
+    @staticmethod
+    def read(group, strict):
+        return [H5Data.read(group[str(i)], strict) for i in range(group.attrs['len'])]
+
+    @staticmethod
+    def write(group, key, value):
+        g = group.create_group(key)
+        g.attrs['len'] = len(value)
+        for i, v in enumerate(value):
+            H5Data.write(g, str(i), v)
         return g
 
 ####

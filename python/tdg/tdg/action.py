@@ -83,7 +83,7 @@ class Action(H5able):
             a term in the Hamiltonian proportional to :math:`n` itself, which looks just like a chemical potential term.
             This term comes with a coefficient equal to :math:`-N_x^2 C_0/2`.
 
-            Our sign convention is that the free energy is :math:`H-\mu N - h\cdot S` so the the signs conspire.
+            Our sign convention is that the internal energy is :math:`H-\mu N - h\cdot S` so the the signs conspire.
             The fermion matrix is constructed with the 'offset' chemical potential :math:`\mu + N_x^2 C_0/2`.
         '''
 

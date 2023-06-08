@@ -1,5 +1,6 @@
 \usepackage{xspace}
 \usepackage{bbm}
+\usepackage{simplewick}
 
 %%%%
 %%%%    Project Specifics
@@ -7,15 +8,31 @@
 
 \newcommand{\repoURL}{https://github.com/evanberkowitz/two-dimensional-gasses}
 
+%%%%
+%%%%    lower-case caligraphic \mathpzc font
+%%%%
+
+\DeclareFontFamily{OT1}{pzc}{}
+\DeclareFontShape{OT1}{pzc}{m}{it}{<-> s * [1.10] pzcmi7t}{}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+%%%%
+%%%%    Some few-letter shortcuts
+%%%%
+
 \newcommand{\BB}{\ensuremath{\mathbb{B}}\xspace}
 \newcommand{\dd}{\ensuremath{\mathbbm{d}}\xspace}
 \newcommand{\DD}{\ensuremath{\mathbb{D}}\xspace}
 \newcommand{\FF}{\ensuremath{\mathbb{F}}\xspace}
+\newcommand{\G}{\ensuremath{\mathcal{G}\xspace}}
 \newcommand{\Ham}{\ensuremath{\mathcal{H}}\xspace}
+\newcommand{\MM}{\ensuremath{\mathbb{M}}\xspace}
+\newcommand{\p}{\ensuremath{\mathpzc{p}}\xspace}
 \newcommand{\PP}{\ensuremath{\mathbb{P}}\xspace}
 \newcommand{\uu}{\ensuremath{\mathbbm{u}}\xspace}
 \newcommand{\UU}{\ensuremath{\mathbb{U}}\xspace}
 \renewcommand{\O}{\ensuremath{\mathcal{O}}\xspace}
+\newcommand{\dbar}{\mathchar'26\mkern-9mu d}
 
 \newcommand{\expectation}[1]{\ensuremath{\left\langle #1 \right\rangle}}
 
@@ -33,7 +50,7 @@
 \newcommand{\Figref}[1]{Figure~\ref{fig:#1}\xspace}
 \renewcommand{\eqref}[1]{(\ref{eq:#1})\xspace}
 \newcommand{\Eqref}[1]{Equation~\ref{eq:#1}\xspace}
-\def\Ref#1{Ref.~\cite{#1}} % Use \def because some LaTeX installations define \Ref, others do not.
+\newcommand{\R}[1]{Ref.~\cite{#1}\xspace}
 \newcommand{\Reference}[1]{Reference~\cite{#1}}
 \newcommand{\Refs}[1]{Refs.~\cite{#1}}
 \newcommand{\References}[1]{References~\cite{#1}}
@@ -61,6 +78,7 @@
 
 \newcommand{\goesto}{\ensuremath{\rightarrow}}
 \newcommand{\widevec}[1]{\ensuremath{\overrightarrow{#1}}}
+\newcommand{\cross}{\ensuremath{\times}}
 \newcommand{\infinity}{\infty}
 \newcommand{\Integers}{\mathbb{Z}\xspace}
 \newcommand{\integers}{\Integers}
@@ -82,6 +100,7 @@
 \newcommand{\doubleOccupancy}{\ensuremath{\textrm{do}}\xspace}
 \newcommand{\DoubleOccupancy}{\ensuremath{\textrm{DO}}\xspace}
 \newcommand{\binding}{\ensuremath{\mathcal{E}_B}\xspace}
+\newcommand{\lpartial}{\ensuremath{\overleftarrow{\partial}}}
 
 %%%%
 %%%%    Hyperbolic Trig
@@ -156,7 +175,8 @@
 %%%%    Physical Quantities and Constants
 %%%%
 
-
+\newcommand{\deBroglie}{\ensuremath{\lambda_{\text{dB}}}\xspace}
+\newcommand{\entropy}{\ensuremath{\mathcal{S}}\xspace}
 
 
 %%%%

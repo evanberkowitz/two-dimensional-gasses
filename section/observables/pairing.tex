@@ -1,0 +1,196 @@
+\subsection{Pairing}\label{sec:pairing}
+
+\Refs{PhysRevA.92.033603,PhysRevLett.123.136402,PhysRevLett.129.076403} give a zero-momentum (back-to-back) singlet pairing matrix proportional to
+\begin{align}
+    \tilde{M}_{kk'} &=
+    \expectation{\tilde{\Delta}\adjoint_k \tilde{\Delta}_{k'}}
+    -   \delta_{kk'}
+        \expectation{\tilde{\psi}\adjoint_{k\up} \tilde{\psi}_{k\up}}
+        \expectation{\tilde{\psi}\adjoint_{-k\dn} \tilde{\psi}_{-k\dn}}
+    &
+    \tilde{\Delta}\adjoint_k &= \tilde{\psi}\adjoint_{k\up} \tilde{\psi}\adjoint_{-k\dn}
+    \label{eq:PRL129076403 pairing}
+\end{align}
+where the $\tilde{\Delta}$ operator is like a Cooper pair.
+In the free case
+\begin{align}
+    \expectation{\tilde{\Delta}\adjoint_k \tilde{\Delta}_{k'}}
+    =
+    \Volume^2\expectation{ \G^{\up\up}_{kk'} \G^{\dn\dn}_{-k',-k} }
+    =
+    \Volume^2\expectation{ \G^{\up\up}_{kk'} } \expectation{ \G^{\dn\dn}_{-k',-k} }
+    =
+    \delta_{kk'}
+    \expectation{\tilde{\psi}\adjoint_{k\up} \tilde{\psi}_{k\up}}
+    \expectation{\tilde{\psi}\adjoint_{-k\dn} \tilde{\psi}_{-k\dn}}
+\end{align}
+because the different spins' Hilbert spaces separate.
+This is subtracted so that everything in $\tilde{M}$ arises from interactions.
+
+They say that the \emph{condensate fraction} $n_c$ proportional to the `leading eigenvalue' of $\tilde{M}$ normalized by $N/2$; there is `off-diagonal long-range order' (ODLRO) if $n_c$ does not vanish in the thermodynamic limit.
+They identify the BKT transition temperature by finding the peak of
+\begin{align}
+    \frac{d n_c}{d(T/T_F)}
+\end{align}
+as a function of $T/T_F$ and extrapolating to the thermodynamic limit.
+
+We define four pairing operators
+\begin{align}
+    \tilde{\Delta}\adjoint_{S,m,k} &= \tilde{\psi}\adjoint_{\alpha,k} \left(P\adjoint_{S,m}\right)_{\alpha\beta} \tilde{\psi}\adjoint_{\beta,-k}
+    &
+    P_{0,0} &= \frac{-i \sigma_2}{\sqrt{2}}
+    &
+    P_{1,0} &= \frac{\sigma_1}{\sqrt{2}}
+    &
+    P_{1,\pm1} &= \oneover{2}\left( \one \pm \sigma_3 \right)
+\end{align}
+which have definite quantum numbers of total spin $S$ and $S_z=m$.
+The pairing \eqref{PRL129076403 pairing} in \Refs{PhysRevA.92.033603,PhysRevLett.123.136402,PhysRevLett.129.076403} uses $P = (P_{0,0} + P_{1,0})/\sqrt{2}$.
+Just as the noninteracting piece is subtracted above \eqref{PRL129076403 pairing}, we do the same, defining
+\begin{align}
+    \tilde{M}^{S,m}_{k,q} =&
+      \left\langle \tilde{\Delta}^\dagger_{S,m,k} \tilde{\Delta}_{S,m,q} \right\rangle
+    - \left(P^\dagger_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau} \left\{
+            \left\langle \tilde{\psi}^\dagger_{\alpha, k} \tilde{\psi}_{\tau, q} \right\rangle \left\langle \tilde{\psi}^\dagger_{\beta, -k} \tilde{\psi}_{\sigma, -q} \right\rangle
+        -   \left\langle \tilde{\psi}^\dagger_{\alpha, k} \tilde{\psi}_{\sigma, -q} \right\rangle \left\langle \tilde{\psi}^\dagger_{\beta, -k} \tilde{\psi}_{\tau, q} \right\rangle
+    \right\}.
+    \label{eq:pairing matrix}
+\end{align}
+The pairing matrix $\tilde{M}$ is intentionally constructed to be zero in the free case, to ensure that it only encodes interactions.
+The Wick contractions of the more generic
+\begin{align}
+    \expectation{ \tilde{\Delta}\adjoint_{S,m,k} \tilde{\Delta}_{S,m,q} }
+    =&
+    \left(P\adjoint_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau} \expectation{ 
+        \tilde{\psi}\adjoint_{\alpha,k} \tilde{\psi}\adjoint_{\beta,-k}
+        \tilde{\psi}_{\sigma,q} \tilde{\psi}_{\tau,q} }
+    \nonumber\\
+    =&
+    \left(P\adjoint_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau}
+    \sum_{xyzw} e^{+i(kx-ky+qz-qw)}
+    \expectation{ 
+        \tilde{\psi}\adjoint_{\alpha,x} \tilde{\psi}\adjoint_{\beta,y}
+        \tilde{\psi}_{\sigma,z} \tilde{\psi}_{\tau,w}
+        }
+    \nonumber\\
+    =&
+    \left(P\adjoint_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau}
+    \sum_{xyzw} e^{+i(kx-ky+qz-qw)}
+    \expectation{ 
+            \G^{\alpha\tau}_{xw} \G^{\beta\sigma}_{yz}
+        -   \G^{\alpha\sigma}_{xz} \G^{\beta\tau}_{yw}
+        }
+    \nonumber\\
+    =&
+    \left(P\adjoint_{S,m}\right)_{\alpha\beta} \left(P^{\phantom{\dagger}}_{S,m}\right)_{\sigma\tau}
+    N_x^4 \times
+    \\
+    &
+    \expectation{ 
+            (\texttt{ifft}_{x \goesto k} \texttt{fft}_{w \goesto q}\G^{\alpha\tau}_{xw})
+            (\texttt{fft}_{y \goesto k} \texttt{ifft}_{z \goesto q}\G^{\beta\sigma}_{yz})
+        -   (\texttt{ifft}_{x \goesto k} \texttt{ifft}_{z \goesto q}\G^{\alpha\sigma}_{xz})
+            (\texttt{fft}_{y \goesto k} \texttt{fft}_{w \goesto q} \G^{\beta\tau}_{yw})
+        }
+    \nonumber
+\end{align}
+using the Fourier transforms defined in \Tabref{ft} and the propagator contraction \eqref{propagator}.
+
+The dimensionful $M$ is given by
+\begin{align}
+    M^{S,m}_{k,q} = \Delta x^4 \tilde{M}.
+\end{align}
+We find that the combination
+\begin{align}
+    \frac{k_F^4 M}{(N/2)} = 8\pi^2 \frac{N \tilde{M}}{N_x^4}
+\end{align}
+is dimensionless and has a good continuum limit.  We expected that its largest eigenvalue would be worst intensive in the thermodynamic limit but this was demonstrably false, posing quite a puzzle and seeming to contradict, at a first naive glance, results in \R{leggett:2006} attributed to Yang \cite{yang:1962} requiring eigenvalues of the two-body density matrix to be at worst extensive.
+We will now clarify this story and give an explanation for the scaling of our eigenvalues.
+
+\R{leggett:2006} considers the the two-particle density matrix (2.4.2)\footnote{
+    He carries a time index which is irrelevant to our discussion here which we drop.
+}
+\begin{align}
+    \rho_2 = \expectation{\psi\adjoint_{\sigma_1}(r_1) \psi\adjoint_{\sigma_2}(r_2) \psi_{\sigma'_{2}}(r'_2) \psi_{\sigma'_1}(r'_1)}.
+\end{align}
+One can think of this as a matrix of superindices like $(\sigma_1,\, r_1,\, \sigma_2,\, r_2)$.
+The Hermiticity of $\rho_2$ gives a decomposition (2.4.8) into normalized eigenvectors $\chi$ and eigenvalues $n$
+\begin{align}
+    \rho_2(\sigma_1,\, r_1,\, \sigma_2,\, r_2 | \sigma'_1,\, r'_1,\, \sigma'_2,\, r'_2)
+    &= \sum_i^{\infty} n_i \chi_i\conjugate(\sigma_1,\, r_1,\, \sigma_2,\, r_2) \chi_j(\sigma'_1,\, r'_1,\, \sigma'_2,\, r'_2)
+    \\
+    \delta_{ij}
+    &= \sum_{\sigma_1 \sigma_2} \iint d^2r_1\; d^2r_2\; \chi_i\conjugate(\sigma_1,\, r_1,\, \sigma_2,\, r_2) \chi_j(\sigma_1,\, r_1,\, \sigma_2,\, r_2)
+    \\
+    &= \sum_{\sigma_1 \sigma_2} \iint \dbar q_1\; \dbar q_2\; \chi_i\conjugate(\sigma_1,\, q_1,\, \sigma_2,\, q_2) \chi_j(\sigma_1,\, q_1,\, \sigma_2,\, q_2)
+\end{align}
+The existence of a single extensive eigenvalue $n$ defines long-range order; more than one extensive eigenvalue indicates a `fractured condensate'; Yang \cite{yang:1962} showed that all eigenvalues $n$ are at worst extensive.
+The (superindex) trace is doubly-extensive (2.4.11)
+\begin{align}
+    \sum_i^{\infty} n_i = \sum_{\sigma_1 \sigma_2} \iint d^2r_1\; d^2r_2\; \rho_2(\sigma_1,\, r_1,\, \sigma_2,\, r_2 | \sigma_1,\, r_1,\, \sigma_2,\, r_2) = N(N-1).
+\end{align}
+In the continuum the sum on eigenvectors $i$ is an infinite sum.
+
+To relate our $\expectation{\Delta\adjoint_{S,m,k} \Delta_{S,m,q}}$ (dimensionful!) to the two-body density matrix we will need the discretized
+\begin{align}
+    \rho_2(\sigma_1,\, r_1,\, \sigma_2,\, r_2 | \sigma'_1,\, r'_1,\, \sigma'_2,\, r'_2)
+    &= \sum_i^{\Volume^2} n_i \chi_i\conjugate(\sigma_1,\, r_1,\, \sigma_2,\, r_2) \chi_j(\sigma'_1,\, r'_1,\, \sigma'_2,\, r'_2)
+    \\
+    \delta_{ij}
+    &= \sum_{\sigma_1 \sigma_2} \sum_{r_1, r_2}^{\Volume} \Delta x^4 \chi_i\conjugate(\sigma_1,\, r_1,\, \sigma_2,\, r_2) \chi_j(\sigma_1,\, r_1,\, \sigma_2,\, r_2)
+    \\
+    &= \sum_{\sigma_1 \sigma_2} \oneover{L^4} \sum_{q_1, q_2}^{\Volume} \chi_i\conjugate(\sigma_1,\, q_1,\, \sigma_2,\, q_2) \chi_j(\sigma_1,\, q_1,\, \sigma_2,\, q_2)
+    \label{eq:two-body momentum completeness}
+\end{align}
+Setting $j\goesto i$ in the completeness relation \eqref{two-body momentum completeness} and summing on $i$ one finds
+\begin{align}
+    \Volume^2 &= \left[\sum_{i=1}^{\Volume^2} \sim \Volume^2\right] \left[\sum_{\sigma_1 \sigma_2} \sim 1\right] \left[\oneover{(L^2)^2} \sum_{q_1 q_2}^{\Volume} \sim 1\right] \abs{\chi(q_1, q_2)}^2
+    &
+    \text{so that generically we count } \abs{\chi(q_1, q_2)}^2 &\sim 1.
+    \label{eq:chi counting}
+\end{align}
+Finally we have
+\begin{align}
+    \expectation{\Delta\adjoint_{S,m,k} \Delta_{S,m,q}}
+    =
+    (P\adjoint_{S,m})_{\sigma_1 \sigma_2} \rho(\sigma_1,\, k,\, \sigma_2,\, -k | \sigma'_1,\, q,\, \sigma'_2,\, -q) (P_{S,m})_{\sigma'_1\sigma'_2}
+\end{align}
+which ties up the spin indices appropriately.
+Note, importantly, that the $\expectation{\Delta\adjoint_{S,m,k} \Delta_{S,m,q}}$ matrix is $\Volume \times \Volume$ while $\rho_2$ is $\Volume^2 \times \Volume^2$.
+Letting $\chi_j(q_1, q_2) = \chi_j(\sigma_1,\, q_1,\, \sigma_2,\, q_2) (P_{S,m})_{\sigma_1 \sigma_2}$ summed on spins,
+\begin{align}
+    \expectation{\Delta\adjoint_{S,m,k} \Delta_{S,m,q}}
+    =
+    \sum_i^{\Volume^2} n_i \chi_i\conjugate(k,\, -k) \chi_i(q,\, -q).
+\end{align}
+The momentum-space trace is
+\begin{align}
+    \sum_{k=1}^{\Volume} \expectation{\Delta\adjoint_{S,m,k} \Delta_{S,m,k}}
+    &=
+    \sum_{k=1}^{\Volume} \sum_i^{\Volume^2} n_i \abs{\chi_i(k,\, -k)}^2
+\end{align}
+Using the counting \eqref{chi counting} we estimate
+\begin{align}
+    \tr{ \expectation{\Delta\adjoint_{S,m} \Delta_{S,m} }}
+    &\sim
+    \left[ \sum_{k=1}^{\Volume} \sim \Volume\right] \expectation{\Delta\adjoint_{S,m,k} \Delta_{S,m,k}}
+    \sim
+    \left[\sum_{k=1}^{\Volume} \sim \Volume\right] \left[ \sum_i^{\Volume^2} \sim \Volume^2 \right] n_i \left[\abs{\chi_i(k,\, -k)}^2 \sim 1 \right]
+    \nonumber\\
+    &\sim \Volume^3 n
+\end{align}
+for a typical $n$ which is \emph{NOT} an eigenvalue of $\tr{ \expectation{\Delta\adjoint_{S,m} \Delta_{S,m} }}$!
+If $\tr{ \expectation{\Delta\adjoint_{S,m} \Delta_{S,m} }}$ has eigenvalues $\lambda$ then the trace $\tr{ \expectation{\Delta\adjoint_{S,m} \Delta_{S,m} }} \sim \Volume \lambda$.
+Comparing these we conclude that $\lambda \sim \Volume^2 n$.
+If we want to apply knowledge from \R{leggett:2006} we need to take eigenvalues of $\expectation{\Delta\adjoint_{S,m} \Delta_{S,m} }$ and divide by $\Volume^2$.
+Then a single extensive $\lambda/\Volume^2$ indicates off-diagonal long-range order and more than one extensive $\lambda/\Volume^2$ indicates a fractured condensate.
+
+Therefore the eigenvalues of 
+\begin{align}
+    \frac{\expectation{\Delta\adjoint_{S,m,k} \Delta_{S,m,q}}}{L^4 (N/2)} = \frac{\expectation{\tilde{\Delta}\adjoint_{S,m,k} \tilde{\Delta}_{S,m,q}}}{N_x^4 (N/2)}
+\end{align}
+are dimensionless, have good continuum limits, and are at most intensive in the thermodynamic limit.
+For comparison with \Refs{PhysRevA.92.033603,PhysRevLett.123.136402,PhysRevLett.129.076403} we will also compute eigenvalues of
+\begin{align}
+    \frac{M}{L^4 (N/2)} = \frac{\tilde{M}}{N_x^4 (N/2)}.
+\end{align}

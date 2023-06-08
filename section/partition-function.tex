@@ -9,13 +9,14 @@ We wish to compute observables with the partition function
 	N &= \int d^2x\; \psi\adjoint(x)\psi(x)
 	&
 	\vec{S} = \half \int d^2x\; \psi\adjoint(x) ~ \vec{\sigma} ~ \psi(x)
+	\label{eq:partition function}
 \end{align}
 where $N$ is the total number operator and $\vec{S}$ are spin operators which obey $[S^i, S^j] = i\epsilon^{ijk} S^k$.
 In the latticized language 
 \begin{align}
 	N
 	&\goesto
-	\sum_x \Delta x^2 \psi\adjoint_x \psi_x
+	\sum_x \Delta x^2 (n_x = \psi\adjoint_x \psi_x)
 	=
 	\sum_a \tilde{\psi}\adjoint_a \tilde{\psi}_a
 	=
@@ -25,9 +26,9 @@ In the latticized language
 	\\
 	\vec{S}
 	&\goesto
-	\half \sum_x \Delta x^2 \psi\adjoint_x \vec{\sigma} \psi_x
+	\half \sum_x \Delta x^2 (\vec{s}_x = \psi\adjoint_x \vec{\sigma} \psi_x)
 	=
-	\half \sum_a \tilde{\psi}\adjoint_a ~ \vec{\sigma} ~ \tilde{\psi}_a
+	\half \sum_a (\tilde{\psi}\adjoint_a ~ \vec{\sigma} ~ \tilde{\psi}_a = \tilde{s}_a)
 	=
 	\tilde{\vec{S}}
 \end{align}
@@ -149,10 +150,10 @@ where $DA = \prod_{t=1}^{N_t} d A_t $.\footnote{
 \subsection{The Fermion Matrix}\label{sec:fermion matrix}
 
 Using fermion coherent states, we will now convert the trace over the Hilbert space into a determinant.
-Using the conventions of Munster Ch. 4,
+Using the conventions of M\"{u}nster Ch. 4~\cite{munster},
 \begin{align}
 	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }}
-	=& \int \prod_{t=1}^{2N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}^{N_t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times
+	=& \int \prod_{t=1}^{2N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times
 	\nonumber\\
 	&
 		\matrixElement{ -\eta_1 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2 N_t}}
@@ -168,13 +169,15 @@ Using the conventions of Munster Ch. 4,
 	&
 		\matrixElement{ \eta_3 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2}}
 		\matrixElement{ \eta_2 }{ e^{ \tilde{\psi}\adjoint (A_{1} + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_1}
+	\label{eq:coherent state trace}
 \end{align}
 where the coherent states
-\begin{equation*}
+\begin{equation}
 	\ket{\eta_t} = \exp\left( \sum_{\sigma a} \tilde{\psi}^{\dagger}_{\sigma a} \eta_{\sigma a t} \right) \ket{0}
-\end{equation*}
+	\label{eq:coherent state}
+\end{equation}
 are spatial vectors and spin doublets on a single timeslice.
-To proceed we leverage the exponential identity (4.33) of Munster,
+To proceed we leverage the exponential identity (4.33) of Munster~\cite{munster},
 \begin{equation}
 	\matrixElement{ \eta }{ e^{\sum_{ij} \psi^{\dagger}_j A_{ji} \psi_i} }{ \eta' }
 	=
@@ -264,17 +267,30 @@ Written with the Grassmann fields the action is
 \begin{align}
 	S &= 
 	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
-+	\sum_{ab t \alpha\alpha'} \eta\adjoint_{\alpha a t} \BB^{\alpha\alpha'}_{ab} \eta_{\alpha' b t}
--	\sum_{ab t \alpha\alpha'}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{tab} \eta_{\alpha' b t}
++	\sum_{a \alpha t} \eta\adjoint_{\alpha a t} \eta_{\alpha a t}
+-	\sum_{\substack{ab \alpha\alpha' \\ t\text{ even}}} \eta\adjoint_{\alpha a t+1} (-1)^{[t=2N_t]}\left[\BB\inverse\right]^{\alpha\alpha'}_{ab} \eta_{\alpha' b t}
+-	\sum_{\substack{ab \alpha\alpha' \\ t\text{ odd}}}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{tab} \eta_{\alpha' b t}
 \nonumber\\
 	&=
 	\frac{1}{2} \sum_{ab t} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt}
-+	\sum_{ab t \alpha} \eta\adjoint_{\alpha a t} B_{ab} \eta_{\alpha b t}
--	\sum_{a t \alpha\alpha'}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{ta} \eta_{\alpha' a t}
++	\sum_{a \alpha t} \eta\adjoint_{\alpha a t} \eta_{\alpha a t}
+-	\sum_{\substack{ab \alpha \\ t\text{ even}}} \eta\adjoint_{\alpha a t} (-1)^{[t=2N_t]}\left[B\inverse\right]_{ab} \eta_{\alpha b t}
+-	\sum_{\substack{a \alpha\alpha' \\ t\text{ odd}}}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{ta} \eta_{\alpha' a t}
+	\label{eq:grassmann action}
 \end{align}
-where we leverage the fact that the hopping in $\BB$ does not mix spins and $\FF$ does not mix sites.
+where we include the gaussian Grassmann contribution from the coherent-state resolution of the identity required for the trace \eqref{coherent state trace} and leverage the fact that the hopping in $\BB$ does not mix spins and $\FF$ does not mix sites.
+Using this action we may write
+\begin{align}
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t}(\tilde{V} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})} }
+	= 
+	\frac{  
+		\int DA\; D\eta\adjoint D\eta\; e^{-S\text{ in \eqref{grassmann action}}}
+	}{ 
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}
+\end{align}
 
-Performing the Grassmannian integration yields a fermion determinant,
+Performing the Grassmannian integration yields a fermion determinant for the Hubbard-Stratonovich trace,
 \begin{align}
 	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}} e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t}\tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }
 	=
@@ -345,7 +361,7 @@ or in index notation (letting $\delta_{1,N_t+1}=1$)
 \begin{align}
 	\dd_{\alpha a t, \alpha' a' t'} &= (-1)^{[t'=N_t]} [\BB\inverse]^{\alpha\alpha''}_{aa''}\FF_{t' a''a'}^{\alpha''\alpha'} \delta_{t,t'+1} - \delta_{\alpha\alpha'} \delta_{aa'} \delta_{tt'}
 	\\
-	&= (-1)^{[t'=N_t]} [B\inverse]_{aa''}\FF_{t' a''a'}^{\alpha'\alpha'} \delta_{t,t'+1} - \delta_{\alpha\alpha'} \delta_{aa'} \delta_{tt'}
+	&= (-1)^{[t'=N_t]} [B\inverse]_{aa''}\FF_{t' a''a'}^{\alpha\alpha'} \delta_{t,t'+1} - \delta_{\alpha\alpha'} \delta_{aa'} \delta_{tt'}
 \end{align}
 which actually has $\det \DD = \det \dd$ and the way the sausage appears is apparent.
 Using the Shur complement, one has
@@ -434,6 +450,7 @@ Starting with the bilinear \eqref{trotterization bilinearized} we can now replac
 	}{ 
 		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
 	}.
+	\label{eq:partition function equality}
 \end{align}
 When $\vec{h}\neq 0$ we may use single-species sausage $U$ and reuse it for each spin to compute the determinant \eqref{finite-h determinant algorithm}.
 When $\vec{h} = 0$ it is even simpler; as that determinant is a square.
@@ -564,7 +581,7 @@ One also need not focus on $\uu_1$; just rotate the sausage and find its eigenve
 
 This is marvelous: if you can reliably construct the block sausage you need only calculate its $2\times\Volume$ eigenvectors and you get the $2\times\Volume\times N_t$ eigenvectors of $\dd$.
 {\bf I have not considered the numerical stability or tractability of this procedure, but presumably if we can construct the sausage in a stable way everything else follows.}
-For a detailed discussion of this operator see \Ref{Wynen:2018ryx} (it is the `exponential $\alpha=0$' operator), where it is shown $\dd$ has an ergodicity problem when the lattice is bipartite (if $\vec{h}=0$).
+For a detailed discussion of this operator see \R{Wynen:2018ryx} (it is the `exponential $\alpha=0$' operator), where it is shown $\dd$ has an ergodicity problem when the lattice is bipartite (if $\vec{h}=0$).
 \emph{For that reason we always pick a lattice with an odd number of sites on at least one side.}
 
 \subsection{Correlation Functions}\label{sec:correlation functions}
@@ -603,9 +620,10 @@ For example
 	\nonumber\\
 	&=
 	\left.\oneover{Z} \oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{t,a}} Z(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
-	\label{eq:functionally differentiate}\\
+	\nonumber\\
 	&=\oneover{Z} \tr{\left(\prod_{t=1}^{N_t}e^{-\Delta\tilde{t} \tilde{K}} e^{-\Delta\tilde{t}(\tilde{V} -\tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})}\right) \tilde{n}_a} 
 	= \expectation{\tilde{n}_a}.
+	\label{eq:functionally differentiate}
 \end{align}
 where in the last line we specialized to differentiating with respect to a fluctuation on timeslice 1; functionally differentiating with respect to a fluctuation on a different timeslice simply inserts $\tilde{n}_a$ in the middle of the Trotterized product but by time translation invariance (or the cyclicity of the trace) we can bring the trace into a similar form with the operator rightmost.
 
@@ -647,6 +665,7 @@ The simplest is
 	&
 	\left.\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{\mu}_{1,a}} \UU(\delta\tilde{\mu}, \delta\tilde{\vec{h}})\right|_{\delta\tilde{\mu}=0, \delta\tilde{\vec{h}}=0}
 	&= \UU \PP_a
+	\label{eq:dmu replacement}
 \end{align}
 where $\PP_a$ is a spin-independent projector to site $a$.
 This derivative is simple because $\tilde{\mu}$ appears inside the matrix exponential $\FF$ \eqref{FF} coupled to the (spin) identity, and the identity commutes with all the Pauli matrices.
@@ -687,13 +706,372 @@ When $\vec{h}=0$ we have the simplification (by taking a careful limit, holding 
 	\label{eq:dFdh with h=0}
 \end{align}
 From the more explicit form \eqref{dFdh factor} we can see how the $\tilde{h}\goesto0$ limit \eqref{dFdh with h=0} emerges; the last term vanishes while the $\delta$ term survives and the $\hat{h}^i\hat{h}^k$ terms cancel.
-
-Finally, note that if we take the inner product of the matrix element \eqref{dFdh factor} with $\hat{h}$ one finds
+Note that if we take the inner product of the matrix element \eqref{dFdh factor} with $\hat{h}$ one finds
 \begin{align}
 	\hat{h}^i \left.\oneover{\Delta\tilde{t}}\frac{\partial}{\partial \delta \tilde{h}^i_{t,a}} \FF_{t'}\right|_{\delta\tilde{\mu} = 0, \delta \tilde{h}=0}
 	&= \delta_{tt'} \FF_{t'} \PP_a \half(\hat{h}\cdot\sigma)
 \end{align}
 as expected.
+
+Finally, note that the insertion \eqref{dFdh factor} contains terms of all orders in $\Delta \tilde{t}$.
+Since our Trotterization \eqref{trotterization} is only valid to $\order{\Delta \tilde{t}^2}$, most of that dependence is indistinguishable from discretization error.
+Why not jump straight to the discretization-independent observable?
+Just like the $\vec{h}\goesto0$ limit,
+\begin{align}
+	\lim_{\Delta\tilde{t}\goesto0} \left[
+		\half \hat{h}^i \hat{h}^k
+	+	\frac{\sinh \cosh}{\Delta\tilde{t} \abs{\tilde{h}}} \left(\delta^{ik}-\hat{h}^i\hat{h}^k\right)
+	+	\frac{i \sinh^2}{\Delta\tilde{t} \abs{h}} \epsilon_{ijk} \hat{h}^j
+	\right]\sigma_k
+	=
+	\half \sigma^i + \order{\Delta \tilde{t}}.
+\end{align}
+So, we can replace
+\begin{align}
+	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^{i}_{x}} \FF
+	&\rightsquigarrow
+	\FF \PP_x \half \sigma^i
+	&
+	\oneover{\Delta\tilde{t}} \frac{\partial}{\partial \delta\tilde{h}^{i}_{x}} \UU
+		&\rightsquigarrow
+	\UU \PP_x \half \sigma^i
+	\label{eq:dh replacement}
+\end{align}
+and we can check that the $\Delta\tilde{t}$-independent pieces of second derivatives (and beyond) all agree with this replacement rule.
+In a calculation of the spin similar to the number operator \eqref{fermionic particle number}, this goes inside the trace, giving $\tr{(1+\UU)\inverse \UU \PP_x \half \sigma^i}$.
+
+\subsection{Wick's Theorem and Tensor Contractions}\label{sec:contractions}
+
+A common approach for translating operator observables into computational observables is to leverage Wick's theorem.
+We add into our Trotterization \eqref{trotterization} a source of fermion number,
+\begin{align}
+	Z[\chi\adjoint, \chi] = \tr{
+		\left(
+		\prod_{t=1}^{N_t}
+		e^{-\Delta \tilde{t}\tilde{K}}
+		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
+		\right)
+		e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}
+	}
+	+ \order{\Delta \tilde{t}^2}.
+	\label{eq:fermionic generating function}
+\end{align}
+which we can functionally differentiate with respect to the Grassmann $\chi\adjoint$ and $\chi $ to pull down fermionic operators, and then set $\chi\adjoint, \chi \goesto 0$, just as we do for the sources $\delta\tilde{\mu}$ \eqref{functionally differentiate} and $\delta \tilde{\vec{h}}$ \eqref{dFdh factor}.
+This introduces an extra fictitious timeslice into our Trotterization \eqref{trotterization bilinearized} that sources the fermion operators,
+\begin{align}
+	\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }}
+	\goesto
+	\tr{\left(\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }\right) e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}}.
+\end{align}
+
+We can now follow the steps in \secref{fermion matrix} but with an extra set of $\eta$s to resolve this additional `timeslice'.
+\begin{align}
+	\tr{\left(\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{ \tilde{\psi}\adjoint (A_t + \Delta\tilde{t} \tilde{\mu} + \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi} }\right) e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}}
+	=& \int \prod_{t=0}^{2N_t} d \eta^{\dagger}_t d\eta_t ~ e^{- \sum_{t}\sum_x \eta^{\dagger}_t(x) \eta_t(x)}~ \times
+	\nonumber\\
+	&
+		\matrixElement{ -\eta_0 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2 N_t}}
+		\matrixElement{ \eta_{2 N_t} }{ e^{ \tilde{\psi}\adjoint (A_{N_t} + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma})\tilde{\psi} } }{\eta_{2 N_t-1}} ~ \times
+	\nonumber\\
+	&
+		\cdots
+	\nonumber\\
+	&
+		\matrixElement{ \eta_3 }{ e^{-\Delta \tilde{t}\tilde{K} }}{\eta_{2}}
+		\matrixElement{ \eta_2 }{ e^{ \tilde{\psi}\adjoint (A_{1} + \Delta\tilde{t}\tilde{\mu} + \half \Delta\tilde{t}\tilde{\vec{h}}\cdot\vec{\sigma}) \tilde{\psi}} }{\eta_1} \times
+	\nonumber\\
+	&
+		\matrixElement{ \eta_1 }{ e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} }{ \eta_0 }
+\end{align}
+where the measure starts at $t=0$, one extra timeslice compared to the usual trace \eqref{coherent state trace}.
+The new matrix element may be evaluated simply,
+\begin{align}
+	\matrixElement{ \eta_1 }{ e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} }{ \eta_0 }
+	&=
+	\matrixElement{ 0 }{ e^{\eta\adjoint_1 \tilde{\psi}} e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} e^{\tilde{\psi}\adjoint \eta_0}}{ 0 }
+	\nonumber\\
+	&=
+	\matrixElement{ 0 }{ e^{(\eta_1+\chi)\adjoint \tilde{\psi} + \tilde{\psi}\adjoint (\eta_0 + \chi)} }{ 0 }
+	=
+	\bracket{\eta_1 + \chi}{\eta_0 + \chi}
+	=
+	e^{(\eta_1+\chi)\adjoint (\eta_0+\chi)}
+\end{align}
+using the coherent state definition \eqref{coherent state} and the inner product given by M\"{u}nster (4.31)~\cite{munster}.
+
+The resulting action is close to the original Grassmann action \eqref{grassmann action}.
+Incorporating the normalizing offset as in \eqref{computational partition function},
+\begin{align}
+	S =&
+	\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
++	\sum_{\substack{a \alpha \\ t \in [0, 2N_t]}} \eta\adjoint_{\alpha a t} \eta_{\alpha a t}
+\nonumber\\
+	&
+-	\sum_{\substack{ab \alpha\alpha' \\ t\text{ even, not 0}}} \eta\adjoint_{\alpha a t+1} (-1)^{[t=2N_t]}\left[\BB\inverse\right]^{\alpha\alpha'}_{ab} \eta_{\alpha' b t}
+-	\sum_{\substack{ab \alpha\alpha' \\ t\text{ odd}}}\eta\adjoint_{\alpha a\; t+1} \FF(\tilde{h})^{\alpha\alpha'}_{tab} \eta_{\alpha' b t}
+\nonumber\\
+	&
+-	(\eta_1+\chi)\adjoint (\eta_0+\chi)
+	&
+	Z[\chi\adjoint, \chi] = \int DA\; D\eta\adjoint D\eta\; e^{-S}.
+\end{align}
+We can rewrite this action with a fermion matrix with an extra timeslice,
+\begin{align}
+	S =&
+	\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
+	- \chi\adjoint \eta_0 - \eta_1\adjoint \chi - \chi\adjoint\chi
+\nonumber\\
+	&
+	+ \begin{bmatrix} \eta_1 \\ \eta_2 \\ \vdots \\ \eta_{2N_t} \\ \eta_0 \end{bmatrix}^\dagger
+	\left(
+	\MM =
+	\begin{bmatrix}
+		\one	&	&	\cdots	&		&	-\one	\\
+		-\FF_1	&	\one	&	\cdots	&	&	\\
+				&	-\BB\inverse	&	\ddots	&	&	\\
+				&		&	&	\one	&	\\
+				&		&	&	+\BB\inverse	&	\one
+	\end{bmatrix}
+	\right)
+	\begin{bmatrix} \eta_1 \\ \eta_2 \\ \vdots \\ \eta_{2N_t} \\ \eta_0 \end{bmatrix}
+	\nonumber\\
+	&
+\nonumber\\
+	=&
+	\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
+	+ \eta\adjoint \MM \eta
+	- \chi\adjoint \PP_0 \eta - \eta\adjoint \PP_1 \chi - \chi\adjoint\chi
+\end{align}
+where we define this extended fermion matrix $\MM$ and write the $\chi$-sensitive terms as talking to a timeslice projection of the full vector of $\eta$s.
+Now we may complete the square, shifting
+\begin{align}
+	\eta &= \tilde{\eta} + \MM\inverse \PP_1 \chi
+	&
+	\eta\adjoint = \tilde{\eta}\adjoint + \chi\adjoint \PP_0 \MM\inverse
+\end{align}
+which has a Jacobian of 1, so the partition function integrating over all $\eta\adjoint$ and $\eta$ is equally well an integral over all $\tilde{\eta}\adjoint$ and $\tilde{\eta}$, which we immediately rename to be tilde-free.
+This shift was carefully chosen to decouple $\eta$ and $\chi$, 
+\begin{align}
+	S
+	=&
+	\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
+	+ \eta\adjoint \MM \eta
+	- \chi\adjoint \left(\one + \PP_0 \MM\inverse \PP_1\right)\chi;
+\end{align}
+(one positive $\chi\PP_0 \MM\inverse \PP_1 \chi$ comes from the $\eta\adjoint\MM\eta$ term and two negative copies come from the mixed $\eta\adjoint\chi$ and $\chi\adjoint\eta$)
+so that we may now execute the fermionic gaussian integral to get
+\begin{align}
+	Z[\chi\adjoint, \chi]
+	&=
+	\int DA \det{\MM} \exp\left\{-\left(
+		\frac{1}{2} \sum_{\substack{ab \\ t \in [1,N_t]}} A_{at} \left[(-\Delta\tilde{t} \tilde{V})\inverse\right]_{ab} A_{bt} + \frac{N_t}{2} \trlog{ -2\pi \Delta\tilde{t}\tilde{V} }
+		- \chi\adjoint \left(\one + \PP_0 \MM\inverse \PP_1\right)\chi
+	\right)\right\}
+\end{align}
+which, with malice of forethought we could have read from M\"{u}nster (4.24).
+As before \eqref{sausage} we leverage the Schur complement to find $\det{\MM} = \det{\dd} = \det( \one + \UU )$.
+In other words, our computational partition function \eqref{computational partition function} is exactly as before, simply with a $\chi\adjoint(\one - \PP_0 \MM\inverse \PP_1)\chi$ included,
+\begin{align}
+	Z[\chi\adjoint, \chi]
+	&=
+	\int DA\; e^{-S \text{ as in \eqref{computational partition function}}}
+		e^{ \chi\adjoint \left(\one + \PP_0 \MM\inverse \PP_1\right)\chi }.
+\end{align}
+Now we should calculate the rather unfortunate looking $\PP_0 \MM\inverse \PP_1$.
+
+The simplest way is to permute the (block) rows and columns of $\MM$ so that the $\eta$ vector goes $2,\, 3,\, \cdots,\, 2N_t, 0, 1$.
+Then we may repeatedly use the Schur inverse formula
+\begin{align}
+	M
+	&=
+	\begin{pmatrix} A & B \\ C & D \end{pmatrix}
+	&
+	(M/A)
+	&=
+	D-CA\inverse B
+	&
+	M\inverse
+	&=
+	\begin{pmatrix}
+		A\inverse + A\inverse B (M/A)\inverse C A\inverse & - A\inverse B (M/A)\inverse \\
+		- (M/A)\inverse C A\inverse & (M/A)\inverse
+	\end{pmatrix},
+\end{align}
+descending down into the lower right corner (to find the (0,1) block).
+Ultimately, the $2\times2$ block structure in that corner is
+\begin{align}
+	\begin{bmatrix}
+		\one & + \BB\inverse \FF_{N_t} \cdots \BB\inverse \FF_1
+		\\
+		-\one & \one
+	\end{bmatrix}^{-1}
+	&=
+	\begin{bmatrix}
+		\cdot & - \UU (\one + \UU)\inverse \\
+		\cdot & \cdot
+	\end{bmatrix}
+\end{align}
+at which point we need the upper-right block to get $\PP_0 \MM\inverse \PP_1$.
+Remarkably,
+\begin{align}
+	\PP_0 \MM\inverse \PP_1 &= -\UU (\one+\UU)\inverse!
+\end{align}
+Therefore, we find
+\begin{align}
+	Z[\chi\adjoint, \chi]
+	&=
+	\int DA\; e^{-S }
+		e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }.
+\end{align}
+
+As a demonstration of how to use this expression, let us now differentiate the fermionic generating function \eqref{fermionic generating function} to try and reproduce the already-known fermionic particle number \eqref{fermionic particle number}.
+As a notational convenience, let
+\begin{align}
+	\partial_x &= \frac{\overleftarrow{\partial}}{\partial \chi_x}
+	&
+	\partial\adjoint_x &= \frac{\partial}{\partial \chi\adjoint_x}
+	\label{eq:fermionic derivatives}
+\end{align}
+where $\partial_x$ acts to the left.
+Then
+\begin{align}
+	\expectation{\tilde{n}_x}
+	=
+	\expectation{\tilde{\psi}\adjoint_x \tilde{\psi}_x}
+	&=
+	\left.\oneover{Z[\chi\adjoint, \chi]} \tr{
+		\left(
+		\prod_{t=1}^{N_t}
+		e^{-\Delta \tilde{t}\tilde{K}}
+		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
+		\right)
+		e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}
+		\tilde{\psi}\adjoint_x \tilde{\psi}_x
+	}\right|_{\chi\adjoint, \chi\goesto 0}
+	\nonumber\\
+	&=
+	\left.\oneover{Z[\chi\adjoint, \chi]} \tr{
+		\left(
+		\prod_{t=1}^{N_t}
+		e^{-\Delta \tilde{t}\tilde{K}}
+		e^{-\Delta \tilde{t} (\tilde{V} - \tilde{\mu} \tilde{N} - \tilde{\vec{h}}\cdot \tilde{\vec{S}})}
+		\right)
+		e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi}
+		\left(\delta_{xx} - \tilde{\psi}_x \tilde{\psi}\adjoint_x\right)
+	}\right|_{\chi\adjoint, \chi\goesto 0}
+	\nonumber\\
+	&=
+	\left. \delta_{xx} - \oneover{Z[\chi\adjoint, \chi]} \partial\adjoint_x Z[\chi\adjoint, \chi]\partial_x \right|_{\chi\adjoint, \chi\goesto0}
+\end{align}
+Now we replace $Z$ with the computational generating function,
+\begin{align}
+	\expectation{\tilde{n}_x} - \delta_{xx}
+	&=
+	- \oneover{Z[\chi\adjoint, \chi]} \partial\adjoint_x \left. \left(
+		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }
+	\right) \partial_x \right|_{\chi\adjoint, \chi\goesto0}
+	\nonumber\\
+	&=
+	- \oneover{Z[\chi\adjoint, \chi]} \partial\adjoint_x \left.\left(
+		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }
+		\chi\adjoint_y (\one - \UU (\one+\UU)\inverse)_{yx}
+	\right) \right|_{\chi\adjoint, \chi\goesto0}
+	\nonumber\\
+	&=
+	- \oneover{Z[\chi\adjoint, \chi]} \Bigg(
+		\int DA\; e^{-S } e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }
+		\Big[
+			(\one - \UU(\one+\UU)\inverse)_{xz} \chi_z \chi\adjoint_y (\one - \UU (\one+\UU)\inverse)_{yx}
+			\nonumber\\
+			&\hspace{1in}
+			+ (\one - \UU (\one+\UU)\inverse)_{xx}
+		\Big]
+	\Bigg) \Bigg|_{\chi\adjoint, \chi\goesto0}
+	\nonumber\\
+	&=
+	- \oneover{Z} \int DA\; e^{-S }
+		(\one - \UU (\one+\UU)\inverse)_{xx}
+	\nonumber\\
+	&=
+	-\expectation{ \delta_{xx} - \left[\UU (\one+\UU)\inverse\right]_{xx}}
+	\nonumber\\
+	\expectation{\tilde{n}_x} &= \expectation{ \left[\UU (\one+\UU)\inverse\right]_{xx}} = \expectation{ \tr{ \left(\UU (\one+\UU)\inverse\right) \PP_x }}
+\end{align}
+exactly as before \eqref{fermionic particle number}!
+
+Let us repeat the above but for generic fermion operators differentiating $\partial\adjoint_{x\sigma} \log Z[\chi\adjoint, \chi] \partial_{y\tau}$,
+\begin{align}
+	\oneover{Z[\chi\adjoint,\chi]} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\tilde{\psi}_{x\sigma} e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} \tilde{\psi}\adjoint_{y\tau}
+	}
+	&=
+	\oneover{Z[\chi\adjoint,\chi]} \left(\int DA\; e^{-S} \left(\one - \UU (\one+\UU)\inverse \right)^{\sigma\upsilon}_{xz} \chi_{z\upsilon} e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi } \right)\partial_{y\tau}
+	\nonumber\\
+	\oneover{Z[\chi\adjoint,\chi]} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\tilde{\psi}_{x\sigma} e^{\chi\adjoint \tilde{\psi} + \tilde{\psi}\adjoint \chi} \tilde{\psi}\adjoint_{y\tau}
+	}
+	&=
+	\oneover{Z[\chi\adjoint,\chi]} \int DA\; e^{-S} \left(\one - \UU (\one+\UU)\inverse \right)^{\sigma\tau}_{xy} e^{ \chi\adjoint \left(\one - \UU (\one+\UU)\inverse\right)\chi }
+	\nonumber\\
+	\oneover{Z} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\tilde{\psi}_{x\sigma} \tilde{\psi}\adjoint_{y\tau}
+	}
+	&=
+	\oneover{Z} \int DA\; e^{-S} \left(\one - \UU (\one+\UU)\inverse \right)^{\sigma\tau}_{xy}
+	\nonumber\\
+	\oneover{Z} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\left(\delta_{xy}^{\sigma\tau} - \tilde{\psi}\adjoint_{y\tau} \tilde{\psi}_{x\sigma}\right)
+	}
+	&=
+	\oneover{Z} \int DA\; e^{-S} \left(\one - \UU (\one+\UU)\inverse \right)^{\sigma\tau}_{xy}
+	\nonumber\\
+	\oneover{Z} \tr{ \left(\prod_{t}
+		\cdots \right)
+		\tilde{\psi}\adjoint_{y\tau} \tilde{\psi}_{x\sigma}
+	}
+	&=
+	\oneover{Z} \int DA\; e^{-S} \left[\UU (\one+\UU)\inverse \right]^{\sigma\tau}_{xy}
+	\qquad\text{Note the index order!}
+\end{align}
+where in the third line we dropped terms that go to zero when we set the Grassmanns to zero.
+
+The generic lesson is that we may perform Wick contractions on normal-ordered operators, replacing the contraction with the equal-time \emph{propagator} $\G$,
+\begin{align}
+	\contraction{}{\tilde{\psi}\adjoint_{x\sigma}}{}{\tilde{\psi}_{y\tau}}
+	\tilde{\psi}\adjoint_{x\sigma}\tilde{\psi}_{y\tau}
+	\goesto
+	\G^{\sigma\tau}_{xy} = \left[\UU (\one+\UU)\inverse\right]_{yx}^{\tau\sigma} \qquad\text{Note the index order!}
+	\label{eq:propagator}
+\end{align}
+as long as we track the number of minus signs that come from `crossing' in the contraction.
+For an example, see the double occupancy \Secref{double occupancy}.
+
+There is a conventional choice in defining the Fourier-space propagator: do we include factors of volume?
+In the Wick contraction \eqref{propagator} both the fermion operators are in  position space, and therefore, according to our table of Fourier transforms \Tabref{ft} we should get no explicit factors of volume.
+On the other hand, one of the fermions is conjugate and therefore should get an $\exp(+2\pi i k x  / N_x)$, with a $+$ sign, the sign of the transform that DOES include a $\Volume\inverse$ factor.\footnote{
+	If we had settled on the unitary convention for Fourier transforms, each transform would have come with $\Volume^{-1/2}$ and there'd be no question.
+}
+Looking at position-space operators expressed in Fourier space, however, such as the current \eqref{current hermitian}, vorticity \eqref{vorticity}, and the vorticity correlator \eqref{vorticity-vorticity}, shows that for every pair of momentum-space fermions we get a factor of $\Volume\inverse$.
+Therefore, it is natural to define
+\begin{align}
+	\contraction{}{\tilde{\psi}\adjoint_{k\sigma}}{}{\tilde{\psi}_{q\tau}}
+	\tilde{\psi}\adjoint_{k\sigma}\tilde{\psi}_{q\tau}
+	&\goesto
+	\Volume \G^{\sigma\tau}_{kq} 
+	&\text{or}&&
+	\oneover{\Volume} 
+	\contraction{}{\tilde{\psi}\adjoint_{k\sigma}}{}{\tilde{\psi}_{q\tau}}
+	\tilde{\psi}\adjoint_{k\sigma}\tilde{\psi}_{q\tau}
+	&\goesto
+	\G^{\sigma\tau}_{kq} = \oneover{\Volume} \sum_{xy} e^{+2\pi i k x / N_x} \left(\G^{\sigma\tau}_{xy} = \left[\UU (\one+\UU)\inverse\right]_{yx}^{\tau\sigma} \right) e^{-2\pi i q y / N_x}
+	\label{eq:propagator in momentum space}
+\end{align}
+which may be implemented via one forward and one inverse Fourier transform regardless of convention.
+
 
 \subsection{The Infinite-Temperature Limit}\label{sec:infinite temperature}
 
@@ -779,9 +1157,17 @@ The \emph{zero temperature} and \emph{infinite volume} limits are tricky to dise
 Suppose you take the infinite volume limit first, holding physical $a$, $\beta$, $\mu$, and $\vec{h}$ fixed.
 Given the functional dependence of the dimensionless parameters on $L$, the infinite volume limit leaves
 \begin{align}
-    \frac{\tilde{\beta}}{\tilde{a}^2} = \frac{\beta}{(2\pi a)^2 M}
+    \frac{\tilde{\beta}}{\tilde{a}^2}
+    = \frac{\beta}{(2\pi a)^2 M}
+    = \frac{2\pi}{MT} \oneover{(2\pi)^3 a^2}
+    &= \oneover{(2\pi)^3} \left(\frac{\deBroglie}{a}\right)^2
+    &
+    \deBroglie^2 &\equiv \frac{2\pi}{MT}
+    \label{eq:aspect ratio}
 \end{align}
-fixed.
+fixed where \deBroglie is the thermal de Broglie wavelength.
+Some experiments~\cite{PhysRevLett.114.230401} quote $\beta\binding$ where $\binding=-1/Ma^2$ is the binding energy \eqref{binding energy}, which differs only from the aspect ratio by $(2\pi)^2$.
+
 Therefore the resulting partition function is
 \begin{align}
     \lim_{L\goesto\infty} Z(\tilde{a}, \tilde{\beta}, \log\tilde{z}, \widevec{\log \tilde{z}_h})

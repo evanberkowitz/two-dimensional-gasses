@@ -5,14 +5,13 @@ from functools import lru_cache as cached
 
 import torch
 
+from tdg import _no_op
 import tdg
 from tdg.h5 import H5able
+from tdg.performance import Timer
 
 import logging
 logger = logging.getLogger(__name__)
-
-def _no_op(x):
-    return x
 
 class GrandCanonical(H5able):
     r''' A grand-canonical ensemble of configurations and associated observables, importance-sampled according to :attr:`~.GrandCanonical.Action`.
@@ -25,6 +24,9 @@ class GrandCanonical(H5able):
         Action: tdg.Action
             An action which describes a Euclidean path integral equal to a Trotterization of the physics of interest.
     '''
+    
+    _observables = set()
+    # The _observables are populated by the @observable decorator.
     
     def __init__(self, Action):
         self.Action = Action
@@ -110,8 +112,42 @@ class GrandCanonical(H5able):
             self.configurations[mcmc_step] = configuration.real
             self.weights[mcmc_step] = weight
 
+        self.start = start
+        self.generator = generator
+
         return self
     
+    def measure(self, *observables):
+        r'''
+        Compute each :ref:`@observable <observables>` in `observables`; log an error for any :ref:`unregistered observable <custom observables>`.
+
+        Parameters
+        ----------
+            observables: strings
+
+        Returns
+        -------
+            :class:`~.GrandCanonical`; itself, now with some observables measured.
+
+        .. note::
+
+            If no `observables` are passed, evaluates **every** registered `@observable`.
+
+        '''
+        if not observables:
+            observables = self._observables
+
+        with Timer(logger.info, f'Measurement on {len(self)} configurations', per=len(self)):
+            for observable in observables:
+                if observable not in self._observables:
+                    logger.error(f'No registered observable "{observable}"')
+                    continue
+                try:
+                    getattr(self, observable)
+                except AttributeError as error:
+                    logger.error(str(error))
+        return self
+
     def cut(self, start):
         r'''
         Parameters
@@ -449,8 +485,8 @@ class Sector(H5able):
         '''
         return self._reweight(
             self._grid(lambda n, s:
-                       torch.einsum('sc,s->c',
-                                    torch.stack((self.Canonical._term(n,s).Spin(i) for i in [1,2,3])),
+                       torch.einsum('cs,s->c',
+                                    (self.Canonical._term(n,s).Spin),
                                     self.Canonical.hhat)
                       ))
 
@@ -502,6 +538,7 @@ class Sector(H5able):
 
 def _demo(steps=100, **kwargs):
 
+    import tdg.ensemble
     import tdg.action
     S = tdg.action._demo(**kwargs)
 
@@ -511,16 +548,16 @@ def _demo(steps=100, **kwargs):
     hmc = HMC.MarkovChain(H, integrator)
 
     try:
-        ensemble = GrandCanonical(S).generate(steps, hmc, progress=kwargs['progress'])
+        ensemble = tdg.ensemble.GrandCanonical(S).generate(steps, hmc, progress=kwargs['progress'])
     except:
-        ensemble = GrandCanonical(S).generate(steps, hmc)
+        ensemble = tdg.ensemble.GrandCanonical(S).generate(steps, hmc)
 
     return ensemble
 
 if __name__ == '__main__':
     from tqdm import tqdm
+    import tdg, tdg.observable
     torch.set_default_dtype(torch.float64)
     ensemble = _demo(progress=tqdm)
-    print(f"The fermionic estimator for the total particle number is {ensemble.N('fermionic').mean():+.4f}")
-    print(f"The bosonic   estimator for the total particle number is {ensemble.N('bosonic'  ).mean():+.4f}")
-    print(f"The Spin(0)   estimator for the total particle number is {ensemble.Spin(0).mean()       :+.4f}")
+    print(f"The fermionic estimator for the total particle number is {ensemble.N.mean():+.4f}")
+    print(f"The bosonic   estimator for the total particle number is {ensemble.N_bosonic.mean():+.4f}")

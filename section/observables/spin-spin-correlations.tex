@@ -1,0 +1,62 @@
+\subsection{Spin-Spin Fluctuations}\label{sec:spin fluctuations}
+
+Even in equilibrium quantum effects cause the spin to fluctuate around its mean value, even when $\vec{h}=0$.
+Of course, even with nonzero external field the linear fluctuations vanish $\expectation{s^i - \expectation{s^i}} = 0$ but correlated fluctuations need not.
+In fact,
+\begin{align}
+    \expectation{ (\tilde{s}^i-\expectation{\tilde{s}^i})_a (\tilde{s}^j-\expectation{\tilde{s}^j})_b }
+    =
+    \expectation{ \tilde{s}^i_a \tilde{s}^j_b } - \expectation{\tilde{s}^i_a} \expectation{\tilde{s}^j_b}
+\end{align}
+is positive semi-definite when $a=b$ and $i=j$.
+The disconnected pieces may be computed via Wick contraction to find
+\begin{align}
+	\expectation{ \tilde{s}^i_a } = \expectation{ \G^{\sigma\tau}_{aa} \half \sigma^{i}_{\sigma\tau}}
+\end{align}
+which matches the result \eqref{dh replacement} computed in \Secref{correlation functions}, using the propagator \eqref{propagator}.
+
+We normal-order and then Wick contract,
+\begin{align}
+	\expectation{ \tilde{s}^i_a \tilde{s}^j_b }
+	&=
+	\expectation{
+		\left(\half \tilde{\psi}\adjoint_{a\alpha} \sigma^i_{\alpha\alpha'} \tilde{\psi}_{a\alpha'}\right)
+		\,
+		\left(\half \tilde{\psi}\adjoint_{b\beta}  \sigma^j_{\beta \beta' } \tilde{\psi}_{b\beta' }\right)
+	}
+	\nonumber\\
+	&=
+	\oneover{4} \sigma^i_{\alpha\alpha'} \sigma^j_{\beta \beta' }
+	\expectation{
+		\tilde{\psi}\adjoint_{a\alpha}
+		\left(\delta_{ab}\delta_{\alpha'\beta} - \tilde{\psi}\adjoint_{b\beta} \tilde{\psi}_{a\alpha'} \right)
+		\tilde{\psi}_{b\beta' }
+	}
+	\nonumber\\
+	&=
+	\oneover{4} \left(\sigma^i\sigma^j = \delta^{ij}\one + i \epsilon^{ijk}\sigma^k\right)_{\alpha\beta'} \delta_{ab}
+	\expectation{
+		\tilde{\psi}\adjoint_{a\alpha}
+		\tilde{\psi}_{a\beta' }
+	}
+	+ \oneover{4} \sigma^i_{\alpha\alpha'} \sigma^j_{\beta \beta' }
+	\expectation{
+		\tilde{\psi}\adjoint_{b\beta}
+		\tilde{\psi}\adjoint_{a\alpha}
+		\tilde{\psi}_{a\alpha'}
+		\tilde{\psi}_{b\beta' }
+	}
+	\nonumber\\
+	&=
+	\oneover{4}   \delta_{ab} \delta^{ij} \expectation{ \tilde{n}_a }
+	+ \frac{i}{2} \delta_{ab} \epsilon^{ijk} \expectation{ \tilde{s}^k_a }
+	+ \oneover{4} \sigma^i_{\alpha\alpha'} \sigma^j_{\beta \beta' }
+	\expectation{
+		\G_{bb}^{\beta\beta'} \G_{aa}^{\alpha\alpha'}
+	-	\G_{ba}^{\beta\alpha'} \G_{ab}^{\alpha\beta'}
+	}
+\end{align}
+This can be further reduced, leveraging translation invariance.  As a function of a relative coordinate,
+\begin{align}
+	(s^i*s^j)_r = \oneover{\Volume} \sum_a s^i_a s^j_{a-r}
+\end{align}

@@ -24,6 +24,10 @@ Integrators trace *trajectories* through the phase space of the auxiliary fields
 To maintain good Markov Chain properties the integrator should be reversible; if we do not incorporate any integration Jacobian into the accept/reject step :cite:`Foreman:2021rhs`, we need a `symplectic integrator`_.
 Two classics are the :class:`~.LeapFrog` and :class:`~.Omelyan` integrators.
 
+Specifying the integrator's discretization can be done manually.
+Too fine a discretization and you waste time; too coarse and the HMC energy conservation is violated too dramatically, leading to a poor acceptance rate.
+One can also use an :class:`~.Autotuner` to target a particular acceptance rate.
+
 .. autoclass:: tdg.HMC.LeapFrog
    :members:
    :undoc-members:
@@ -33,6 +37,23 @@ Two classics are the :class:`~.LeapFrog` and :class:`~.Omelyan` integrators.
    :members:
    :undoc-members:
    :show-inheritance:
+
+It can be painfully time consuming to pick a good `md_steps`.
+One can try to automatically find a good molecular dynamics discretization instead.
+
+.. autoclass:: tdg.HMC.Autotuner
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Here is a small and easy example which tunes relatively quickly.
+We start at a fine molecular dynamics discretization of 15 steps.
+The model then predicts 9 steps, which is found to still be fine.
+It jumps down to 1 step, which has poor acceptance but updates the model's prediction to 2 steps.
+Testing 2 steps shows it has an acceptance rate that satisfies the autotuner.
+
+.. plot:: examples/plot/autotuner.py
+   :include-source:
 
 tdg.HMC.MarkovChain
 -------------------

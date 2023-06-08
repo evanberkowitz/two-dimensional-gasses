@@ -1,7 +1,7 @@
 
 \begin{table}
 \large
-\begin{tabular}{R|L|L}
+\begin{tabular}{R|L|L|L}
 \text{Infinite Volume}								&	\text{Continuum}
 													&	\text{Lattice}
 \\[0.5em]\hline
@@ -34,10 +34,23 @@
 \\[0.5em]\hline
 \text{Dimensionless}								&
 													&	\text{Lattice}
+													&	\text{Mathematica \href{https://reference.wolfram.com/language/ref/FourierParameters.html}{\texttt{FourierParameters}}}
+\\													&
+													&
+													&	\href{https://pytorch.org/docs/stable/fft.html}{\texttt{torch.fft}}
+\\													&
+													&
+													&	\texttt{tdg.Lattice}
 \\[0.5em]\hline
 \psi_a												=&& \oneover{N_x^d} \sum_{k} e^{+2\pi i k\cdot a/N_x} \psi_k
+													& \texttt{\{-1,+1\}}
+													\\ &&& \href{https://pytorch.org/docs/stable/generated/torch.fft.ifft2.html#torch.fft.ifft2}{\texttt{ifft(norm='backward')}}
+													\\ &&& \texttt{ifft}
 \\[0.5em]
 \psi_k												=&& \sum_a e^{-2\pi i k \cdot a / N_x} \psi_a
+													& \texttt{\{+1,-1\}}
+													\\ &&& \href{https://pytorch.org/docs/stable/generated/torch.fft.fft2.html#torch.fft.fft2}{\texttt{fft(norm='backward')}}
+													\\ &&& \texttt{fft}
 \\[0.5em]
 \sum_{k} e^{+2\pi i k\cdot(a-a') / N_x}				=&& N_x^d \delta_{aa'}
 \\[0.5em]
@@ -50,6 +63,8 @@
 	In a finite volume momenta are integer multiples of $2\pi/L$.
 	In these conventions the dimensionless coordinates can be found from the finite-volume lattice language by sending $\Delta x\goesto 1$ and rewriting momenta as multiples of $2\pi/N_x (\Delta x=1)$.
 	(You can use dimensionless operators independently of the choice to use dimensionless coordinates).
+	For the dimensionless convention we show the Mathematica \texttt{FourierParameters}, \texttt{torch.fft} and \texttt{tdg.Lattice} choices that implement the formula.
+	\protect\addcontentsline{toc}{subsection}{\phantom{A.}\, Fourier Transform Conventions}
 }
 \label{tab:ft}
 \end{table}

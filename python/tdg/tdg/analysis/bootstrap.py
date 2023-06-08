@@ -36,6 +36,8 @@ class Bootstrap(H5able):
     def __init__(self, ensemble, draws=100):
         self.Ensemble = ensemble
         r'''The ensemble from which to resample.'''
+        self.Action = ensemble.Action
+        r'''The action underlying the ensemble.'''
         self.draws = draws
         r'''The number of resamplings.'''
         cfgs = ensemble.configurations.shape[0]
@@ -49,7 +51,11 @@ class Bootstrap(H5able):
         # Each observable should be multiplied by its respective weight.
         # Each draw should be divided by its average weight.
         w = self.Ensemble.weights[self.indices]
-        return torch.einsum('cd,cd...->cd...', w, obs[self.indices]).mean(axis=0) / w.mean(axis=0)
+
+        # This index ordering is needed to broadcast the weights division correctly.
+        # See https://github.com/evanberkowitz/two-dimensional-gasses/issues/55
+        # We return the bootstrap axis to the front to provide an analogous interface for Bootstrap and GrandCanonical quantities.
+        return torch.einsum('...d->d...', torch.einsum('cd,cd...->c...d', w, obs[self.indices]).mean(axis=0) / w.mean(axis=0))
     
     @cached
     def __getattr__(self, name):

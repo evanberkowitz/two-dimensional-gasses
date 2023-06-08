@@ -1,5 +1,6 @@
 from inspect import signature
 import tdg.ensemble
+from tdg.performance import Timer
 
 import logging
 logger = logging.getLogger(__name__)
@@ -28,11 +29,13 @@ class Observable:
             cls.name = cls.__name__
         else:
             cls.name = name
-        if cls.name[0] == '_':
-            logger.debug(f'Observable registered: {cls.name}')
-        else:
-            logger.info(f'Observable registered: {cls.name}')
+
+        cls._logger = (logger.debug if cls.name[0] == '_' else logger.info)
+        cls._debug  = logger.debug
+        cls._logger(f'Observable registered: {cls.name}')
+
         setattr(tdg.ensemble.GrandCanonical, cls.name, cls())
+        tdg.ensemble.GrandCanonical._observables.add(cls.name)
 
     def __set_name__(self, owner, name):
         self.name  = name
@@ -47,13 +50,14 @@ class Observable:
             # class level cache discussed in https://github.com/evanberkowitz/two-dimensional-gasses/issues/12
             # in that there's no extra reference to the object at all with this strategy.
             # So, when it goes out of scope with no reference, it will be deleted.
+            self._debug(f'{self.name} already cached.')
             return obj.__dict__[self.name]
 
         if objtype is tdg.ensemble.GrandCanonical:
             # Just call the measurement and cache the result.
-            result = self.measure(obj)
-            obj.__dict__[self.name] = result
-            return result
+            with Timer(self._logger, f'Measurement of {self.name}', per=len(obj)):
+                obj.__dict__[self.name]= self.measure(obj)
+            return obj.__dict__[self.name]
 
         # It may be possible to further generalize and implement the canonical projections
         # or data analysis like binning and bootstrapping by detecting the class here and
@@ -64,43 +68,6 @@ class Observable:
 
     def __set__(self, obj, value):
         setattr(obj, self.name, value)
-
-####
-#### Callable observable interface
-####
-
-class CallableObservable:
-    # The primary difference between this and an Observable is the __get__
-
-    def __init_subclass__(cls, name=''):
-        if name == '':
-            cls.name = cls.__name__
-        else:
-            cls.name = name
-        if cls.name[0] == '_':
-            logger.debug(f'Observable registered: {cls.name}')
-        else:
-            logger.info(f'Observable registered: {cls.name}')
-        setattr(tdg.ensemble.GrandCanonical, cls.name, cls())
-
-    def __set_name__(self, owner, name):
-        self.name = name
-
-    def __get__(self, obj, objtype=None):
-        # Since we know the measurement requires arguments, not just the ensemble object itself,
-        # It's not so easy (though presumably possible?) to design an object-level cache that
-        # avoids keeping ensembles alive accidentally.
-        # 
-        # However, this is not SUCH a big deal.  See, for instance, the implementation of
-        # 
-        #   tdg.observable.number.n(ensemble, method)
-        # 
-        # which is actually just a dispatch to different parameter-free observables.
-        if objtype is tdg.ensemble.GrandCanonical:
-            def curried(*args, **kwargs):
-                return self.measure(obj, *args, **kwargs)
-            return curried
-        raise NotImplemented()
 
 ####
 #### The Decorator
@@ -117,25 +84,13 @@ def observable(func):
     sig = signature(func)
     parameters = len(sig.parameters)
 
-    if parameters == 0:
-        raise TypeError('An @observable must take at least the ensemble as an argument')
+    if parameters != 1:
+        raise TypeError(f'An @observable must take exactly one argument (the ensemble), not {parameters}.')
 
-    # We assume functions of one parameter depend on the ensemble, rather than some
-    # other single argument.  Otherwise in what sense it is an observable?
-
-    elif parameters == 1:
-
-        class anonymous(Observable, name=func.__name__):
-            
-            def measure(self, ensemble):
-                return func(ensemble)
-
-    elif parameters > 1:
-
-        class anonymous(CallableObservable, name=func.__name__):
-
-            def measure(self, ensemble, *args, **kwargs):
-                return func(ensemble, *args, **kwargs)
+    class anonymous(Observable, name=func.__name__):
+        
+        def measure(self, ensemble):
+            return func(ensemble)
 
     return func # This is a hack to get sphinx to document observables sensibly.
 

@@ -43,7 +43,7 @@ class Lattice(H5able):
         r'''
         The dimension sizes in order.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.dims
         tensor([5, 5])
         '''
@@ -51,7 +51,7 @@ class Lattice(H5able):
         r'''
         The total number of sites.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.sites
         25
         '''
@@ -61,7 +61,7 @@ class Lattice(H5able):
         r'''
         The coordinates in the x direction.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.x
         tensor([ 0,  1,  2, -2, -1])
         '''
@@ -69,18 +69,18 @@ class Lattice(H5able):
         r'''
         The coordinates in the y direction.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.y
         tensor([ 0,  1,  2, -2, -1])
         '''
 
         # These are chosen so that Lattice(nx, ny)
         # has coordinate matrices of size (nx, ny)
-        self.X = torch.tile( self.x, (self.ny, 1)).T
+        self.X = torch.tile( self.x, (self.ny, 1)).transpose(0,1)
         r'''
         A tensor of size ``dims`` with the x coordinate as a value.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.X
         tensor([[ 0,  0,  0,  0,  0],
                 [ 1,  1,  1,  1,  1],
@@ -92,7 +92,7 @@ class Lattice(H5able):
         r'''
         A tensor of size ``dims`` with the y coordinate as a value.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.Y
         tensor([[ 0,  1,  2, -2, -1],
                 [ 0,  1,  2, -2, -1],
@@ -100,6 +100,7 @@ class Lattice(H5able):
                 [ 0,  1,  2, -2, -1],
                 [ 0,  1,  2, -2, -1]])
         '''
+        self.rsq= self.X**2 + self.Y**2
 
         # Wavenumbers are the same
         self.kx = self.x
@@ -111,11 +112,11 @@ class Lattice(H5able):
 
         # We also construct a linearized list of coordinates.
         # The order matches self.X.ravel() and self.Y.ravel()
-        self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).T
+        self.coordinates = torch.stack((self.X.flatten(), self.Y.flatten())).transpose(0,1)
         '''
         A tensor of size ``[sites, len(dims)]``.  Each row contains a pair of coordinates.  The order matches ``{X,Y}.flatten()``.
 
-        >>> lattice = tdg.Lattice(5)
+        >>> lattice = Lattice(5)
         >>> lattice.coordinates
         >>> lattice.coordinates
         tensor([[ 0,  0],
@@ -174,10 +175,14 @@ class Lattice(H5able):
                     self.y[torch.remainder(x[1],self.ny)],
                 ])
 
-        return torch.stack((
-            self.x[torch.remainder(x.T[0],self.nx)],
-            self.y[torch.remainder(x.T[1],self.ny)],
-            )).mT
+        coordinate_slowest = x.permute(*torch.arange(x.ndim - 1, -1, -1))
+        
+        modded = torch.stack((
+            self.x[torch.remainder(coordinate_slowest[0],self.nx)],
+            self.y[torch.remainder(coordinate_slowest[1],self.ny)],
+            ))
+        
+        return modded.permute(*torch.arange(modded.ndim -1, -1, -1))
 
     def distance_squared(self, a, b):
         r'''
@@ -204,14 +209,78 @@ class Lattice(H5able):
 
         return torch.sum(d**2, axis=(1,))
 
-    def coordinatize(self, v, dims=(-1,)):
+    def cross(self, a, b):
+        r'''
+        The cross product of two vectors :math:`a \times b`.  In two dimensions this is a scalar value.
+        However, for compatibility with three dimensions we add an extra index.
+
+        Parameters
+        ----------
+            a: torch.tensor:
+                first vector
+            b: torch.tensor:
+                second vector
+
+        Returns
+        -------
+            torch.tensor
+
+        If ``a`` and ``b`` are single vectors, returns a single value in a one-dimensional torch.tensor.
+
+        >>> lattice = Lattice(5)
+        >>> x = lattice.coordinates
+        >>> lattice.cross(x[1], x[5])
+        tensor([-1])
+
+        If ``a`` is a single vector and ``b`` is two-dimensional (vector index last), returns a tensor of shape ``[b.shape[0], 1]``,
+
+        >>> lattice.cross(x[1], x[1:-1:5])
+        tensor([[ 0],
+                [-1],
+                [-2],
+                [ 2],
+                [ 1]])
+
+        Similarly, if ``a`` is two-dimensional (vector index last), returns a tensor of shape ``[a.shape[0], 1]``,
+
+        >>> lattice.cross(x[1:-1:5], x[2])
+        tensor([[ 0],
+                [ 2],
+                [ 4],
+                [-4],
+                [-2]])
+
+        Finally, if both ``a`` and ``b`` are two-dimensional (vector index last), returns a tensor of shape ``[a.shape[0], b.shape[0], 1]``,
+
+        >>> lattice.cross(x[:5], x[:7]).shape
+        torch.Size([5, 7, 1])
+
+        '''
+        if a.dim() == 1 and b.dim() == 1:
+            return torch.tensor([a[0] * b[1] - a[1] * b[0]])
+        if a.dim() == 1 and b.dim() == 2:
+            return (a[0] * b[:, 1] - a[1] * b[:, 0])[:,None]
+        if a.dim() == 2 and b.dim() == 1:
+            return (a[:, 0] * b[1] - a[:, 1] * b[0])[:,None]
+        if a.dim() == 2 and b.dim() == 2:
+            return (torch.outer(a[:,0], b[:, 1]) - torch.outer(a[:, 1], b[:, 0]))[:,:,None]
+
+        raise NotImplementedError(f"The cross product is only threaded once over each argument.  You tried {a.shape=} and {b.shape=}")
+
+    def coordinatize(self, v, dims=(-1,), center_origin=False):
         r'''
         Unflattens all the dims from a linear superindex to one index for each dimension in ``.dims``.
         
         Parameters
         ----------
             v: torch.tensor
+                A tensor with at least one dimension linearized in space.
             dims: tuple of integers
+                The directions you wish to unflatten into a meaningful shape that matches the lattice.
+            center_origin: boolean
+                If true, each coordinatized dimension is rolled so that the origin is in the center of the two slices.  This is primarily good for making pictures.  :func:`~.linearize` does not provide an inverse of this, because you really should not do it in the middle of a calculation!
+
+                
             
         Returns
         -------
@@ -231,7 +300,17 @@ class Lattice(H5able):
                 torch.tensor([s]) if i not in to_reshape else self.dims
                 for i, s in enumerate(v.shape)) 
             ))
-        return v.reshape(new_shape)
+
+        reshaped = v.reshape(new_shape)
+        if not center_origin:
+            return reshaped
+        
+        axes = to_reshape + torch.arange(len(to_reshape))
+        shifts = (self.nx // 2, self.ny // 2)
+        for a in axes:
+            reshaped = reshaped.roll(shifts, dims=(a,a+1))
+
+        return reshaped
 
     def linearize(self, v, dims=(-1,)):
         r'''
@@ -315,7 +394,7 @@ class Lattice(H5able):
         '''
         return torch.zeros(self.sites).repeat(*dims, 1)
 
-    def fft(self, vector, axis=-1, norm='ortho'):
+    def fft(self, vector, axis=-1, norm='backward'):
         r'''The Fourier transform on a linearized axis.
 
         Parameters
@@ -326,6 +405,7 @@ class Lattice(H5able):
                 The axis along which to perform a 2D Fourier transform on the vector.
             norm:
                 A `convention for the Fourier transform`_, one of ``"forward"``, ``"backward"``, or ``"ortho"``.
+                The default is `"backward"`, to match our notes.
 
         Returns
         -------
@@ -337,7 +417,7 @@ class Lattice(H5able):
         fft_axes = (axis-1, axis) if axis < 0 else (axis, axis+1)
         return self.linearize(torch.fft.fft2(self.coordinatize(vector, dims=(axis,)), dim=fft_axes, norm=norm), dims=(axis,))
 
-    def ifft(self, vector, axis=-1, norm='ortho'):
+    def ifft(self, vector, axis=-1, norm='backward'):
         r'''The Fourier inverse transform on a linearized axis.
 
         Parameters
@@ -347,17 +427,61 @@ class Lattice(H5able):
             axis:
                 The axis along which to perform a 2D inverse Fourier transform on the vector.
             norm:
-                A `convention for the Fourier transform`_, one of ``"forward"``, ``"backward"``, or ``"ortho"``.
+                A `convention for the inverse Fourier transform`_, one of ``"forward"``, ``"backward"``, or ``"ortho"``.
+                The default is `"backward"`, to match our notes.
 
         Returns
         -------
             torch.tensor:
                 Inverse[F](vector) with the same shape as the input vector, transformed along the axis.
 
-        .. _convention for the Fourier transform: https://pytorch.org/docs/stable/generated/torch.fft.fft2.html#torch.fft.fft2
+        .. _convention for the inverse Fourier transform: https://pytorch.org/docs/stable/generated/torch.fft.ifft2.html#torch.fft.ifft2
         '''
         fft_axes = (axis-1, axis) if axis < 0 else (axis, axis+1)
         return self.linearize(torch.fft.ifft2(self.coordinatize(vector, dims=(axis,)), dim=fft_axes, norm=norm), dims=(axis,))
+
+    @cached_property
+    def _inversion(self):
+        inverter = torch.zeros(2*(self.sites,))
+        for i in range(self.sites):
+            for j in range(self.sites):
+                if (self.coordinates[i] == - self.coordinates[j]).all():
+                    inverter[i, j] = 1
+        inverter = inverter.to_sparse()
+        permutation = inverter.indices()[1]
+        return permutation
+
+    def inversion(self, vector, dims=(-1,)):
+        r'''
+        Reflect data across the origin for each dimension.
+
+        Parameters
+        ----------
+            vector: torch.tensor
+                A vector of data
+            dims:   iterable
+                Linearized dimensions apply the inversion to.
+
+        Returns
+        -------
+            torch.tensor:
+                Data with the same shape, but with the data at a given index is now at the index that corresponds to the reflected coordinate.
+                For example, 
+
+                >>> import torch
+                >>> torch.set_default_dtype(torch.float64)
+                >>> import tdg
+                >>> nx = 5
+                >>> L = tdg.Lattice(5)
+                >>> (L.inversion(L.coordinates, dims=(0,)) + L.coordinates).abs().sum() < 1e-14
+                tensor(True)
+
+        '''
+        reflected = vector.clone()
+        for d in dims:
+            reflected = reflected.transpose(0,d)[self._inversion].transpose(d,0)
+
+        return reflected
 
     @cached_property
     def adjacency_tensor(self):
@@ -408,6 +532,89 @@ class Lattice(H5able):
         # right = torch.tensor(4*np.pi**2 * lattice.ksq.ravel() / 2).sort().values
         # (torch.abs(left-right) < 1e-6).all()
         # ```
+
+    @cached_property
+    def convolver(self):
+        r'''
+        The convolution of two vectors :math:`u` and :math:`v` is :math:`u * v = \frac{1}{V} \sum_a u_a v_{a-r}`.
+
+        The convolution can be computed quickly using fast fourier transforms.  However, sometimes it is useful to implement
+        the convolution as part of a tensor contraction.
+
+        We can introduce this via the *convolver*, which satisfies
+
+        .. math::
+
+           \frac{1}{V} \sum_a u_a v_{a-r} = \sum_{ab} u_a\, v_b\, \texttt{convolver}_{bra} \text{ (note the order)}
+
+        which can be implemented via einsum,
+
+        .. code::
+
+           u * v = torch.einsum('a,b,bra->r', u, v, convolver) # order as above
+
+        where ``u`` and ``v`` have one linearized spatial index.
+
+        .. note::
+
+           This **includes** the factor of volume!
+        '''
+
+        # Here is an obviously-correct implementation.
+        #
+        # for i,r in enumerate(self.coordinates):
+        #     for j,a in enumerate(selself.coordinates):
+        #         diff = self.mod(a-r)
+        #         for k,b in enumerate(self.coordinates):
+        #             if (b==diff).all():
+        #                 direct[k,i,j] = 1./self.sites
+        #
+        # but we opt for a slightly more sophisticated and torch-native
+        normalized_identity = torch.eye(self.sites)/self.sites # include the 1/V factor
+
+        return torch.stack(
+            list(
+                self.linearize(
+                    self.coordinatize(
+                        normalized_identity,
+                        (0,)
+                        ).roll(shifts=tuple(r), dims=(0,1)),
+                    (0,)
+                )
+                for r in self.coordinates # r slowest
+            )
+        ).permute((2,0,1)) # (b=a-r) r a order
+
+    ####
+    #### VISUALIZATION
+    ####
+
+    def plot_2d_scalar(self, ax, data, center_origin=True, **kwargs):
+        r'''
+        Use `matshow`_ to plot the (linear) data as a function of space, using the lattice to coordinatize, centering the origin by default.
+
+        Parameters
+        ----------
+            ax: matplotlib axis
+                Where to draw the data.
+            data: torch.tensor
+                A single linearized spatial vector.
+            center_origin: True or False
+                If true the origin is centered in the figure.
+            **kwargs: `matshow`_ arguments
+                Simply forwarded. `origin` is fixed to be ``'lower'``
+
+        .. plot:: examples/plot/Lattice_plot_2d_scalar.py
+           :include-source:
+
+        .. _matshow: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.matshow.html#matplotlib.pyplot.matshow
+        '''
+
+        # We coordinatize to get a spatial layout, and transpose to get x going across.
+        # We put the origin='lower' because... obviously.
+        ax.matshow( self.coordinatize(data, center_origin=center_origin).transpose(0,1), origin='lower', **kwargs)
+        ax.set_xticks(torch.arange(self.nx), self.x.roll(self.nx//2).numpy() if center_origin else self.x.numpy())
+        ax.set_yticks(torch.arange(self.ny), self.y.roll(self.ny//2).numpy() if center_origin else self.y.numpy())
 
 def _demo(nx=7):
     return Lattice(nx)

@@ -1,0 +1,51 @@
+
+\section{Grand Canonical Potential and Entropy}\label{sec:entropy}
+
+The grand canonical potential $\Omega$ (not the vortex $\Omega$ from \secref{vortex}) is defined by
+\begin{align}
+	\Omega(\mu, T, \vec{h}) &= - T \log Z
+\end{align}
+where $Z = \tr{\exp(-\beta(H-\mu N - \vec{h}\cdot\vec{S})}$ traced over the Hilbert space is the partition function \eqref{partition function}.
+To transform between thermodynamic representations we need full knowledge of $\Omega$, which is usually not available because $\log Z$ is hard to caculate.
+One approach is to leverage the Euler relation
+\begin{align}
+	\Omega(\mu, T, \vec{h})
+	&=
+	\expectation{U = H - \mu N - \vec{h}\cdot\vec{S}} - T\entropy
+\end{align}
+where the last term is the product of the temperature and thermal entropy $\entropy$, but to compute $\entropy = -\partial \Omega / \partial T$ directly also requires $\log Z$.
+
+Typically in lattice field theory one has a relation $Z = \tr{e^{-\beta H}} \propto \int DA\; e^{-S}$ with an unknown proportionality constant which depends on the lattice spacing or temperature.
+However, we have an exact equality between the Hilbert space trace and our computational partition function \eqref{computational partition function}!
+It helps to look back to an earlier step \eqref{partition function equality} before the computation of the exact normalizing constant,
+\begin{align}
+	Z[\Delta\tilde{t}]=\tr{\prod_{t=1}^{N_t} e^{-\Delta \tilde{t}\tilde{K}}  e^{-\Delta \tilde{t}(\tilde{V} - \tilde{\mu}\tilde{N} - \tilde{\vec{h}}\cdot\tilde{\vec{S}})} }
+	= 
+	\frac{  
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	~	\left(\det \DD = \det \dd = \det \one + \UU \right)
+	}{ 
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}.
+	\label{eq:true Z}
+\end{align}
+with a true equals sign and, we emphasize, no missing proprotionality constant.
+Since $Z = Z[\Delta \tilde{t}] + \order{\Delta \tilde{t}^2}$ taking the temporal continuum limit reproduces $Z$.
+
+Typically we think about calculating observables on configurations whose distribution is governed by the whole action.
+But we can get our hands on $Z$ by thinking a different way.
+Note that $Z$ \eqref{true Z} can also be viewed as an average over the auxiliary field action,
+\begin{align}
+	Z[\Delta\tilde{t}]
+	&= \expectation{ \det{\DD} }_{p} = \int DA\; p(A) \det{\DD}
+	&
+	p(A) &= \frac{
+		e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}{
+		\int DA\; e^{-\frac{1}{2} \sum_t A\transpose_t (-\Delta\tilde{t} \tilde{V})\inverse A_t}
+	}.
+\end{align}
+This may be extremely noisy.
+However, the flip side is that we only need to sample according to a gaussian measure, which we can do with ease.
+No HMC or any other intelligence is required.
+Generate as many samples as you like on the cheap; just be prepared to pay for measurements.

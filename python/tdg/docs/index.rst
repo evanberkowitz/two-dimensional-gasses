@@ -10,6 +10,7 @@ Two-Dimensional Gases
    :maxdepth: 2
 
    computational-narrative/index.rst
+   observables/index.rst
    data-analysis/index.rst
    execution/index.rst
    bibliography

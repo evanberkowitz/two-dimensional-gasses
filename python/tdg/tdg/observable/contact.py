@@ -2,7 +2,7 @@ import torch
 import functorch
 
 import tdg
-from tdg.observable import observable
+from tdg.observable import observable, derived
 
 import logging
 logger = logging.getLogger(__name__)
@@ -27,12 +27,11 @@ def doubleOccupancy(ensemble):
     # where the lower indices are spatial and the upper indices are spin.
     #
     # The first term is the square of the contraction of the fermionic n operator.
-    first = ensemble.n('fermionic')**2
+    first = ensemble.n**2
     # The second term is a bit more annoying;
-    UUPlusOneInverseUU = ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
     second = torch.einsum('caast,caats->ca',
-                            UUPlusOneInverseUU,
-                            UUPlusOneInverseUU,
+                            ensemble.G,
+                            ensemble.G,
                          )
 
     # To get the double occupancy itensemble, take half the difference.
@@ -46,7 +45,20 @@ def DoubleOccupancy(ensemble):
     return ensemble.doubleOccupancy.sum(axis=1)
 
 @observable
-def _Contact_fermionic(ensemble):
+def Contact(ensemble):
+    r'''
+    The `contact`, :math:`C L^2 = 2\pi\frac{d\tilde{H}}{d\log a}`.
+
+    This observable is much less noisy than :func:`~.Contact_bosonic`.
+
+    In the case where the only :class:`~.LegoSphere` in the interaction is the on-site interaction, the ``fermionic`` method is accelerated by computing the :func:`~.DoubleOccupancy`.
+
+    .. note::
+        The contact :math:`C` is extensive, and :math:`L^2` is extensive, so this observable is *doubly extensive*!
+        You may want to compute something intensive, such as the derived contact density :func:`~.contact_by_kF4` :cite:`Beane:2022wcn`,
+        :math:`c/k_F^4 = \texttt{Contact} / (2\pi \texttt{N})^2`, where this observable is divided by two powers of an extensive observable!
+
+    '''
     # For the on-site interaction we have a shortcut, which is a good acceleration because the LegoSphere is a delta function
     # and thus we can do contractions that don't cost volume^2 but simply volume.
     if len(ensemble.Action.Tuning.radii) == 1 and all(r==0 for r in ensemble.Action.Tuning.radii[0]):
@@ -58,27 +70,35 @@ def _Contact_fermionic(ensemble):
     logger.info('Using the general form of the fermionic Contact.')
 
     L = ensemble.Action.Spacetime.Lattice
-    S = torch.stack(tuple(tdg.LegoSphere(r, c).spatial(L) for c,r in zip(ensemble.Action.Tuning.dC_dloga, ensemble.Action.Tuning.radii) )).sum(axis=0).to(ensemble._UUPlusOneInverseUU.dtype)
+    S = torch.stack(tuple(tdg.LegoSphere(r, c).spatial(L) for c,r in zip(ensemble.Action.Tuning.dC_dloga, ensemble.Action.Tuning.radii) )).sum(axis=0).to(ensemble.G.dtype)
 
     # The contractions looks just like the doubleOccupancy contractions, but with two spatial indices tied together just like the spins are,
     # and then summed with the derivative LegoSphere stencil.
-    UUPlusOneInverseUU = ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU)
     first = torch.einsum(
             'ab,caass,cbbtt->c',
             S,
-            UUPlusOneInverseUU,
-            UUPlusOneInverseUU,
+            ensemble.G,
+            ensemble.G,
             )
     second = torch.einsum(
             'ab,cbats,cabst->c',
             S,
-            UUPlusOneInverseUU,
-            UUPlusOneInverseUU,
+            ensemble.G,
+            ensemble.G,
             )
     return torch.pi * L.sites * (first-second)
 
 @observable
-def _Contact_bosonic(ensemble):
+def Contact_bosonic(ensemble):
+    r'''
+    The same expectation value as :func:`~.Contact` using automatic differentiation and the chain rule, evaluating :math:`dH/dC_R` and the ensemble's :class:`Tuning` to compute :math:`dC_R / d\log a`.
+    Just as :func:`~.n_bosonic` is extremely noisy in comparison to :func:`~.n`, so too is this noisy compared to :func:`~.Contact`.
+    
+    .. todo::
+        
+        In fact, it is SO NOISY that it has not been checked for correctness by comparing with an exact Trotterized two-body calcuation.
+
+    '''
     # This is a "straightforward" application of differentiating Z with respect to log a.
     # We implement it using forward-mode automatic differentiation, promoting the LegoSphere
     # coefficients to dual numbers whose derivatives are given by the derivative of the tuning.
@@ -90,43 +110,13 @@ def _Contact_bosonic(ensemble):
         s_dual  = functorch.vmap(S_dual)(ensemble.configurations)
         return  (2*torch.pi / ensemble.Action.beta)* torch.autograd.forward_ad.unpack_dual(s_dual).tangent
 
-@observable
-def Contact(ensemble, method='fermionic'):
+@derived
+def contact_by_kF4(ensemble):
     r'''
-    The `contact`, :math:`C\Delta L^2 = 2\pi\frac{d\tilde{H}}{d\log a}`.
-
-    The ``bosonic`` method uses automatic differentiation to compute :math:`dH/dC_R` and the ensemble's :class:`Tuning` to compute :math:`dC_R / d\log a`.
-    Just as the `bosonic` method for :func:`~.n` is extremely noisy compared to the ``fermionic`` method, so too is the ``bosonic`` action noisy.
+    The contact density normalized by :ref:`the Fermi momentum <fermi>`.
     
-    .. todo::
-        
-        In fact, it is SO NOISY that it has not been checked for correctness by comparing with an exact Trotterized two-body calcuation.
-
-    The ``fermionic`` method is much less noisy by comparison, computing tensor contractions.
-    In the case where the only :class:`~.LegoSphere` in the interaction is the on-site interaction, the ``fermionic`` method is accelerated by computing the :func:`~.DoubleOccupancy`.
-
-    .. note::
-        The contact :math:`C` is extensive, and :math:`L^2` is extensive, so this observable is *doubly extensive*!
-        You may want to compute something intensive, such as the contact density :math:`c` normalized by :math:`k_F^4` :cite:`Beane:2022wcn`,
-        :math:`c/k_F^4 = \texttt{Contact} / (2\pi \texttt{N})^2`, where this observable is divided by two powers of an extensive observable!
-
-    Parameters
-    ----------
-        method: str
-            The approach for calculating the contact;``fermionic`` uses direct tensor contractions while ``bosonic`` use automatic differentiation.
-
-    Returns
-    -------
-        torch.tensor
-            One per configuration.
-
-    .. note::
-
-        The method combines matrix elements with the derivative of the Wilson coefficients with respect to :math:`\log a` through :meth:`~.Tuning.dC_dloga`.
-        Therefore the ``ensemble.Action`` must have a tuning!
-
+    .. math::
+       \frac{c}{k_F^4} = \frac{C}{k_F^4 L^2} = \frac{CL^2}{(k_F L)^4} = \frac{\texttt{Contact}}{(2\pi \texttt{N})^2}
     '''
-    if method == 'fermionic':
-        return ensemble._Contact_fermionic
-    if method == 'bosonic':
-        return ensemble._Contact_bosonic
+    return ensemble.Contact / (2*torch.pi * ensemble.N)**2
+

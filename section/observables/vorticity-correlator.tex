@@ -1,137 +1,165 @@
 \subsection{Vortex-Sensitive Observables}\label{sec:vortex}
 
 The BKT transition is a transition between no vortices (at low temperature) and lots of vortex/antivortex pairs (at high temperature), which is driven by the entropic considerations of where all the vortices can be~\cite{1971JETP...32..493B,1972JETP...34..610B,Kosterlitz:1973}.
-\Ref{PhysRevLett.129.076403} provides an analysis of the BKT transition by studying the condensate fraction [their (2)] and the Cooper pair momentum distribution [their (3)].
+\R{PhysRevLett.129.076403} provides an analysis of the BKT transition by studying the condensate fraction [their (2)] and the Cooper pair momentum distribution [their (3)].
 This transition is topological, in the sense that there isn't a good local order parameter to capture the change we're talking about.
 Consider, for example, an observable that measures the local vorticity, like
 \begin{align}
-	\omega^3_x = \text{curl}(j)_x = \grad \times \vec{j}_x = \epsilon^{3mn} \partial^m j^n_x.
+	\tilde{\omega}^3_x = \text{curl}(\tilde{j})_x = \tilde{\grad} \times \tilde{j}_x = \epsilon^{3mn} \tilde{\partial}^m \tilde{j}^n_x
 \end{align}
+which we can simplify using a simple form of the current \eqref{current hermitian}
+\begin{align}
+	\tilde{\omega}^3_x
+	&=
+	\epsilon^{3mn} \tilde{\partial}^m \oneover{2\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi [ k+q ]^n}{N_x}\right)
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\nonumber\\
+	&=
+	\oneover{2\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} i \left(\frac{2\pi}{N_x}\right)^2 \epsilon^{3mn} [q-k]^m[ k+q ]^n
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\nonumber\\
+	&=
+	\frac{i}{\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi}{N_x}\right)^2 \epsilon^{3mn} q^m k^n
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\nonumber\\
+	&=
+	\frac{i}{\Volume}
+	\sum_{qk} e^{+2\pi i (q-k) x / N_x} \left(\frac{2\pi}{N_x}\right)^2 (q \cross k)\,
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}.
+	\label{eq:vorticity}
+\end{align}
+The physical $\omega = \grad \cross j$ [both physical] and therefore trading the physical $j$ for $\tilde{j}$ \eqref{j physical} and using $\tilde{\grad} = \Delta x \grad$ we immediately have
+\begin{align}
+	\omega = \frac{(\tilde{\grad} \cross \tilde{j} = \tilde{\omega})}{ML^2 \Delta x^2}.
+	\label{eq:omega physical}
+\end{align}
+
+The vorticity is Hermitian,
+\begin{align}
+	\tilde{\omega}^3\adjoint_x
+	&=
+	-\frac{i}{\Volume}
+	\sum_{qk} e^{-2\pi i (q-k) x / N_x} \left(\frac{2\pi}{N_x}\right)^2 (q \cross k)\,
+	\tilde{\psi}\adjoint_{q} \tilde{\psi}_{k}
+	\nonumber\\
+	&=
+	\frac{i}{\Volume}
+	\sum_{qk} e^{+2\pi i (k-q) x / N_x} \left(\frac{2\pi}{N_x}\right)^2 (-q \cross k = k \cross q)\,
+	\tilde{\psi}\adjoint_{q} \tilde{\psi}_{k}
+	=
+	\tilde{\omega}^3_x
+\end{align}
+and is a local observable.
 By periodic boundary conditions the net vorticity vanishes
 \begin{align}
-	\sum_x \omega^3_x = 0
+	\sum_x \tilde{\omega}^3_x 
+	&=
+	\frac{i}{\Volume}
+	\sum_{qk} \left(\frac{2\pi}{N_x}\right)^2
+	(q \cross k)\,
+	\tilde{\psi}\adjoint_{k} \tilde{\psi}_{q}
+	\left(\sum_x e^{+2\pi i (q-k) x / N_x} = \Volume \delta_{kq}\right)
+	\propto
+	k \cross k
+	=
+	0
 	\label{eq:net vorticity}
 \end{align}
-if the current $j$ corresponds obeys a lattice continuity equation, since particles cannot leave across a boundary without coming back `on the other side'.
+if the current $\tilde{j}$ corresponds obeys a lattice continuity equation, since particles cannot leave across a boundary without coming back `on the other side'.
 (The vorticity is entirely in the 3 direction, since the fermions are confined to 2D; in what follows we suppress the 3 superscript.)
 This vanishes exactly because of the periodic boundary conditions; the boundary-condition-dependence is a hint it's accessing something topological.
 
-Let us find the needed $j$, first in dimensionful language.
-One well-defined method is to require the lattice continuity equation $\partial_t n = -\grad \cdot \vec{j}$ and to replace the left-hand side with $+i[H, n]$,
+Instead of the total vorticity \eqref{net vorticity}, which must vanish by periodic boundary conditions, we can consider the (local) square,
 \begin{align}
-	M\grad\cdot\vec{j}_z = -M \partial_t n_x = -i[MH, n_z]
+	\tilde{\omega}^2_x = \tilde{\omega}\adjoint_x \tilde{\omega}_x
 	=
-	-i \left[
-	\sum_{xy}\Delta x^4 \psi\adjoint_x \left(\kappa_{xy} - \frac{M g}{2 \Delta x^2} \frac{\delta_{xy}}{\Delta x^2}\right) \psi_y,
-	n_z\right]
+	\oneover{\Volume^2} \sum_{q'k'qk} e^{+2\pi i[ (q-k) - (q'-k') ] x / N_x}
+	\left(\frac{2\pi}{N_x}\right)^4 (q' \cross k') \cdot (q \cross k)\,
+	\tilde{\psi}\adjoint_{s'q'} \tilde{\psi}_{s'k'} \tilde{\psi}\adjoint_{sk} \tilde{\psi}_{sq}.
 \end{align}
-because the interaction depends only on $n$s, which commute.  Moreover, the $g$-dependent piece gives a term proportional to $n$, so we need only worry about the commutator with the hopping.
-Fourier transforming the $z$ coordinate and suppressing spin indices,
-\begin{align}
-	\sum_z \Delta x^2 e^{-ip \cdot z} (M i\grad \cdot \vec{j}_z)
-	&=
-	\left[
-	\sum_{xy}\Delta x^4 \psi\adjoint_x \kappa_{xy} \psi_y,
-	\sum_z \Delta x^2 e^{-ip \cdot z} n_z\right]
-\nonumber\\
-	\sum_z \Delta x^2 e^{-ip \cdot z} M i\grad \cdot \oneover{\Volume \Delta x^2} \sum_q e^{i q\cdot z} \vec{j}_q
-	&=
-	\sum_{xyz} \Delta x^6 e^{-ip \cdot z} \kappa_{xy} \left[ \psi\adjoint_x \psi_y, n_z\right]
-\nonumber\\
-	-\sum_z \Delta x^2 e^{-ip \cdot z} \oneover{\Volume \Delta x^2} \sum_q M \vec{q} \cdot \vec{j}_q e^{i q\cdot z} 
-	&=
-	-\sum_{xyz} \Delta x^6 e^{-ip \cdot z} \kappa_{xy} \left[n_z, \psi\adjoint_x \psi_y\right]
-\nonumber\\
-	-\oneover{\Volume} \sum_q M \vec{q} \cdot \vec{j}_q \sum_z e^{i(q-p) \cdot z} 
-	&=
-	-\sum_{xyz} \Delta x^6 e^{-ip \cdot z} \kappa_{xy} \left(\left[n_z, \psi\adjoint_x\right]\psi_y + \psi\adjoint_x\left[n_z, \psi_y\right]\right)
-\nonumber\\
-	\oneover{\Volume} \sum_q M \vec{q} \cdot \vec{j}_q \Volume \delta_{pq}
-	&=
-	\sum_{xyz} \Delta x^6 e^{-ip \cdot z} \kappa_{xy} \left(\psi\adjoint_x\delta_{xz} \psi_y - \psi\adjoint_x \psi_y \delta_{yz}\right) \Delta x^{-2}
-\nonumber\\
-	M \vec{p} \cdot \vec{j}_p
-	&=
-	\sum_{xz} \Delta x^4 e^{-ip \cdot z} \left(\psi\adjoint_z \kappa_{zx} \psi_x - \psi\adjoint_x \kappa_{xz} \psi_z\right)
-\nonumber\\
-	&=
-	\oneover{\Volume \Delta x^2}\sum_{qxz} \frac{q^2}{2} \Delta x^4 e^{-ip \cdot z} \left(\psi\adjoint_z e^{-iq(z-x)} \psi_x - \psi\adjoint_x e^{-iq(x-z)} \psi_z\right)
-\nonumber\\
-	&=
-	\oneover{\Volume \Delta x^2}\sum_{q} \frac{q^2}{2} \left(\sum_{xz} \Delta x^4 \psi\adjoint_z e^{-i(q+p)z+iqx} \psi_x - \sum_{xz} \Delta x^4 \psi\adjoint_x e^{-i(p-q)z-iqx)} \psi_z\right)
-\nonumber\\
-	&=
-	\oneover{\Volume \Delta x^2}\sum_{q} \frac{q^2}{2} \left(\psi\adjoint_{-(p+q)} \psi_{-q} - \psi\adjoint_{-q} \psi_{p-q} \right)
-\nonumber\\
-	&=
-	\half \oneover{\Volume \Delta x^2}\sum_{q} \left(q^2\psi\adjoint_{-(p-q)} \psi_q - q^2 \psi\adjoint_{q} \psi_{p+q} \right)
-\nonumber\\
-	&=
-	\half \oneover{\Volume \Delta x^2}\sum_{q} \left((p+q)^2\psi\adjoint_{q} \psi_{p+q} - q^2 \psi\adjoint_{q} \psi_{p+q} \right)
-\nonumber\\
-	&=
-	\half \oneover{\Volume \Delta x^2}\sum_{q} (p^2 + 2pq)\psi\adjoint_{q} \psi_{p+q}
-\nonumber\\
-	M \vec{p} \cdot \vec{j}_p
-	&=
-	\vec{p} \cdot \left(\half \oneover{\Volume \Delta x^2} \sum_q (\vec{p}+2\vec{q}) \psi\adjoint_q\psi_{p+q}\right)
-\end{align}
-where we leveraged the anticommutation rules, the Fourier transform conventions, the ability to shift the sum over the Brillouin zone without causing problems.
-Since this is true for any mommentum $p$,
-\begin{align}
-	M \vec{j}_p = \half\oneover{V\Delta x^2} \sum_q (\vec{p}+2\vec{q}) \psi\adjoint_{q} \psi_{p+q}.
-\end{align}
-where the sum is over the Brillouin zone and both $p+q$ and $p+2q$ are understood mod the Brillouin zone.
-We can now find $\omega$ as a function of momentum.
-Fourier transforming,
-\begin{align}
-	\omega^3_k
-	= \sum_x \Delta x^2 e^{-ikx} \omega^3_x
-	= \sum_x \Delta x^2 e^{-ikx} \grad \times \vec{j}_x
-	&= \sum_x \Delta x^2 e^{-ikx} \grad \times \oneover{\Volume \Delta x^2} \sum_p e^{+ipx} \vec{j}_p
-\nonumber\\
-	&= \sum_p i\vec{p} \times \vec{j}_p \oneover{\Volume} \sum_x e^{i(p-k)x}
-	= \sum_p i\vec{p} \times \vec{j}_p \delta_{pk}
-	= i \vec{k} \times \vec{j}_k
-\end{align}
-which shows that the total vorticity is 0.
-Moreover, when calculating the vorticity we can drop the piece proportional to the momentum itself,
-\begin{align}
-	\omega^3_k
-	= i \vec{k} \times \left(\vec{j}_k = \half\oneover{M \Volume\Delta x^2} \sum_q (\vec{k}+2\vec{q}) \psi\adjoint_{q} \psi_{k+q}\right)
-	= i \half\oneover{M \Volume\Delta x^2} \sum_q \left(\vec{k} \times (\vec{k}+2\vec{q})\right) \psi\adjoint_{q} \psi_{k+q}
-\nonumber\\
-	= \oneover{M \Volume\Delta x^2} \sum_q (i\vec{k} \times \vec{q}) \psi\adjoint_{q} \psi_{k+q}
-\end{align}
+which is positive (semi)definite.
+Unfortunately, it's EXTREMELY positive.
+In fact, according to an operator product expansion analysis, it is infinite and diverges in the continuum limit.
 
-Actually, $\omega_k$ is not an observable; only $\omega_0$ is Hermitian (and 0!):
+We could instead consider the vorticity-vorticity two-point correlation
 \begin{align}
-    M\Volume \Delta x^2 \omega\adjoint_k
-    &= \sum_q (-i) \vec{k} \times \vec{q} \psi\adjoint_{k+q} \psi_{q}
-    \nonumber\\
-    &= \sum_{q' = q+k} (-i) \vec{k} \times (\vec{q}' - \vec{k}) \psi\adjoint_{k+q'-k} \psi_{q'-k}
-    \nonumber\\
-    &= \sum_{q'} i (-i\vec{k}) \times \vec{q}' \psi\adjoint_{q'} \psi_{q'-k} = M \Volume \Delta x^2 \omega_{-k}.
+	\tilde{\Omega}_{r} &= \oneover{\Volume} \sum_x \tilde{\Omega}_{x,x-r}
+	&
+	\tilde{\Omega}_{xy} &= \tilde{\omega}\adjoint_x \tilde{\omega}_y,
 \end{align}
-Therefore, $\omega_{-k} \omega_{k} = \omega\adjoint_k \omega_k$ \emph{is} observable.
+which at zero displacement is the average square vorticity $\tilde{\Omega}_0 = \Volume\inverse \sum_x \tilde{\omega}^2_x$.
+In the continuum we would analogously define
+\begin{align}
+	\Omega(r) = \oneover{L^2} \int d^2x \left[\Omega(x,x-r) = \omega(x) \omega(x-r) \right]
+\end{align}
+using the physical $\omega$ \eqref{omega physical}.
+The lattice quantity $\tilde{\Omega}$ converges to the fixed-volume continuum limit according to
+\begin{align}
+	\lim_{\Delta x \goesto 0} \left(\oneover{ML^2 \Delta x^2}\right)^2 \tilde{\Omega}_r \goesto \Omega(r).
+\end{align}
+Because it matches the local square at $r=0$ its value there diverges according to the same OPE argument.
 
-Instead of the total vorticity \eqref{net vorticity}, which must vanish by periodic boundary conditions, consider the vorticity-vorticity two-point correlation
-\begin{align}
-	\Omega_{\delta x} &= \oneover{\Volume \Delta x^2} \sum_x \Delta x^2 \Omega_{x,x-\delta x}
-&	\Omega_{xy} &= \omega\adjoint_x \omega_y.
-\end{align}
 If there were one vortex/antivortex pair that were well-separated the correlations would reach far as a function of the separation $\delta$.
 But when there are very many vortices and antivortices $\Omega$ should decay quickly.
-Evaluated via convolution, one finds
 \begin{align}
-	\Omega_{\delta x}
-	= \oneover{M^2}\left(\oneover{\Volume \Delta x^2}\right)^2 \sum_p e^{-ip \cdot \delta x} \omega\adjoint_p \omega_p
-	= \oneover{M^2}\left(\oneover{\Volume \Delta x^2}\right)^4 \sum_{pkq} e^{-ip \cdot \delta x} (\vec{p}\times\vec{q})\cdot(\vec{p}\times\vec{k}) \psi\adjoint_{p+q}\psi_q\psi\adjoint_k\psi_{p+k}
+	\tilde{\Omega}_{r}
+	&=
+	\oneover{\Volume} \sum_{x}
+	\oneover{\Volume^2} \sum_{q'k'qk}
+		e^{-2\pi i(q'-k')x/N_x} \left(\frac{2\pi}{N_x}\right)^2 (q' \cross k')\, \tilde{\psi}\adjoint_{q'} \tilde{\psi}_{k'}
+		e^{+2\pi i(q-k)(x-r)/N_x} \left(\frac{2\pi}{N_x}\right)^2 (q \cross k)\, \tilde{\psi}\adjoint_{k} \tilde{\psi}_q
+	\nonumber\\
+	&=
+	\oneover{\Volume^2} \sum_{q'k'qk}
+		e^{-2\pi i(q-k)r/N_x} \left(\frac{2\pi}{N_x}\right)^4 (q' \cross k')\cdot(q \cross k)\,
+		\tilde{\psi}\adjoint_{q'} \tilde{\psi}_{k'}
+		\tilde{\psi}\adjoint_{k} \tilde{\psi}_q
+		\left(\oneover{\Volume} \sum_{x}
+			e^{+2\pi i(q-k-q'+k') x / N_x}
+			= \delta_{q-k,q'-k'}
+			\right)
 \end{align}
 where the dot product between the cross products arises naturally from considering $\omega\adjoint \cdot \omega$ (and we focus on the $z$ direction when the momenta are all confined to the plane).
-Using a vector identity one finds
+We now shift $q' = p+k'$, so that $p=q'-k'$ and $q'\cross k' = (p'+k')\cross k' = p' \cross k'$.
 \begin{align}
-	\Omega_{\delta x}
-	= \oneover{M^2}\left(\oneover{\Volume \Delta x^2}\right)^4 \sum_{pkq} e^{-ip \cdot \delta x} \left[p^2 (k\cdot q) - (p\cdot k)(p\cdot q)\right] \psi\adjoint_{p+q}\psi_q\psi\adjoint_k\psi_{p+k}
+	\tilde{\Omega}_{r}
+	&=
+	\oneover{\Volume^2} \sum_{pk'qk}
+		e^{-2\pi ipr/N_x} \left(\frac{2\pi}{N_x}\right)^4 (p \cross k')\cdot(q \cross k)\,
+		\tilde{\psi}\adjoint_{p+k'} \tilde{\psi}_{k'}
+		\tilde{\psi}\adjoint_{k} \tilde{\psi}_q
+		\delta_{q-k,p}
+	\nonumber\\
+	&=
+	\oneover{\Volume^2} \sum_{pk'k}
+		e^{-2\pi ipr/N_x} \left(\frac{2\pi}{N_x}\right)^4 (p \cross k')\cdot(p \cross k)\,
+		\tilde{\psi}\adjoint_{p+k'} \tilde{\psi}_{k'}
+		\tilde{\psi}\adjoint_{k} \tilde{\psi}_{p+k},
+	\label{eq:vorticity-vorticity}
 \end{align}
-with no need to subtract a disconnected piece; that piece is 0 by translation invariance, since $\expectation{\omega_x} = \oneover{\Volume} \expectation{\sum_x \omega_x} = 0$.
+executing the sum over $q$ and using $(p+k)\cross k = p\cross k$.
+This may be reexpressed using a vector identity $(p \cross k')\cdot(p \cross k) = p^2 k' \cdot k - (p \cdot k')(p \cdot k)$ but need not be.
+The vortex susceptibility is $\tilde{\Omega}_0$, which should (presumably?) show the usual susceptibility behavior at the BKT transition.
+
+Because $\Omega(r=0)$ diverges and $\Omega(k=0)=0$ we define
+\begin{align}
+	B_n(k) = \int d^2r\; e^{-i k r} \abs{r}^n \Omega(r) 
+\end{align}
+Periodic boundary conditions guarantees that $B_0(0) = 0$.
+The dimensions of $B_n$ are $[M^{-2} L^{-(6-n)}]$, and we can eliminate $L$ dependence with appropriate powers of $k_F$.
+We write the $k=0$ values with two powers of $M$ in lower case.
+So the first few nonzero even moments are
+\begin{align}
+	\frac{[b_2 = M^2 B_2(k=0)]}{k_F^4} &= \frac{\sum_r r^2 \tilde{\Omega}_r}{(2\pi N)^2}
+	&
+	\frac{[b_4 = M^2 B_4(k=0)]}{k_F^2} &= \oneover{\Volume} \frac{\sum_r r^4 \tilde{\Omega}_r}{(2\pi N)}
+	&
+	[b_6 = M^2 B_6(k=0)] &= \oneover{\Volume^2}\sum_r r^6 \tilde{\Omega}_r,
+	\label{eq:voricity moments}
+\end{align}
+where $r$ are integer pairs, all have good continuum limits.
+The third nonzero even moment $b_6$ requires no powers of $k_F^4$ and therefore feels mysterious.
+We give an example calculation of \incode{docs/sanity-checks/free-theory-continuum-limit.ipynb}{the free-theory continuum extrapolation}, which shows a staggered behavior based on $N_x\mod{4}$ and \incode{docs/sanity-checks/free-theory-infinite-volume-limit.ipynb}{the free-theory infinite volume extrapolation} (at fixed lattice spacing) which shows that these $b_n/k_F^{6-n}$ are intensive.
