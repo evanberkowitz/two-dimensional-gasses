@@ -22,5 +22,6 @@ A.plot_history(ax[0])
 A.plot_models(ax[1])
 ax[1].legend()
 fig.tight_layout()
+plt.show()
 
 # Then use the integrator and start to begin HMC...
