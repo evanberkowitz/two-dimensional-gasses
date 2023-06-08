@@ -114,7 +114,7 @@ def current_squared(ensemble):
     Configurations slowest, then spatial coordinate :math:`x`.
     '''
 
-    return torch.einsum('cxy->cx', ensemble._current_current)
+    return torch.einsum('cxx->cx', ensemble._current_current)
 
 @observable
 def current_current(ensemble):
