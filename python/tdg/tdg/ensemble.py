@@ -26,6 +26,7 @@ class GrandCanonical(H5able):
     '''
     
     _observables = set()
+    # The _observables are populated by the @observable decorator.
     
     def __init__(self, Action):
         self.Action = Action
