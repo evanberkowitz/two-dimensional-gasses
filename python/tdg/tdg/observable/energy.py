@@ -36,7 +36,7 @@ def Potential(ensemble):
     .. math ::
        \left\langle \texttt{Potential} \right\rangle
        =
-       \left\langle \frac{1}{2} \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b - \frac{N_x^2 C_0}{2} \sum_a n_a \right\rangle,
+       \left\langle \frac{1}{2} \sum_{ab} \tilde{n}_a \tilde{V}_{ab} \tilde{n}_b - \frac{N_x^2 C_0}{2} \sum_a \tilde{n}_a \right\rangle,
 
     one per configuration.
     '''

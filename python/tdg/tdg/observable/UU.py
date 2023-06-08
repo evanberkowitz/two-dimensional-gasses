@@ -41,7 +41,7 @@ def _UUPlusOneInverseUU(ensemble):
 @observable
 def G(ensemble):
     r'''
-    The equal-time propagator that is the contraction of :math:`\psi^\dagger_{a\sigma} \psi_{b\tau}`
+    The equal-time propagator that is the contraction of :math:`\tilde{\psi}^\dagger_{a\sigma} \tilde{\psi}_{b\tau}`
     where :math:`a` and :math:`b` are sites and :math:`\sigma` and :math:`\tau` are spin indices.
 
     .. math ::
@@ -54,7 +54,7 @@ def G(ensemble):
 @observable
 def G_momentum(ensemble):
     r'''
-    The equal-time propagator that is the contraction of :math:`N_x^{-2} \psi^\dagger_{k\sigma} \psi_{q\tau}`
+    The equal-time propagator that is the contraction of :math:`N_x^{-2} \tilde{\psi}^\dagger_{k\sigma} \tilde{\psi}_{q\tau}`
     where :math:`k` and :math:`q` are integer momenta and :math:`\sigma` and :math:`\tau` are spin indices.
 
     .. math ::
