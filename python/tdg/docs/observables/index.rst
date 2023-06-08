@@ -5,7 +5,7 @@ Physical Observables
 ********************
 
 Observables are physical quantities that can be measured on ensembles.
-We distinguish between *primary observables* and *derived quantities*, using language from :cite:`Wolff:2003sm`.
+We distinguish between *primary observables* and *derived quantities*, using language from Ref. :cite:`Wolff:2003sm`.
 A primary observable can be measured directly on a single configuration.
 A derived quantity is a generally nonlinear function of primary observables which can only be estimated using a whole ensemble.
 

@@ -52,7 +52,7 @@ def Potential(ensemble):
 @derived
 def potential_by_kF4(ensemble):
     r'''
-    The baryon mass times potential energy density normalized by :`the Fermi momentum <fermi>`.
+    The baryon mass times potential energy density normalized by :ref:`the Fermi momentum <fermi>`.
     
     .. math::
        \frac{v}{k_F^4} = \frac{MV}{k_F^4 L^2} = \frac{VML^2}{(k_F L)^4} = \frac{\texttt{Potential}}{(2\pi \texttt{N})^2}

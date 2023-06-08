@@ -14,7 +14,7 @@ class Timer:
         stop_message: str
             An optionally different message to print on completion.
         time: a function which returns times that can be subtracted to get an interval.
-            Examples include ``time.perf_counter`` or ``time.process_time`` as `in the standard library <time>`_.
+            Examples include ``time.perf_counter`` or ``time.process_time`` as `in the standard library <https://docs.python.org/3/library/time.html#time.perf_counter>`_.
         per: int
             How many to divide by to determine the marginal cost.
 
@@ -33,11 +33,6 @@ class Timer:
     2023-04-27 22:45:55,955 root      DEBUG With perf_counter ...
     2023-04-27 22:45:56,258 root      DEBUG ... With perf_counter [0.300386 seconds]
 
-    .. note ::
-
-        The default time function counts just process time; not clock time!
-
-    .. _time: https://docs.python.org/3/library/time.html#time.perf_counter
     '''
     
     def __init__(self, 
