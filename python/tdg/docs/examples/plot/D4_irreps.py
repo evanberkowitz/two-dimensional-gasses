@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import torch
-import tdg
+import tdg, tdg.symmetry
 import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots(4,4, figsize=(10,12))
@@ -25,3 +25,6 @@ for real, imag, irrep in zip(ax[2], ax[3], (("E", +1), ("E", -1), ("E'", +1), ("
 
 ax[2,0].set_ylabel('real')
 ax[3,0].set_ylabel('imag')
+
+fig.tight_layout()
+plt.show()
