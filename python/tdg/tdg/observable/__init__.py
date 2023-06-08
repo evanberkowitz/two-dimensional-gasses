@@ -21,3 +21,4 @@ import tdg.observable.ss
 import tdg.observable.energy
 import tdg.observable.current
 import tdg.observable.vorticity
+import tdg.observable.pairing

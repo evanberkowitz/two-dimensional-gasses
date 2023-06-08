@@ -37,6 +37,7 @@ We adopt a convention where local densities start with a lowercase letter and gl
    contact.rst
    currents.rst
    vorticity.rst
+   pairing.rst
    custom-observables.rst
 
 .. _descriptors : https://docs.python.org/3/howto/descriptor.html

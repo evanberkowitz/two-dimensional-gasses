@@ -60,12 +60,12 @@ def potential_by_kF4(ensemble):
     return ensemble.Potential / (2*torch.pi * ensemble.N)**2
 
 @observable
-def FreeEnergy(ensemble):
+def InternalEnergy(ensemble):
     r'''
-    The total free energy,
+    The total internal energy,
 
     .. math ::
-       \left\langle \texttt{FreeEnergy} \right\rangle
+       \left\langle \texttt{InternalEnergy} \right\rangle
        =
        \left\langle \tilde{K} + \tilde{V} - \tilde{\mu} \tilde{N} - \tilde{h}\cdot \tilde{S} \right\rangle
 
@@ -82,11 +82,11 @@ def FreeEnergy(ensemble):
             )
 
 @derived
-def freeEnergy_by_kF4(ensemble):
+def internalEnergy_by_kF4(ensemble):
     r'''
-    The baryon mass times the free energy density normalized by :`the Fermi momentum <fermi>`.
+    The baryon mass times the internal energy density normalized by :ref:`the Fermi momentum <fermi>`.
     
     .. math::
-       \frac{f}{k_F^4} = \frac{MF}{k_F^4 L^2} = \frac{FML^2}{(k_F L)^4} = \frac{\texttt{FreeEnergy}}{(2\pi \texttt{N})^2}
+       \frac{u}{k_F^4} = \frac{MU}{k_F^4 L^2} = \frac{UML^2}{(k_F L)^4} = \frac{\texttt{InternalEnergy}}{(2\pi \texttt{N})^2}
     '''
-    return ensemble.FreeEnergy / (2*torch.pi * ensemble.N)**2
+    return ensemble.InternalEnergy / (2*torch.pi * ensemble.N)**2
