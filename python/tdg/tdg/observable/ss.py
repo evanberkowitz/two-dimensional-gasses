@@ -39,9 +39,9 @@ def ss(ensemble):
 @derived
 def spin_spin_fluctuations(ensemble):
     r'''
-    A derived quantity, :math:`\left\langle (e^i*s^j)_r \right\rangle - \left(\left\langle s^i \right\rangle * \left\langle s^j \right\rangle\right)_r`.
+    A derived quantity, :math:`\left\langle (s^i*s^j)_r \right\rangle - \left(\left\langle s^i \right\rangle * \left\langle s^j \right\rangle\right)_r`.
 
-    Bootstraps first, then relative coordinate :math:`r`.
+    Bootstraps first, then relative coordinate :math:`r`, then i, then j.
     '''
 
     L = ensemble.Action.Spacetime.Lattice
