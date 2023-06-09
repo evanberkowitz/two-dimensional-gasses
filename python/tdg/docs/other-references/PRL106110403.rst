@@ -7,6 +7,7 @@ Ref. :cite:`PhysRevLett.106.110403` uses fixed-node diffusion Monte Carlo.
 Table I provides energies with uncertainties.
 
 Figure 4 shows the contact density :math:`c/k_F^4`.
+The data were provided by Gianluca Bertaina.
 
 .. automodule:: tdg.others.PRL106110403
    :members:
