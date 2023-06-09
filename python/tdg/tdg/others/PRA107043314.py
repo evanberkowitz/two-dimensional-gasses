@@ -127,13 +127,15 @@ def contact_comparison(ax, *, alpha, cutoff_variation=0.05, **kwargs):
             contact_by_kF4(alpha),
             color='black',
             label=label,
+            zorder=-100,
             )
     ax.fill_between(
             alpha,
             contact_by_kF4((1-cutoff_variation)*alpha),
             contact_by_kF4((1+cutoff_variation)*alpha),
             color='gray',
-            alpha=0.2
+            alpha=0.2,
+            zorder=-100,
             )
 
 def energy_comparison(ax, *, alpha, cutoff_variation=0.05, **kwargs):
