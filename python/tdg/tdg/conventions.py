@@ -33,3 +33,12 @@ class from_geometric:
         logkFa = from_geometric.log_ka(-1./geometric)
         return -1./logkFa
 
+    @staticmethod
+    def n_asquared_to_alpha(geometric):
+        r'''
+        Some references quote the dimensionless combination of the number density and the square of the geometric-convention scattering length :math:`na_{2D}^2`.
+
+        This can be converted to :math:`\alpha`
+        '''
+
+        return -1. / ((2*torch.pi*geometric).sqrt() * torch.exp(Euler_Mascheroni)/2).log()
