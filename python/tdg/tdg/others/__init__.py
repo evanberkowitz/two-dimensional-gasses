@@ -3,6 +3,10 @@ import tdg.others.PRA107043314 as PRA107043314
 import tdg.others.EPJST2013017639 as EPJST2013017639
 import tdg.others.PRA93023602 as PRA93023602
 import tdg.others.PRA92033603 as PRA92033603
+import tdg.others.PRA103063314 as PRA103063314
+
+import logging
+logger = logging.getLogger(__name__)
 
 REFERENCES = {
         PRL106110403,
@@ -10,6 +14,7 @@ REFERENCES = {
         EPJST2013017639,
         PRA93023602,
         PRA92033603,
+        PRA103063314,
 }
 r'''
 
@@ -39,8 +44,8 @@ def contact_comparison(ax, *, references=REFERENCES, **kwargs):
     for ref in references:
         try:
             ref.contact_comparison(ax, **kwargs)
-        except:
-            pass
+        except Exception as e:
+            logger.debug(str(e))
 
     ax.set_xlabel(r'$\alpha$')
     ax.set_ylabel(r'$c/k_F^4$')
@@ -67,8 +72,8 @@ def energy_comparison(ax, *, references=REFERENCES, **kwargs):
     for ref in references:
         try:
             ref.energy_comparison(ax, **kwargs)
-        except:
-            pass
+        except Exception as e:
+            logger.debug(str(e))
 
     ax.set_xlabel(r'$\alpha$')
     ax.set_ylabel(r'$(E_{FL}-E_{MF})/E_{FG}$')
