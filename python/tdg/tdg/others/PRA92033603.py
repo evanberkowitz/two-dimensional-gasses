@@ -89,3 +89,6 @@ def energy_comparison(ax, **kwargs):
             linestyle='none',
             label='Lattice AFQMC [Shi, Chiesa, Zhang (2015)]',
             )
+
+def contact_comparison(ax, **kwargs):
+    pass

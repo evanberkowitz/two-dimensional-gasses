@@ -82,3 +82,6 @@ def energy_comparison(ax, **kwargs):
             marker='^', color='purple', linestyle='none',
             label='Jastrow-BCS [Galea (2016)]'
             )
+
+def contact_comparison(ax, **kwargs):
+    pass

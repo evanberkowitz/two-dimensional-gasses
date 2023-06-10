@@ -88,4 +88,5 @@ def energy_comparison(ax, **kwargs):
             marker='s', color='lightsteelblue', linestyle='none',
             label='SD DMC [Pilati (2021)]')
 
-
+def contact_comparison(ax, **kwargs):
+    pass
