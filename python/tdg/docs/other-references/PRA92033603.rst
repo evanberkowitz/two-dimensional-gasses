@@ -4,7 +4,7 @@ Shi, Chiesa, and Zhang, Phys. Rev. A 92, 033603 (2015)
 
 Ref. :cite:`PhysRevA.92.033603` uses AFQMC to compute energies as a function of :math:`\log k_F a_{2D}`.
 
-Table I provides a parameterization of the splitting between the energy normalized by :math:`E_{FG}` and :math:`E_{BCS}/E_{FG} = 1 - \epsilon_B / (2E_FG)`, 
+Table I provides a parameterization of the splitting between the energy normalized by :math:`E_{FG}` and :math:`E_{BCS}/E_{FG} = 1 - \epsilon_B / (2E_{FG})`, 
 
 Table II provides energies with uncertainties.
 

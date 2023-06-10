@@ -26,7 +26,7 @@ def table_II():
     r'''
     Returns
     -------
-        torch.tensor whose rows are :math:`ln(kF a_{2D})`, :math:`E/E_{FG}`, and the uncertainty on :math:`E/E_{FG}`.
+        torch.tensor whose rows are :math:`ln(k_F a_{2D})`, :math:`E/E_{FG}`, and the uncertainty on :math:`E/E_{FG}`.
     '''
 
     citation()
@@ -56,6 +56,9 @@ def table_II():
     ]).T
 
 def conventional_table_II():
+    r'''
+    Converts the first row of :func:`table_II` from the geometric :math:`\log k_F a_{2D}` to :math:`\log k_F a`.
+    '''
 
     logkFa, E_by_FG, dE_by_FG = table_II()
     
