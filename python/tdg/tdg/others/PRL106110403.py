@@ -236,17 +236,24 @@ def contact_comparison(ax, include_all=False, **kwargs):
     r'''
     Many of the points are off-scale compared to the contact comparison in Ref. :cite:`Beane:2022wcn`.
 
-    Plots the contact from Ref. :cite:`PhysRevLett.106.110403` on the axis ``ax`` only if ``include_all``.
+    Plots the JS-DMC contact from Ref. :cite:`PhysRevLett.106.110403` on the axis ``ax`` and plots the BCS-DMC contact only if ``include_all``.
     '''
-
-
-    if not include_all:
-        return
 
     BCS, JS = conventional_figure_4()
 
     alpha_BCS = -1. / BCS[0]
     alpha_JS  = -1. / JS [0]
+
+    ax.errorbar(
+            alpha_JS,
+            JS[1],
+            yerr=JS[2],
+            color='gray', marker='o', linestyle='none',
+            label='Square Well JS-DMC [Bertaina and Giorgini (2011)]',
+            )
+
+    if not include_all:
+        return
 
     ax.errorbar(
             alpha_BCS,
@@ -258,12 +265,3 @@ def contact_comparison(ax, include_all=False, **kwargs):
             label='Square Well BCS-DMC [Bertaina and Giorgini (2011)]',
             )
 
-    ax.errorbar(
-            alpha_JS,
-            JS[1],
-            yerr=JS[2],
-            color='gray',
-            marker='s',
-            linestyle='none',
-            label='Square Well JS-DMC [Bertaina and Giorgini (2011)]',
-            )
