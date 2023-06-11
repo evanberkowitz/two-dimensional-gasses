@@ -17,84 +17,105 @@ citation = Citation(
 
 def figure_2():
     r'''
-    Figure 2 provides the normalized, mean-field subtracted energy normalized directly but as a function of their :math:`g=-1/2 \log(k_F b)` (just after (2)) where :math:`b` sets the binding energy as :math:`-1/mb^2` (just below Figure 1).
+    Returns two tensors, data representing their blue triangles (HD JS-DMC) and gray circles (SW JS-DMC), respectively.
 
-    Therefore, :math:`b` is the scattering length in our convention.  However, :math:`g=\alpha/2`.
+    The rows are particle density times the scattering length squared :math:`na_{2D}^2`, the uncorrected energy normalized by the ideal Fermi gas :math:`E/E_{FG}`, its uncertainty, the finite-size-corrected energy normalized by the ideal Fermi gas, and its uncertainty.
 
-    Returns THREE tensors, data representing their green squares, blue triangles, and gray circles, respectively.
+    The finite-size correction is described at the end of Section 2; it amounts to using the energy difference for the infinite and finite-volume noninteracting case.
+
+    The data were provided by Gianluca Bertaina.
     '''
 
     citation()
 
-    # All are (alpha, (E_ - E_MF)/E_FG)
-    greenSquares = torch.tensor([
-        [ +0.40, +0.00 ],
-        [ +0.36, +0.02 ],
-        [ +0.32, +0.03 ],
-        [ +0.27, +0.03 ],
-        [ +0.23, +0.03 ],
-        [ +0.19, +0.02 ],
-        [ +0.14, +0.02 ],
-        [ +0.09, +0.01 ],
-        [ +0.05, +0.00 ],
-        ]).T
 
-    blueTriangles = torch.tensor([
-        [ +0.36, -0.01 ],
-        [ +0.32, -0.00 ],
-        [ +0.28, -0.00 ],
-        [ +0.23, +0.00 ],
-        [ +0.19, +0.00 ],
-        [ +0.14, +0.00 ],
-        [ +0.09, +0.00 ],
-        [ +0.05, +0.00 ],
+    blueTriangles =torch.tensor([
+        # na_{2D}^2,                E/E_FG, ±,      corrected   ±
+        [3.28043e-10,               1.1045, 0.0002, 1.0996,     0.0012],
+        [7.22562e-6,                1.2033, 0.001,  1.1984,     0.002 ],
+        [0.00020254596022905975,    1.2994, 0.001,  1.2945,     0.002 ],
+        [0.0010723775711956546,     1.3923, 0.0016, 1.3874,     0.0026],
+        [0.0029150244650281935,     1.4806, 0.001,  1.4757,     0.002 ],
+        [0.0056776923810426105,     1.5653, 0.0016, 1.5604,     0.0026],
+        [0.009140685251156135,      1.6442, 0.001,  1.6393,     0.002 ],
+        [0.013064233284684921,      1.7183, 0.001,  1.7134,     0.002 ],
+        [0.017247306568862027,      1.7850, 0.002,  1.7801,     0.003 ],
+        [0.021539279301848634,      1.8495, 0.0022, 1.8446,     0.0032]
         ]).T
 
     grayCircles = torch.tensor([
-        [ -0.37, +0.11 ],
-        [ -0.32, +0.08 ],
-        [ -0.26, +0.05 ],
-        [ -0.20, +0.03 ],
-        [ -0.15, +0.01 ],
-        [ -0.10, +0.00 ],
-        [ -0.07, +0.00 ],
-        [ -0.04, +0.00 ],
-        [ -0.02, +0.00 ],
+        # na_{2D}^2,      E/E_FG, ±,      corrected ±
+        [3.74627E16,      0.9546, 0.001,  0.9497,   0.002  ],
+        [7.72164E7,       0.9050, 0.001,  0.9001,   0.002  ],
+        [98268.25037,     0.8541, 0.0012, 0.8492,   0.0022 ],
+        [3505.62091,      0.8056, 0.001,  0.8007,   0.002  ],
+        [125.059497024,   0.7096, 0.001,  0.7047,   0.002  ],
+        [23.620687891,    0.6170, 0.0015, 0.6121,   0.0025 ],
+        [8.6895654614478, 0.5243, 0.0017, 0.5194,   0.0027 ],
+        [4.4613716648616, 0.4400, 0.004,  0.4351,   0.005  ],
+        [2.771159405951,  0.3577, 0.004,  0.3528,   0.005  ],
+        [1.938904133033,  0.2641, 0.009,  0.2592,   0.010  ],
         ]).T
 
-    return greenSquares, blueTriangles, grayCircles
+    return blueTriangles, grayCircles
 
 def conventional_figure_2():
     r'''
-    Rather than :math:`g`, gives data as a function of :math:`\alpha`.
+    Rather than :math:`na_{2D}^2`, gives data as a function of :math:`\alpha`.
     '''
-    green, blue, gray = figure_2()
+    blue, gray = figure_2()
 
-    green[0] = 2*green[0]
-    blue [0] = 2*blue [0]
-    gray [0] = 2*gray [0]
+    blue[0] = tdg.conventions.from_geometric.n_asquared_to_alpha(blue[0])
+    gray[0] = tdg.conventions.from_geometric.n_asquared_to_alpha(gray[0])
 
-    return green, blue, gray
+    return blue, gray
 
 def energy_comparison(ax, **kwargs):
+    r'''
 
-    green, blue, gray = conventional_figure_2()
+    .. plot::
+       :include-source:
 
-    ax.plot(
-            green[0],
-            green[1],
-            color='green', marker='s', linestyle='none',
-            label="SW UB-VMC [Bertaina (2013)]"
-            )
-    ax.plot(
-            blue [0],
-            blue [1],
+       import tdg, torch
+       import matplotlib.pyplot as plt
+
+       fig, ax = plt.subplots(1,1, figsize=(8,6))
+
+       tdg.others.EPJST2013017639.energy_comparison(ax)
+
+       alpha = torch.linspace(-0.9, 0.9, 1000)
+       # Show just the mean-field subtracted piece of eq (2)
+       ax.plot(alpha, (3-4 *torch.tensor(2.).log())*(alpha/2)**2, color='orange', label='eq. (2)')
+       ax.set_xlim([-0.9, 0.9])
+       ax.set_ylim([-0.025, 0.15])
+       ax.set_xlabel('α = 2g')
+       ax.set_ylabel('(E/N - MF)/E_FG')
+
+       inset = ax.inset_axes([0, 0.06, 0.8, 0.08], transform=ax.transData)
+       blue, gray = tdg.others.EPJST2013017639.conventional_figure_2()
+       inset.errorbar(blue[0], blue[3], yerr=blue[4], color='blue', marker='v', linestyle='none')
+       inset.errorbar(gray[0], gray[3], yerr=gray[4], color='gray', marker='o', linestyle='none')
+       inset.set_xlim([-0.9, 0.9])
+       inset.set_ylabel('E/N / E_FG')
+       # Show just the whole of eq (2)
+       inset.plot(alpha, 1+alpha + (3-4 *torch.tensor(2.).log())*(alpha/2)**2, color='orange')
+
+       ax.legend()
+    '''
+    blue, gray = conventional_figure_2()
+    # To plot we need to subtract the mean-field (1-alpha)
+
+    ax.errorbar(
+            blue[0],
+            blue[3]-(1+blue[0]),
+            yerr=blue[4],
             color='blue', marker='v', linestyle='none',
             label='HD JS-DMC [Bertaina (2013)]'
             )
-    ax.plot(
-            gray [0],
-            gray [1],
+    ax.errorbar(
+            gray[0],
+            gray[3]-(1+gray[0]),
+            yerr=gray[4],
             color='gray', marker='o', linestyle='none',
             label='SW JS-DMC [Bertaina (2013)]'
             )
@@ -106,18 +127,14 @@ def contact_by_kF4():
 
     citation()
     return torch.tensor([
-        [0.561347, 0.070021],
-        [0.473085, 0.051458],
-        [0.382930, 0.034817],
-        [0.291280, 0.020615],
-        [0.195786, 0.009559],
-        [0.098755, 0.002458],
-        [-0.622725, 0.067143],
-        [-0.490006, 0.047254],
-        [-0.395163, 0.032882],
-        [-0.309663, 0.019606],
-        [-0.255783, 0.014222],
-        [-0.234334, 0.012622]
+        # Repulsive results from hard-disks
+        [0.647457, 0.0886,  1.5e-04],
+        [0.560979, 0.0700,  1.5e-04],
+        [0.472605, 0.0515,   1.e-04],
+        [0.382273, 0.0348,   1.e-04],
+        [0.289917, 0.02050,  7.e-05],
+        [0.195468, 0.00955,  3.e-05],
+        [0.098854, 0.002461, 7.e-06],
         ]).T
 
 def contact_comparison(ax, **kwargs):
@@ -125,20 +142,12 @@ def contact_comparison(ax, **kwargs):
     Plots the data in :func:`contact_by_kF4` as points in a style that matches :cite:`Beane:2022wcn`.
     '''
 
-    alpha, c_by_kF4 = contact_by_kF4()
-    positive = (alpha > 0)
-    negative =  (alpha < 0)
+    alpha, c_by_kF4, dc_by_kF4 = contact_by_kF4()
 
-    ax.plot(
-            alpha[negative],
-            c_by_kF4[negative],
-            color='gray', marker='o', linestyle='none',
-            label='Square Well JS-DMC [Bertaina (2013)]',
-            )
-
-    ax.plot(
-            alpha[positive],
-            c_by_kF4[positive],
+    ax.errorbar(
+            alpha,
+            c_by_kF4,
+            yerr=dc_by_kF4,
             color='blue', marker='v', linestyle='none',
             label='Hard Disk JS-DMC [Bertaina (2013)]',
             )
