@@ -1,6 +1,6 @@
 import tdg.others.PRL106110403 as PRL106110403
 import tdg.others.PRA107043314 as PRA107043314
-import tdg.others.EPJST2013017639 as EPJST2013017639
+import tdg.others.EPJST217153 as EPJST217153
 import tdg.others.PRA93023602 as PRA93023602
 import tdg.others.PRA92033603 as PRA92033603
 import tdg.others.PRA103063314 as PRA103063314
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 REFERENCES = {
         PRL106110403,
         PRA107043314,
-        EPJST2013017639,
+        EPJST217153,
         PRA93023602,
         PRA92033603,
         PRA103063314,
