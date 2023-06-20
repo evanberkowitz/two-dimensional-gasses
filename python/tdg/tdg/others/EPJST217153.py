@@ -4,16 +4,7 @@ import tdg.conventions
 from tdg.others.citation import Citation
 citation = Citation(
     'Bertaina, EPJ Special Topics 217, 153-162 (2013)',
-    '''@article{bertaina2013,
-    title={Two-dimensional short-range interacting attractive and repulsive Fermi gases at zero temperature},
-    author={Bertaina, Gianluca},
-    journal={The European Physical Journal Special Topics},
-    volume={217},
-    number={1},
-    pages={153--162},
-    year={2013},
-    publisher={Springer}
-}''')
+    'bertaina2013')
 
 def figure_2():
     r'''
@@ -26,7 +17,7 @@ def figure_2():
     The data were provided by Gianluca Bertaina.
     '''
 
-    citation()
+    citation('Data provided by Gianluca Bertaina')
 
 
     blueTriangles =torch.tensor([
@@ -125,7 +116,8 @@ def contact_by_kF4():
     Returns a tensor whose rows are :math:`\alpha` and :math:`c/kF^4`.
     '''
 
-    citation()
+    citation('Data provided by Gianluca Bertaina')
+
     return torch.tensor([
         # Repulsive results from hard-disks
         [0.647457, 0.0886,  1.5e-04],

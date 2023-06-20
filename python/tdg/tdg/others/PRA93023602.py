@@ -4,20 +4,7 @@ import tdg.conventions
 from tdg.others.citation import Citation
 citation = Citation(
     'Galea, Dawkins, Gandolfi, and Gezerlis, Phys. Rev. A 93, 023602 (2016)',
-    '''@article{Galea:2015vdy,
-    author = "Galea, Alexander and Dawkins, Hillary and Gandolfi, Stefano and Gezerlis, Alexandros",
-    title = "{Diffusion Monte Carlo study of strongly interacting two-dimensional Fermi gases}",
-    eprint = "1511.05123",
-    archivePrefix = "arXiv",
-    primaryClass = "cond-mat.quant-gas",
-    reportNumber = "LA-UR-15-28921",
-    doi = "10.1103/PhysRevA.93.023602",
-    journal = "Phys. Rev. A",
-    volume = "93",
-    number = "2",
-    pages = "023602",
-    year = "2016"
-}''')
+    'Galea:2015vdy')
 
 def figure_6():
     r'''
@@ -26,7 +13,7 @@ def figure_6():
 
     This returns two tensors, the first for the blue circles and the latter for the purple triangles.  Each tensor is two rows; the first row being the x-coordinate and the second row the y.
     '''
-    citation()
+    citation('Data lifted from Figure 6')
 
     blue_circles = torch.tensor([
         [ +3.0026, +0.7146 ],

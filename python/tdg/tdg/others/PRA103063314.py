@@ -4,23 +4,7 @@ import tdg.conventions
 from tdg.others.citation import Citation
 citation = Citation(
     'Pilati, Orso, and Bertaina, Phys. Rev. A, 103:063314, (2021)',
-    '''@article{Pilati:2021
-    title = {{Quantum Monte Carlo simulations of two-dimensional repulsive Fermi gases with population imbalance}},
-    author = {Pilati, S. and Orso, G. and Bertaina, G.},
-    journal = {Phys. Rev. A},
-    volume = {103},
-    issue = {6},
-    pages = {063314},
-    numpages = {10},
-    year = {2021},
-    month = {Jun},
-    publisher = {American Physical Society},
-    doi = {10.1103/PhysRevA.103.063314},
-    url = {https://link.aps.org/doi/10.1103/PhysRevA.103.063314},
-    eprint = {2103.13251},
-    archivePrefix = "arXiv"
-}
-''')
+    'Pilati:2021')
 
 def figure_2_P_0_and_N_98():
     r'''
@@ -33,7 +17,7 @@ def figure_2_P_0_and_N_98():
     The data were provided by Gianluca Bertaina.
     '''
 
-    citation()
+    citation('Data provided by Gianluca Bertaina')
 
     hard_disks = torch.tensor([
         # The hard disks have diameter R = a_2D

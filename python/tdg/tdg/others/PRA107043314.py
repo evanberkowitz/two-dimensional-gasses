@@ -3,24 +3,7 @@ import torch
 from tdg.others.citation import Citation
 citation = Citation(
     'Beane et al. Phys. Rev. A 107, 043314 (2023)',
-    '''@article{Beane:2022wcn,
-    author = "Beane, Silas R. and Bertaina, Gianluca and Farrell, Roland C. and Marshall, William R.",
-    title = "{Toward precision Fermi liquid theory in flatland}",
-    eprint = "2212.05177",
-    archivePrefix = "arXiv",
-    primaryClass = "cond-mat.quant-gas",
-    reportNumber = "NT@UW-22-19",
-    journal = {Phys. Rev. A},
-    volume = {107},
-    issue = {4},
-    pages = {043314},
-    numpages = {17},
-    year = {2023},
-    month = {Apr},
-    publisher = {American Physical Society},
-    doi = {10.1103/PhysRevA.107.043314},
-    url = {https://link.aps.org/doi/10.1103/PhysRevA.107.043314}
-}''')
+    'Beane:2022wcn')
 
 label = r'Fermi liquid $\mathcal{O}(\alpha^3)$ [Beane et al. (2023)]'
 
@@ -52,7 +35,7 @@ def contact_by_kF4(alpha):
             :math:`c/k_F^4` given above evaluated for `alpha`
     '''
 
-    citation()
+    citation('Equation (98)')
 
     log4 = torch.log(torch.tensor(4.))
     return 0.25 * alpha**2 * (
@@ -85,7 +68,7 @@ def Fermi_Liquid_Energy_by_Fermi_Gas_Energy(alpha):
     In Figs. 15-18 Ref. :cite:`Beane:2022wcn` plots the difference of this ratio and :func:`Mean_Field_Energy_by_Fermi_Gas_Energy`.
     '''
 
-    citation()
+    citation('Equation (86)')
 
     return (
             1
@@ -111,7 +94,7 @@ def Mean_Field_Energy_by_Fermi_Gas_Energy(alpha):
     In Figs. 15-18 Ref. :cite:`Beane:2022wcn` plots the difference of this ratio and :func:`Fermi_Liquid_Energy_by_Fermi_Gas_Energy`.
     '''
 
-    citation()
+    citation('Equation (30) and just after (102)')
 
     return 1+alpha
 

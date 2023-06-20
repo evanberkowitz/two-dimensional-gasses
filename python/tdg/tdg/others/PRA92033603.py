@@ -7,20 +7,7 @@ logger = logging.getLogger(__name__)
 from tdg.others.citation import Citation
 citation = Citation(
     'Shi, Chiesa, and Zhang, Phys. Rev. A 92, 033603 (2015)',
-    '''@article{PhysRevA.92.033603,
-    title = {Ground-state properties of strongly interacting Fermi gases in two dimensions},
-    author = {Shi, Hao and Chiesa, Simone and Zhang, Shiwei},
-    journal = {Phys. Rev. A},
-    volume = {92},
-    issue = {3},
-    pages = {033603},
-    numpages = {7},
-    year = {2015},
-    month = {Sep},
-    publisher = {American Physical Society},
-    doi = {10.1103/PhysRevA.92.033603},
-    url = {https://link.aps.org/doi/10.1103/PhysRevA.92.033603}
-}''')
+    'PhysRevA.92.033603')
 
 def table_II():
     r'''
@@ -29,7 +16,7 @@ def table_II():
         torch.tensor whose rows are :math:`ln(k_F a_{2D})`, :math:`E/E_{FG}`, and the uncertainty on :math:`E/E_{FG}`.
     '''
 
-    citation()
+    citation('Data from Table II')
 
     return torch.tensor([
     #   From Table II

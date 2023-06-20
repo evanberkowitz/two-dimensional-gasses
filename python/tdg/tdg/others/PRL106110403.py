@@ -4,20 +4,7 @@ import tdg.conventions
 from tdg.others.citation import Citation
 citation = Citation(
     'Bertaina and Giorgini, Phys. Rev. Lett. 106, 110403 (2011)',
-    '''@article{PhysRevLett.106.110403,
-    author = {Bertaina, G. and Giorgini, S.},
-    doi = {10.1103/PhysRevLett.106.110403},
-    issue = {11},
-    journal = {Phys. Rev. Lett.},
-    month = {Mar},
-    numpages = {4},
-    pages = {110403},
-    publisher = {American Physical Society},
-    title = {BCS-BEC Crossover in a Two-Dimensional Fermi Gas},
-    url = {https://link.aps.org/doi/10.1103/PhysRevLett.106.110403},
-    volume = {106},
-    year = {2011}
-}''')
+    'PhysRevLett.106.110403')
 
 def table_I():
     r'''
@@ -28,7 +15,7 @@ def table_I():
         torch.tensor: The rows are :math:`\ln(k_F a_{2D})`, :math:`E/E_{FG}`, the uncertainty on :math:`E/E_{FG}`, and half the binding energy :math:`\mathcal{E}_B`.
     '''
 
-    citation()
+    citation('Data from Table I')
 
     return torch.tensor([
     #   From Table I
@@ -71,7 +58,7 @@ def figure_4():
     The data were provided by Gianluca Bertaina.
     '''
 
-    citation()
+    citation('Data provided by Gianluca Bertaina')
 
     BCS = torch.tensor([
         [ +1.00, +0.241, 0.003 ],
@@ -129,7 +116,7 @@ def figure_4_fit(eta):
         :math:`c/kF^4` at :math:`\eta`.
     '''
 
-    citation()
+    citation('Fit parameters provided by Gianluca Bertaina')
 
     CC      =-torch.tensor(2.).log() + 2. * tdg.conventions.Euler_Mascheroni
     eta0    = 0.424695699160316
