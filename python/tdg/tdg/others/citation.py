@@ -2,9 +2,9 @@ import logging
 logger = logging.getLogger(__name__)
 from collections import deque
 
-from pathlib import Path
-bibtex_file=Path(f'{__file__}').parents[4] / 'master.bib'
-logger.info(bibtex_file)
+_citation_level = logging.WARNING+1
+from tdg.others.logs import add_logging_level
+add_logging_level('CITE', logging.WARNING+1)
 
 from pathlib import Path
 from pybtex.database.input import bibtex
@@ -40,11 +40,11 @@ class Citation:
 
     def __call__(self, message=''):
         if not self.cited:
-            logger.info(f'{self.bibtex_key}\n{self.short}\n{message}\n')
-            logger.info(self.bibtex)
+            logger.cite(f'{self.bibtex_key}\n{self.short}\n{message}\n')
+            logger.cite(self.bibtex)
             self.cited = True
         elif message not in self.messages:
-            logger.info(f'{self.bibtex_key} {message}')
+            logger.cite(f'{self.bibtex_key} {message}')
         else:
             return
         self.messages.append(message)
