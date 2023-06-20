@@ -1,0 +1,12 @@
+
+Bertaina, EPJ Special Topics, 217(1):153–162, (2013)
+====================================================
+
+Ref. :cite:`bertaina2013` provides some contact data.
+
+Figure 2 provides the normalized, mean-field subtracted energy normalized directly but as a function of their :math:`g=-1/2 \log(k_F b)` (just after (2)) where :math:`b` sets the binding energy as :math:`-1/mb^2` (just below Figure 1).
+Therefore, :math:`b` is the scattering length in our convention.  However, :math:`g=\alpha/2`.
+
+
+.. automodule:: tdg.references.EPJST217153
+   :members:

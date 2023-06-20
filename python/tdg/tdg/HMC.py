@@ -14,6 +14,8 @@ import warnings
 import logging
 logger = logging.getLogger(__name__)
 
+from tdg.references import CPC2361525
+
 r'''
 
 HMC is an importance-sampling algorithm. 
@@ -411,6 +413,9 @@ class Autotuner(H5able):
 
         .. _tqdm: https://pypi.org/project/tqdm/
         '''
+
+        CPC2361525.citation('HMC Autotuner inspiration')
+
         self.md_steps = starting_md_steps
         self.md_steps_min = min_md_steps
 

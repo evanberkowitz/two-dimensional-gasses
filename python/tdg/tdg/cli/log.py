@@ -3,6 +3,7 @@
 import logging
 logger = logging.getLogger(__name__)
 
+import tdg.references.citation
 import argparse
 
 ####
@@ -80,7 +81,7 @@ class LogLevel(StarStarSugar):
 
     parameters = {
             'default': 'WARNING',
-            'help':    'Log level; one of DEBUG, INFO, WARNING, ERROR, CRITICAL.',
+            'help':    'Log level; one of DEBUG, INFO, WARNING, CITE, ERROR, CRITICAL.',
             'type':    str
             }
 
@@ -88,6 +89,7 @@ class LogLevel(StarStarSugar):
             'DEBUG':    logging.DEBUG,
             'INFO':     logging.INFO,
             'WARNING':  logging.WARNING,
+            'CITE':     logging.CITE,
             'ERROR':    logging.ERROR,
             'CRITICAL': logging.CRITICAL,
             }
@@ -139,5 +141,6 @@ if __name__ == '__main__':
     logger.debug    ("This is DEBUG")
     logger.info     ("This is INFO")
     logger.warning  ("This is a WARNING")
+    logger.cite     ("This is a CITE")
     logger.error    ("This is an ERROR")
     logger.critical ("This is CRITICAL")

@@ -13,6 +13,7 @@ Some parts of tdg have it integrated, following `the recommended convention`_ of
 More logging will be added with time, especially as bugs are hunted.
 
 Executables that use the default :class:`tdg.cli.ArgumentParser` can :func:`parse <tdg.cli.log.defaults>` some ``--log`` flags which allow you to format or set the `log level`_.
+We have inserted a ``CITE`` level just above the ``WARNING``, which is used to acknowledge other works which you should cite if you use that piece of tdg.
 
 
 .. _logging module: https://docs.python.org/3/library/logging.html
