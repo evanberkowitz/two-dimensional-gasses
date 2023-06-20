@@ -3,7 +3,7 @@
 import logging
 logger = logging.getLogger(__name__)
 
-import tdg.others.citation
+import tdg.references.citation
 import argparse
 
 ####

@@ -1,7 +1,7 @@
 import torch
 import tdg.conventions
 
-from tdg.others.citation import Citation
+from tdg.references.citation import Citation
 citation = Citation(
     'Galea, Dawkins, Gandolfi, and Gezerlis, Phys. Rev. A 93, 023602 (2016)',
     'Galea:2015vdy')

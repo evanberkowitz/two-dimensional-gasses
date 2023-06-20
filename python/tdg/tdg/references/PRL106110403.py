@@ -1,7 +1,7 @@
 import torch
 import tdg.conventions
 
-from tdg.others.citation import Citation
+from tdg.references.citation import Citation
 citation = Citation(
     'Bertaina and Giorgini, Phys. Rev. Lett. 106, 110403 (2011)',
     'PhysRevLett.106.110403')
@@ -142,7 +142,7 @@ def figure_4_reproduction(ax):
        import matplotlib.pyplot as plt
        fig, ax = plt.subplots(1,1, figsize=(6,4))
 
-       from tdg.others import PRL106110403
+       from tdg.references import PRL106110403
        ax, inset = PRL106110403.figure_4_reproduction(ax)
 
     Parameters

@@ -4,5 +4,5 @@ Galea et al., Phys. Rev. A, 93(2):023602 (2016)
 
 Ref. :cite:`Galea:2015vdy`.
 
-.. automodule:: tdg.others.PRA93023602
+.. automodule:: tdg.references.PRA93023602
    :members:

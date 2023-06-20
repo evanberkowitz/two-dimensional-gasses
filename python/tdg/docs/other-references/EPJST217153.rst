@@ -8,5 +8,5 @@ Figure 2 provides the normalized, mean-field subtracted energy normalized direct
 Therefore, :math:`b` is the scattering length in our convention.  However, :math:`g=\alpha/2`.
 
 
-.. automodule:: tdg.others.EPJST217153
+.. automodule:: tdg.references.EPJST217153
    :members:

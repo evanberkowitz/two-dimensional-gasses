@@ -14,7 +14,7 @@ import warnings
 import logging
 logger = logging.getLogger(__name__)
 
-from tdg.others import CPC2361525
+from tdg.references import CPC2361525
 
 r'''
 

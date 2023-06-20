@@ -4,5 +4,5 @@ Beane et al. Phys. Rev. A, 107:043314 (2023)
 
 Ref. :cite:`Beane:2022wcn` 
 
-.. automodule:: tdg.others.PRA107043314
+.. automodule:: tdg.references.PRA107043314
    :members:

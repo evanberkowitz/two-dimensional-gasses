@@ -9,5 +9,5 @@ Table I provides energies with uncertainties.
 Figure 4 shows the contact density :math:`c/k_F^4`.
 The data were provided by Gianluca Bertaina.
 
-.. automodule:: tdg.others.PRL106110403
+.. automodule:: tdg.references.PRL106110403
    :members:

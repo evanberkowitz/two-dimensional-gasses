@@ -3,7 +3,7 @@ logger = logging.getLogger(__name__)
 from collections import deque
 
 _citation_level = logging.WARNING+1
-from tdg.others.logs import add_logging_level
+from tdg.references.logs import add_logging_level
 add_logging_level('CITE', logging.WARNING+1)
 
 from pathlib import Path

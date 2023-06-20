@@ -1,9 +1,9 @@
-import tdg.others.PRL106110403 as PRL106110403
-import tdg.others.PRA107043314 as PRA107043314
-import tdg.others.EPJST217153 as EPJST217153
-import tdg.others.PRA93023602 as PRA93023602
-import tdg.others.PRA92033603 as PRA92033603
-import tdg.others.PRA103063314 as PRA103063314
+import tdg.references.PRL106110403 as PRL106110403
+import tdg.references.PRA107043314 as PRA107043314
+import tdg.references.EPJST217153 as EPJST217153
+import tdg.references.PRA93023602 as PRA93023602
+import tdg.references.PRA92033603 as PRA92033603
+import tdg.references.PRA103063314 as PRA103063314
 
 import logging
 logger = logging.getLogger(__name__)

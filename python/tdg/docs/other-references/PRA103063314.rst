@@ -4,5 +4,5 @@ Pilati, Orso, Bertaina. Phys. Rev. A, 103:063314, (2021)
 
 Ref. :cite:`Pilati:2021` performs simulations of spin-imbalanced systems.  They define :math:`P = (N_{\uparrow} - N_{\downarrow}) / N` and control :math:`P` by varying the chemical potentials of the different spins independently.
 
-.. automodule:: tdg.others.PRA103063314
+.. automodule:: tdg.references.PRA103063314
    :members:

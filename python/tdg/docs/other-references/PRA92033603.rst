@@ -8,5 +8,5 @@ Table I provides a parameterization of the splitting between the energy normaliz
 
 Table II provides energies with uncertainties.
 
-.. automodule:: tdg.others.PRA92033603
+.. automodule:: tdg.references.PRA92033603
    :members:

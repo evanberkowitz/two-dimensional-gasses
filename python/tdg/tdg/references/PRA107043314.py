@@ -1,6 +1,6 @@
 import torch
 
-from tdg.others.citation import Citation
+from tdg.references.citation import Citation
 citation = Citation(
     'Beane et al. Phys. Rev. A 107, 043314 (2023)',
     'Beane:2022wcn')

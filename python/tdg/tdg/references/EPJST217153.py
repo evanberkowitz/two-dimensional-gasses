@@ -1,7 +1,7 @@
 import torch
 import tdg.conventions
 
-from tdg.others.citation import Citation
+from tdg.references.citation import Citation
 citation = Citation(
     'Bertaina, EPJ Special Topics 217, 153-162 (2013)',
     'bertaina2013')
@@ -72,7 +72,7 @@ def energy_comparison(ax, **kwargs):
 
        fig, ax = plt.subplots(1,1, figsize=(8,6))
 
-       tdg.others.EPJST217153.energy_comparison(ax)
+       tdg.references.EPJST217153.energy_comparison(ax)
 
        alpha = torch.linspace(-0.9, 0.9, 1000)
        # Show just the mean-field subtracted piece of eq (2)
@@ -83,7 +83,7 @@ def energy_comparison(ax, **kwargs):
        ax.set_ylabel('(E/N - MF)/E_FG')
 
        inset = ax.inset_axes([0, 0.06, 0.8, 0.08], transform=ax.transData)
-       blue, gray = tdg.others.EPJST217153.conventional_figure_2()
+       blue, gray = tdg.references.EPJST217153.conventional_figure_2()
        inset.errorbar(blue[0], blue[3], yerr=blue[4], color='blue', marker='v', linestyle='none')
        inset.errorbar(gray[0], gray[3], yerr=gray[4], color='gray', marker='o', linestyle='none')
        inset.set_xlim([-0.9, 0.9])

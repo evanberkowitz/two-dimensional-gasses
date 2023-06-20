@@ -4,7 +4,7 @@ import tdg.conventions
 import logging
 logger = logging.getLogger(__name__)
 
-from tdg.others.citation import Citation
+from tdg.references.citation import Citation
 citation = Citation(
     'Shi, Chiesa, and Zhang, Phys. Rev. A 92, 033603 (2015)',
     'PhysRevA.92.033603')

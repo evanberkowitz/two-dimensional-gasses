@@ -1,7 +1,7 @@
 import torch
 import tdg.conventions
 
-from tdg.others.citation import Citation
+from tdg.references.citation import Citation
 citation = Citation(
     'Pilati, Orso, and Bertaina, Phys. Rev. A, 103:063314, (2021)',
     'Pilati:2021')
