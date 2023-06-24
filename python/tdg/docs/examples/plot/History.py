@@ -18,4 +18,4 @@ h2.plot(gauss,   row=1, label='gauss')
 h2.histogram[0].legend()
 h2.histogram[1].legend()
 
-
+plt.show()

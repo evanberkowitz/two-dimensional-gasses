@@ -102,7 +102,7 @@ class MarkovChain(H5able):
     #.  Draw a sample momentum :math:`p_i` from the gaussian distribution given by the kinetic piece of the Hamiltonian.
     #.  Calculate :math:`\mathcal{H}` for the given :math:`x_i` and drawn :math:`p_i`.
     #.  Integrate Hamilton's equations of motion to generate a proposal for a new :math:`x_f` and :math:`p_f`.
-    #.  Accept the proposal according to :math:`\exp[-(\Delta\mathcal{H} = \mathcal{H}_f - \mathcal{H}_i)]`
+    #.  Accept the proposal according to :math:`\exp[-(\Delta\mathcal{H} = \mathcal{H}_f - \mathcal{H}_i - \log\det J)]` where :math:`J` is the phase-space Jacobian of the integrator.
 
     Parameters
     ----------
@@ -151,18 +151,18 @@ class MarkovChain(H5able):
 
         Returns
         -------
-            torch.tensor:
+            x: torch.tensor
                 a similar configuration; a new configuration if the proposal was accepted, or the original if the proposal is rejected.
-                
-            jacobian:
-                The Jacobian of the integration.  Currently hard-coded to 1, but may be needed for other integration schemes.
+            weight: torch.tensor
+                Weight not incorporated into the accept/reject.  Currently hard-coded to 1.
         """
+
         p_i = self.refresh_momentum.sample().reshape(*x.shape).requires_grad_(True)
         x_i = x.clone().requires_grad_(True)
         
         H_i = self.H(x_i,p_i)
         
-        x_f, p_f = self.integrator(x_i, p_i)
+        x_f, p_f, log_det_J = self.integrator(x_i, p_i)
         
         if x_f.isnan().any():
             if self.retry_on_nan:
@@ -173,7 +173,19 @@ class MarkovChain(H5able):
                 raise ValueError(f'Proposed configuration contains NaN.')
 
         H_f = self.H(x_f,p_f)
-        dH = (H_f - H_i).detach()
+
+        # According to eg. 1711.09268 eq (3) the acceptance probability with a non-symplectic integrator is
+        #
+        #   A = min(1, p(f) / p(i) * |J|)
+        #
+        # where |J| is the determinant of the phase-space Jacobian of the integrator from state i to state f and p is the Boltzmann weight.
+        # Therefore
+        #
+        #   A = min(1, exp[ - (H_f - H_i - log|J|) ] )
+        #
+        # and we incorporate the Jacobian into dH directly.
+
+        dH = (H_f - H_i - log_det_J).detach()
 
         if dH.isnan():
             if self.retry_on_nan:
@@ -238,6 +250,8 @@ class LeapFrog(H5able):
                     a tensor of positions,
             p_f:    torch.tensor
                     a tensor of momenta
+            log_det_J:      torch.tensor
+                    the phase-space Jacobian = 1 since the LeapFrog integrator is symplectic; its determinant is also 1, so its log is 0.
 
         """
         
@@ -255,7 +269,7 @@ class LeapFrog(H5able):
         # Take a final half-step of coordinates
         x = x + self.H.velocity(p) * self.md_dt / 2
 
-        return x, p
+        return x, p, torch.tensor(0.)
     
     def __call__(self, x_i, p_i):
         '''
@@ -311,6 +325,8 @@ class Omelyan(H5able):
                     a tensor of positions,
             p_f:    torch.tensor
                     a tensor of momenta
+            log_det_J:      torch.tensor
+                    the phase-space Jacobian = 1 since the Omelyan integrator is symplectic; its determinant is also 1, so its log is 0.
 
         """
         # Take an initial zeta-step of the coordinates
@@ -336,7 +352,7 @@ class Omelyan(H5able):
          # take a final coordinate zeta-step
         x = x + self.H.velocity(p) * (self.zeta * self.md_dt)
 
-        return x, p
+        return x, p, torch.tensor(0.)
     
     def __call__(self, x_i, p_i):
         '''
