@@ -20,3 +20,5 @@ sm.plot((uniform, gauss, gauss2))
 
 st = visualize.ScatterTriangle(3, labels=('Uniform', 'Gaussian', 'Two Gaussians'))
 st.plot((uniform, gauss, gauss2))
+
+plt.show()
