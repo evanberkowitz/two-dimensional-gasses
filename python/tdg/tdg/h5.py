@@ -202,6 +202,66 @@ class TorchStrategy(H5Data, name='torch'):
         group[key] = value.cpu().clone().detach().numpy()
         return group[key]
 
+class ObservableStrategy(TorchStrategy, name='observable'):
+    r'''
+    This strategy is never used by default.
+    It is used by the tdg.ensemble.GrandCanonical to create, extend, and read only segments of configurations and observables.
+    '''
+
+    @staticmethod
+    def applies(value):
+        return False
+
+    @staticmethod
+    def write(group, key, value):
+        # Markov chains are of unknown length and might be extended, so we should use
+        # a resizable dataset, https://docs.h5py.org/en/stable/high/dataset.html#resizable-datasets
+        # of unknown/unlimited length.
+        shape = (None, )+ value.shape[1:]
+        value = value.clone().detach().cpu().numpy()
+        result = group.create_dataset(key, data=value, shape=value.shape, maxshape=shape, dtype=value.dtype)
+        # Because it is never used through the usual H5Data.write, we've got to apply the
+        # approprite metadata ourselves.
+        H5Data._mark_strategy(result, 'observable')
+        H5Data._mark_metadata(result, ObservableStrategy)
+
+        return result
+
+    @staticmethod
+    def extend(group, key, value):
+        if key not in group:
+            return ObservableStrategy.write(group, key, value)
+
+        shape = group[key].shape
+        extension = value.shape[0]
+        shape = (shape[0] + extension,) + shape[1:]
+
+        group[key].resize(shape)
+        group[key][-extension:] = value
+        return group[key]
+
+    @staticmethod
+    def read_only(selection, group, strict):
+
+        # Rather than all data, just read the selection.
+        data = group[selection]
+
+        # Then, just as with the torch strategy:
+
+        # We would like to read directly onto the default device,
+        # or, if there is a device context manager,
+        #   https://pytorch.org/tutorials/recipes/recipes/changing_default_device.html
+        # the correct device.  Even though there is a torch.set_default_device
+        #   https://pytorch.org/docs/stable/generated/torch.set_default_device.html
+        # there is no corresponding .get_default_device
+        # Instead we infer it
+        device = torch.tensor(0).device
+        # and ship the data to the device.
+        # TODO: Make the device detection as elegant as torch allows.
+        if isinstance(data, np.ndarray):
+            return torch.from_numpy(data).to(device)
+        return torch.tensor(data).to(device)
+
 class TorchSizeStrategy(H5Data, name='torch.Size'):
 
     metadata = {
