@@ -8,6 +8,7 @@ import torch
 from tdg import _no_op
 import tdg
 from tdg.h5 import H5able
+import tdg.h5
 from tdg.performance import Timer
 
 import logging
@@ -27,6 +28,9 @@ class GrandCanonical(H5able):
     
     _observables = set()
     # The _observables are populated by the @observable decorator.
+
+    _extendable  = set(('configurations', 'index', 'weights',))
+    # _extendable data aren't really 'observables' per se, but they do grow with the sample size.
     
     def __init__(self, Action):
         self.Action = Action
@@ -147,6 +151,107 @@ class GrandCanonical(H5able):
                 except AttributeError as error:
                     logger.error(str(error))
         return self
+
+    def to_h5(self, group):
+        r'''
+        Just like :func:`tdg.h5.H5able.to_h5` but some data are written as `resizable datasets`_ 
+
+        .. _resizable datasets: https://docs.h5py.org/en/stable/high/dataset.html#resizable-datasets
+        '''
+        logger.info(f'Saving to_h5 as {group.name}.')
+
+        extendable = self._observables | self._extendable
+
+        for attr, value in self.__dict__.items():
+
+            if attr in extendable:
+                strategy = tdg.h5.ObservableStrategy
+            else:
+                strategy = tdg.h5.H5Data
+
+            if attr[0] == '_':
+                if '_' not in group:
+                    private_group = group.create_group('_')
+                else:
+                    private_group = group['_']
+                strategy.write(private_group, attr[1:], value)
+            else:
+                strategy.write(group, attr, value)
+
+    def extend_h5(self, group, fields=None):
+        r'''
+        Append the measured values for this ensemble onto the resizable datasets (configurations, index, weights, and observables).
+
+        .. warning::
+            Currently **does not check** that the actions match! So sloppy behavior on your part can result in really weird, probably-meaningless data.
+
+        Parameters
+        ----------
+        group: h5 group
+            Should be an h5 group written from an ensemble with the same action.
+        fields: 
+            Tuple of properties to extend.  If ``None``, extends configurations, index, weights, and all observbles evaluated; does not trigger the measurement of observables.
+        '''
+        logger.info(f'Extending h5 {group.name}.')
+
+        if fields is None:
+            fields = self._observables | self._extendable
+
+        for attr, value in self.__dict__.items():
+            if attr not in fields:
+                continue
+            if attr[0] == '_':
+                if '_' not in group:
+                    private_group = group.create_group('_')
+                else:
+                    private_group = group['_']
+                tdg.h5.ObservableStrategy.extend(private_group, attr[1:], value)
+            else:
+                tdg.h5.ObservableStrategy.extend(group, attr, value)
+
+    @classmethod
+    def from_h5(cls, group, strict=True, observables=None, selection=()):
+        r'''
+        Parameters
+        ----------
+        group: h5 group
+            Where the data for this ensemble is found; same as :func:`tdg.h5.H5Data.from_h5`.
+        strict: boole
+            Same as :func:`tdg.h5.H5Data.from_h5`.
+        observables: iterable of strings
+            Which observables should be read.  If ``None`` read all the observables on disk.
+        selection: fancy indexing
+            A subset of numpy `fancy indexing`_ is supported; this selection is used for selecting configurations bassed on their location in the dataset, rather than their ``.index``.
+            Some valid choics are ``[1,2,3]``, ``slice(1,4)``, ``slice(1,10,2)``.  If you want a singleton, you should use ``[1,]`` or the configurations will have the wrong number of dimensions.
+
+        
+        .. _fancy indexing: https://docs.h5py.org/en/stable/high/dataset.html#fancy-indexing
+        '''
+        o = cls.__new__(cls)
+
+        if observables is None:
+            observables = o._observables
+
+        read_only_pieces = set(observables) | o._extendable
+
+        for field in group:
+            if field == '_':
+                for private in group['_']:
+                    key = f'_{private}'
+                    if key in read_only_pieces:
+                        o.__dict__[key] = tdg.h5.ObservableStrategy.read_only(selection, group['_'][private], strict)
+                    elif key in o._observables:
+                        continue
+                    else:
+                        o.__dict__[key] = tdg.h5.H5Data.read(group['_'][private], strict)
+            else:
+                if field in read_only_pieces:
+                    o.__dict__[field] = tdg.h5.ObservableStrategy.read_only(selection, group[field], strict)
+                elif field in o._observables:
+                    continue
+                else:
+                    o.__dict__[field] = tdg.h5.H5Data.read(group[field], strict)
+        return o
 
     def cut(self, start):
         r'''

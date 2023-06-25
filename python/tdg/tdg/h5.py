@@ -214,6 +214,7 @@ class ObservableStrategy(TorchStrategy, name='observable'):
 
     @staticmethod
     def write(group, key, value):
+        logger.debug(f"Writing {group.name}/{key} as observable.")
         # Markov chains are of unknown length and might be extended, so we should use
         # a resizable dataset, https://docs.h5py.org/en/stable/high/dataset.html#resizable-datasets
         # of unknown/unlimited length.
@@ -236,6 +237,7 @@ class ObservableStrategy(TorchStrategy, name='observable'):
         extension = value.shape[0]
         shape = (shape[0] + extension,) + shape[1:]
 
+        logger.debug(f"Extending {group.name}/{key} observable by {extension}.")
         group[key].resize(shape)
         group[key][-extension:] = value
         return group[key]
@@ -243,6 +245,7 @@ class ObservableStrategy(TorchStrategy, name='observable'):
     @staticmethod
     def read_only(selection, group, strict):
 
+        logger.debug(f"Reading {selection} of {group.name}.")
         # Rather than all data, just read the selection.
         data = group[selection]
 
