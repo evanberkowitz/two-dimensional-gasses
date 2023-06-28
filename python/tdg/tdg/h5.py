@@ -239,7 +239,7 @@ class ObservableStrategy(TorchStrategy, name='observable'):
 
         logger.debug(f"Extending {group.name}/{key} observable by {extension}.")
         group[key].resize(shape)
-        group[key][-extension:] = value
+        group[key][-extension:] = value.clone().detach().cpu().numpy()
         return group[key]
 
     @staticmethod
