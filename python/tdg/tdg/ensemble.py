@@ -4,6 +4,7 @@ from functools import cached_property
 from functools import lru_cache as cached
 
 import torch
+import h5py as h5
 
 from tdg import _no_op
 import tdg
@@ -121,6 +122,43 @@ class GrandCanonical(H5able):
 
         return self
     
+    @classmethod
+    def continue_from(cls, ensemble, steps, progress=tdg._no_op):
+        r'''
+        Use the last configuration and generator of ``ensemble`` to produce a new ensemble of ``steps`` configurations.
+        
+        Parameters
+        ----------
+            ensemble: tdg.ensemble.GrandCanonical or an h5py.Group that encodes such an ensemble
+                The ensemble to continue.  Raises a ValueError if it is not a `tdg.ensemble.GrandCanonical` or an `h5py.Group` with an action, generator, and at least one configuration.
+            steps: int
+                Number of configurations to generate.
+
+        Returns
+        -------
+            tdg.ensemble.GrandCanonical:
+                An ensemble with ``steps`` new configurataions generted in the same way as ``ensemble``.
+
+        .. todo::
+           
+           The index and starting weight should automatically be read in; currently not.
+        '''
+        if isinstance(ensemble, h5.Group):
+            e = tdg.ensemble.GrandCanonical.from_h5(ensemble, selection=[-1,], observables=())
+        elif isinstance(ensemble, tdg.ensemble.GrandCanonical):
+            e = ensemble
+        else:
+            raise ValueError('ensemble should be a tdg.ensemble.GrandCanonical or an h5 group that stores one.')
+            
+        try:
+            generator = e.generator
+            action    = e.Action
+            last      = e.configurations[-1]
+        except:
+            raise ValueError('The ensemble must provide a generator, an Action, and at least one configuration.')
+        
+        return tdg.ensemble.GrandCanonical(action).generate(steps, generator, last, progress=progress)
+
     def measure(self, *observables):
         r'''
         Compute each :ref:`@observable <observables>` in `observables`; log an error for any :ref:`unregistered observable <custom observables>`.
@@ -128,6 +166,7 @@ class GrandCanonical(H5able):
         Parameters
         ----------
             observables: strings
+                Names of observables.
 
         Returns
         -------
