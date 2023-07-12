@@ -23,9 +23,10 @@ The data types that are not pickled are
  - ``H5able``
  - ``int``
  - ``float``
- - ``dict``
+ - ``dict``, ``list``
  - ``numpy.ndarray``
  - ``torch.tensor``, ``torch.Size``
+ - A subset of other torch objects; including ``torch.distributions.Distribution``.
 
 To provide custom methods for H5ing otherwise-unknown types that cannot be made H5able, a user can write a small strategy.
 A strategy is an instance-free class with just static methods ``applies``, ``write``, and ``read``.
@@ -80,6 +81,8 @@ However, it is probably simplest in most circumstances to just inherit from ``H5
 See **tdg/io.py** for the strategies that for ``int``, ``float``, ``dict``, ``numpy.ndarray``, ``torch.tensor``, ``torch.Size``, and ``H5able``.
 If the H5able strategy is desired but the class cannot be made to inherit from ``H5able``, just create a new strategy that inherits from ``H5ableStrategy`` and overwrites the ``applies`` method.
 
+One can also provide custom strategies and ``to_h5`` and ``from_h5`` methods.
+For example, the :class:`tdg.ensemble.GrandCanonical` adds the ability to read data :func:`from_h5 <tdg.ensemble.GrandCanonical.from_h5>` related only to a subset of configurations and the ability to :func:`extend_h5 <tdg.ensemble.GrandCanonical.extend_h5>` with new configurations or measurements, using a custom ``ObservableStrategy``, even though the data is torch data.
 
 .. _HDF5: https://www.hdfgroup.org/solutions/hdf5/
 .. _h5py: https://docs.h5py.org/en/stable/index.html

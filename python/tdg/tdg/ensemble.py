@@ -4,10 +4,12 @@ from functools import cached_property
 from functools import lru_cache as cached
 
 import torch
+import h5py as h5
 
 from tdg import _no_op
 import tdg
 from tdg.h5 import H5able
+import tdg.h5
 from tdg.performance import Timer
 
 import logging
@@ -27,6 +29,9 @@ class GrandCanonical(H5able):
     
     _observables = set()
     # The _observables are populated by the @observable decorator.
+
+    _extendable  = set(('configurations', 'index', 'weights',))
+    # _extendable data aren't really 'observables' per se, but they do grow with the sample size.
     
     def __init__(self, Action):
         self.Action = Action
@@ -63,7 +68,7 @@ class GrandCanonical(H5able):
 
         return self
         
-    def generate(self, steps, generator, start='hot', progress=_no_op):
+    def generate(self, steps, generator, start='hot', progress=_no_op, starting_index=0):
         r'''
         Parameters
         ----------
@@ -79,12 +84,14 @@ class GrandCanonical(H5able):
             progress: something which wraps an iterator and provides a progress bar.
                 In a script you might use `tqdm.tqdm`_, and in a notebook `tqdm.notebook`_.
                 Defaults to no progress reporting.
+            starting_index: int
+                The generated steps will have ``[starting_index, starting_index+steps)``.
 
         Returns
         -------
             the ensemble itself, so that one can do ``ensemble = GrandCanonical(action).generate(...)``.
 
-        Populates the :code:`index` attribute, a torch tensor counting up from 0, once for each call to the generator, so that each configuration has an index.
+        Populates the :code:`index` attribute, a torch tensor counting up from ``starting_index``, once for each call to the generator, so that each configuration has an index.
         This index is kept track of through :func:`cut`, :func:`every`, :func:`binned` (by the :class:`~.Binning`).
 
         .. _tqdm.tqdm: https://pypi.org/project/tqdm/
@@ -92,7 +99,7 @@ class GrandCanonical(H5able):
         '''
         self.configurations = self.Action.Spacetime.vector(steps) + 0j
         self.weights = torch.zeros(steps) + 0j
-        self.index   = torch.arange(steps)
+        self.index   = starting_index + torch.arange(steps)
         
         if start == 'hot':
             seed = self.Action.quenched_sample()
@@ -117,6 +124,44 @@ class GrandCanonical(H5able):
 
         return self
     
+    @classmethod
+    def continue_from(cls, ensemble, steps, progress=tdg._no_op):
+        r'''
+        Use the last configuration and generator of ``ensemble`` to produce a new ensemble of ``steps`` configurations.
+        
+        Parameters
+        ----------
+            ensemble: tdg.ensemble.GrandCanonical or an h5py.Group that encodes such an ensemble
+                The ensemble to continue.  Raises a ValueError if it is not a `tdg.ensemble.GrandCanonical` or an `h5py.Group` with an action, generator, and at least one configuration.
+            steps: int
+                Number of configurations to generate.
+
+        Returns
+        -------
+            tdg.ensemble.GrandCanonical:
+                An ensemble with ``steps`` new configurataions generted in the same way as ``ensemble``.
+
+        .. todo::
+           
+           The starting weight should automatically be read in; currently not.
+        '''
+        if isinstance(ensemble, h5.Group):
+            e = tdg.ensemble.GrandCanonical.from_h5(ensemble, selection=[-1,], observables=())
+        elif isinstance(ensemble, tdg.ensemble.GrandCanonical):
+            e = ensemble
+        else:
+            raise ValueError('ensemble should be a tdg.ensemble.GrandCanonical or an h5 group that stores one.')
+            
+        try:
+            generator = e.generator
+            action    = e.Action
+            last      = e.configurations[-1]
+            index     = e.index[-1] + 1
+        except:
+            raise ValueError('The ensemble must provide a generator, an Action, and at least one configuration.')
+        
+        return tdg.ensemble.GrandCanonical(action).generate(steps, generator, last, progress=progress, starting_index=index)
+
     def measure(self, *observables):
         r'''
         Compute each :ref:`@observable <observables>` in `observables`; log an error for any :ref:`unregistered observable <custom observables>`.
@@ -124,6 +169,7 @@ class GrandCanonical(H5able):
         Parameters
         ----------
             observables: strings
+                Names of observables.
 
         Returns
         -------
@@ -147,6 +193,107 @@ class GrandCanonical(H5able):
                 except AttributeError as error:
                     logger.error(str(error))
         return self
+
+    def to_h5(self, group):
+        r'''
+        Just like :func:`tdg.h5.H5able.to_h5` but some data are written as `resizable datasets`_ 
+
+        .. _resizable datasets: https://docs.h5py.org/en/stable/high/dataset.html#resizable-datasets
+        '''
+        logger.info(f'Saving to_h5 as {group.name}.')
+
+        extendable = self._observables | self._extendable
+
+        for attr, value in self.__dict__.items():
+
+            if attr in extendable:
+                strategy = tdg.h5.ObservableStrategy
+            else:
+                strategy = tdg.h5.H5Data
+
+            if attr[0] == '_':
+                if '_' not in group:
+                    private_group = group.create_group('_')
+                else:
+                    private_group = group['_']
+                strategy.write(private_group, attr[1:], value)
+            else:
+                strategy.write(group, attr, value)
+
+    def extend_h5(self, group, fields=None):
+        r'''
+        Append the measured values for this ensemble onto the resizable datasets (configurations, index, weights, and observables).
+
+        .. warning::
+            Currently **does not check** that the actions match! So sloppy behavior on your part can result in really weird, probably-meaningless data.
+
+        Parameters
+        ----------
+        group: h5 group
+            Should be an h5 group written from an ensemble with the same action.
+        fields: 
+            Tuple of properties to extend.  If ``None``, extends configurations, index, weights, and all observbles evaluated; does not trigger the measurement of observables.
+        '''
+        logger.info(f'Extending h5 {group.name}.')
+
+        if fields is None:
+            fields = self._observables | self._extendable
+
+        for attr, value in self.__dict__.items():
+            if attr not in fields:
+                continue
+            if attr[0] == '_':
+                if '_' not in group:
+                    private_group = group.create_group('_')
+                else:
+                    private_group = group['_']
+                tdg.h5.ObservableStrategy.extend(private_group, attr[1:], value)
+            else:
+                tdg.h5.ObservableStrategy.extend(group, attr, value)
+
+    @classmethod
+    def from_h5(cls, group, strict=True, observables=None, selection=()):
+        r'''
+        Parameters
+        ----------
+        group: h5 group
+            Where the data for this ensemble is found; same as :func:`tdg.h5.H5Data.from_h5`.
+        strict: boole
+            Same as :func:`tdg.h5.H5Data.from_h5`.
+        observables: iterable of strings
+            Which observables should be read.  If ``None`` read all the observables on disk.
+        selection: fancy indexing
+            A subset of numpy `fancy indexing`_ is supported; this selection is used for selecting configurations bassed on their location in the dataset, rather than their ``.index``.
+            Some valid choics are ``[1,2,3]``, ``slice(1,4)``, ``slice(1,10,2)``.  If you want a singleton, you should use ``[1,]`` or the configurations will have the wrong number of dimensions.
+
+        
+        .. _fancy indexing: https://docs.h5py.org/en/stable/high/dataset.html#fancy-indexing
+        '''
+        o = cls.__new__(cls)
+
+        if observables is None:
+            observables = o._observables
+
+        read_only_pieces = set(observables) | o._extendable
+
+        for field in group:
+            if field == '_':
+                for private in group['_']:
+                    key = f'_{private}'
+                    if key in read_only_pieces:
+                        o.__dict__[key] = tdg.h5.ObservableStrategy.read_only(selection, group['_'][private], strict)
+                    elif key in o._observables:
+                        continue
+                    else:
+                        o.__dict__[key] = tdg.h5.H5Data.read(group['_'][private], strict)
+            else:
+                if field in read_only_pieces:
+                    o.__dict__[field] = tdg.h5.ObservableStrategy.read_only(selection, group[field], strict)
+                elif field in o._observables:
+                    continue
+                else:
+                    o.__dict__[field] = tdg.h5.H5Data.read(group[field], strict)
+        return o
 
     def cut(self, start):
         r'''
