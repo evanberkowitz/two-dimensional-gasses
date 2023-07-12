@@ -68,7 +68,7 @@ class GrandCanonical(H5able):
 
         return self
         
-    def generate(self, steps, generator, start='hot', progress=_no_op):
+    def generate(self, steps, generator, start='hot', progress=_no_op, starting_index=0):
         r'''
         Parameters
         ----------
@@ -84,12 +84,14 @@ class GrandCanonical(H5able):
             progress: something which wraps an iterator and provides a progress bar.
                 In a script you might use `tqdm.tqdm`_, and in a notebook `tqdm.notebook`_.
                 Defaults to no progress reporting.
+            starting_index: int
+                The generated steps will have ``[starting_index, starting_index+steps)``.
 
         Returns
         -------
             the ensemble itself, so that one can do ``ensemble = GrandCanonical(action).generate(...)``.
 
-        Populates the :code:`index` attribute, a torch tensor counting up from 0, once for each call to the generator, so that each configuration has an index.
+        Populates the :code:`index` attribute, a torch tensor counting up from ``starting_index``, once for each call to the generator, so that each configuration has an index.
         This index is kept track of through :func:`cut`, :func:`every`, :func:`binned` (by the :class:`~.Binning`).
 
         .. _tqdm.tqdm: https://pypi.org/project/tqdm/
@@ -97,7 +99,7 @@ class GrandCanonical(H5able):
         '''
         self.configurations = self.Action.Spacetime.vector(steps) + 0j
         self.weights = torch.zeros(steps) + 0j
-        self.index   = torch.arange(steps)
+        self.index   = starting_index + torch.arange(steps)
         
         if start == 'hot':
             seed = self.Action.quenched_sample()
@@ -141,7 +143,7 @@ class GrandCanonical(H5able):
 
         .. todo::
            
-           The index and starting weight should automatically be read in; currently not.
+           The starting weight should automatically be read in; currently not.
         '''
         if isinstance(ensemble, h5.Group):
             e = tdg.ensemble.GrandCanonical.from_h5(ensemble, selection=[-1,], observables=())
@@ -154,10 +156,11 @@ class GrandCanonical(H5able):
             generator = e.generator
             action    = e.Action
             last      = e.configurations[-1]
+            index     = e.index[-1] + 1
         except:
             raise ValueError('The ensemble must provide a generator, an Action, and at least one configuration.')
         
-        return tdg.ensemble.GrandCanonical(action).generate(steps, generator, last, progress=progress)
+        return tdg.ensemble.GrandCanonical(action).generate(steps, generator, last, progress=progress, starting_index=index)
 
     def measure(self, *observables):
         r'''
