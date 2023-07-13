@@ -1,8 +1,8 @@
 .. _parameters:
 
-************************
-Leading-Order Parameters
-************************
+*****************************************
+Dimensionless and Dimensionful Parameters
+*****************************************
 
 We here focus on the low-energy theory which has scattering that can be entirely described by the scattering length.
 This offers a simplification; to :ref:`tune a whole effective range expansion <tuning>` we would need to provide one parameter per shape parameter; in the leading-order case it's common to just quote the binding energy instead.
