@@ -3,7 +3,7 @@ import torch
 # The point is to be able to write things in preferred experimentalist units, {eV, nK, µm}.
 # We will adopt the convention that everything should be cast into eV.
 eV = torch.tensor(1., requires_grad=False)
-r'''1 electronvolt'''
+r'''1 electronvolt [per :math:`c^2=1`]'''
 
 # Therefore we need conversions for nK and µm.
 
@@ -34,7 +34,7 @@ r'''Alias for :const:`tdg.units.µm`'''
 #   kB = N[UnitConvert[kB["Value"], "eV/nK"], 16]
 kB = torch.tensor(8.617333262145177e-14, requires_grad=False) # eV/nK
 nK = kB*eV
-r'''1 = kB = 8.617333262145177e-14 eV / nK'''
+r'''1 = :math:`k_B` = 8.617333262145177e-14 eV / nK'''
 
 # Finally, many references quote atomic masses in Daltons (Da), or unified atomic mass units (u),
 # one twelfth of the rest mass of unbound, neutral, ground-state carbon-12.
