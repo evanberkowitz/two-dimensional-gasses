@@ -9,6 +9,7 @@ Computational Narrative
    grand-canonical
    canonical-projection
    monte-carlo
+   parameters
    observables
    D4
    miscellanea
