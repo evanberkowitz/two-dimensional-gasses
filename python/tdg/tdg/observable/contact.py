@@ -64,10 +64,10 @@ def Contact(ensemble):
     if len(ensemble.Action.Tuning.radii) == 1 and all(r==0 for r in ensemble.Action.Tuning.radii[0]):
         # This shortcut was implemented and tested AFTER the remaining portion of this routine was,
         # so that what is below was checked to be correct for the on-site interaction.
-        logger.info('Calculating the fermionic Contact via the double occupancy.')
+        logger.debug('Calculating the fermionic Contact via the double occupancy.')
         return 2*torch.pi * ensemble.Action.Spacetime.Lattice.sites * ensemble.Action.Tuning.dC_dloga[0] * ensemble.DoubleOccupancy
 
-    logger.info('Using the general form of the fermionic Contact.')
+    logger.debug('Using the general form of the fermionic Contact.')
 
     L = ensemble.Action.Spacetime.Lattice
     S = torch.stack(tuple(tdg.LegoSphere(r, c).spatial(L) for c,r in zip(ensemble.Action.Tuning.dC_dloga, ensemble.Action.Tuning.radii) )).sum(axis=0).to(ensemble.G.dtype)

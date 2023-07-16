@@ -201,7 +201,7 @@ class MarkovChain(H5able):
         self.dH.append(dH.cpu())
         self.acceptance_probability.append(acceptance_probability.clone().detach().cpu())
 
-        logger.info(f'HMC proposal {"accepted" if accept else "rejected"} with dH={dH.real.cpu().detach().numpy():+} acceptance_probability={acceptance_probability.cpu().detach().numpy()}')
+        logger.info(f'HMC proposal {"accepted" if accept else "rejected"} with dH={dH.real.cpu().detach().numpy():+16.14f} acceptance_probability={acceptance_probability.cpu().detach().numpy():+16.14f}')
 
         self.steps += 1
         if accept:
@@ -681,7 +681,7 @@ class Autotuner(H5able):
                     finished=True
                 except RuntimeError as rte:
                     if 'Optimal parameters not found:' in rte.args[0]:
-                        logger.info('No optimal parameters found in {maxfev=} evaluations.  Increasing uncertainties.')
+                        logger.info(f'No optimal parameters found in {maxfev=} evaluations.  Increasing uncertainties.')
                         points['d<acc>'] = 1.5 * points['d<acc>']
                     else:
                         raise rte

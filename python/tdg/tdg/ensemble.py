@@ -109,18 +109,20 @@ class GrandCanonical(H5able):
             seed = start
         else:
             raise NotImplemented(f"start must be 'hot', 'cold', or a configuration in a torch.tensor.")
-            
-        configuration, weight = generator.step(seed)
-        self.configurations[0] = configuration.real
-        self.weights[0] = weight
 
-        for mcmc_step in progress(range(1,steps)):
-            configuration, weight = generator.step(self.configurations[mcmc_step-1])
-            self.configurations[mcmc_step] = configuration.real
-            self.weights[mcmc_step] = weight
+        with Timer(logger.info, f'Generation of {steps} configurations', per=steps):
+       
+            configuration, weight = generator.step(seed)
+            self.configurations[0] = configuration.real
+            self.weights[0] = weight
 
-        self.start = start
-        self.generator = generator
+            for mcmc_step in progress(range(1,steps)):
+                configuration, weight = generator.step(self.configurations[mcmc_step-1])
+                self.configurations[mcmc_step] = configuration.real
+                self.weights[mcmc_step] = weight
+
+            self.start = start
+            self.generator = generator
 
         return self
     
