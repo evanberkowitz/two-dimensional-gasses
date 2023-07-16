@@ -1,6 +1,6 @@
 import torch
 from tdg import PauliMatrix
-from tdg.observable import observable, derived
+from tdg.observable import observable, intermediate, derived
 
 # Throughout we use the projection matrices P for the spin singlet and triplet
 # These assume that we're interested in pairing wavefunctions aligned along the z-axis.
@@ -67,7 +67,7 @@ def _four_fermion_contraction(L, G):
 # It may be wiser to eliminate this stored intermediate result and to just recompute the contractions
 # for each spin projection matrix.  It's a trade-off between time and space.  This is the space-agnostic
 # choice, but it might be smarter to make the time-agnostic choice.
-@observable
+@intermediate
 def _cooper_pair_correlation(ensemble):
     r'''
     :math:`\sum_{xyzw} e^{+i(kx-ky+qz-qw)} \left\langle \tilde{\psi}^\dagger_{\alpha,x} \tilde{\psi}^\dagger_{\beta,y} \tilde{\psi}_{\sigma,z} \tilde{\psi}_{\tau,w} \right\rangle` which is a common ingredient in all pairing matrices and therefore stored.
@@ -168,7 +168,7 @@ def pairing_singlet(ensemble):
             _quantum_disconnected(ensemble, P_singlet),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@derived
+@intermediate
 def _pairing_singlet_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_singlet)
 
@@ -209,7 +209,7 @@ def pairing_triplet_plus(ensemble):
             _quantum_disconnected(ensemble, P_triplet_plus),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@derived
+@intermediate
 def _pairing_triplet_plus_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_triplet_plus)
 
@@ -250,7 +250,7 @@ def pairing_triplet_zero(ensemble):
             _quantum_disconnected(ensemble, P_triplet_zero),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@derived
+@intermediate
 def _pairing_triplet_zero_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_triplet_zero)
 
@@ -337,7 +337,7 @@ def pairing_up_down(ensemble):
             _quantum_disconnected(ensemble, P_up_down),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@derived
+@intermediate
 def _pairing_up_down_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_up_down)
 

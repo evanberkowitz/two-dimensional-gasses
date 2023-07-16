@@ -1,13 +1,13 @@
 import torch
 
 import tdg
-from tdg.observable import observable, derived
+from tdg.observable import observable, intermediate, derived
 
 import logging
 logger = logging.getLogger(__name__)
 
 
-@observable
+@intermediate
 def _baryon_number_current_tensor(ensemble):
     # A tensor with momentum indices k, q and direction i.
     #
@@ -38,7 +38,7 @@ def current(ensemble):
     TiG = torch.einsum('kqi,ckqss->ckqi', ensemble._baryon_number_current_tensor, ensemble.G_momentum)
     return L.sites / 2 * torch.einsum('cxxi->cxi', L.ifft(L.fft(TiG, axis=1), axis=2))
 
-@observable
+@intermediate
 def _current_current(ensemble):
 
     # This is the fast, memory-efficient implementation of j†(x) j(y).

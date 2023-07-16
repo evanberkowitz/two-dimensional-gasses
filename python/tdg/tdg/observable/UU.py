@@ -1,7 +1,7 @@
 import torch
 import functorch
 import tdg.ensemble
-from tdg.observable import observable
+from tdg.observable import observable, intermediate
 
 # These utility functions help turn a doubly-struck sausage UU into a tensor, and back.
 def _matrix_to_tensor(ensemble, matrix):
@@ -18,18 +18,18 @@ tdg.ensemble.GrandCanonical._tensor_to_matrix = _tensor_to_matrix
 # Once they are evaluated, they're stored.
 # This makes the creation of an ensemble object almost immediate.
 
-@observable
+@intermediate
 def _UU(ensemble):
     # A matrix for each configuration.
     return functorch.vmap(ensemble.Action.FermionMatrix.UU)(ensemble.configurations)
 
-@observable
+@intermediate
 def _detUUPlusOne(ensemble):
     # One per configuration.
     UUPlusOne = torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
     return torch.det(UUPlusOne)
 
-@observable
+@intermediate
 def _UUPlusOneInverseUU(ensemble):
     # A matrix for each configuration.
     UUPlusOne = torch.eye(2*ensemble.Action.Spacetime.Lattice.sites) + ensemble._UU
@@ -38,7 +38,7 @@ def _UUPlusOneInverseUU(ensemble):
     inverse = torch.linalg.inv(UUPlusOne)
     return torch.matmul(inverse, ensemble._UU)
 
-@observable
+@intermediate
 def G(ensemble):
     r'''
     The equal-time propagator that is the contraction of :math:`\tilde{\psi}^\dagger_{a\sigma} \tilde{\psi}_{b\tau}`
@@ -51,7 +51,7 @@ def G(ensemble):
     '''
     return ensemble._matrix_to_tensor(ensemble._UUPlusOneInverseUU).transpose(1,2).transpose(3,4)
 
-@observable
+@intermediate
 def G_momentum(ensemble):
     r'''
     The equal-time propagator that is the contraction of :math:`N_x^{-2} \tilde{\psi}^\dagger_{k\sigma} \tilde{\psi}_{q\tau}`
