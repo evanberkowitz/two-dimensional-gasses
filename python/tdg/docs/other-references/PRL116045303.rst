@@ -1,0 +1,12 @@
+
+Boettcher et al., Phys. Rev. Lett. 116, 045303 (2016)
+=====================================================
+
+Ref. :cite:`PhysRevLett.116.045303` measured a population-balanced mixture of :math:`N \sim 100000` :math:`{}^6`\ Li atoms tuned via Feshbach resonance.
+
+Figure 3 gives measurements of the equation of state, reporting :math:`n/n_0` for different :math:`\beta \epsilon_B` and :math:`\beta \mu`.
+
+The data were provided by Philipp Lunt.
+
+.. automodule:: tdg.references.PRL116045303
+   :members:
