@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 class Observable:
 
-    def __init_subclass__(cls, name=''):
+    def __init_subclass__(cls, name='', intermediate=False):
         # This registers every subclass that inherits from Observable.
         # Upon registration, GrandCanonical gets an attribute with the appropriate name.
 
@@ -35,7 +35,10 @@ class Observable:
         cls._logger(f'Observable registered: {cls.name}')
 
         setattr(tdg.ensemble.GrandCanonical, cls.name, cls())
-        tdg.ensemble.GrandCanonical._observables.add(cls.name)
+        if intermediate:
+            tdg.ensemble.GrandCanonical._intermediates.add(cls.name)
+        else:
+            tdg.ensemble.GrandCanonical._observables.add(cls.name)
 
     def __set_name__(self, owner, name):
         self.name  = name
@@ -75,12 +78,8 @@ class Observable:
 
 def observable(func):
     # Now we are ready to decorate a function and turn it into a Descriptor.
-    # The primary decision is:
-    # 
-    #   Does this function need to be a CallableObservable?
-    #   Or can it just be an Observable?
-    # 
-    # We can decide that by counting its arguments.
+
+    # We can check its arguments.  It must only take one, the ensemble itself.
     sig = signature(func)
     parameters = len(sig.parameters)
 
@@ -94,4 +93,19 @@ def observable(func):
 
     return func # This is a hack to get sphinx to document observables sensibly.
 
+def intermediate(func):
+    # Now we are ready to decorate a function and turn it into a Descriptor.
 
+    # We can check its arguments.  It must only take one, the ensemble itself.
+    sig = signature(func)
+    parameters = len(sig.parameters)
+
+    if parameters != 1:
+        raise TypeError(f'An @intermediate must take exactly one argument (the ensemble), not {parameters}.')
+
+    class anonymous(Observable, name=func.__name__, intermediate=True):
+        
+        def measure(self, ensemble):
+            return func(ensemble)
+
+    return func # This is a hack to get sphinx to document observables sensibly.

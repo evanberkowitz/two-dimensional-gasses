@@ -1,7 +1,7 @@
 import torch
 
 import tdg
-from tdg.observable import observable, derived
+from tdg.observable import observable, intermediate, derived
 
 import logging
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ def vorticity(ensemble):
     TiG = 1j*torch.einsum('qki,ckqss->ckqi', q_cross_k, ensemble.G_momentum)
     return L.sites * torch.einsum('cxxi->cxi', L.ifft(L.fft(TiG, axis=1), axis=2))
 
-@observable
+@intermediate
 def _vorticity_vorticity(ensemble):
     # This is the fast, memory-efficient implementation of ω†(x) ω(y).
     # It can be compared to the reference implementation, which scales poorly.

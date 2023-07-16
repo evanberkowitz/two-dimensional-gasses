@@ -30,6 +30,9 @@ class GrandCanonical(H5able):
     _observables = set()
     # The _observables are populated by the @observable decorator.
 
+    _intermediates = set()
+    # The _observables are populated by the @intermediate decorator.
+
     _extendable  = set(('configurations', 'index', 'weights',))
     # _extendable data aren't really 'observables' per se, but they do grow with the sample size.
     
@@ -210,6 +213,8 @@ class GrandCanonical(H5able):
 
             if attr in extendable:
                 strategy = tdg.h5.ObservableStrategy
+            elif attr in self._intermediates:
+                continue
             else:
                 strategy = tdg.h5.H5Data
 
