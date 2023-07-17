@@ -10,6 +10,7 @@ Comparing to Other References
    PRL106110403
    PRA107043314
    EPJST217153
+   PRL116045303
    PRA103063314
    PRA93023602
    PRA92033603
@@ -27,3 +28,4 @@ Some references have data that has been superseded by works from the same author
 
 .. autofunction:: tdg.references.energy_comparison
 
+Some references provide equation of state information.
