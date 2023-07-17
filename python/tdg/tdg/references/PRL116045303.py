@@ -349,3 +349,9 @@ def figure_3_reproduction():
         a.legend()
 
     return fig, ax
+
+if __name__ == '__main__':
+
+    fig, ax = figure_3_reproduction()
+    fig.tight_layout()
+    plt.show()
