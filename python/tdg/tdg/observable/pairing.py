@@ -168,7 +168,7 @@ def pairing_singlet(ensemble):
             _quantum_disconnected(ensemble, P_singlet),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@intermediate
+@derived
 def _pairing_singlet_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_singlet)
 
@@ -209,7 +209,7 @@ def pairing_triplet_plus(ensemble):
             _quantum_disconnected(ensemble, P_triplet_plus),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@intermediate
+@derived
 def _pairing_triplet_plus_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_triplet_plus)
 
@@ -250,7 +250,7 @@ def pairing_triplet_zero(ensemble):
             _quantum_disconnected(ensemble, P_triplet_zero),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@intermediate
+@derived
 def _pairing_triplet_zero_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_triplet_zero)
 
@@ -337,7 +337,7 @@ def pairing_up_down(ensemble):
             _quantum_disconnected(ensemble, P_up_down),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@intermediate
+@derived
 def _pairing_up_down_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_up_down)
 
