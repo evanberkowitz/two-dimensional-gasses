@@ -39,7 +39,7 @@ class History:
         for h in self.history:
             h.sharex(self.history[0])
         
-    def plot(self, data, row=0, x=None, frequency=1, **kwargs):
+    def plot(self, data, row=0, x=None, frequency=1, color=None, **kwargs):
         r'''
         Parameters
         ----------
@@ -52,23 +52,25 @@ class History:
             frequency: int
                 Plotting every sample can prove visually overwhelming.
                 To reduce the number of points in the temporal history, only plot once per frequency.
+            color:
+                Forwarded `matplotlib color <https://matplotlib.org/stable/tutorials/colors/colors.html>`_.
         '''
         if isinstance(data, torch.Tensor):
             d = data.clone().detach().cpu().numpy()
         else:
             d = data
-        self._plot_history  (d, row=row, x=x, frequency=frequency, **kwargs)
-        self._plot_histogram(d, row=row, **kwargs)
+        self._plot_history  (d, row=row, x=x, frequency=frequency, color=color, **kwargs)
+        self._plot_histogram(d, row=row, color=color, **kwargs)
         
-    def _plot_history(self, data, row=0, x=None, label=None, frequency=1, **kwargs):
+    def _plot_history(self, data, row=0, x=None, label=None, frequency=1, color=None, **kwargs):
         if x is None:
             x = torch.arange(0, len(data), frequency)
-        self.ax[row,0].plot(x[::frequency].cpu(), data[::frequency], label=label)
+        self.ax[row,0].plot(x[::frequency].cpu(), data[::frequency], label=label, color=color)
         
-    def _plot_histogram(self, data, row=0, label=None, density=True, alpha=0.5, bins=31, **kwargs):
+    def _plot_histogram(self, data, row=0, label=None, density=True, alpha=0.5, bins=31, color=None, **kwargs):
         self.ax[row,1].hist(
             data, label=label,
             orientation='horizontal',
             bins=bins, density=density,
-            alpha=alpha,
+            color=color, alpha=alpha,
         )
