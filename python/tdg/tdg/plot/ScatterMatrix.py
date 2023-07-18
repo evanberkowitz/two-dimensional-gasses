@@ -71,7 +71,7 @@ class ScatterMatrix:
                 if i == fields-1:
                     grid[i,j].set_xlabel(labels[j])
 
-    def plot(self, data, label=None, density=True, scatter_alpha=0.1, histogram_alpha=0.5, bins=31, **kwargs):
+    def plot(self, data, label=None, density=True, scatter_alpha=0.1, histogram_alpha=0.5, bins=31, color=None, **kwargs):
         r'''
         Parameters
         ----------
@@ -84,6 +84,8 @@ class ScatterMatrix:
                 Transparency of the histograms.
             bins: int
                 Number of bins in each histogram.
+            color:
+                Forwarded `matplotlib color <https://matplotlib.org/stable/tutorials/colors/colors.html>`_.
             kwargs:
                 Currently ignored.
         '''
@@ -91,6 +93,7 @@ class ScatterMatrix:
         for ((i, y), (j, x)) in product(enumerate(d), enumerate(d)):
             if i != j:
                 self.grid[i,j].scatter(x,y,
+                                       color=color,
                                        alpha=scatter_alpha,
                                        edgecolors='none',
                                       )
@@ -99,6 +102,7 @@ class ScatterMatrix:
                     x, label=label,
                     orientation='vertical',
                     bins=bins, density=density,
+                    color=color,
                     alpha=histogram_alpha,
                 )
 
@@ -165,7 +169,7 @@ class ScatterTriangle:
                 if i == fields-1 and j < i:
                     grid[i,j].set_xlabel(labels[j])
 
-    def plot(self, data, label=None, density=True, scatter_alpha=0.1, histogram_alpha=0.5, bins=31, **kwargs):
+    def plot(self, data, label=None, density=True, scatter_alpha=0.1, histogram_alpha=0.5, bins=31, color=None, **kwargs):
         r'''
         Parameters
         ----------
@@ -178,6 +182,8 @@ class ScatterTriangle:
                 Transparency of the histograms.
             bins: int
                 Number of bins in each histogram.
+            color:
+                Forwarded `matplotlib color <https://matplotlib.org/stable/tutorials/colors/colors.html>`_.
             kwargs:
                 Currently ignored.
         '''
@@ -187,6 +193,7 @@ class ScatterTriangle:
                 continue
             if i != j:
                 self.grid[i,j].scatter(x,y,
+                                       color=color,
                                        alpha=scatter_alpha,
                                        edgecolors='none',
                                       )
@@ -195,6 +202,7 @@ class ScatterTriangle:
                     x, label=label,
                     orientation=('vertical' if i ==0 else 'horizontal'),
                     bins=bins, density=density,
+                    color=color,
                     alpha=histogram_alpha,
                 )
 
