@@ -101,7 +101,14 @@ class Action(H5able):
             ).expand([self.Spacetime.nt])
 
     def __str__(self):
-        return f"Action(β̃={self.beta}, µ̃={self.mu}, h̃={self.h}, {self.Spacetime}, {self.Potential})"
+        s = f"Action(β̃={self.beta}, µ̃={self.mu}"
+        if (self.h != 0.).any():
+            s += f", h̃={self.h}"
+        try:
+            s += f", {self.Tuning.ere}"
+        except:
+            s += f", {self.Potential}"
+        return s + f", {self.Spacetime})"
 
     def __repr__(self):
         return str(self)
