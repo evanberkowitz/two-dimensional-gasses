@@ -486,6 +486,7 @@ class Autotuner(H5able):
             y = series['acc']
             n = len(y)
             x = step + np.arange(n)
+            ax.plot(x, series['target'] + 0*x, color='gray', alpha=0.5)
             ax.plot(x, y, **kwargs)
             ax.text(x.mean(), 1.05, f'{series["md_steps"]}', ha='center', va='center')
             step += n
