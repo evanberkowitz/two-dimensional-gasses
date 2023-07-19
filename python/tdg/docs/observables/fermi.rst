@@ -10,6 +10,7 @@ Fermi Momentum
 
 .. autofunction:: tdg.observable.fermi.kFa_squared
 .. autofunction:: tdg.observable.fermi.kFa
+.. autofunction:: tdg.observable.fermi.log_kFa
 .. autofunction:: tdg.observable.fermi.momentum_by_kF_squared
 
 Binding Energy
