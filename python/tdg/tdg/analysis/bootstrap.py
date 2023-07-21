@@ -1,7 +1,11 @@
 import torch
 from tdg.h5 import H5able
+from tdg.performance import Timer
 
 from functools import lru_cache as cached
+
+import logging
+logger = logging.getLogger(__name__)
 
 class Bootstrap(H5able):
     r'''
@@ -33,6 +37,13 @@ class Bootstrap(H5able):
 
     .. _central limit theorem: https://en.wikipedia.org/wiki/Central_limit_theorem
     '''
+
+    _observables = set()
+    # The _observables are populated by the @observable and @derived decorators.
+
+    _intermediates = set()
+    # The _intermediates are populated by the @intermediate and @derived_intermediate decorator.
+
     def __init__(self, ensemble, draws=100):
         self.Ensemble = ensemble
         r'''The ensemble from which to resample.'''
