@@ -58,14 +58,14 @@ def energy_comparison(ax, **kwargs):
     blue_circles, purple_triangles = conventional_figure_6()
 
     ax.plot(
-            blue_circles[0],
-            blue_circles[1],
+            blue_circles[0].clone().detach().cpu().numpy(),
+            blue_circles[1].clone().detach().cpu().numpy(),
             marker='o', color='blue', linestyle='none',
             label='Optimized Jastrow-BCS [Galea (2016)]'
             )
     ax.plot(
-            purple_triangles[0],
-            purple_triangles[1],
+            purple_triangles[0].clone().detach().cpu().numpy(),
+            purple_triangles[1].clone().detach().cpu().numpy(),
             marker='^', color='purple', linestyle='none',
             label='Jastrow-Slater [Galea (2016)]'
             )

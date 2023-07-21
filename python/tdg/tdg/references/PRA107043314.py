@@ -106,16 +106,16 @@ def contact_comparison(ax, *, alpha, cutoff_variation=0.05, **kwargs):
     Error bars are produced by varying the cutoff; see Ref. :cite:`Beane:2022wcn` Fig. 12.
     '''
     
-    ax.plot(alpha,
-            contact_by_kF4(alpha),
+    ax.plot(alpha.clone().detach().cpu().numpy(),
+            contact_by_kF4(alpha).clone().detach().cpu().numpy(),
             color='black',
             label=label,
             zorder=-100,
             )
     ax.fill_between(
-            alpha,
-            contact_by_kF4((1-cutoff_variation)*alpha),
-            contact_by_kF4((1+cutoff_variation)*alpha),
+            alpha.clone().detach().cpu().numpy(),
+            contact_by_kF4((1-cutoff_variation)*alpha).clone().detach().cpu().numpy(),
+            contact_by_kF4((1+cutoff_variation)*alpha).clone().detach().cpu().numpy(),
             color='gray',
             alpha=0.2,
             zorder=-100,
@@ -130,15 +130,15 @@ def energy_comparison(ax, *, alpha, cutoff_variation=0.05, **kwargs):
     Note that for α>0 they include hard-disk effective-range effects.
     '''
 
-    ax.plot(alpha,
-            Fermi_Liquid_Energy_by_Fermi_Gas_Energy(alpha) - Mean_Field_Energy_by_Fermi_Gas_Energy(alpha),
+    ax.plot(alpha.clone().detach().cpu().numpy(),
+            (Fermi_Liquid_Energy_by_Fermi_Gas_Energy(alpha) - Mean_Field_Energy_by_Fermi_Gas_Energy(alpha)).clone().detach().cpu().numpy(),
             color='black',
             label=label,
             )
     ax.fill_between(
-            alpha,
-            Fermi_Liquid_Energy_by_Fermi_Gas_Energy((1-cutoff_variation)*alpha) - Mean_Field_Energy_by_Fermi_Gas_Energy((1-cutoff_variation)*alpha),
-            Fermi_Liquid_Energy_by_Fermi_Gas_Energy((1+cutoff_variation)*alpha) - Mean_Field_Energy_by_Fermi_Gas_Energy((1+cutoff_variation)*alpha),
+            alpha.clone().detach().cpu().numpy(),
+            (Fermi_Liquid_Energy_by_Fermi_Gas_Energy((1-cutoff_variation)*alpha) - Mean_Field_Energy_by_Fermi_Gas_Energy((1-cutoff_variation)*alpha)).clone().detach().cpu().numpy(),
+            (Fermi_Liquid_Energy_by_Fermi_Gas_Energy((1+cutoff_variation)*alpha) - Mean_Field_Energy_by_Fermi_Gas_Energy((1+cutoff_variation)*alpha)).clone().detach().cpu().numpy(),
             color='gray',
             alpha=0.2
             )

@@ -68,9 +68,9 @@ def energy_comparison(ax, **kwargs):
     error = dE_by_FG
 
     ax.errorbar(
-            alpha,
-            difference,
-            yerr = error,
+            alpha.clone().detach().cpu().numpy(),
+            difference.clone().detach().cpu().numpy(),
+            yerr = error.clone().detach().cpu().numpy(),
             color='green',
             marker='D',
             linestyle='none',

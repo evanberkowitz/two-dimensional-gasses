@@ -162,11 +162,19 @@ def figure_4_reproduction(ax):
 
     bcs, js = figure_4()
 
-    ax.errorbar(bcs[0], bcs[1], yerr=bcs[2], marker='s', color='black', linestyle='none', label=r'$g_{\uparrow\downarrow}$ DMC BCS')
-    ax.errorbar(js [0], js [1], yerr=js [2], marker='o', color='gray',  linestyle='none', label=r'$g_{\uparrow\downarrow}$ DMC  JS')
+    ax.errorbar(
+            bcs[0].clone().detach().cpu().numpy(),
+            bcs[1].clone().detach().cpu().numpy(),
+            yerr=bcs[2].clone().detach().cpu().numpy(),
+            marker='s', color='black', linestyle='none', label=r'$g_{\uparrow\downarrow}$ DMC BCS')
+    ax.errorbar(
+            js [0].clone().detach().cpu().numpy(),
+            js [1].clone().detach().cpu().numpy(),
+            yerr=js [2].clone().detach().cpu().numpy(),
+            marker='o', color='gray',  linestyle='none', label=r'$g_{\uparrow\downarrow}$ DMC  JS')
 
     eta = torch.linspace(-1, 5, 1000)
-    ax.plot(eta, figure_4_fit(eta), color='red', label='Eq. of state')
+    ax.plot(eta.clone().detach().cpu().numpy(), figure_4_fit(eta).clone().detach().cpu().numpy(), color='red', label='Eq. of state')
 
     ax.set_xlim([-1, 5])
     ax.set_ylim([-0.1, 4])
@@ -175,9 +183,16 @@ def figure_4_reproduction(ax):
     ax.legend()
 
     inset = ax.inset_axes([1.66, 1.66, 3, 2.16], transform=ax.transData)
-    inset.errorbar(bcs[0], bcs[1] - c0_by_kF4(bcs[0]), yerr=bcs[2], marker='s', color='black', linestyle='none')
-    inset.errorbar( js[0],  js[1] - c0_by_kF4( js[0]), yerr= js[2], marker='o', color='gray', linestyle='none')
-    inset.plot(eta, figure_4_fit(eta) - c0_by_kF4(eta), color='red')
+    inset.errorbar(
+            bcs[0].clone().detach().cpu().numpy(),
+            (bcs[1] - c0_by_kF4(bcs[0])).clone().detach().cpu().numpy(),
+            yerr=bcs[2].clone().detach().cpu().numpy(), marker='s', color='black', linestyle='none')
+    inset.errorbar(
+            js[0].clone().detach().cpu().numpy(),
+            (js[1] - c0_by_kF4( js[0])).clone().detach().cpu().numpy(),
+            yerr= js[2].clone().detach().cpu().numpy(),
+            marker='o', color='gray', linestyle='none')
+    inset.plot(eta.clone().detach().cpu().numpy(), (figure_4_fit(eta) - c0_by_kF4(eta)).clone().detach().cpu().numpy(), color='red')
 
     inset.set_xlim([-1, 5])
     inset.set_ylim([0., 0.09])
@@ -232,9 +247,9 @@ def contact_comparison(ax, include_all=False, **kwargs):
     alpha_JS  = -1. / JS [0]
 
     ax.errorbar(
-            alpha_JS,
-            JS[1],
-            yerr=JS[2],
+            alpha_JS.clone().detach().cpu().numpy(),
+            JS[1].clone().detach().cpu().numpy(),
+            yerr=JS[2].clone().detach().cpu().numpy(),
             color='gray', marker='o', linestyle='none',
             label='Square Well JS-DMC [Bertaina and Giorgini (2011)]',
             )
@@ -243,9 +258,9 @@ def contact_comparison(ax, include_all=False, **kwargs):
         return
 
     ax.errorbar(
-            alpha_BCS,
-            BCS[1],
-            yerr=BCS[2],
+            alpha_BCS.clone().detach().cpu().numpy(),
+            BCS[1].clone().detach().cpu().numpy(),
+            yerr=BCS[2].clone().detach().cpu().numpy(),
             color='black',
             marker='s',
             linestyle='none',

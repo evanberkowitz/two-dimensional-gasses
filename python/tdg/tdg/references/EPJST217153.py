@@ -97,16 +97,16 @@ def energy_comparison(ax, **kwargs):
     # To plot we need to subtract the mean-field (1-alpha)
 
     ax.errorbar(
-            blue[0],
-            blue[3]-(1+blue[0]),
-            yerr=blue[4],
+            blue[0].clone().detach().cpu().numpy(),
+            (blue[3]-(1+blue[0])).clone().detach().cpu().numpy(),
+            yerr=blue[4].clone().detach().cpu().numpy(),
             color='blue', marker='v', linestyle='none',
             label='HD JS-DMC [Bertaina (2013)]'
             )
     ax.errorbar(
-            gray[0],
-            gray[3]-(1+gray[0]),
-            yerr=gray[4],
+            gray[0].clone().detach().cpu().numpy(),
+            (gray[3]-(1+gray[0])).clone().detach().cpu().numpy(),
+            yerr=gray[4].clone().detach().cpu().numpy(),
             color='gray', marker='o', linestyle='none',
             label='SW JS-DMC [Bertaina (2013)]'
             )
@@ -137,9 +137,9 @@ def contact_comparison(ax, **kwargs):
     alpha, c_by_kF4, dc_by_kF4 = contact_by_kF4()
 
     ax.errorbar(
-            alpha,
-            c_by_kF4,
-            yerr=dc_by_kF4,
+            alpha.clone().detach().cpu().numpy(),
+            c_by_kF4.clone().detach().cpu().numpy(),
+            yerr=dc_by_kF4.clone().detach().cpu().numpy(),
             color='blue', marker='v', linestyle='none',
             label='Hard Disk JS-DMC [Bertaina (2013)]',
             )
