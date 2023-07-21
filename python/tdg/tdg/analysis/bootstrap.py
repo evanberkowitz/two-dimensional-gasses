@@ -58,6 +58,38 @@ class Bootstrap(H5able):
     def __len__(self):
         return self.draws
 
+    def measure(self, *observables):
+        r'''
+        Compute each :ref:`@observable <observables>` and @derived quantity in `observables`; log an error for any :ref:`unregistered observable <custom observables>` or derived quantity.
+
+        Parameters
+        ----------
+            observables: strings
+                Names of observables or derived quantities.
+
+        Returns
+        -------
+            :class:`~.Bootstrap`; itself, now with some observables and derived quantities bootstrapped.
+
+        .. note::
+
+            If no `observables` are passed, bootstraps **every** registered `@observable` and `@derived` quantity.
+
+        '''
+        if not observables:
+            observables = self._observables
+
+        with Timer(logger.info, f'Bootstrap of {len(self)} draws', per=len(self)):
+            for observable in observables:
+                if observable not in self._observables | self._intermediates:
+                    logger.error(f'No registered observable "{observable}"')
+                    continue
+                try:
+                    getattr(self, observable)
+                except AttributeError as error:
+                    logger.error(str(error))
+        return self
+
     def _resample(self, obs):
         # Each observable should be multiplied by its respective weight.
         # Each draw should be divided by its average weight.
