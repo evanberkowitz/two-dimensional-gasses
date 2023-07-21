@@ -190,7 +190,7 @@ class GrandCanonical(H5able):
 
         with Timer(logger.info, f'Measurement on {len(self)} configurations', per=len(self)):
             for observable in observables:
-                if observable not in self._observables:
+                if observable not in self._observables | self._intermediates:
                     logger.error(f'No registered observable "{observable}"')
                     continue
                 try:
