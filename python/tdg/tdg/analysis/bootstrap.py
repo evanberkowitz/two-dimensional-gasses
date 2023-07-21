@@ -68,15 +68,34 @@ class Bootstrap(H5able):
         # We return the bootstrap axis to the front to provide an analogous interface for Bootstrap and GrandCanonical quantities.
         return torch.einsum('...d->d...', torch.einsum('cd,cd...->c...d', w, obs[self.indices]).mean(axis=0) / w.mean(axis=0))
     
-    @cached
     def __getattr__(self, name):
         
-        try:    forward = self.Ensemble.__getattribute__(name)
-        except: forward = self.Ensemble.__getattr__(name)
-        
-        if callable(forward):
-            @cached
-            def curry(*args, **kwargs):
-                return self._resample(forward(*args, **kwargs))
-            return curry
-        return self._resample(forward)
+        if name not in self._observables | self._intermediates:
+            raise AttributeError(name)
+
+        with Timer(logger.info, f'Bootstrapping {name}', per=len(self)):
+
+            try:    forward = self.Ensemble.__getattribute__(name)
+            except: forward = self.Ensemble.__getattr__(name)
+
+            ## I believe this code block is a remnant from callable observables.
+            ## Callable observables were eliminated in #58 https://github.com/evanberkowitz/two-dimensional-gasses/pull/58
+            ## to keep the interface much simpler.
+            ##
+            ## Normally I'd just delete this block of code.  But since I'm not POSITIVE this __getattr__ isn't doing something
+            ## else clever I'll just comment it out for now and remove it permanently in the future.
+            ##
+            ## TODO: remove this if its absence hasn't caused a problem.
+            ##       If it is removed, we can also remove the importing of lru_cache as cached above.
+            ##       Marked for deletion on 21 July 2023.
+            #
+            # if callable(forward):
+            #     @cached
+            #     def curry(*args, **kwargs):
+            #         return self._resample(forward(*args, **kwargs))
+            #     return curry
+            #
+            ## In fact, it may even be that the try/except above can go too; that was also about intercepting calls.
+
+            self.__dict__[name] = self._resample(forward)
+            return self.__dict__[name]
