@@ -121,8 +121,8 @@ class GrandCanonical(H5able):
 
             for mcmc_step in progress(range(1,steps)):
                 configuration, weight = generator.step(self.configurations[mcmc_step-1])
-                self.configurations[mcmc_step] = configuration.real
-                self.weights[mcmc_step] = weight
+                self.configurations[mcmc_step] = configuration.real.detach()
+                self.weights[mcmc_step] = weight.detach()
 
             self.start = start
             self.generator = generator

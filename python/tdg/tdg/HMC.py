@@ -206,10 +206,10 @@ class MarkovChain(H5able):
         self.steps += 1
         if accept:
             self.accepted += 1
-            return x_f, 1.
+            return x_f, torch.tensor(1.)
         else:
             self.rejected += 1
-            return x_i, 1.
+            return x_i, torch.tensor(1.)
 
 class LeapFrog(H5able):
     r"""The LeapFrog integrator integrates Hamilton's equations of motion for a total of :math:`\tau` molecular dynamics time `md_time` in a reversible, symplectic way.
