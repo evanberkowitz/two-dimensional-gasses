@@ -85,4 +85,4 @@ class Timer:
     def __exit__(self, exc_type, exc_value, traceback):
         self.stop()
         diff = self.elapsed()
-        self.log(f'... {self.stop_msg} [{diff:{self.fmt}} seconds]' + (f' ({diff/self.per:{self.fmt}} seconds each)' if self.per > 1 else ''))
+        self.log(f'... {self.stop_msg} [{diff:{self.fmt}} seconds]' + (f' ({diff/self.per:{self.fmt}} seconds each * {self.per})' if self.per > 1 else ''))
