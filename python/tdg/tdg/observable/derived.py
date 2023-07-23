@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 class DerivedQuantity:
 
-    def __init_subclass__(cls, name=''):
+    def __init_subclass__(cls, name='', intermediate=False):
         # This registers every subclass that inherits from DerivedQuantity.
         # Upon registration, GrandCanonical gets an attribute with the appropriate name.
 
@@ -33,7 +33,9 @@ class DerivedQuantity:
 
         setattr(tdg.analysis.bootstrap.Bootstrap, cls.name, cls())
 
-        if cls.name[0] != '_':
+        if intermediate:
+            tdg.analysis.Bootstrap._intermediates.add(cls.name)
+        else:
             tdg.analysis.Bootstrap._observables.add(cls.name)
 
     def __set_name__(self, owner, name):
@@ -79,6 +81,23 @@ def derived(func):
         raise TypeError(f'A @derived quantity must take exactly one argument (the bootstrap), not {parameters}.')
 
     class anonymous(DerivedQuantity, name=func.__name__):
+        
+        def measure(self, ensemble):
+            return func(ensemble)
+    
+    return func # This is a hack to get sphinx to document derived quantities sensibly.
+
+def derived_intermediate(func):
+    # Now we are ready to decorate a function and turn it into a Descriptor.
+
+    # We can check its arguments.  It must only take one, the bootstrap itself.
+    sig = signature(func)
+    parameters = len(sig.parameters)
+
+    if parameters != 1:
+        raise TypeError(f'A @derived quantity must take exactly one argument (the bootstrap), not {parameters}.')
+
+    class anonymous(DerivedQuantity, name=func.__name__, intermediate=True):
         
         def measure(self, ensemble):
             return func(ensemble)
