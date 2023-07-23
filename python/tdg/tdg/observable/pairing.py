@@ -1,6 +1,6 @@
 import torch
 from tdg import PauliMatrix
-from tdg.observable import observable, intermediate, derived
+from tdg.observable import observable, intermediate, derived, derived_intermediate
 
 # Throughout we use the projection matrices P for the spin singlet and triplet
 # These assume that we're interested in pairing wavefunctions aligned along the z-axis.
@@ -168,13 +168,13 @@ def pairing_singlet(ensemble):
             _quantum_disconnected(ensemble, P_singlet),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@derived
+@derived_intermediate
 def _pairing_singlet_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_singlet)
 
 @derived
 def condensate_fraction_singlet(ensemble):
-    return ensemble._pairing_singlet_eigen[0]
+    return ensemble._pairing_singlet_eigen[0][:,0]
 
 @derived
 def pairing_wavefunction_singlet(ensemble):
@@ -209,13 +209,13 @@ def pairing_triplet_plus(ensemble):
             _quantum_disconnected(ensemble, P_triplet_plus),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@derived
+@derived_intermediate
 def _pairing_triplet_plus_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_triplet_plus)
 
 @derived
 def condensate_fraction_triplet_plus(ensemble):
-    return ensemble._pairing_triplet_plus_eigen[0]
+    return ensemble._pairing_triplet_plus_eigen[0][:,0]
 
 @derived
 def pairing_wavefunction_triplet_plus(ensemble):
@@ -250,13 +250,13 @@ def pairing_triplet_zero(ensemble):
             _quantum_disconnected(ensemble, P_triplet_zero),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@derived
+@derived_intermediate
 def _pairing_triplet_zero_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_triplet_zero)
 
 @derived
 def condensate_fraction_triplet_zero(ensemble):
-    return ensemble._pairing_triplet_zero_eigen[0]
+    return ensemble._pairing_triplet_zero_eigen[0][:,0]
 
 @derived
 def pairing_wavefunction_triplet_zero(ensemble):
@@ -291,13 +291,13 @@ def pairing_triplet_minus(ensemble):
             _quantum_disconnected(ensemble, P_triplet_minus),
             ensemble.N, ensemble.Action.Spacetime.Lattice)
 
-@derived
+@derived_intermediate
 def _pairing_triplet_minus_eigen(ensemble):
     return _eigen_answer(ensemble.pairing_triplet_minus)
 
 @derived
 def condensate_fraction_triplet_minus(ensemble):
-    return ensemble._pairing_triplet_minus_eigen[0]
+    return ensemble._pairing_triplet_minus_eigen[0][:,0]
 
 @derived
 def pairing_wavefunction_triplet_minus(ensemble):
@@ -343,7 +343,7 @@ def _pairing_up_down_eigen(ensemble):
 
 @derived
 def condensate_fraction_up_down(ensemble):
-    return ensemble._pairing_up_down_eigen[0]
+    return ensemble._pairing_up_down_eigen[0][:,0]
 
 @derived
 def pairing_wavefunction_up_down(ensemble):

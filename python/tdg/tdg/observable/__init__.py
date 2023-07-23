@@ -2,7 +2,7 @@
 #### The Decorators
 ####
 from tdg.observable.observable import observable, intermediate
-from tdg.observable.derived import derived
+from tdg.observable.derived import derived, derived_intermediate
 
 ####
 #### Observables

@@ -18,6 +18,13 @@ def kFa(ensemble):
     return ensemble.kFa_squared.sqrt()
 
 @derived
+def log_kFa(ensemble):
+    r'''
+    :math:`\log \texttt{kFa}`.
+    '''
+    return ensemble.kFa.log()
+
+@derived
 def momentum_by_kF_squared(ensemble):
     '''
     :math:`(k/k_F)^2`, which is particularly useful for plotting as a function of momentum.

@@ -121,8 +121,8 @@ class GrandCanonical(H5able):
 
             for mcmc_step in progress(range(1,steps)):
                 configuration, weight = generator.step(self.configurations[mcmc_step-1])
-                self.configurations[mcmc_step] = configuration.real
-                self.weights[mcmc_step] = weight
+                self.configurations[mcmc_step] = configuration.real.detach()
+                self.weights[mcmc_step] = weight.detach()
 
             self.start = start
             self.generator = generator
@@ -190,7 +190,7 @@ class GrandCanonical(H5able):
 
         with Timer(logger.info, f'Measurement on {len(self)} configurations', per=len(self)):
             for observable in observables:
-                if observable not in self._observables:
+                if observable not in self._observables | self._intermediates:
                     logger.error(f'No registered observable "{observable}"')
                     continue
                 try:
@@ -199,13 +199,15 @@ class GrandCanonical(H5able):
                     logger.error(str(error))
         return self
 
-    def to_h5(self, group):
+    def to_h5(self, group, _top=True):
         r'''
         Just like :func:`tdg.h5.H5able.to_h5` but some data are written as `resizable datasets`_ 
 
         .. _resizable datasets: https://docs.h5py.org/en/stable/high/dataset.html#resizable-datasets
         '''
-        logger.info(f'Saving to_h5 as {group.name}.')
+
+        # If we're at the ``_top`` emit an info to the log, otherwise emit a debug line.
+        (logger.info if _top else logger.debug)(f'Saving to_h5 as {group.name}.')
 
         extendable = self._observables | self._extendable
 
@@ -259,7 +261,7 @@ class GrandCanonical(H5able):
                 tdg.h5.ObservableStrategy.extend(group, attr, value)
 
     @classmethod
-    def from_h5(cls, group, strict=True, observables=None, selection=()):
+    def from_h5(cls, group, strict=True, observables=None, selection=(), _top=True):
         r'''
         Parameters
         ----------
@@ -276,6 +278,10 @@ class GrandCanonical(H5able):
         
         .. _fancy indexing: https://docs.h5py.org/en/stable/high/dataset.html#fancy-indexing
         '''
+
+        # If we're at the ``_top`` emit an info to the log, otherwise emit a debug line.
+        (logger.info if _top else logger.debug)(f'Reading from_h5 {group.name} {"strictly" if strict else "leniently"}.')
+
         o = cls.__new__(cls)
 
         if observables is None:

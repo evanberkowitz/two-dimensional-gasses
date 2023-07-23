@@ -108,12 +108,12 @@ class H5ableStrategy(H5Data, name='h5able'):
     @staticmethod
     def read(group, strict):
         cls = pickle.loads(group.attrs['H5able_class'][()])
-        return cls.from_h5(group, strict)
+        return cls.from_h5(group, strict, _top=False)
 
     def write(group, key, value):
         g = group.create_group(key)
         g.attrs['H5able_class'] = np.void(pickle.dumps(type(value)))
-        value.to_h5(g)
+        value.to_h5(g, _top=False)
         return g
 
 class IntegerStrategy(H5Data, name='integer'):
@@ -367,7 +367,7 @@ class H5able:
     # Therefore, cached properties might be saved.
     # Fields whose names start with _ are considered private and hidden one
     # level below in a group called _
-    def to_h5(self, group):
+    def to_h5(self, group, _top=True):
         r'''
         Write the object as an HDF5 `group`_.
         Member data will be stored as groups or datasets inside ``group``,
@@ -380,7 +380,10 @@ class H5able:
         .. _group: https://docs.hdfgroup.org/hdf5/develop/_h5_d_m__u_g.html#subsubsec_data_model_abstract_group
         .. _PEP8: https://peps.python.org/pep-0008/#naming-conventions
         '''
-        logger.info(f'Saving to_h5 as {group.name}.')
+
+        # If we're at the ``_top`` emit an info to the log, otherwise emit a debug line.
+        (logger.info if _top else logger.debug)(f'Saving to_h5 as {group.name}.')
+
         for attr, value in self.__dict__.items():
             if attr[0] == '_':
                 if '_' not in group:
@@ -395,8 +398,10 @@ class H5able:
     # (since we don't know the data to initialize it with).  Instead we need a classmethod
     # and to construct the __dict__ out of the saved data.
     @classmethod
-    def from_h5(cls, group, strict=True):
+    def from_h5(cls, group, strict=True, _top=True):
         '''
+        Construct a fresh object from the HDF5 `group`_.
+
         .. warning::
             If there is no known strategy for writing data to HDF5, objects will be pickled.
 
@@ -404,8 +409,12 @@ class H5able:
 
             See: https://docs.python.org/3/library/pickle.html for more.
 
+        .. _group: https://docs.hdfgroup.org/hdf5/develop/_h5_d_m__u_g.html#subsubsec_data_model_abstract_group
         '''
-        logger.info(f'Reading from_h5 {group.name} {"strictly" if strict else "leniently"}.')
+
+        # If we're at the ``_top`` emit an info to the log, otherwise emit a debug line.
+        (logger.info if _top else logger.debug)(f'Reading from_h5 {group.name} {"strictly" if strict else "leniently"}.')
+
         o = cls.__new__(cls)
         for field in group:
             if field == '_':

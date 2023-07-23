@@ -106,7 +106,7 @@ class LogFormat(StarStarSugar):
 
     parameters = {
             'type': str,
-            'default': '%(asctime)s %(name)s %(levelname)10s %(message)s',
+            'default': '%(asctime)s %(name)-30s %(levelname)10s %(message)s',
             'help': 'Log format.  See https://docs.python.org/3/library/logging.html#logrecord-attributes for details.',
             }
 

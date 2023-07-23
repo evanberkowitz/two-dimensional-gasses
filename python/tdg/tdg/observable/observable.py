@@ -1,5 +1,6 @@
 from inspect import signature
 import tdg.ensemble
+import tdg.analysis
 from tdg.performance import Timer
 
 import logging
@@ -39,6 +40,7 @@ class Observable:
             tdg.ensemble.GrandCanonical._intermediates.add(cls.name)
         else:
             tdg.ensemble.GrandCanonical._observables.add(cls.name)
+            tdg.analysis.Bootstrap._observables.add(cls.name)
 
     def __set_name__(self, owner, name):
         self.name  = name

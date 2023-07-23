@@ -206,10 +206,10 @@ class MarkovChain(H5able):
         self.steps += 1
         if accept:
             self.accepted += 1
-            return x_f, 1.
+            return x_f, torch.tensor(1.)
         else:
             self.rejected += 1
-            return x_i, 1.
+            return x_i, torch.tensor(1.)
 
 class LeapFrog(H5able):
     r"""The LeapFrog integrator integrates Hamilton's equations of motion for a total of :math:`\tau` molecular dynamics time `md_time` in a reversible, symplectic way.
@@ -486,6 +486,7 @@ class Autotuner(H5able):
             y = series['acc']
             n = len(y)
             x = step + np.arange(n)
+            ax.plot(x, series['target'] + 0*x, color='gray', alpha=0.5)
             ax.plot(x, y, **kwargs)
             ax.text(x.mean(), 1.05, f'{series["md_steps"]}', ha='center', va='center')
             step += n
