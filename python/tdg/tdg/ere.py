@@ -68,7 +68,7 @@ class EffectiveRangeExpansion(H5able):
         '''
 
     def __str__(self):
-        return f"EffectiveRangeExpansion(" + (", ".join(f'{p:+.8f}' for p in self.parameters)) + ")"
+        return f"ERE(" + (", ".join(f'{p:+.8f}' for p in self.parameters)) + ")"
 
     def analytic(self, x):
         r"""
