@@ -102,7 +102,7 @@ class Bootstrap(H5able):
     
     def __getattr__(self, name):
         
-        if name not in self._observables | self._intermediates:
+        if name not in self._observables | self._intermediates | self.Ensemble._intermediates :
             raise AttributeError(name)
 
         with Timer(logger.info, f'Bootstrapping {name}', per=len(self)):
