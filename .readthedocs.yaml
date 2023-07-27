@@ -13,10 +13,6 @@ build:
 sphinx:
    configuration: python/tdg/docs/conf.py
 
-formats:
-  - pdf
-  - epub
-
 python:
   install:
     - method: pip
