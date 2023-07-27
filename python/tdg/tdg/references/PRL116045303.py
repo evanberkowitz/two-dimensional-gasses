@@ -127,8 +127,8 @@ def figure_3():
         },
 
         7:  {
-            'beta_epsilon':  7.2,
-            'dbeta_epsilon': 0.1,
+            'beta_epsilon':  7.0,
+            'dbeta_epsilon': 1.0,
             'marker': 'D',
             'color': 'orange',
         } | {
