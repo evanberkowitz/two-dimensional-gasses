@@ -2,6 +2,8 @@
 master.pdf
 .git*hook.log
 .DS_Store
+*.pdf
+*.h5
 
 ## vim swap files
 *.swp
