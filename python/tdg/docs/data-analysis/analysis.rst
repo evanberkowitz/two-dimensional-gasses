@@ -36,7 +36,7 @@ The Bootstrap
 Bootstrap resampling, `bootstrapping`_, or "the bootstrap" is a resampling method used for uncertainty estimation.  One draws, with replacement, from a sample.
 
 .. autoclass:: tdg.analysis.Bootstrap
-   :members:
+   :members: measure
    :undoc-members:
 
 
