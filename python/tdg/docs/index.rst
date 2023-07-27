@@ -1,10 +1,12 @@
-.. 2D Gases documentation master file, created by
+.. 2D Gasses documentation master file, created by
    sphinx-quickstart on Thu Oct 13 13:37:22 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Two-Dimensional Gases
-=====================
+This is the documentation for `tdg <https://github.com/evanberkowitz/two-dimensional-gasses/>`_, a pytorch-based lattice field theoretical computational library for studying two-dimensional Fermi gasses.
+
+Two-Dimensional Gasses
+======================
 
 .. toctree:: 
    :maxdepth: 2
