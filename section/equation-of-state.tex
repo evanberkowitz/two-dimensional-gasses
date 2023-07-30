@@ -1,0 +1,38 @@
+\section{Equation of State}\label{sec:eos}
+
+One way of quantifying the equation of state for 2D gasses is as a relation between the thermodynamic parameters
+\begin{align}
+    \EOS(\beta \mu = \log z, \beta \binding, n/n_0) = 0
+    \label{eq:eos}
+\end{align}
+where $n$ is the number density and 
+\begin{align}
+    n_0 = \frac{2s+1}{\deBroglie^2} \log(1+e^{\beta\mu})
+\end{align} is the free gas result.
+We may trade the density ratio for $\log k_F a$
+\begin{align}
+    \frac{n}{n_0}
+    &=
+    \frac{\frac{2s+1}{4\pi} k_F^2}{\frac{2s+1}{\deBroglie^2} \log(1+z)}
+    =
+    \frac{ k_F^2 \deBroglie^2 }{4\pi \log(1+z)}
+    =
+    \half \frac{ (k_Fa)^2 }{ Ma^2 T \log(1+z)}
+    =
+    -\half \frac{(k_F a)^2 \beta\binding }{\log(1+z)}
+\end{align}
+where used the de Broglie wavelength \eqref{aspect ratio} and can identify the binding energy \eqref{binding energy} and oft-quoted (log of) $k_F a$.
+
+We can use the EOS to find good parameters that put us in the physical regime of interest.
+For example, if we want to target a particular $\log k_F a$ at a particular (inverse) temperature $\beta$ and scattering length $a$ (determining $\binding$).
+Both $a$ and $\beta$ are parameters that go into our action's parameters, but $k_F$ is not.
+The chemical potential $\mu$ is.
+So, we need to try and pick $\mu$ so that the equation of state \eqref{eos}
+\begin{align}
+    \EOS\left(\beta \mu, \beta \binding, - \half \frac{ (k_Fa)^2 \beta \binding}{ \log(1+e^{\beta \mu}) } \right) = 0
+\end{align}
+is satisfied.
+
+The equation of state $\EOS$ is not a priori known, and is controlled by the dynamics of the Hamiltonian.
+While we could compute it ourselves, there have been experimental measurements~\cite{PhysRevLett.116.045303}\footnote{Note that their binding energy is of the opposite sign.  See their Fig.~3 for the EOS.} and prior Monte Carlo calculations \cite{Anderson:2015uqa}.
+
