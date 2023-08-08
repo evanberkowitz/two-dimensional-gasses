@@ -1,0 +1,25 @@
+# MATH
+
+torch>=1.13
+functorch>=1.13
+numpy>=1.21
+scipy>=1.8
+
+# IO
+
+h5py>=3.7
+tqdm>=4.64
+pandas>=1.4
+
+# DOCS
+
+sphinx-git==11.0.0
+sphinx-rtd-theme==1.1.0
+sphinxcontrib-bibtex==2.5.0
+pybtex
+pybtex-docutils
+nbstripout
+
+# PLOTTING
+
+matplotlib>=3.5.2
