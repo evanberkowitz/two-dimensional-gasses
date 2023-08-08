@@ -1,5 +1,5 @@
 name = "tdg"
-version = "0.0.0"
+version = "0.1.0"
 author = "Evan Berkowitz"
 author_email = "tdg@evanberkowitz.com"
 description = "Auxiliary field quantum monte carlo for 2D gasses"
